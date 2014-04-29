@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CuttingEdge.Conditions">
+      <HintPath>..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
+    </Reference>
+    <Reference Include="Netco">
+      <HintPath>..\packages\Netco.1.3.1\lib\net45\Netco.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,8 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Infrastructure\Extensions.cs" />
+    <Compile Include="Interfaces\IMagentoFactory.cs" />
+    <Compile Include="Interfaces\IMagentoService.cs" />
+    <Compile Include="MagentoFactory.cs" />
+    <Compile Include="MagentoService.cs" />
+    <Compile Include="Misc\ActionPolicies.cs" />
+    <Compile Include="Models\Credentials\MagentoUserCredentials.cs" />
+    <Compile Include="Models\GetOrders\Order.cs" />
+    <Compile Include="Models\GetProducts\Item.cs" />
+    <Compile Include="Models\UpdateProducts\InventoryStatusRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
