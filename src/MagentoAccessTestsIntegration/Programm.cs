@@ -51,12 +51,15 @@ namespace MagentoAccessTestsIntegration
 			if( accessToken == null )
 				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, null, null, authorityUrls.RequestTokenUrl, authorityUrls.AuthorizeUrl, authorityUrls.AccessTokenUrl );
 			else
-				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, accessToken.AccessToken, accessToken.AccessTokenSecret);
+				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, accessToken.AccessToken, accessToken.AccessTokenSecret );
 
 			//------------ Act
 			string res;
 			var authorizeTask = service.GetAccessToken();
 			authorizeTask.Wait();
+
+			testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
+
 			res = service.InvokeGetCall( true );
 
 			//------------ Assert

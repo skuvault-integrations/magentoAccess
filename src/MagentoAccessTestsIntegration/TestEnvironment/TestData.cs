@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using LINQtoCSV;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
@@ -7,14 +8,24 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 	{
 		private readonly FlatCsvLineConsumer _flatCsvLineConsumer;
 		private readonly FlatCsvLineUrls _flatCsvLineUrls;
-		private readonly FlatCsvLineAccessToken _flatCsvLinesAccessToken;
+		private FlatCsvLineAccessToken _flatCsvLinesAccessToken;
+		private string _accessTokenFilePath;
 
 		public TestData( string consumerKeyFilePath, string urlsFilePath, string accessTokenFilePath )
 		{
 			var cc = new CsvContext();
+			this._accessTokenFilePath = accessTokenFilePath;
 			this._flatCsvLineConsumer = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineConsumer >( consumerKeyFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
 			this._flatCsvLineUrls = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineUrls >( urlsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
 			this._flatCsvLinesAccessToken = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineAccessToken >( accessTokenFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
+		}
+
+		public void CreateAccessTokenFile( string accessToken, string accessTokenSecret )
+		{
+			var cc = new CsvContext();
+			cc.Write< FlatCsvLineAccessToken >(
+				new List< FlatCsvLineAccessToken > { new FlatCsvLineAccessToken { AccessToken = accessToken, AccessTokenSecret = accessTokenSecret } },
+				this._accessTokenFilePath );
 		}
 
 		public MagentoConsumerCredentials GetMagentoConsumerCredentials()

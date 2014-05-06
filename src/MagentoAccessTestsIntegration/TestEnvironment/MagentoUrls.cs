@@ -2,7 +2,7 @@
 {
 	public class MagentoUrls
 	{
-		public MagentoUrls(string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl)
+		public MagentoUrls( string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl )
 		{
 			this.MagentoBaseUrl = magentoBaseUrl;
 			this.RequestTokenUrl = requestTokenUrl;

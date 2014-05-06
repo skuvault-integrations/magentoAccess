@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MagentoAccess.Models.GetProducts;
-
-namespace MagentoAccess.Interfaces
+﻿namespace MagentoAccess.Interfaces
 {
 	public interface IMagentoServiceLowLevel
 	{
@@ -26,6 +21,5 @@ namespace MagentoAccess.Interfaces
 		//IEnumerable<InventoryStatusResponse> ReviseInventoriesStatus(IEnumerable<InventoryStatusRequest> inventoryStatuses);
 
 		//Task<IEnumerable<InventoryStatusResponse>> ReviseInventoriesStatusAsync(IEnumerable<InventoryStatusRequest> inventoryStatuses);
-	
 	}
 }

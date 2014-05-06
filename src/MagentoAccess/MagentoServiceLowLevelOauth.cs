@@ -27,6 +27,16 @@ namespace MagentoAccess
 		private string _accessTokenSecret;
 		private HttpDeliveryMethods _authorizationHeaderRequest;
 
+		public string AccessToken
+		{
+			get { return this._accessToken; }
+		}
+
+		public string AccessTokenSecret
+		{
+			get { return this._accessTokenSecret; }
+		}
+
 		public static string GetVerifierCode()
 		{
 			var cc = new CsvContext();
@@ -53,14 +63,14 @@ namespace MagentoAccess
 			string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
 			)
 		{
-			Condition.Ensures(consumerKey, "consumerKey").IsNotNullOrWhiteSpace();
-			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
 
-			if (accessToken == null || accessTokenSecret == null)
+			if( accessToken == null || accessTokenSecret == null )
 			{
-				Condition.Ensures(requestTokenUrl, "requestTokenUrl").IsNotNullOrWhiteSpace();
-				Condition.Ensures(authorizeUrl, "authorizeUrl").IsNotNullOrWhiteSpace();
-				Condition.Ensures(accessTokenUrl, "accessTokenUrl").IsNotNullOrWhiteSpace();
+				Condition.Ensures( requestTokenUrl, "requestTokenUrl" ).IsNotNullOrWhiteSpace();
+				Condition.Ensures( authorizeUrl, "authorizeUrl" ).IsNotNullOrWhiteSpace();
+				Condition.Ensures( accessTokenUrl, "accessTokenUrl" ).IsNotNullOrWhiteSpace();
 			}
 
 			this._consumerKey = consumerKey;
@@ -102,6 +112,7 @@ namespace MagentoAccess
 					var authorizer = new Authorize( this._consumer );
 					var verifiedCode = await authorizer.GetVerifiedCodeAsync().ConfigureAwait( false );
 					this._accessToken = authorizer.GetAccessToken( verifiedCode );
+					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
 			}
 			catch( ProtocolException ex )
@@ -120,13 +131,13 @@ namespace MagentoAccess
 					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
 
 				var resourceEndpoint = new MessageReceivingEndpoint( this._resourceUrl, this._authorizationHeaderRequest );
-				
+
 				//
 				var service = new ServiceProviderDescription
 				{
-					RequestTokenEndpoint = new MessageReceivingEndpoint(this._requestTokenUrl, this._requestTokenHttpDeliveryMethod),
-					UserAuthorizationEndpoint = new MessageReceivingEndpoint(this._authorizeUrl, HttpDeliveryMethods.GetRequest),
-					AccessTokenEndpoint = new MessageReceivingEndpoint(this._accessTokenUrl, this._accessTokenHttpDeliveryMethod),
+					RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
 					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
 					ProtocolVersion = ProtocolVersion.V10a,
 				};
@@ -134,9 +145,9 @@ namespace MagentoAccess
 				var tokenManager = new InMemoryTokenManager();
 				tokenManager.ConsumerKey = this._consumerKey;
 				tokenManager.ConsumerSecret = this._consumerSecretKey;
-				tokenManager.tokensAndSecrets[this._accessToken] = this._accessTokenSecret;
+				tokenManager.tokensAndSecrets[ this._accessToken ] = this._accessTokenSecret;
 
-				this._consumer = new DesktopConsumer(service, tokenManager);
+				this._consumer = new DesktopConsumer( service, tokenManager );
 				//
 
 				using( var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend( resourceEndpoint, this._accessToken ) )
@@ -171,9 +182,7 @@ namespace MagentoAccess
 		private readonly DesktopConsumer consumer;
 		private string requestToken;
 		private string verificationKey;
-
 		internal string AccessToken { get; set; }
-		public event AuthorizationEventHandler GetVerifiedCodeFinished;
 
 		internal Authorize( DesktopConsumer consumer )
 		{

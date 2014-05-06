@@ -2,7 +2,7 @@
 
 namespace MagentoAccessTests
 {
-	[TestFixture]
+	[ TestFixture ]
 	public class Class1
 	{
 	}
