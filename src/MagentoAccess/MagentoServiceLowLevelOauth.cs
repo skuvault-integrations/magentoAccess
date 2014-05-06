@@ -29,7 +29,7 @@ namespace MagentoAccess
 		public static string GetAccessToken()
 		{
 			var cc = new CsvContext();
-			return Enumerable.FirstOrDefault( cc.Read< FlatCsvLine >( @"..\..\Files\magento_test_credentials.csv", new CsvFileDescription { FirstLineHasColumnNames = true } ) ).VerifierCode;
+			return Enumerable.FirstOrDefault( cc.Read< FlatCsvLine >( @"..\..\Files\magento_VerifierCode.csv", new CsvFileDescription { FirstLineHasColumnNames = true } ) ).VerifierCode;
 		}
 
 		public static void SaveAccessToken( string accessToken )
@@ -37,7 +37,7 @@ namespace MagentoAccess
 			var cc = new CsvContext();
 			cc.Write< FlatCsvLine >(
 				new List< FlatCsvLine > { new FlatCsvLine { VerifierCode = accessToken } },
-				@"..\..\Files\magento_test_credentials.csv" );
+				@"..\..\Files\magento_VerifierCode.csv" );
 		}
 
 		public void Authorize()
