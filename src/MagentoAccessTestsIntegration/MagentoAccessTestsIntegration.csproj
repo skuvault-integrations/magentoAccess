@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Files\magento_test_credentials.csv" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

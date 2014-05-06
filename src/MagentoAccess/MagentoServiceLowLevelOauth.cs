@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +6,6 @@ using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using LINQtoCSV;
-using MagentoAccess.Models.GetProducts;
 
 namespace MagentoAccess
 {
@@ -16,7 +13,7 @@ namespace MagentoAccess
 	{
 		private string _requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate";
 		private HttpDeliveryMethods _requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-		private string _authorizeUrl = "http://192.168.0.104/magento/admin/oauth/authorize";
+		private string _authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize";
 		private string _accessTokenUrl = "http://192.168.0.104/magento/oauth/token";
 		private HttpDeliveryMethods _accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
 		private string _resourceUrl = "http://192.168.0.104/magento/api/rest/products";
@@ -29,84 +26,30 @@ namespace MagentoAccess
 
 		public event AuthorizationEventHandler AuthorizeCompleted;
 
-		public static string GetAccessToken(){
-			var cc = new CsvContext();
-			return Enumerable.FirstOrDefault(cc.Read<FlatCsvLine>(@"..\..\Files\magento_test_credentials.csv", new CsvFileDescription { FirstLineHasColumnNames = true })).AccessToken;
-		}
-		
-		public static void SaveAccessToken(string accessToken)
+		public static string GetAccessToken()
 		{
 			var cc = new CsvContext();
-			cc.Write<FlatCsvLine>(
-				new List<FlatCsvLine> { new FlatCsvLine { AccessToken = accessToken } },
-				@"..\..\Files\magento_test_credentials.csv");
+			return Enumerable.FirstOrDefault( cc.Read< FlatCsvLine >( @"..\..\Files\magento_test_credentials.csv", new CsvFileDescription { FirstLineHasColumnNames = true } ) ).VerifierCode;
 		}
 
-		//public IEnumerable< Item > GetItems()
-		//{
-		//	var items = new List< Item >();
-
-		//	try
-		//	{
-		//		var serverResponse = string.Empty;
-
-		//		var service = new ServiceProviderDescription
-		//		{
-		//			RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
-		//			UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
-		//			AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
-		//			TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
-		//			ProtocolVersion = ProtocolVersion.V10a,
-		//		};
-
-		//		var tokenManager = new InMemoryTokenManager();
-		//		tokenManager.ConsumerKey = this._consumerKey;
-		//		tokenManager.ConsumerSecret = this._consumerSecretKey;
-
-		//		this._consumer = new DesktopConsumer( service, tokenManager );
-		//		this._accessToken = string.Empty;
-
-		//		if (service.ProtocolVersion == ProtocolVersion.V10a)
-		//		{
-		//			var authorizePopup = new Authorize( this._consumer, ( DesktopConsumer c, out string requestToken ) => c.RequestUserAuthorization( null, null, out requestToken ) );
-
-		//			//todo: add some event
-		//			//authorizePopup.Owner = this;
-		//			//bool? result = authorizePopup.ShowDialog();
-		//			//if( result.HasValue && result.Value )
-		//				this._accessToken = authorizePopup.AccessToken;
-		//			//else
-		//			//	return;
-		//		}
-
-		//		//var resourceHttpMethod =  HttpDeliveryMethods.PostRequest;
-		//		var resourceHttpMethod =  HttpDeliveryMethods.GetRequest;
-
-		//		bool needAuthorise = false;
-		//		if (needAuthorise)
-		//			resourceHttpMethod |= HttpDeliveryMethods.AuthorizationHeaderRequest;
-
-		//		var resourceEndpoint = new MessageReceivingEndpoint(this._resourceUrl, resourceHttpMethod);
-		//		using( var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend( resourceEndpoint, this._accessToken ) )
-		//			serverResponse = resourceResponse.GetResponseReader().ReadToEnd();
-		//	}
-		//	catch( ProtocolException ex )
-		//	{
-		//		//MessageBox.Show( this, ex.Message );
-		//	}
-
-		//	return items;
-		//}
+		public static void SaveAccessToken( string accessToken )
+		{
+			var cc = new CsvContext();
+			cc.Write< FlatCsvLine >(
+				new List< FlatCsvLine > { new FlatCsvLine { VerifierCode = accessToken } },
+				@"..\..\Files\magento_test_credentials.csv" );
+		}
 
 		public void Authorize()
 		{
+			//todo: before get new authorizationm try read from disk
 			try
 			{
 				var service = new ServiceProviderDescription
 				{
-					RequestTokenEndpoint = new MessageReceivingEndpoint(this._requestTokenUrl, this._requestTokenHttpDeliveryMethod),
-					UserAuthorizationEndpoint = new MessageReceivingEndpoint(this._authorizeUrl, HttpDeliveryMethods.GetRequest),
-					AccessTokenEndpoint = new MessageReceivingEndpoint(this._accessTokenUrl, this._accessTokenHttpDeliveryMethod),
+					RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
 					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
 					ProtocolVersion = ProtocolVersion.V10a,
 				};
@@ -115,33 +58,25 @@ namespace MagentoAccess
 				tokenManager.ConsumerKey = this._consumerKey;
 				tokenManager.ConsumerSecret = this._consumerSecretKey;
 
-				this._consumer = new DesktopConsumer(service, tokenManager);
+				this._consumer = new DesktopConsumer( service, tokenManager );
 				this._accessToken = string.Empty;
 
-				if (service.ProtocolVersion == ProtocolVersion.V10a)
+				if( service.ProtocolVersion == ProtocolVersion.V10a )
 				{
-					var authorizePopup = new Authorize(this._consumer, (DesktopConsumer c, out string requestToken) =>
+					var authorizer = new Authorize( this._consumer );
+					authorizer.AuthorizationFinished += ( x, y ) =>
 					{
-						var res =  c.RequestUserAuthorization(null, null, out requestToken);
-						return res;
-					}
-						);
-
-					//authorizePopup.AuthorizationFinished += authorizePopup_AuthorizationFinished;
-					authorizePopup.AuthorizationFinished += (x, y) =>
-					{
-						this._accessToken = authorizePopup.AccessToken;
+						this._accessToken = authorizer.AccessToken;
 					};
-					authorizePopup.AuthorizationFinished += (x, y) => this.AuthorizeCompleted.Invoke(this, new AuthorizationEventArgs());
+					authorizer.AuthorizationFinished += ( x, y ) => this.AuthorizeCompleted.Invoke( this, new AuthorizationEventArgs() );
 				}
 			}
-			catch (ProtocolException ex)
+			catch( ProtocolException ex )
 			{
-				//MessageBox.Show( this, ex.Message );
 			}
 		}
 
-		public string InvokeGetCall(bool needAuthorise = false)
+		public string InvokeGetCall( bool needAuthorise = false )
 		{
 			var serverResponse = string.Empty;
 			try
@@ -149,17 +84,15 @@ namespace MagentoAccess
 				//this._authorizationHeaderRequest =  HttpDeliveryMethods.PostRequest;
 				this._authorizationHeaderRequest = HttpDeliveryMethods.GetRequest;
 
-				if (needAuthorise)
+				if( needAuthorise )
 					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
 
-				var resourceEndpoint = new MessageReceivingEndpoint(this._resourceUrl, this._authorizationHeaderRequest);
-				using (var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend(resourceEndpoint, this._accessToken))
+				var resourceEndpoint = new MessageReceivingEndpoint( this._resourceUrl, this._authorizationHeaderRequest );
+				using( var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend( resourceEndpoint, this._accessToken ) )
 					serverResponse = resourceResponse.GetResponseReader().ReadToEnd();
-
 			}
-			catch (ProtocolException ex)
+			catch( ProtocolException ex )
 			{
-				//MessageBox.Show( this, ex.Message );
 			}
 
 			return serverResponse;
@@ -172,11 +105,11 @@ namespace MagentoAccess
 		{
 		}
 
-		[CsvColumn(Name = "AccessToken", FieldIndex = 1)]
-		public string AccessToken { get; set; }
+		[ CsvColumn( Name = "VerifierCode", FieldIndex = 1 ) ]
+		public string VerifierCode { get; set; }
 	}
 
-	public delegate void AuthorizationEventHandler(object sender, AuthorizationEventArgs args);
+	public delegate void AuthorizationEventHandler( object sender, AuthorizationEventArgs args );
 
 	public class AuthorizationEventArgs
 	{
@@ -187,37 +120,32 @@ namespace MagentoAccess
 		private DesktopConsumer consumer;
 		private string requestToken;
 		private string verificationKey;
-		internal delegate Uri FetchUri( DesktopConsumer consumer, out string requestToken );
 		internal string AccessToken { get; set; }
 		public event AuthorizationEventHandler AuthorizationFinished;
 
-		internal Authorize(DesktopConsumer consumer, FetchUri fetchUriCallback)
+		internal Authorize( DesktopConsumer consumer )
 		{
 			this.consumer = consumer;
-			var teskGetVerification = Task.Factory.StartNew(() =>
-			{
-				//var browserAuthorizationLocation = fetchUriCallback(this.consumer, out this.requestToken);
-				var browserAuthorizationLocation = consumer.RequestUserAuthorization(null, null, out requestToken);
-				Process.Start(browserAuthorizationLocation.AbsoluteUri);
-			});
+			var browserAuthorizationLocation = consumer.RequestUserAuthorization( null, null, out this.requestToken );
+			Process.Start( browserAuthorizationLocation.AbsoluteUri );
 
-			Task.Factory.StartNew(() =>
+			Task.Factory.StartNew( () =>
 			{
 				var counter = 0;
 				var accessToken = string.Empty;
 				do
 				{
-					Task.Delay(2000);
+					Task.Delay( 2000 );
 					counter++;
 					accessToken = MagentoServiceLowLevelOauth.GetAccessToken();
-				} while (string.IsNullOrWhiteSpace(accessToken) || counter > 30);
+				} while( string.IsNullOrWhiteSpace( accessToken ) || counter > 300 );
 
-				if (!string.IsNullOrWhiteSpace(accessToken))
+				if( !string.IsNullOrWhiteSpace( accessToken ) )
 				{
-					finish(accessToken);
-					AuthorizationFinished.Invoke(this, new AuthorizationEventArgs());
+					this.finish( accessToken );
+					this.AuthorizationFinished.Invoke( this, new AuthorizationEventArgs() );
 				}
-			});
+			} );
 		}
 
 		private void finish( string verifKey )
