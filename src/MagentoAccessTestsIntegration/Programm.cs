@@ -1,6 +1,7 @@
 ﻿using DotNetOpenAuth.Messaging;
 using FluentAssertions;
 using MagentoAccess;
+using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration
@@ -43,7 +44,11 @@ namespace MagentoAccessTestsIntegration
 		public void LowLevelOauth()
 		{
 			//------------ Arrange
-			var service = new MagentoServiceLowLevelOauth();
+			var testData = new TestData(@"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\AccessToken.csv");
+			var consumer = testData.GetMagentoConsumerCredentials();
+			var authorityUrls = testData.GetMagentoUrls();
+			var accessToken = testData.GetMagentoAccessToken();
+			var service = new MagentoServiceLowLevelOauth(consumer.Key, consumer.Secret, authorityUrls.RequestTokenUrl, authorityUrls.AuthorizeUrl, authorityUrls.AccessTokenUrl);
 
 			//------------ Act
 			string res;

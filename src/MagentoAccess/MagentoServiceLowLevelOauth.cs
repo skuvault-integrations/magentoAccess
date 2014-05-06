@@ -12,20 +12,18 @@ namespace MagentoAccess
 {
 	public class MagentoServiceLowLevelOauth
 	{
-		private string _requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate";
-		private HttpDeliveryMethods _requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-		private string _authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize";
-		private string _accessTokenUrl = "http://192.168.0.104/magento/oauth/token";
-		private HttpDeliveryMethods _accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-		private string _resourceUrl = "http://192.168.0.104/magento/api/rest/products";
-		private string _consumerKey = "59704e7d6b9abd742de255b7c97421f6";
-		private string _consumerSecretKey = "476130ddd7cdf5709fd9a95bee24b71d";
+		private string _requestTokenUrl;
+		private HttpDeliveryMethods _requestTokenHttpDeliveryMethod;
+		private string _authorizeUrl;
+		private string _accessTokenUrl;
+		private HttpDeliveryMethods _accessTokenHttpDeliveryMethod;
+		private string _resourceUrl;
+		private string _consumerKey;
+		private string _consumerSecretKey;
 
 		private DesktopConsumer _consumer;
 		private string _accessToken;
 		private HttpDeliveryMethods _authorizationHeaderRequest;
-
-		public event AuthorizationEventHandler AuthorizeCompleted;
 
 		public static string GetVerifierCode()
 		{
@@ -41,9 +39,28 @@ namespace MagentoAccess
 				@"..\..\Files\magento_VerifierCode.csv" );
 		}
 
+		public MagentoServiceLowLevelOauth(
+			string consumerKey,
+			string consumerSecretKey,
+			string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
+			string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
+			string accessTokenUrl = "http://192.168.0.104/magento/oauth/token",
+			string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
+			)
+		{
+			this._consumerKey = consumerKey;
+			this._consumerSecretKey = consumerSecretKey;
+			this._requestTokenUrl = requestTokenUrl;
+			this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+			this._authorizeUrl = authorizeUrl;
+			this._accessTokenUrl = accessTokenUrl;
+			this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+			this._resourceUrl = resourceUrl;
+		}
+
 		public async Task Authorize()
 		{
-			//todo: before get new authorizationm try read from disk
+			//todo: before get new authorization try read from disk
 			try
 			{
 				var service = new ServiceProviderDescription
@@ -85,6 +102,7 @@ namespace MagentoAccess
 					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
 
 				var resourceEndpoint = new MessageReceivingEndpoint( this._resourceUrl, this._authorizationHeaderRequest );
+
 				using( var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend( resourceEndpoint, this._accessToken ) )
 					serverResponse = resourceResponse.GetResponseReader().ReadToEnd();
 			}
