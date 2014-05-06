@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using DotNetOpenAuth.Messaging;
+using FluentAssertions;
 using MagentoAccess;
 using NUnit.Framework;
 
@@ -45,16 +46,13 @@ namespace MagentoAccessTestsIntegration
 			var service = new MagentoServiceLowLevelOauth();
 
 			//------------ Act
-			string res = string.Empty;
-			service.Authorize();
-			service.AuthorizeCompleted += (x, y) =>
-			{
-				res = service.InvokeGetCall(true);
+			string res;
+			var authorizeTask = service.Authorize();
+			authorizeTask.Wait();
+			res = service.InvokeGetCall(true);
 
-				//------------ Assert
-				//resTask.Result.Should().NotBeEmpty();
-				res.Should().NotBeNullOrWhiteSpace();
-			};
+			//------------ Assert
+			res.Should().NotBeNullOrWhiteSpace();
 		}
 	}
 }
