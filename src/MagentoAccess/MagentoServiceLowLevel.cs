@@ -163,94 +163,94 @@ namespace MagentoAccess
 			return items;
 		}
 
-		public IEnumerable<Item> GetItems3()
-		{
-			// Setup the variables necessary to create the OAuth 1.0 signature and make the request   
-			string httpMethod = "{httpVerb}";
-			string courseID = "{courseIdentification}";
-			Uri url = new Uri(String.Format("{0}{1}", "https://{domain}/courses/", courseID));
-			string appID = "{applicationId}";
-			string consumerKey = "{consumerKey}";
-			string body = "{requestBody}";
-			MemoryStream requestBody = null;
-			string signatureMethod = "CMAC-AES";
-			string secret = "{consumerSecret}";
-			HttpWebResponse response = null;
+	  //  public IEnumerable<Item> GetItems3()
+	  //  {
+	  //	  // Setup the variables necessary to create the OAuth 1.0 signature and make the request   
+	  //	  string httpMethod = "{httpVerb}";
+	  //	  string courseID = "{courseIdentification}";
+	  //	  Uri url = new Uri(String.Format("{0}{1}", "https://{domain}/courses/", courseID));
+	  //	  string appID = "{applicationId}";
+	  //	  string consumerKey = "{consumerKey}";
+	  //	  string body = "{requestBody}";
+	  //	  MemoryStream requestBody = null;
+	  //	  string signatureMethod = "CMAC-AES";
+	  //	  string secret = "{consumerSecret}";
+	  //	  HttpWebResponse response = null;
 
-			// Set the Nonce and Timestamp parameters
-			string nonce = getNonce();
-			string timestamp = getTimestamp();
+	  //	  // Set the Nonce and Timestamp parameters
+	  //	  string nonce = getNonce();
+	  //	  string timestamp = getTimestamp();
 
-			// Set the request body if making a POST or PUT request
-			if (httpMethod == "POST" || httpMethod == "PUT")
-			{
-				requestBody = new MemoryStream(Encoding.UTF8.GetBytes(body));
-			}
+	  //	  // Set the request body if making a POST or PUT request
+	  //	  if (httpMethod == "POST" || httpMethod == "PUT")
+	  //	  {
+	  //		  requestBody = new MemoryStream(Encoding.UTF8.GetBytes(body));
+	  //	  }
 
-			// Create the OAuth parameter name/value pair dictionary
-			Dictionary<string, string> oauthParams = new Dictionary<string, string>
-      {
-        { "oauth_consumer_key", consumerKey },
-        { "application_id", appID },
-        { "oauth_signature_method", signatureMethod },
-        { "oauth_timestamp", timestamp },
-        { "oauth_nonce", nonce },
-      };
-
-
-			// Get the OAuth 1.0 Signature
-			string signature = generateSignature(httpMethod, url, oauthParams, requestBody, secret);
-			Console.WriteLine("OAuth 1.0 Signature = " + signature + "\r\n\r\n");
-
-			// Add the oauth_signature parameter to the set of OAuth Parameters
-			IEnumerable<KeyValuePair<string, string>> allParams = oauthParams.Union(new[]
-      {
-        new KeyValuePair<string, string>("oauth_signature", signature)
-      });
+	  //	  // Create the OAuth parameter name/value pair dictionary
+	  //	  Dictionary<string, string> oauthParams = new Dictionary<string, string>
+	  //{
+	  //  { "oauth_consumer_key", consumerKey },
+	  //  { "application_id", appID },
+	  //  { "oauth_signature_method", signatureMethod },
+	  //  { "oauth_timestamp", timestamp },
+	  //  { "oauth_nonce", nonce },
+	  //};
 
 
-			// Defines a query that produces a set of: keyname="URL-encoded(value)"
-			IEnumerable<string> encodedParams = from param in allParams
-												select param.Key + "=\"" + Uri.EscapeDataString(param.Value) + "\"";
+	  //	  // Get the OAuth 1.0 Signature
+	  //	  string signature = generateSignature(httpMethod, url, oauthParams, requestBody, secret);
+	  //	  Console.WriteLine("OAuth 1.0 Signature = " + signature + "\r\n\r\n");
 
-			// Join all encoded parameters with a comma delimiter and convert to a string
-			string stringParams = String.Join(",", encodedParams);
+	  //	  // Add the oauth_signature parameter to the set of OAuth Parameters
+	  //	  IEnumerable<KeyValuePair<string, string>> allParams = oauthParams.Union(new[]
+	  //{
+	  //  new KeyValuePair<string, string>("oauth_signature", signature)
+	  //});
 
-			// Build the X-Authorization request header
-			string xauth = String.Format("X-Authorization: OAuth realm=\"{0}\",{1}", url, stringParams);
-			Console.WriteLine("X-Authorization request header: \r\n" + xauth + "\r\n\r\n");
-			try
-			{
-				// Setup the Request
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-				request.Method = httpMethod;
-				request.Headers.Add(xauth);
 
-				// Set the request body if making a POST or PUT request
-				if (httpMethod == "POST" || httpMethod == "PUT")
-				{
-					byte[] dataArray = Encoding.UTF8.GetBytes(body);
-					request.ContentLength = dataArray.Length;
+	  //	  // Defines a query that produces a set of: keyname="URL-encoded(value)"
+	  //	  IEnumerable<string> encodedParams = from param in allParams
+	  //										  select param.Key + "=\"" + Uri.EscapeDataString(param.Value) + "\"";
 
-					Stream requestStream = request.GetRequestStream();
-					requestStream.Write(dataArray, 0, dataArray.Length);
-					requestStream.Close();
-				}
+	  //	  // Join all encoded parameters with a comma delimiter and convert to a string
+	  //	  string stringParams = String.Join(",", encodedParams);
 
-				// Send Request & Get Response
-				response = (HttpWebResponse)request.GetResponse();
-				using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-				{
-					// Get the response stream and write to console
-					string json = reader.ReadToEnd();
-					Console.WriteLine("Successful Response: \r\n" + json);
-				}
-			}
-			catch (Exception)
-			{
-				throw;
-			}
-		}
+	  //	  // Build the X-Authorization request header
+	  //	  string xauth = String.Format("X-Authorization: OAuth realm=\"{0}\",{1}", url, stringParams);
+	  //	  Console.WriteLine("X-Authorization request header: \r\n" + xauth + "\r\n\r\n");
+	  //	  try
+	  //	  {
+	  //		  // Setup the Request
+	  //		  HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+	  //		  request.Method = httpMethod;
+	  //		  request.Headers.Add(xauth);
+
+	  //		  // Set the request body if making a POST or PUT request
+	  //		  if (httpMethod == "POST" || httpMethod == "PUT")
+	  //		  {
+	  //			  byte[] dataArray = Encoding.UTF8.GetBytes(body);
+	  //			  request.ContentLength = dataArray.Length;
+
+	  //			  Stream requestStream = request.GetRequestStream();
+	  //			  requestStream.Write(dataArray, 0, dataArray.Length);
+	  //			  requestStream.Close();
+	  //		  }
+
+	  //		  // Send Request & Get Response
+	  //		  response = (HttpWebResponse)request.GetResponse();
+	  //		  using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+	  //		  {
+	  //			  // Get the response stream and write to console
+	  //			  string json = reader.ReadToEnd();
+	  //			  Console.WriteLine("Successful Response: \r\n" + json);
+	  //		  }
+	  //	  }
+	  //	  catch (Exception)
+	  //	  {
+	  //		  throw;
+	  //	  }
+	  //  }
 
 		private Dictionary< string, string > CreateGetItemsRequestHeadersWithApiCallName()
 		{

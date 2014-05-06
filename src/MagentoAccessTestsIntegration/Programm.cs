@@ -37,5 +37,20 @@ namespace MagentoAccessTestsIntegration
 			//resTask.Result.Should().NotBeEmpty();
 			resTask.Should().NotBeEmpty();
 		}
+
+		[Test]
+		public void LowLevelOauth()
+		{
+			//------------ Arrange
+			var service = new MagentoServiceLowLevelOauth();
+
+			//------------ Act
+			service.InvokeAuthorization();
+			var res = service.InvokeGetCall(true);
+
+			//------------ Assert
+			//resTask.Result.Should().NotBeEmpty();
+			res.Should().NotBeNullOrWhiteSpace();
+		}
 	}
 }
