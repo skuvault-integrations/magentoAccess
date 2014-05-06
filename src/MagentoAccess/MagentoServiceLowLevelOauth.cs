@@ -51,38 +51,82 @@ namespace MagentoAccess
 				@"..\..\Files\magento_VerifierCode.csv" );
 		}
 
-		//todo: devide constructor on 2 with access token and with URL
+		////todo: devide constructor on 2 with access token and with URL
+		//public MagentoServiceLowLevelOauth(
+		//	string consumerKey,
+		//	string consumerSecretKey,
+		//	string accessToken = null,
+		//	string accessTokenSecret = null,
+		//	string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
+		//	string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
+		//	string accessTokenUrl = "http://192.168.0.104/magento/oauth/token",
+		//	string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
+		//	)
+		//{
+		//	Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
+		//	Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
+
+		//	if( accessToken == null || accessTokenSecret == null )
+		//	{
+		//		Condition.Ensures( requestTokenUrl, "requestTokenUrl" ).IsNotNullOrWhiteSpace();
+		//		Condition.Ensures( authorizeUrl, "authorizeUrl" ).IsNotNullOrWhiteSpace();
+		//		Condition.Ensures( accessTokenUrl, "accessTokenUrl" ).IsNotNullOrWhiteSpace();
+		//	}
+
+		//	this._consumerKey = consumerKey;
+		//	this._consumerSecretKey = consumerSecretKey;
+		//	this._accessToken = accessToken;
+		//	this._accessTokenSecret = accessTokenSecret;
+		//	this._requestTokenUrl = requestTokenUrl;
+		//	this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+		//	this._authorizeUrl = authorizeUrl;
+		//	this._accessTokenUrl = accessTokenUrl;
+		//	this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+		//	this._resourceUrl = resourceUrl;
+		//}
+
 		public MagentoServiceLowLevelOauth(
 			string consumerKey,
 			string consumerSecretKey,
-			string accessToken = null,
-			string accessTokenSecret = null,
 			string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
 			string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
 			string accessTokenUrl = "http://192.168.0.104/magento/oauth/token",
 			string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
 			)
 		{
-			Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
-			Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures(consumerKey, "consumerKey").IsNotNullOrWhiteSpace();
+			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
 
-			if( accessToken == null || accessTokenSecret == null )
-			{
-				Condition.Ensures( requestTokenUrl, "requestTokenUrl" ).IsNotNullOrWhiteSpace();
-				Condition.Ensures( authorizeUrl, "authorizeUrl" ).IsNotNullOrWhiteSpace();
-				Condition.Ensures( accessTokenUrl, "accessTokenUrl" ).IsNotNullOrWhiteSpace();
-			}
+				Condition.Ensures(requestTokenUrl, "requestTokenUrl").IsNotNullOrWhiteSpace();
+				Condition.Ensures(authorizeUrl, "authorizeUrl").IsNotNullOrWhiteSpace();
+				Condition.Ensures(accessTokenUrl, "accessTokenUrl").IsNotNullOrWhiteSpace();
 
 			this._consumerKey = consumerKey;
 			this._consumerSecretKey = consumerSecretKey;
-			this._accessToken = accessToken;
-			this._accessTokenSecret = accessTokenSecret;
 			this._requestTokenUrl = requestTokenUrl;
 			this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
 			this._authorizeUrl = authorizeUrl;
 			this._accessTokenUrl = accessTokenUrl;
 			this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
 			this._resourceUrl = resourceUrl;
+		}
+
+		public MagentoServiceLowLevelOauth(
+			string consumerKey,
+			string consumerSecretKey,
+			string accessToken,
+			string accessTokenSecret
+			)
+		{
+			Condition.Ensures(consumerKey, "consumerKey").IsNotNullOrWhiteSpace();
+			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
+			Condition.Ensures(accessToken, "accessToken").IsNotNullOrWhiteSpace();
+			Condition.Ensures(accessTokenSecret, "accessTokenSecret").IsNotNullOrWhiteSpace();
+
+			this._consumerKey = consumerKey;
+			this._consumerSecretKey = consumerSecretKey;
+			this._accessToken = accessToken;
+			this._accessTokenSecret = accessTokenSecret;
 		}
 
 		public async Task GetAccessToken()

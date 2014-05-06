@@ -48,19 +48,21 @@ namespace MagentoAccessTestsIntegration
 			var authorityUrls = testData.GetMagentoUrls();
 			var accessToken = testData.GetMagentoAccessToken();
 			MagentoServiceLowLevelOauth service;
+
 			if( accessToken == null )
-				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, null, null, authorityUrls.RequestTokenUrl, authorityUrls.AuthorizeUrl, authorityUrls.AccessTokenUrl );
+				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, authorityUrls.RequestTokenUrl, authorityUrls.AuthorizeUrl, authorityUrls.AccessTokenUrl );
 			else
 				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, accessToken.AccessToken, accessToken.AccessTokenSecret );
 
 			//------------ Act
-			string res;
-			var authorizeTask = service.GetAccessToken();
-			authorizeTask.Wait();
+			if (accessToken == null)
+			{
+				var authorizeTask = service.GetAccessToken();
+				authorizeTask.Wait();
+				testData.CreateAccessTokenFile(service.AccessToken, service.AccessTokenSecret);
+			}
 
-			testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
-
-			res = service.InvokeGetCall( true );
+			string res = service.InvokeGetCall( true );
 
 			//------------ Assert
 			res.Should().NotBeNullOrWhiteSpace();
