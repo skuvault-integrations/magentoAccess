@@ -1,5 +1,4 @@
-﻿using DotNetOpenAuth.Messaging;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -14,7 +13,7 @@ namespace MagentoAccessTestsIntegration
 		{
 			//------------ Arrange
 			var webser = new WebRequestServices();
-			var service = new MagentoServiceLowLevel(webser, "http://192.168.0.104/magento/api/rest/products");
+			var service = new MagentoServiceLowLevel( webser, "http://192.168.0.104/magento/api/rest/products" );
 
 			//------------ Act
 			//var resTask = service.GetItemsAsync();
@@ -24,12 +23,12 @@ namespace MagentoAccessTestsIntegration
 			//resTask.Result.Should().NotBeEmpty();
 		}
 
-		[Test]
+		[ Test ]
 		public void SimpleCass2()
 		{
 			//------------ Arrange
 			var webser = new WebRequestServices();
-			var service = new MagentoServiceLowLevel(webser, "http://192.168.0.104/magento/api/rest/products");
+			var service = new MagentoServiceLowLevel( webser, "http://192.168.0.104/magento/api/rest/products" );
 
 			//------------ Act
 			var resTask = service.GetItems();
@@ -40,21 +39,25 @@ namespace MagentoAccessTestsIntegration
 			resTask.Should().NotBeEmpty();
 		}
 
-		[Test]
+		[ Test ]
 		public void LowLevelOauth()
 		{
 			//------------ Arrange
-			var testData = new TestData(@"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\AccessToken.csv");
+			var testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv" );
 			var consumer = testData.GetMagentoConsumerCredentials();
 			var authorityUrls = testData.GetMagentoUrls();
 			var accessToken = testData.GetMagentoAccessToken();
-			var service = new MagentoServiceLowLevelOauth(consumer.Key, consumer.Secret, authorityUrls.RequestTokenUrl, authorityUrls.AuthorizeUrl, authorityUrls.AccessTokenUrl);
+			MagentoServiceLowLevelOauth service;
+			if( accessToken == null )
+				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, null, null, authorityUrls.RequestTokenUrl, authorityUrls.AuthorizeUrl, authorityUrls.AccessTokenUrl );
+			else
+				service = new MagentoServiceLowLevelOauth( consumer.Key, consumer.Secret, accessToken.AccessToken, accessToken.AccessTokenSecret);
 
 			//------------ Act
 			string res;
-			var authorizeTask = service.Authorize();
+			var authorizeTask = service.GetAccessToken();
 			authorizeTask.Wait();
-			res = service.InvokeGetCall(true);
+			res = service.InvokeGetCall( true );
 
 			//------------ Assert
 			res.Should().NotBeNullOrWhiteSpace();

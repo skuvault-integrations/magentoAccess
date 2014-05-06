@@ -252,15 +252,15 @@ namespace MagentoAccess
 	  //	  }
 	  //  }
 
-		private Dictionary< string, string > CreateGetItemsRequestHeadersWithApiCallName()
-		{
-			return new Dictionary<string, string>();
-		}
+		//private Dictionary< string, string > CreateGetItemsRequestHeadersWithApiCallName()
+		//{
+		//	return new Dictionary<string, string>();
+		//}
 
-		private string CreateGetItemsRequestBody()
-		{
-			return string.Empty;
-		}
+		//private string CreateGetItemsRequestBody()
+		//{
+		//	return string.Empty;
+		//}
 	}
 
 	public class WebRequestServices : IWebRequestServices

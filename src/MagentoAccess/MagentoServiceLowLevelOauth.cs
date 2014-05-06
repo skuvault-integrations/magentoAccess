@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
@@ -23,6 +24,7 @@ namespace MagentoAccess
 
 		private DesktopConsumer _consumer;
 		private string _accessToken;
+		private string _accessTokenSecret;
 		private HttpDeliveryMethods _authorizationHeaderRequest;
 
 		public static string GetVerifierCode()
@@ -39,17 +41,32 @@ namespace MagentoAccess
 				@"..\..\Files\magento_VerifierCode.csv" );
 		}
 
+		//todo: devide constructor on 2 with access token and with URL
 		public MagentoServiceLowLevelOauth(
 			string consumerKey,
 			string consumerSecretKey,
+			string accessToken = null,
+			string accessTokenSecret = null,
 			string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
 			string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
 			string accessTokenUrl = "http://192.168.0.104/magento/oauth/token",
 			string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
 			)
 		{
+			Condition.Ensures(consumerKey, "consumerKey").IsNotNullOrWhiteSpace();
+			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
+
+			if (accessToken == null || accessTokenSecret == null)
+			{
+				Condition.Ensures(requestTokenUrl, "requestTokenUrl").IsNotNullOrWhiteSpace();
+				Condition.Ensures(authorizeUrl, "authorizeUrl").IsNotNullOrWhiteSpace();
+				Condition.Ensures(accessTokenUrl, "accessTokenUrl").IsNotNullOrWhiteSpace();
+			}
+
 			this._consumerKey = consumerKey;
 			this._consumerSecretKey = consumerSecretKey;
+			this._accessToken = accessToken;
+			this._accessTokenSecret = accessTokenSecret;
 			this._requestTokenUrl = requestTokenUrl;
 			this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
 			this._authorizeUrl = authorizeUrl;
@@ -58,7 +75,7 @@ namespace MagentoAccess
 			this._resourceUrl = resourceUrl;
 		}
 
-		public async Task Authorize()
+		public async Task GetAccessToken()
 		{
 			//todo: before get new authorization try read from disk
 			try
@@ -77,6 +94,7 @@ namespace MagentoAccess
 				tokenManager.ConsumerSecret = this._consumerSecretKey;
 
 				this._consumer = new DesktopConsumer( service, tokenManager );
+
 				this._accessToken = string.Empty;
 
 				if( service.ProtocolVersion == ProtocolVersion.V10a )
@@ -91,17 +109,35 @@ namespace MagentoAccess
 			}
 		}
 
-		public string InvokeGetCall( bool needAuthorise = false, HttpDeliveryMethods authorizationRequest = HttpDeliveryMethods.GetRequest )
+		public string InvokeGetCall( bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
 		{
 			var serverResponse = string.Empty;
 			try
 			{
-				this._authorizationHeaderRequest = authorizationRequest;
+				this._authorizationHeaderRequest = requestType;
 
 				if( needAuthorise )
 					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
 
 				var resourceEndpoint = new MessageReceivingEndpoint( this._resourceUrl, this._authorizationHeaderRequest );
+				
+				//
+				var service = new ServiceProviderDescription
+				{
+					RequestTokenEndpoint = new MessageReceivingEndpoint(this._requestTokenUrl, this._requestTokenHttpDeliveryMethod),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint(this._authorizeUrl, HttpDeliveryMethods.GetRequest),
+					AccessTokenEndpoint = new MessageReceivingEndpoint(this._accessTokenUrl, this._accessTokenHttpDeliveryMethod),
+					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					ProtocolVersion = ProtocolVersion.V10a,
+				};
+
+				var tokenManager = new InMemoryTokenManager();
+				tokenManager.ConsumerKey = this._consumerKey;
+				tokenManager.ConsumerSecret = this._consumerSecretKey;
+				tokenManager.tokensAndSecrets[this._accessToken] = this._accessTokenSecret;
+
+				this._consumer = new DesktopConsumer(service, tokenManager);
+				//
 
 				using( var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend( resourceEndpoint, this._accessToken ) )
 					serverResponse = resourceResponse.GetResponseReader().ReadToEnd();

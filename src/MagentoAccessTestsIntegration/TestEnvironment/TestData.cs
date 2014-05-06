@@ -19,17 +19,17 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		public MagentoConsumerCredentials GetMagentoConsumerCredentials()
 		{
-			return new MagentoConsumerCredentials( this._flatCsvLineConsumer.ConsumerKey, this._flatCsvLineConsumer.ConsumerSecretKey );
+			return this._flatCsvLineConsumer == null ? null : new MagentoConsumerCredentials( this._flatCsvLineConsumer.ConsumerKey, this._flatCsvLineConsumer.ConsumerSecretKey );
 		}
 
 		public MagentoUrls GetMagentoUrls()
 		{
-			return new MagentoUrls(this._flatCsvLineUrls.MagentoBaseUrl, this._flatCsvLineUrls.RequestTokenUrl, this._flatCsvLineUrls.AuthorizeUrl, this._flatCsvLineUrls.AccessTokenUrl);
+			return this._flatCsvLineUrls == null ? null : new MagentoUrls( this._flatCsvLineUrls.MagentoBaseUrl, this._flatCsvLineUrls.RequestTokenUrl, this._flatCsvLineUrls.AuthorizeUrl, this._flatCsvLineUrls.AccessTokenUrl );
 		}
 
 		public MagentoAccessToken GetMagentoAccessToken()
 		{
-			return new MagentoAccessToken( this._flatCsvLinesAccessToken.AccessToken, this._flatCsvLinesAccessToken.AccessTokenSecret );
+			return this._flatCsvLinesAccessToken == null ? null : new MagentoAccessToken( this._flatCsvLinesAccessToken.AccessToken, this._flatCsvLinesAccessToken.AccessTokenSecret );
 		}
 
 		internal class FlatCsvLineConsumer
@@ -73,7 +73,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			[ CsvColumn( Name = "AccessToken", FieldIndex = 1 ) ]
 			public string AccessToken { get; set; }
 
-			[ CsvColumn( Name = "AccessTokenSecret", FieldIndex = 1 ) ]
+			[ CsvColumn( Name = "AccessTokenSecret", FieldIndex = 2 ) ]
 			public string AccessTokenSecret { get; set; }
 		}
 	}
