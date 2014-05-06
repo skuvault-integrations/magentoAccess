@@ -27,6 +27,8 @@ namespace MagentoAccess
 		private string _accessToken;
 		private HttpDeliveryMethods _authorizationHeaderRequest;
 
+		public event AuthorizationEventHandler AuthorizeCompleted;
+
 		public static string GetAccessToken(){
 			var cc = new CsvContext();
 			return Enumerable.FirstOrDefault(cc.Read<FlatCsvLine>(@"..\..\Files\magento_test_credentials.csv", new CsvFileDescription { FirstLineHasColumnNames = true })).AccessToken;
@@ -96,7 +98,7 @@ namespace MagentoAccess
 		//	return items;
 		//}
 
-		public void InvokeAuthorization()
+		public void Authorize()
 		{
 			try
 			{
@@ -118,18 +120,19 @@ namespace MagentoAccess
 
 				if (service.ProtocolVersion == ProtocolVersion.V10a)
 				{
-					var authorizePopup = new Authorize(this._consumer, (DesktopConsumer c, out string requestToken) => c.RequestUserAuthorization(null, null, out requestToken));
-					
-					Task.Factory.StartNew(() =>
+					var authorizePopup = new Authorize(this._consumer, (DesktopConsumer c, out string requestToken) =>
 					{
-						var counter = 0;
-						this._accessToken = string.Empty;
-						do
-						{
-							Task.Delay(2000);
-							this._accessToken = authorizePopup.AccessToken;
-						} while (string.IsNullOrWhiteSpace(this._accessToken) || counter > 30);
-					});
+						var res =  c.RequestUserAuthorization(null, null, out requestToken);
+						return res;
+					}
+						);
+
+					//authorizePopup.AuthorizationFinished += authorizePopup_AuthorizationFinished;
+					authorizePopup.AuthorizationFinished += (x, y) =>
+					{
+						this._accessToken = authorizePopup.AccessToken;
+					};
+					authorizePopup.AuthorizationFinished += (x, y) => this.AuthorizeCompleted.Invoke(this, new AuthorizationEventArgs());
 				}
 			}
 			catch (ProtocolException ex)
@@ -173,26 +176,33 @@ namespace MagentoAccess
 		public string AccessToken { get; set; }
 	}
 
+	public delegate void AuthorizationEventHandler(object sender, AuthorizationEventArgs args);
+
+	public class AuthorizationEventArgs
+	{
+	}
+
 	public partial class Authorize
 	{
 		private DesktopConsumer consumer;
 		private string requestToken;
 		private string verificationKey;
-
 		internal delegate Uri FetchUri( DesktopConsumer consumer, out string requestToken );
-
 		internal string AccessToken { get; set; }
+		public event AuthorizationEventHandler AuthorizationFinished;
 
-		internal Authorize( DesktopConsumer consumer, FetchUri fetchUriCallback )
+		internal Authorize(DesktopConsumer consumer, FetchUri fetchUriCallback)
 		{
 			this.consumer = consumer;
-			Task.Factory.StartNew( () =>
+			var teskGetVerification = Task.Factory.StartNew(() =>
 			{
-				var browserAuthorizationLocation = fetchUriCallback( this.consumer, out this.requestToken );
-				Process.Start( browserAuthorizationLocation.AbsoluteUri );
-			} );
+				//var browserAuthorizationLocation = fetchUriCallback(this.consumer, out this.requestToken);
+				var browserAuthorizationLocation = consumer.RequestUserAuthorization(null, null, out requestToken);
+				Process.Start(browserAuthorizationLocation.AbsoluteUri);
+			});
 
-			Task.Factory.StartNew(() => {
+			Task.Factory.StartNew(() =>
+			{
 				var counter = 0;
 				var accessToken = string.Empty;
 				do
@@ -201,13 +211,18 @@ namespace MagentoAccess
 					counter++;
 					accessToken = MagentoServiceLowLevelOauth.GetAccessToken();
 				} while (string.IsNullOrWhiteSpace(accessToken) || counter > 30);
-				finish(accessToken);
+
+				if (!string.IsNullOrWhiteSpace(accessToken))
+				{
+					finish(accessToken);
+					AuthorizationFinished.Invoke(this, new AuthorizationEventArgs());
+				}
 			});
 		}
 
-		private void finish( string verificationKey )
+		private void finish( string verifKey )
 		{
-			this.verificationKey = verificationKey;
+			this.verificationKey = verifKey;
 			var grantedAccess = this.consumer.ProcessUserAuthorization( this.requestToken, this.verificationKey );
 			this.AccessToken = grantedAccess.AccessToken;
 		}
