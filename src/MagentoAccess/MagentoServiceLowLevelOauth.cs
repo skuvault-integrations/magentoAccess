@@ -18,7 +18,7 @@ namespace MagentoAccess
 		private string _authorizeUrl;
 		private string _accessTokenUrl;
 		private HttpDeliveryMethods _accessTokenHttpDeliveryMethod;
-		private string _resourceUrl;
+		private string _baseMagentoUrl;
 		private string _consumerKey;
 		private string _consumerSecretKey;
 
@@ -88,18 +88,18 @@ namespace MagentoAccess
 		public MagentoServiceLowLevelOauth(
 			string consumerKey,
 			string consumerSecretKey,
+			string baseMagentoUrl = "http://192.168.0.104/magento/api/rest",
 			string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
 			string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
-			string accessTokenUrl = "http://192.168.0.104/magento/oauth/token",
-			string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
+			string accessTokenUrl = "http://192.168.0.104/magento/oauth/token"
 			)
 		{
-			Condition.Ensures(consumerKey, "consumerKey").IsNotNullOrWhiteSpace();
-			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
 
-				Condition.Ensures(requestTokenUrl, "requestTokenUrl").IsNotNullOrWhiteSpace();
-				Condition.Ensures(authorizeUrl, "authorizeUrl").IsNotNullOrWhiteSpace();
-				Condition.Ensures(accessTokenUrl, "accessTokenUrl").IsNotNullOrWhiteSpace();
+			Condition.Ensures( requestTokenUrl, "requestTokenUrl" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( authorizeUrl, "authorizeUrl" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( accessTokenUrl, "accessTokenUrl" ).IsNotNullOrWhiteSpace();
 
 			this._consumerKey = consumerKey;
 			this._consumerSecretKey = consumerSecretKey;
@@ -108,7 +108,7 @@ namespace MagentoAccess
 			this._authorizeUrl = authorizeUrl;
 			this._accessTokenUrl = accessTokenUrl;
 			this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-			this._resourceUrl = resourceUrl;
+			this._baseMagentoUrl = baseMagentoUrl;
 		}
 
 		public MagentoServiceLowLevelOauth(
@@ -118,10 +118,10 @@ namespace MagentoAccess
 			string accessTokenSecret
 			)
 		{
-			Condition.Ensures(consumerKey, "consumerKey").IsNotNullOrWhiteSpace();
-			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
-			Condition.Ensures(accessToken, "accessToken").IsNotNullOrWhiteSpace();
-			Condition.Ensures(accessTokenSecret, "accessTokenSecret").IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( accessToken, "accessToken" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( accessTokenSecret, "accessTokenSecret" ).IsNotNullOrWhiteSpace();
 
 			this._consumerKey = consumerKey;
 			this._consumerSecretKey = consumerSecretKey;
@@ -131,7 +131,6 @@ namespace MagentoAccess
 
 		public async Task GetAccessToken()
 		{
-			//todo: before get new authorization try read from disk
 			try
 			{
 				var service = new ServiceProviderDescription
@@ -164,7 +163,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public string InvokeGetCall( bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
+		public string InvokeGetCall( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
 		{
 			var serverResponse = string.Empty;
 			try
@@ -174,7 +173,7 @@ namespace MagentoAccess
 				if( needAuthorise )
 					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
 
-				var resourceEndpoint = new MessageReceivingEndpoint( this._resourceUrl, this._authorizationHeaderRequest );
+				var resourceEndpoint = new MessageReceivingEndpoint( this._baseMagentoUrl + partialUrl, this._authorizationHeaderRequest );
 
 				//
 				var service = new ServiceProviderDescription
