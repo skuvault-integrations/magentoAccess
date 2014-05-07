@@ -349,18 +349,10 @@ namespace MagentoAccess
 			var serverResponse = string.Empty;
 			try
 			{
-				this._authorizationHeaderRequest = requestType;
-
-				if( needAuthorise )
-					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
-
 				var urlParrts = new List<string> { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
 				var locationUri = string.Join("/", urlParrts);
-				var resourceEndpoint = new MessageReceivingEndpoint(locationUri, this._authorizationHeaderRequest);
-				//
-				this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-				this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-				//
+				var resourceEndpoint = new MessageReceivingEndpoint(locationUri, needAuthorise ? requestType | HttpDeliveryMethods.AuthorizationHeaderRequest : requestType);
+				
 				var service = new ServiceProviderDescription
 				{
 					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
@@ -377,13 +369,10 @@ namespace MagentoAccess
 				var req = _consumer.PrepareAuthorizedRequest(resourceEndpoint, this._accessToken);
 				req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 				
-				//
-
 				var webRequestServices = new WebRequestServices();
 				string res;
 				using (var memStream = webRequestServices.GetResponseStream(req))
 				{
-
 					byte[] temp = new byte[memStream.Length];
 					var v = memStream.Read(temp, 0,(int) memStream.Length);
 
