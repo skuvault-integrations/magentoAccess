@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
@@ -257,18 +259,23 @@ namespace MagentoAccess
 	public class WebRequestServices : IWebRequestServices
 	{
 		#region BaseRequests
-		public WebRequest CreateServiceGetRequest( string serviceUrl, IEnumerable< Tuple< string, string > > rawUrlParameters )
+		public WebRequest CreateServiceGetRequest(string serviceUrl, Dictionary<string, string> rawUrlParameters)
 		{
 			var parametrizedServiceUrl = serviceUrl;
 
 			if( rawUrlParameters.Any() )
 			{
-				parametrizedServiceUrl += "?" + rawUrlParameters.Aggregate( string.Empty,
-					( accum, item ) => accum + "&" + string.Format( "{0}={1}", item.Item1, item.Item2 ) );
+				parametrizedServiceUrl += "?" + rawUrlParameters.Keys.Aggregate( string.Empty,
+					(accum, item) => accum + "&" + string.Format("{0}={1}", item, rawUrlParameters[item]));
 			}
 
-			var serviceRequest = WebRequest.Create( parametrizedServiceUrl );
+			var serviceRequest = ( HttpWebRequest )WebRequest.Create( parametrizedServiceUrl );
 			serviceRequest.Method = WebRequestMethods.Http.Get;
+			//
+			serviceRequest.ContentType = "text/html";
+			serviceRequest.KeepAlive = true;
+			serviceRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+			//
 			return serviceRequest;
 		}
 
@@ -277,11 +284,11 @@ namespace MagentoAccess
 			try
 			{
 				var encoding = new UTF8Encoding();
-				var encodedBody = encoding.GetBytes( body );
+				var encodedBody = encoding.GetBytes(body);
 
 				var serviceRequest = ( HttpWebRequest )WebRequest.Create( serviceUrl );
 				serviceRequest.Method = WebRequestMethods.Http.Get;
-				serviceRequest.ContentType = "text/xml";
+				serviceRequest.ContentType = "application/json";
 				serviceRequest.ContentLength = encodedBody.Length;
 				serviceRequest.KeepAlive = true;
 
@@ -290,12 +297,12 @@ namespace MagentoAccess
 					serviceRequest.Headers.Add( rawHeadersKey, rawHeaders[ rawHeadersKey ] );
 				}
 
-				using( var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait( false ) )
-					newStream.Write( encodedBody, 0, encodedBody.Length );
+				using (var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait(false))
+					newStream.Write(encodedBody, 0, encodedBody.Length);
 
 				return serviceRequest;
 			}
-			catch( Exception ex )
+			catch( Exception )
 			{
 				throw;
 			}
@@ -347,7 +354,7 @@ namespace MagentoAccess
 
 		Task< Stream > GetResponseStreamAsync( WebRequest webRequest );
 
-		WebRequest CreateServiceGetRequest( string serviceUrl, IEnumerable< Tuple< string, string > > rawUrlParameters );
+		WebRequest CreateServiceGetRequest(string serviceUrl, Dictionary<string, string> rawUrlParameters);
 
 		Task< WebRequest > CreateServiceGetRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders );
 	}

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Policy;
+using System.Text;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
@@ -171,6 +175,173 @@ namespace MagentoAccess
 			}
 		}
 
+		public string InvokeGetCallManual(string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest)
+		{
+			var serverResponse = string.Empty;
+			try
+			{
+				//
+				string feedUrl="http://192.168.0.104/magento/api/rest/products";
+
+				
+				//todo:replace by empty
+				this._requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate";
+				this._authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize";
+				this._accessTokenUrl = "http://192.168.0.104/magento/oauth/token";
+				this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+				this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+				//
+				var serviceProviderDescription = new ServiceProviderDescription
+				{
+					RequestTokenEndpoint = new MessageReceivingEndpoint( _requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, _accessTokenHttpDeliveryMethod ),
+					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
+					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					ProtocolVersion = ProtocolVersion.V10a,
+				};
+
+				var accessToken = "d32a542148f18f82df1a2d8d27b7d431";
+				var accessTokenSecret = "f189ca34069f966f55b001adae8be0b0";
+
+				var inMemoryTokenManager = new InMemoryTokenManager() { ConsumerKey = "59704e7d6b9abd742de255b7c97421f6", ConsumerSecret = "476130ddd7cdf5709fd9a95bee24b71d", tokensAndSecrets = new Dictionary<string, string> { { accessToken, accessTokenSecret } } };
+
+				var consumer = new DesktopConsumer(serviceProviderDescription,inMemoryTokenManager);
+				WebRequest request = consumer.PrepareAuthorizedRequest(new MessageReceivingEndpoint(feedUrl, HttpDeliveryMethods.GetRequest | HttpDeliveryMethods.AuthorizationHeaderRequest), accessToken);
+
+				request.ContentType = "application/atom+xml";
+				request.Method = "GET";
+
+				//var buffer = Encoding.UTF8.GetBytes("");
+				//var ms = new MemoryStream(buffer);
+				//request.ContentLength = ms.Length;
+				//ms.Seek(0, SeekOrigin.Begin);
+				//using (Stream requestStream = request.GetRequestStream())
+				//{
+				//	ms.CopyTo(requestStream);
+				//}
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+				{
+					if (response.StatusCode == HttpStatusCode.Created)
+					{
+						// Success
+					}
+					else
+					{
+						// Error!
+					}
+				}
+				//
+				HttpClient client = new HttpClient(new HttpClientHandler());
+
+				client.GetAsync("http://192.168.0.104/magento/api/rest/products").ConfigureAwait(false);
+
+				this._authorizationHeaderRequest = requestType;
+
+				if (needAuthorise)
+					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
+
+				var resourceEndpoint = new MessageReceivingEndpoint("http://192.168.0.104/magento/api/rest/products", this._authorizationHeaderRequest);
+
+				//
+				//todo:replace by empty
+				this._requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate";
+				this._authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize";
+				this._accessTokenUrl = "http://192.168.0.104/magento/oauth/token";
+				this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+				this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
+				//
+				var service = new ServiceProviderDescription
+				{
+					//RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					//UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					//AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
+					//TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					ProtocolVersion = ProtocolVersion.V10a,
+				};
+
+				var tokenManager = new InMemoryTokenManager();
+				tokenManager.ConsumerKey = this._consumerKey;
+				tokenManager.ConsumerSecret = this._consumerSecretKey;
+				tokenManager.tokensAndSecrets[this._accessToken] = this._accessTokenSecret;
+
+				this._consumer = new DesktopConsumer(service, tokenManager);
+				//
+
+				using (var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend(resourceEndpoint, this._accessToken))
+					serverResponse = resourceResponse.GetResponseReader().ReadToEnd();
+			}
+			catch (ProtocolException ex)
+			{
+			}
+
+			return serverResponse;
+		}
+
+		public string InvokeQuestGetCallManual(string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest)
+		{
+			var serverResponse = string.Empty;
+			try
+			{
+				WebRequest request = WebRequest.Create("http://192.168.0.104/magento/api/rest/products?type=rest");
+				request.ContentType = "application/atom+xml";
+				request.Method = "GET";
+
+				//var buffer = Encoding.UTF8.GetBytes("");
+				//var ms = new MemoryStream(buffer);
+				//request.ContentLength = ms.Length;
+				//ms.Seek(0, SeekOrigin.Begin);
+				//using (Stream requestStream = request.GetRequestStream())
+				//{
+				//	ms.CopyTo(requestStream);
+				//}
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+				{
+					if (response.StatusCode == HttpStatusCode.Created)
+					{
+						// Success
+					}
+					else
+					{
+						// Error!
+					}
+				}
+			}
+			catch (ProtocolException ex)
+			{
+			}
+
+			return serverResponse;
+		}
+		public string InvokeQuestGetCallWebServices(string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest)
+		{
+			var serverResponse = string.Empty;
+			try
+			{
+				var webRequestServices = new WebRequestServices();
+				//var req = webRequestServices.CreateServiceGetRequest("http://192.168.0.104/magento/api/rest/products", new Dictionary<string, string>() { });
+				//var req = webRequestServices.CreateServiceGetRequest("http://192.168.0.104", new Dictionary<string, string>() { });
+				var req = webRequestServices.CreateServiceGetRequest("http://192.168.0.104/magento/api/rest/products", new Dictionary<string, string>() { });
+				//reqTask.Wait();
+				//var req  =reqTask.Result;
+
+				using (var memStream = webRequestServices.GetResponseStream(req))
+				{
+
+					byte[] temp = new byte[memStream.Length];
+					var v = memStream.Read(temp, 0,(int) memStream.Length);
+
+					var res = Encoding.UTF8.GetString(temp);
+
+					
+				}
+			}
+			catch (ProtocolException ex)
+			{
+			}
+
+			return serverResponse;
+		}
+	
 		public string InvokeGetCall( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
 		{
 			var serverResponse = string.Empty;
@@ -193,10 +364,10 @@ namespace MagentoAccess
 				//
 				var service = new ServiceProviderDescription
 				{
-					RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
-					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
-					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
-					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					//RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					//UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					//AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
+					//TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
 					ProtocolVersion = ProtocolVersion.V10a,
 				};
 
@@ -227,12 +398,6 @@ namespace MagentoAccess
 
 		[ CsvColumn( Name = "VerifierCode", FieldIndex = 1 ) ]
 		public string VerifierCode { get; set; }
-	}
-
-	public delegate void AuthorizationEventHandler( object sender, AuthorizationEventArgs args );
-
-	public class AuthorizationEventArgs
-	{
 	}
 
 	public partial class Authorize
@@ -268,9 +433,6 @@ namespace MagentoAccess
 					{
 					}
 				} while( string.IsNullOrWhiteSpace( tempVerifierCode ) || counter > 300 );
-
-				//if( !string.IsNullOrWhiteSpace( tempVerifierCode ) )
-				//	this.GetAccessToken( tempVerifierCode );
 
 				return tempVerifierCode;
 			} ).ConfigureAwait( false );
