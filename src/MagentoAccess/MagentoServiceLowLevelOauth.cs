@@ -353,7 +353,6 @@ namespace MagentoAccess
 					this._authorizationHeaderRequest |= HttpDeliveryMethods.AuthorizationHeaderRequest;
 
 				var resourceEndpoint = new MessageReceivingEndpoint("http://192.168.0.104/magento/api/rest/products", this._authorizationHeaderRequest);
-				
 				//
 				//todo:replace by empty
 				this._requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate";
@@ -364,10 +363,10 @@ namespace MagentoAccess
 				//
 				var service = new ServiceProviderDescription
 				{
-					//RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
-					//UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
-					//AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
-					//TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
+					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
 					ProtocolVersion = ProtocolVersion.V10a,
 				};
 
@@ -377,10 +376,28 @@ namespace MagentoAccess
 				tokenManager.tokensAndSecrets[ this._accessToken ] = this._accessTokenSecret;
 
 				this._consumer = new DesktopConsumer( service, tokenManager );
+				
+				var req = _consumer.PrepareAuthorizedRequest(resourceEndpoint, this._accessToken);
+				req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+				
 				//
+
+				var webRequestServices = new WebRequestServices();
+				using (var memStream = webRequestServices.GetResponseStream(req))
+				{
+
+					byte[] temp = new byte[memStream.Length];
+					var v = memStream.Read(temp, 0,(int) memStream.Length);
+
+					var res = Encoding.UTF8.GetString(temp);
+
+					
+				}
+
 
 				using( var resourceResponse = this._consumer.PrepareAuthorizedRequestAndSend( resourceEndpoint, this._accessToken ) )
 					serverResponse = resourceResponse.GetResponseReader().ReadToEnd();
+
 			}
 			catch( ProtocolException ex )
 			{

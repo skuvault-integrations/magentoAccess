@@ -275,6 +275,10 @@ namespace MagentoAccess
 			serviceRequest.ContentType = "text/html";
 			serviceRequest.KeepAlive = true;
 			serviceRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+			serviceRequest.CookieContainer = new CookieContainer();
+			serviceRequest.CookieContainer.Add(new Uri("http://192.168.0.104"), new Cookie("PHPSESSID", "mfl1c4qsrjs647chj2ummgo886"));
+			serviceRequest.CookieContainer.Add(new Uri("http://192.168.0.104"), new Cookie("adminhtml", "mk8rlurr9c4kaecnneakg55rv7"));
+			serviceRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 			//
 			return serviceRequest;
 		}
