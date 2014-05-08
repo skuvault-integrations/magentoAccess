@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<magento_api>
+	<data_item>
+		<entity_id>1</entity_id>
+		<type_id>simple</type_id>
+		<sku>501ts</sku>
+		<description>description</description>
+		<short_description>descr</short_description>
+		<meta_keyword></meta_keyword>
+		<name>501 T-Shirt</name>
+		<meta_title></meta_title>
+		<meta_description></meta_description>
+		<regular_price_with_tax>1.11</regular_price_with_tax>
+		<regular_price_without_tax>1.11</regular_price_without_tax>
+		<final_price_with_tax>1.11</final_price_with_tax>
+		<final_price_without_tax>1.11</final_price_without_tax>
+		<is_saleable>1</is_saleable>
+		<image_url>http://192.168.0.104/magento/media/catalog/product/cache/0/image/9df78eab33525d08d6e5fb8d27136e95/images/catalog/product/placeholder/image.jpg</image_url>
+	</data_item>
+</magento_api>

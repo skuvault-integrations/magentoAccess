@@ -85,6 +85,7 @@
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\MagentoServiceLowLevelManual.cs" />
     <Compile Include="Services\MagentoServiceLowLevelOauth.cs" />
+    <Compile Include="Services\Parsers\MagentoProductsResponseParsers.cs" />
     <Compile Include="Services\WebRequest.cs" />
   </ItemGroup>
   <ItemGroup>

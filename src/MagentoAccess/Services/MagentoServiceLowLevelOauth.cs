@@ -139,6 +139,7 @@ namespace MagentoAccess.Services
 			return this.InvokeGetCall("products", true);
 		}
 
+		//todo: rename to get products, copy it as get orders
 		public string InvokeGetCall(string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest)
 		{
 			string res = string.Empty;
