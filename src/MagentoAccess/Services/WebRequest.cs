@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess
+﻿namespace MagentoAccess.Services
 {
 	//public partial class WebRequestServices 
 	//{

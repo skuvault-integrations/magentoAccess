@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess.Interfaces
+﻿namespace MagentoAccess.Services
 {
 	public interface IMagentoServiceLowLevel
 	{

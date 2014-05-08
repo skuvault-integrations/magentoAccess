@@ -276,3 +276,6 @@
 //	}
 //}
 
+namespace MagentoAccess.Services
+{
+}

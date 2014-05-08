@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
@@ -14,7 +10,7 @@ using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using LINQtoCSV;
 
-namespace MagentoAccess
+namespace MagentoAccess.Services
 {
 	public class MagentoServiceLowLevelOauth
 	{
@@ -57,44 +53,6 @@ namespace MagentoAccess
 				@"..\..\Files\magento_VerifierCode.csv" );
 		}
 
-		////todo: devide constructor on 2 with access token and with URL
-		//public MagentoServiceLowLevelOauth(
-		//	string consumerKey,
-		//	string consumerSecretKey,
-		//	string accessToken = null,
-		//	string accessTokenSecret = null,
-		//	string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
-		//	string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
-		//	string accessTokenUrl = "http://192.168.0.104/magento/oauth/token",
-		//	string resourceUrl = "http://192.168.0.104/magento/api/rest/products"
-		//	)
-		//{
-		//	Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
-		//	Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
-
-		//	if( accessToken == null || accessTokenSecret == null )
-		//	{
-		//		Condition.Ensures( requestTokenUrl, "requestTokenUrl" ).IsNotNullOrWhiteSpace();
-		//		Condition.Ensures( authorizeUrl, "authorizeUrl" ).IsNotNullOrWhiteSpace();
-		//		Condition.Ensures( accessTokenUrl, "accessTokenUrl" ).IsNotNullOrWhiteSpace();
-		//	}
-
-		//	this._consumerKey = consumerKey;
-		//	this._consumerSecretKey = consumerSecretKey;
-		//	this._accessToken = accessToken;
-		//	this._accessTokenSecret = accessTokenSecret;
-		//	this._requestTokenUrl = requestTokenUrl;
-		//	this._requestTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-		//	this._authorizeUrl = authorizeUrl;
-		//	this._accessTokenUrl = accessTokenUrl;
-		//	this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
-		//	this._resourceUrl = resourceUrl;
-		//}
-		
-		//string baseMagentoUrl = "http://192.168.0.104/magento/api/rest",
-		//string requestTokenUrl = "http://192.168.0.104/magento/oauth/initiate",
-		//string authorizeUrl = "http://192.168.0.104/magento/admin/oauth_authorize",
-		//string accessTokenUrl = "http://192.168.0.104/magento/oauth/token"
 		public MagentoServiceLowLevelOauth(
 			string consumerKey,
 			string consumerSecretKey,
@@ -198,7 +156,7 @@ namespace MagentoAccess
 
 				this._consumer = new DesktopConsumer( service, tokenManager );
 				
-				var req = _consumer.PrepareAuthorizedRequest(resourceEndpoint, this._accessToken);
+				var req = this._consumer.PrepareAuthorizedRequest(resourceEndpoint, this._accessToken);
 				req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 				
 				var webRequestServices = new WebRequestServices();

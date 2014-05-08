@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MagentoAccess;
+using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 

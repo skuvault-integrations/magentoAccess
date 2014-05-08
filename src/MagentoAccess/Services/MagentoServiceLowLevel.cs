@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using DotNetOpenAuth.OAuth.Messages;
-using MagentoAccess.Interfaces;
 using MagentoAccess.Models.GetProducts;
 
-namespace MagentoAccess
+namespace MagentoAccess.Services
 {
 	public class MagentoServiceLowLevel : IMagentoServiceLowLevel
 	{
