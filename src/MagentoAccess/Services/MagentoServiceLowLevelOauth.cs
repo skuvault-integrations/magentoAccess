@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
@@ -134,48 +135,56 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public string InvokeGetCall( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
+		public object GetProducts() {
+			return this.InvokeGetCall("products", true);
+		}
+
+		public string InvokeGetCall(string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest)
 		{
-			var serverResponse = string.Empty;
+			string res = string.Empty;
 			try
 			{
-				var urlParrts = new List<string> { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-				var locationUri = string.Join("/", urlParrts);
-				var resourceEndpoint = new MessageReceivingEndpoint(locationUri, needAuthorise ? requestType | HttpDeliveryMethods.AuthorizationHeaderRequest : requestType);
-				
-				var service = new ServiceProviderDescription
-				{
-					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
-					ProtocolVersion = ProtocolVersion.V10a,
-				};
+				var webRequest = this.CreateMagentoStandartGetRequest( partialUrl, needAuthorise, requestType );
 
-				var tokenManager = new InMemoryTokenManager();
-				tokenManager.ConsumerKey = this._consumerKey;
-				tokenManager.ConsumerSecret = this._consumerSecretKey;
-				tokenManager.tokensAndSecrets[ this._accessToken ] = this._accessTokenSecret;
-
-				this._consumer = new DesktopConsumer( service, tokenManager );
-				
-				var req = this._consumer.PrepareAuthorizedRequest(resourceEndpoint, this._accessToken);
-				req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-				
 				var webRequestServices = new WebRequestServices();
-				string res;
-				using (var memStream = webRequestServices.GetResponseStream(req))
+
+				using (var memStream = webRequestServices.GetResponseStream(webRequest))
 				{
 					byte[] temp = new byte[memStream.Length];
-					var v = memStream.Read(temp, 0,(int) memStream.Length);
+					var v = memStream.Read(temp, 0, (int)memStream.Length);
 
 					res = Encoding.UTF8.GetString(temp);
 				}
-
-				return res;
 			}
-			catch( ProtocolException ex )
+			catch (ProtocolException ex)
 			{
 			}
 
-			return serverResponse;
+			return res;
+		}
+
+		private HttpWebRequest CreateMagentoStandartGetRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType )
+		{
+			var urlParrts = new List< string > { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
+			var locationUri = string.Join( "/", urlParrts );
+			var resourceEndpoint = new MessageReceivingEndpoint( locationUri, needAuthorise ? requestType | HttpDeliveryMethods.AuthorizationHeaderRequest : requestType );
+
+			var service = new ServiceProviderDescription
+			{
+				TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+				ProtocolVersion = ProtocolVersion.V10a,
+			};
+
+			var tokenManager = new InMemoryTokenManager();
+			tokenManager.ConsumerKey = this._consumerKey;
+			tokenManager.ConsumerSecret = this._consumerSecretKey;
+			tokenManager.tokensAndSecrets[ this._accessToken ] = this._accessTokenSecret;
+
+			this._consumer = new DesktopConsumer( service, tokenManager );
+
+			var webRequest = this._consumer.PrepareAuthorizedRequest( resourceEndpoint, this._accessToken );
+			webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+			return webRequest;
 		}
 	}
 
