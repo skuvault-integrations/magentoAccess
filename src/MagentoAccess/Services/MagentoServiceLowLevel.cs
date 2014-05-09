@@ -115,9 +115,9 @@ namespace MagentoAccess.Services
 		//	return items;
 		//}
 
-		public IEnumerable< Item > GetItems()
+		public IEnumerable< Product > GetItems()
 		{
-			var items = new List< Item >();
+			var items = new List< Product >();
 
 			var RequestTokenUrl = "http://192.168.0.104/magento/oauth/initiate";
 			var AuthorizeUrl = "http://192.168.0.104/magento/admin/oauth/authorize";
@@ -256,14 +256,14 @@ namespace MagentoAccess.Services
 	public class WebRequestServices : IWebRequestServices
 	{
 		#region BaseRequests
-		public WebRequest CreateServiceGetRequest(string serviceUrl, Dictionary<string, string> rawUrlParameters)
+		public WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters )
 		{
 			var parametrizedServiceUrl = serviceUrl;
 
 			if( rawUrlParameters.Any() )
 			{
 				parametrizedServiceUrl += "?" + rawUrlParameters.Keys.Aggregate( string.Empty,
-					(accum, item) => accum + "&" + string.Format("{0}={1}", item, rawUrlParameters[item]));
+					( accum, item ) => accum + "&" + string.Format( "{0}={1}", item, rawUrlParameters[ item ] ) );
 			}
 
 			var serviceRequest = ( HttpWebRequest )WebRequest.Create( parametrizedServiceUrl );
@@ -273,8 +273,8 @@ namespace MagentoAccess.Services
 			serviceRequest.KeepAlive = true;
 			serviceRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 			serviceRequest.CookieContainer = new CookieContainer();
-			serviceRequest.CookieContainer.Add(new Uri("http://192.168.0.104"), new Cookie("PHPSESSID", "mfl1c4qsrjs647chj2ummgo886"));
-			serviceRequest.CookieContainer.Add(new Uri("http://192.168.0.104"), new Cookie("adminhtml", "mk8rlurr9c4kaecnneakg55rv7"));
+			serviceRequest.CookieContainer.Add( new Uri( "http://192.168.0.104" ), new Cookie( "PHPSESSID", "mfl1c4qsrjs647chj2ummgo886" ) );
+			serviceRequest.CookieContainer.Add( new Uri( "http://192.168.0.104" ), new Cookie( "adminhtml", "mk8rlurr9c4kaecnneakg55rv7" ) );
 			serviceRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 			//
 			return serviceRequest;
@@ -285,7 +285,7 @@ namespace MagentoAccess.Services
 			try
 			{
 				var encoding = new UTF8Encoding();
-				var encodedBody = encoding.GetBytes(body);
+				var encodedBody = encoding.GetBytes( body );
 
 				var serviceRequest = ( HttpWebRequest )WebRequest.Create( serviceUrl );
 				serviceRequest.Method = WebRequestMethods.Http.Get;
@@ -298,8 +298,8 @@ namespace MagentoAccess.Services
 					serviceRequest.Headers.Add( rawHeadersKey, rawHeaders[ rawHeadersKey ] );
 				}
 
-				using (var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait(false))
-					newStream.Write(encodedBody, 0, encodedBody.Length);
+				using( var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait( false ) )
+					newStream.Write( encodedBody, 0, encodedBody.Length );
 
 				return serviceRequest;
 			}
@@ -355,7 +355,7 @@ namespace MagentoAccess.Services
 
 		Task< Stream > GetResponseStreamAsync( WebRequest webRequest );
 
-		WebRequest CreateServiceGetRequest(string serviceUrl, Dictionary<string, string> rawUrlParameters);
+		WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters );
 
 		Task< WebRequest > CreateServiceGetRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders );
 	}

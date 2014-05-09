@@ -92,7 +92,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Files\OrdersResponse\Magento_OrdersResponse_With1Item.xml" />
+    <Content Include="Files\OrdersResponse\Magento_OrdersResponse_With2Orders.xml" />
     <Content Include="Files\ProductsResponse\Magento_ProductsResponse_With1Item.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

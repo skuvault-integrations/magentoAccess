@@ -1,6 +1,6 @@
 ﻿namespace MagentoAccess.Models.GetProducts
 {
-	public class Item
+	public class Product
 	{
 	}
 }

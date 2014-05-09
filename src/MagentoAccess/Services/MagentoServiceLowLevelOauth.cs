@@ -58,14 +58,14 @@ namespace MagentoAccess.Services
 			string consumerKey,
 			string consumerSecretKey,
 			string baseMagentoUrl,
-			string requestTokenUrl ,
-			string authorizeUrl ,
+			string requestTokenUrl,
+			string authorizeUrl,
 			string accessTokenUrl
 			)
 		{
 			Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
 			Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
-			Condition.Ensures(baseMagentoUrl, "baseMagentoUrl").IsNotNullOrWhiteSpace();
+			Condition.Ensures( baseMagentoUrl, "baseMagentoUrl" ).IsNotNullOrWhiteSpace();
 			Condition.Ensures( requestTokenUrl, "requestTokenUrl" ).IsNotNullOrWhiteSpace();
 			Condition.Ensures( authorizeUrl, "authorizeUrl" ).IsNotNullOrWhiteSpace();
 			Condition.Ensures( accessTokenUrl, "accessTokenUrl" ).IsNotNullOrWhiteSpace();
@@ -89,8 +89,8 @@ namespace MagentoAccess.Services
 			)
 		{
 			Condition.Ensures( consumerKey, "consumerKey" ).IsNotNullOrWhiteSpace();
-			Condition.Ensures(consumerSecretKey, "consumerSecretKey").IsNotNullOrWhiteSpace();
-			Condition.Ensures(baseMagentoUrl, "baseMagentoUrl").IsNotNullOrWhiteSpace();
+			Condition.Ensures( consumerSecretKey, "consumerSecretKey" ).IsNotNullOrWhiteSpace();
+			Condition.Ensures( baseMagentoUrl, "baseMagentoUrl" ).IsNotNullOrWhiteSpace();
 			Condition.Ensures( accessToken, "accessToken" ).IsNotNullOrWhiteSpace();
 			Condition.Ensures( accessTokenSecret, "accessTokenSecret" ).IsNotNullOrWhiteSpace();
 
@@ -135,29 +135,30 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public object GetProducts() {
-			return this.InvokeGetCall("products", true);
+		public object GetProducts()
+		{
+			return this.InvokeGetCall( "products", true );
 		}
 
 		//todo: rename to get products, copy it as get orders
-		public string InvokeGetCall(string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest)
+		public string InvokeGetCall( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
 		{
-			string res = string.Empty;
+			var res = string.Empty;
 			try
 			{
 				var webRequest = this.CreateMagentoStandartGetRequest( partialUrl, needAuthorise, requestType );
 
 				var webRequestServices = new WebRequestServices();
 
-				using (var memStream = webRequestServices.GetResponseStream(webRequest))
+				using( var memStream = webRequestServices.GetResponseStream( webRequest ) )
 				{
-					byte[] temp = new byte[memStream.Length];
-					var v = memStream.Read(temp, 0, (int)memStream.Length);
+					var temp = new byte[ memStream.Length ];
+					var v = memStream.Read( temp, 0, ( int )memStream.Length );
 
-					res = Encoding.UTF8.GetString(temp);
+					res = Encoding.UTF8.GetString( temp );
 				}
 			}
-			catch (ProtocolException ex)
+			catch( ProtocolException ex )
 			{
 			}
 
