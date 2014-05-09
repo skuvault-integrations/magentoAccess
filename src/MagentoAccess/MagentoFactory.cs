@@ -1,6 +1,4 @@
-﻿using MagentoAccess.Interfaces;
-
-namespace MagentoAccess
+﻿namespace MagentoAccess
 {
 	public class MagentoFactory : IMagentoFactory
 	{

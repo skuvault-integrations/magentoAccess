@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Xml;
 
-namespace MagentoAccess.Infrastructure
+namespace MagentoAccess.Misc
 {
 	public static class Extensions
 	{
