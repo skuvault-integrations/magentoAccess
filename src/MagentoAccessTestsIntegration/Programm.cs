@@ -9,7 +9,7 @@ namespace MagentoAccessTestsIntegration
 	public class Programm
 	{
 		[ Test ]
-		public void LowLevelOauth()
+		public void GetProductsTest()
 		{
 			//------------ Arrange
 			var testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv" );

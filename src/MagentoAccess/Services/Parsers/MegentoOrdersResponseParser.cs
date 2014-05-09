@@ -14,25 +14,16 @@ namespace MagentoAccess.Services.Parsers
 		{
 			try
 			{
-				//XNamespace ns = "urn:ebay:apis:eBLBaseComponents";
+				//todo: reuse
 				XNamespace ns = "";
 
 				var streamStartPos = stream.Position;
 
 				var root = XElement.Load( stream );
 
-				//var orderDataItems = root.Descendants( ns + "data_item" );
-
-				//var orderDataItems = root.Descendants( ns + "magento_api" );
-
 				var dataItemsNodes = root.Nodes();
 
 				var orderDataItems = dataItemsNodes.Select( x => XElement.Parse( x.ToString() ) ).ToList();
-
-				//var error = this.ResponseContainsErrors( root, ns );
-
-				//if( error != null )
-				//	return new GetOrdersResponse { Error = error };
 
 				var orders = orderDataItems.Select( x =>
 				{
@@ -167,8 +158,6 @@ namespace MagentoAccess.Services.Parsers
 					var orderItems = x.Element( ns + "order_items" );
 					if( orderItems != null )
 					{
-						//var orderItemsDataItems = orderItems.Descendants( ns + "data_item" );
-
 						var orderItemsDataItems = orderItems.Nodes().Select( y => XElement.Parse( y.ToString() ) ).ToList();
 
 						resultOrder.Items = orderItemsDataItems.Select( addr =>
@@ -271,6 +260,7 @@ namespace MagentoAccess.Services.Parsers
 			}
 			catch( Exception ex )
 			{
+				//todo: reuse
 				var buffer = new byte[ stream.Length ];
 				stream.Read( buffer, 0, ( int )stream.Length );
 				var utf8Encoding = new UTF8Encoding();
