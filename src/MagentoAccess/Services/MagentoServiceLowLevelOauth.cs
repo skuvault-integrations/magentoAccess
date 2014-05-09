@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using LINQtoCSV;
+using MagentoAccess.Models.GetOrders;
+using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Services.Parsers;
 
 namespace MagentoAccess.Services
 {
@@ -135,15 +137,19 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public object GetProducts()
+		public Product GetProducts()
 		{
-			return this.InvokeGetCall( "products", true );
+			return this.InvokeGetCall< MagentoProductsResponseParser, Product >( "products", true );
 		}
 
-		//todo: rename to get products, copy it as get orders
-		public string InvokeGetCall( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest )
+		public GetOrdersResponse GetOrders()
 		{
-			var res = string.Empty;
+			return this.InvokeGetCall< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true );
+		}
+
+		public TParsed InvokeGetCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
+		{
+			var res = default( TParsed );
 			try
 			{
 				var webRequest = this.CreateMagentoStandartGetRequest( partialUrl, needAuthorise, requestType );
@@ -152,20 +158,19 @@ namespace MagentoAccess.Services
 
 				using( var memStream = webRequestServices.GetResponseStream( webRequest ) )
 				{
-					var temp = new byte[ memStream.Length ];
-					var v = memStream.Read( temp, 0, ( int )memStream.Length );
-
-					res = Encoding.UTF8.GetString( temp );
+					res = new TParser().Parse( memStream, false );
+					return res;
 				}
 			}
 			catch( ProtocolException ex )
 			{
+				//todo: log
 			}
 
 			return res;
 		}
 
-		private HttpWebRequest CreateMagentoStandartGetRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType )
+		protected HttpWebRequest CreateMagentoStandartGetRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType )
 		{
 			var urlParrts = new List< string > { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
 			var locationUri = string.Join( "/", urlParrts );

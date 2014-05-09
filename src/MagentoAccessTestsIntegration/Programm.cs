@@ -31,10 +31,10 @@ namespace MagentoAccessTestsIntegration
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}
 
-			var res = service.InvokeGetCall( "products", true );
+			var res = service.GetProducts();
 
 			//------------ Assert
-			res.Should().NotBeNullOrWhiteSpace();
+			res.Should().NotBeNull();
 		}
 
 		[ Test ]
@@ -60,10 +60,10 @@ namespace MagentoAccessTestsIntegration
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}
 
-			var res = service.InvokeGetCall( "orders", true );
+			var res = service.GetOrders();
 
 			//------------ Assert
-			res.Should().NotBeNullOrWhiteSpace();
+			res.Should().NotBeNull();
 		}
 	}
 }

@@ -76,6 +76,7 @@
     <Compile Include="MagentoService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
+    <Compile Include="Models\BaseResponse\ResponseError.cs" />
     <Compile Include="Models\Credentials\MagentoUserCredentials.cs" />
     <Compile Include="Models\GetOrders\Address.cs" />
     <Compile Include="Models\GetOrders\Comment.cs" />
@@ -89,8 +90,9 @@
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\MagentoServiceLowLevelManual.cs" />
     <Compile Include="Services\MagentoServiceLowLevelOauth.cs" />
+    <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoBaseResponseParser.cs" />
-    <Compile Include="Services\Parsers\MagentoProductsResponseParsers.cs" />
+    <Compile Include="Services\Parsers\MagentoProductsResponseParser.cs" />
     <Compile Include="Services\Parsers\MegentoOrdersResponseParser.cs" />
     <Compile Include="Services\WebRequest.cs" />
   </ItemGroup>

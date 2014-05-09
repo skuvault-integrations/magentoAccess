@@ -2,7 +2,7 @@
 
 namespace MagentoAccess.Services.Parsers
 {
-	public class MagentoProductsResponseParsers : MagentoBaseResponseParser< Product >
+	public class MagentoProductsResponseParser : MagentoBaseResponseParser< Product >
 	{
 	}
 }

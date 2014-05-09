@@ -34,7 +34,7 @@ namespace MagentoAccess.Models.GetOrders
 		public string StoreName { get; set; }
 		public string CreatedAt { get; set; }
 		public decimal ShippingInclTax { get; set; }
-		public decimal PaymentMethod { get; set; }
+		public string PaymentMethod { get; set; }
 		public IEnumerable< Address > Addresses { get; set; }
 		public IEnumerable< Item > Items { get; set; }
 		public IEnumerable< Comment > Comments { get; set; }

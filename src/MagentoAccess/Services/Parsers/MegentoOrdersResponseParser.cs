@@ -8,24 +8,31 @@ using MagentoAccess.Models.GetOrders;
 
 namespace MagentoAccess.Services.Parsers
 {
-	public class MegentoOrdersResponseParser : MagentoBaseResponseParser< Order >
+	public class MegentoOrdersResponseParser : MagentoBaseResponseParser< GetOrdersResponse >
 	{
-		public override Order Parse( Stream stream, bool keepStremPosition = true )
+		public override GetOrdersResponse Parse( Stream stream, bool keepStremPosition = true )
 		{
 			try
 			{
-				XNamespace ns = "urn:ebay:apis:eBLBaseComponents";
+				//XNamespace ns = "urn:ebay:apis:eBLBaseComponents";
+				XNamespace ns = "";
 
 				var streamStartPos = stream.Position;
 
 				var root = XElement.Load( stream );
 
-				var orderDataItems = root.Descendants( ns + "data_item" );
+				//var orderDataItems = root.Descendants( ns + "data_item" );
 
-				var error = this.ResponseContainsErrors( root, ns );
+				//var orderDataItems = root.Descendants( ns + "magento_api" );
 
-				if( error != null )
-					return new GetOrdersResponse { Error = error };
+				var dataItemsNodes = root.Nodes();
+
+				var orderDataItems = dataItemsNodes.Select( x => XElement.Parse( x.ToString() ) ).ToList();
+
+				//var error = this.ResponseContainsErrors( root, ns );
+
+				//if( error != null )
+				//	return new GetOrdersResponse { Error = error };
 
 				var orders = orderDataItems.Select( x =>
 				{
@@ -129,8 +136,7 @@ namespace MagentoAccess.Services.Parsers
 						resultOrder.ShippingInclTax = temp.ToDecimalDotOrComaSeparated();
 
 					//todo: to enum
-					if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "payment_method" ) ) )
-						resultOrder.PaymentMethod = temp.ToDecimalDotOrComaSeparated();
+					resultOrder.PaymentMethod = GetElementValue( x, ns, "payment_method" );
 
 					var addresses = x.Element( ns + "addresses" );
 					if( addresses != null )
@@ -161,7 +167,10 @@ namespace MagentoAccess.Services.Parsers
 					var orderItems = x.Element( ns + "order_items" );
 					if( orderItems != null )
 					{
-						var orderItemsDataItems = orderItems.Descendants( ns + "data_item" );
+						//var orderItemsDataItems = orderItems.Descendants( ns + "data_item" );
+
+						var orderItemsDataItems = orderItems.Nodes().Select( y => XElement.Parse( y.ToString() ) ).ToList();
+
 						resultOrder.Items = orderItemsDataItems.Select( addr =>
 						{
 							var order = new Item();
@@ -231,7 +240,7 @@ namespace MagentoAccess.Services.Parsers
 								order.BaseRowTotalInclTax = temp.ToDecimalDotOrComaSeparated();
 
 							return order;
-						} );
+						} ).ToList();
 					}
 
 					var orderComments = x.Element( ns + "order_comments" );
@@ -249,7 +258,7 @@ namespace MagentoAccess.Services.Parsers
 							comment.Status = GetElementValue( addr, ns, "status" );
 
 							return comment;
-						} );
+						} ).ToList();
 					}
 
 					if( keepStremPosition )

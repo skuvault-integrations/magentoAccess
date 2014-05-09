@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Net;
 using System.Xml.Linq;
+using MagentoAccess.Models.BaseResponse;
 
 namespace MagentoAccess.Services.Parsers
 {
-	public class MagentoBaseResponseParser< TParseResult >
+	public class MagentoBaseResponseParser< TParseResult > : IMagentoBaseResponseParser< TParseResult >
 	{
-		public static string GetElementValue( XElement x, XNamespace ns, params string[] elementName )
+		protected static string GetElementValue( XElement x, XNamespace ns, params string[] elementName )
 		{
 			var parsedElement = string.Empty;
 
@@ -33,6 +34,23 @@ namespace MagentoAccess.Services.Parsers
 				return elementAttribute;
 
 			return elementName.Length > 1 ? this.GetElementAttribute( attributeName, element, ns, elementName.Skip( 1 ).ToArray() ) : element.Attribute( attributeName ).Value;
+		}
+
+		protected ResponseError ResponseContainsErrors( XElement root, XNamespace ns )
+		{
+			var isSuccess = root.Element( ns + "messages" );
+
+			var errorCode = GetElementValue( isSuccess, ns, "error", "data_item", "code" );
+			var errorMessage = GetElementValue( isSuccess, ns, "error", "data_item", "message" );
+
+			if( string.IsNullOrWhiteSpace( errorCode ) || string.IsNullOrWhiteSpace( errorMessage ) )
+			{
+				var ResponseError = new ResponseError { Code = errorCode, Message = errorMessage };
+
+				return ResponseError;
+			}
+
+			return null;
 		}
 
 		public TParseResult Parse( WebResponse response )
@@ -69,28 +87,5 @@ namespace MagentoAccess.Services.Parsers
 		{
 			return default( TParseResult );
 		}
-
-		protected ResponseError ResponseContainsErrors( XElement root, XNamespace ns )
-		{
-			var isSuccess = root.Element( ns + "messages" );
-
-			var errorCode = GetElementValue( isSuccess, ns, "error", "data_item", "code" );
-			var errorMessage = GetElementValue( isSuccess, ns, "error", "data_item", "message" );
-
-			if( string.IsNullOrWhiteSpace( errorCode ) || string.IsNullOrWhiteSpace( errorMessage ) )
-			{
-				var ResponseError = new ResponseError { Code = errorCode, Message = errorMessage };
-
-				return ResponseError;
-			}
-
-			return null;
-		}
-	}
-
-	public class ResponseError
-	{
-		public string Message { get; set; }
-		public string Code { get; set; }
 	}
 }
