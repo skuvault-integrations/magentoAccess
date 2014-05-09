@@ -77,7 +77,10 @@
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Models\Credentials\MagentoUserCredentials.cs" />
+    <Compile Include="Models\GetOrders\Address.cs" />
+    <Compile Include="Models\GetOrders\Comment.cs" />
     <Compile Include="Models\GetOrders\GetOrdersResponse.cs" />
+    <Compile Include="Models\GetOrders\Item.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\UpdateProducts\InventoryStatusRequest.cs" />
