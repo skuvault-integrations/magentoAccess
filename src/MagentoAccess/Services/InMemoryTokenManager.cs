@@ -7,7 +7,7 @@ namespace MagentoAccess.Services
 {
 	internal class InMemoryTokenManager : IConsumerTokenManager
 	{
-		public Dictionary<string, string> tokensAndSecrets = new Dictionary<string, string>();
+		public Dictionary< string, string > tokensAndSecrets = new Dictionary< string, string >();
 
 		internal InMemoryTokenManager()
 		{
@@ -18,28 +18,28 @@ namespace MagentoAccess.Services
 		public string ConsumerSecret { get; internal set; }
 
 		#region ITokenManager Members
-		public string GetConsumerSecret(string consumerKey)
+		public string GetConsumerSecret( string consumerKey )
 		{
-			if (consumerKey == this.ConsumerKey)
+			if( consumerKey == this.ConsumerKey )
 				return this.ConsumerSecret;
 			else
-				throw new ArgumentException("Unrecognized consumer key.", "consumerKey");
+				throw new ArgumentException( "Unrecognized consumer key.", "consumerKey" );
 		}
 
-		public string GetTokenSecret(string token)
+		public string GetTokenSecret( string token )
 		{
-			return this.tokensAndSecrets[token];
+			return this.tokensAndSecrets[ token ];
 		}
 
-		public void StoreNewRequestToken(UnauthorizedTokenRequest request, ITokenSecretContainingMessage response)
+		public void StoreNewRequestToken( UnauthorizedTokenRequest request, ITokenSecretContainingMessage response )
 		{
-			this.tokensAndSecrets[response.Token] = response.TokenSecret;
+			this.tokensAndSecrets[ response.Token ] = response.TokenSecret;
 		}
 
-		public void ExpireRequestTokenAndStoreNewAccessToken(string consumerKey, string requestToken, string accessToken, string accessTokenSecret)
+		public void ExpireRequestTokenAndStoreNewAccessToken( string consumerKey, string requestToken, string accessToken, string accessTokenSecret )
 		{
-			this.tokensAndSecrets.Remove(requestToken);
-			this.tokensAndSecrets[accessToken] = accessTokenSecret;
+			this.tokensAndSecrets.Remove( requestToken );
+			this.tokensAndSecrets[ accessToken ] = accessTokenSecret;
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace MagentoAccess.Services
 		/// </summary>
 		/// <param name="token">The token to classify.</param>
 		/// <returns>Request or Access token, or invalid if the token is not recognized.</returns>
-		public TokenType GetTokenType(string token)
+		public TokenType GetTokenType( string token )
 		{
 			throw new NotImplementedException();
 		}

@@ -94,7 +94,7 @@
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
     <Compile Include="Services\InMemoryTokenManager.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelOauth.cs" />
+    <Compile Include="Services\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Parsers\MegentoInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoBaseResponseParser.cs" />

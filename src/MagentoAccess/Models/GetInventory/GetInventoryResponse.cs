@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MagentoAccess.Models.GetOrders;
 
 namespace MagentoAccess.Models.GetInventory
 {

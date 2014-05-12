@@ -17,7 +17,7 @@ using MagentoAccess.Services.Parsers;
 
 namespace MagentoAccess.Services
 {
-	public class MagentoServiceLowLevelOauth
+	public class MagentoServiceLowLevel : IMagentoServiceLowLevel
 	{
 		private string _requestTokenUrl;
 		private HttpDeliveryMethods _requestTokenHttpDeliveryMethod;
@@ -58,7 +58,7 @@ namespace MagentoAccess.Services
 				@"..\..\Files\magento_VerifierCode.csv" );
 		}
 
-		public MagentoServiceLowLevelOauth(
+		public MagentoServiceLowLevel(
 			string consumerKey,
 			string consumerSecretKey,
 			string baseMagentoUrl,
@@ -84,7 +84,7 @@ namespace MagentoAccess.Services
 			this._baseMagentoUrl = baseMagentoUrl;
 		}
 
-		public MagentoServiceLowLevelOauth(
+		public MagentoServiceLowLevel(
 			string consumerKey,
 			string consumerSecretKey,
 			string baseMagentoUrl,
@@ -139,9 +139,9 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public GetProductResponse GetProduct(string id)
+		public GetProductResponse GetProduct( string id )
 		{
-			return this.InvokeGetCall<MagentoProductResponseParser, GetProductResponse>(string.Format("products/{0}", id), true);
+			return this.InvokeGetCall< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true );
 		}
 
 		public GetProductsResponse GetProducts()
@@ -151,7 +151,7 @@ namespace MagentoAccess.Services
 
 		public GetInventoryResponse GetInventory()
 		{
-			return this.InvokeGetCall<MegentoInventoryResponseParser, GetInventoryResponse>("stockitems", true);
+			return this.InvokeGetCall< MegentoInventoryResponseParser, GetInventoryResponse >( "stockitems", true );
 		}
 
 		public GetOrdersResponse GetOrders()
@@ -244,7 +244,7 @@ namespace MagentoAccess.Services
 					counter++;
 					try
 					{
-						tempVerifierCode = MagentoServiceLowLevelOauth.GetVerifierCode();
+						tempVerifierCode = MagentoServiceLowLevel.GetVerifierCode();
 					}
 					catch( Exception )
 					{

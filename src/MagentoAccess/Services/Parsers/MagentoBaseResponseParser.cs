@@ -5,7 +5,6 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using MagentoAccess.Models.BaseResponse;
-using MagentoAccess.Models.GetProducts;
 
 namespace MagentoAccess.Services.Parsers
 {
@@ -88,27 +87,27 @@ namespace MagentoAccess.Services.Parsers
 			return default( TParseResult );
 		}
 
-		public virtual TParseResult Parse(Stream stream, bool keepStremPosition = true)
+		public virtual TParseResult Parse( Stream stream, bool keepStremPosition = true )
 		{
 			var streamStartPos = stream.Position;
 
 			try
 			{
-				var root = XElement.Load(stream);
-				return ParseWithWxceptionHanding(root);
+				var root = XElement.Load( stream );
+				return this.ParseWithWxceptionHanding( root );
 			}
-			catch (Exception ex)
+			catch( Exception ex )
 			{
 				//todo: reuse
-				var buffer = new byte[stream.Length];
-				stream.Read(buffer, 0, (int)stream.Length);
+				var buffer = new byte[ stream.Length ];
+				stream.Read( buffer, 0, ( int )stream.Length );
 				var utf8Encoding = new UTF8Encoding();
-				var bufferStr = utf8Encoding.GetString(buffer);
-				throw new Exception("Can't parse: " + bufferStr, ex);
+				var bufferStr = utf8Encoding.GetString( buffer );
+				throw new Exception( "Can't parse: " + bufferStr, ex );
 			}
 			finally
 			{
-				if (keepStremPosition)
+				if( keepStremPosition )
 					stream.Position = streamStartPos;
 			}
 		}
