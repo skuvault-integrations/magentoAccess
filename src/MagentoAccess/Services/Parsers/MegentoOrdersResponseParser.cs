@@ -253,7 +253,7 @@ namespace MagentoAccess.Services.Parsers
 					return resultOrder;
 				} ).ToList();
 
-				if (keepStremPosition)
+				if( keepStremPosition )
 					stream.Position = streamStartPos;
 
 				return new GetOrdersResponse { Orders = orders };

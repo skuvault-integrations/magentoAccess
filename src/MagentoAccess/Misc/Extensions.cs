@@ -17,8 +17,8 @@ namespace MagentoAccess.Misc
 		{
 			decimal parsedNumber;
 
-			if (string.IsNullOrWhiteSpace(srcString))
-				return default(decimal);
+			if( string.IsNullOrWhiteSpace( srcString ) )
+				return default( decimal );
 
 			try
 			{
