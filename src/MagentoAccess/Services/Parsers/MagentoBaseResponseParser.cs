@@ -1,8 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Xml.Linq;
 using MagentoAccess.Models.BaseResponse;
+using MagentoAccess.Models.GetProducts;
 
 namespace MagentoAccess.Services.Parsers
 {
@@ -80,9 +83,34 @@ namespace MagentoAccess.Services.Parsers
 				return Parse( stream );
 		}
 
-		public virtual TParseResult Parse( Stream stream, bool keepStremPosition = true )
+		protected virtual TParseResult ParseWithWxceptionHanding( XElement root )
 		{
 			return default( TParseResult );
+		}
+
+		public virtual TParseResult Parse(Stream stream, bool keepStremPosition = true)
+		{
+			var streamStartPos = stream.Position;
+
+			try
+			{
+				var root = XElement.Load(stream);
+				return ParseWithWxceptionHanding(root);
+			}
+			catch (Exception ex)
+			{
+				//todo: reuse
+				var buffer = new byte[stream.Length];
+				stream.Read(buffer, 0, (int)stream.Length);
+				var utf8Encoding = new UTF8Encoding();
+				var bufferStr = utf8Encoding.GetString(buffer);
+				throw new Exception("Can't parse: " + bufferStr, ex);
+			}
+			finally
+			{
+				if (keepStremPosition)
+					stream.Position = streamStartPos;
+			}
 		}
 	}
 }
