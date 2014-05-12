@@ -10,6 +10,7 @@ using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using LINQtoCSV;
 using MagentoAccess.Models.GetOrders;
+using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Services.Parsers;
 
@@ -135,6 +136,11 @@ namespace MagentoAccess.Services
 			catch( ProtocolException ex )
 			{
 			}
+		}
+
+		public GetProductResponse GetProduct(string id)
+		{
+			return this.InvokeGetCall<MagentoProductResponseParser, GetProductResponse>(string.Format("products/{0}", id), true);
 		}
 
 		public GetProductsResponse GetProducts()
