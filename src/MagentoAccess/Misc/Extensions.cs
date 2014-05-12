@@ -16,11 +16,15 @@ namespace MagentoAccess.Misc
 		public static decimal ToDecimalDotOrComaSeparated( this string srcString )
 		{
 			decimal parsedNumber;
+
+			if (string.IsNullOrWhiteSpace(srcString))
+				return default(decimal);
+
 			try
 			{
 				parsedNumber = decimal.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
 			}
-			catch( Exception e1 )
+			catch( Exception )
 			{
 				parsedNumber = decimal.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
 			}
