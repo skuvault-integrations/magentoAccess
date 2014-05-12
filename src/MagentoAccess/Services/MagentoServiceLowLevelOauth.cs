@@ -9,6 +9,7 @@ using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using LINQtoCSV;
+using MagentoAccess.Models.GetInventory;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
@@ -146,6 +147,11 @@ namespace MagentoAccess.Services
 		public GetProductsResponse GetProducts()
 		{
 			return this.InvokeGetCall< MagentoProductsResponseParser, GetProductsResponse >( "products", true );
+		}
+
+		public GetInventoryResponse GetInventory()
+		{
+			return this.InvokeGetCall<MegentoInventoryResponseParser, GetInventoryResponse>("stockitems", true);
 		}
 
 		public GetOrdersResponse GetOrders()

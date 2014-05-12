@@ -78,6 +78,8 @@
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Models\BaseResponse\ResponseError.cs" />
     <Compile Include="Models\Credentials\MagentoUserCredentials.cs" />
+    <Compile Include="Models\GetInventory\GetInventoryResponse.cs" />
+    <Compile Include="Models\GetInventory\InventoryItem.cs" />
     <Compile Include="Models\GetOrders\Address.cs" />
     <Compile Include="Models\GetOrders\Comment.cs" />
     <Compile Include="Models\GetOrders\GetOrdersResponse.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Services\InMemoryTokenManager.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoServiceLowLevelOauth.cs" />
+    <Compile Include="Services\Parsers\MegentoInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoBaseResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoProductResponseParser.cs" />
