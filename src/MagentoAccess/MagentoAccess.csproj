@@ -90,15 +90,15 @@
     <Compile Include="Models\UpdateProducts\InventoryStatusRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
-    <Compile Include="Services\MagentoServiceLowLevel.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelManual.cs" />
+    <Compile Include="Services\InMemoryTokenManager.cs" />
+    <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoServiceLowLevelOauth.cs" />
     <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoBaseResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoProductResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoProductsResponseParser.cs" />
     <Compile Include="Services\Parsers\MegentoOrdersResponseParser.cs" />
-    <Compile Include="Services\WebRequest.cs" />
+    <Compile Include="Services\WebRequestServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
