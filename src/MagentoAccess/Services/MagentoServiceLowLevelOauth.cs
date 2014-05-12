@@ -137,9 +137,9 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public Product GetProducts()
+		public GetProductsResponse GetProducts()
 		{
-			return this.InvokeGetCall< MagentoProductsResponseParser, Product >( "products", true );
+			return this.InvokeGetCall< MagentoProductsResponseParser, GetProductsResponse >( "products", true );
 		}
 
 		public GetOrdersResponse GetOrders()

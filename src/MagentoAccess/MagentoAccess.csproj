@@ -83,6 +83,7 @@
     <Compile Include="Models\GetOrders\GetOrdersResponse.cs" />
     <Compile Include="Models\GetOrders\Item.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
+    <Compile Include="Models\GetProducts\GetProductsResponse.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\UpdateProducts\InventoryStatusRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
