@@ -38,19 +38,16 @@ namespace MagentoAccess.Services.Parsers
 
 		protected ResponseError ResponseContainsErrors( XElement root, XNamespace ns )
 		{
-			var isSuccess = root.Element( ns + "messages" );
+			var messages = root.Element( ns + "messages" );
 
-			var errorCode = GetElementValue( isSuccess, ns, "error", "data_item", "code" );
-			var errorMessage = GetElementValue( isSuccess, ns, "error", "data_item", "message" );
+			if( messages == null )
+				return null;
 
-			if( string.IsNullOrWhiteSpace( errorCode ) || string.IsNullOrWhiteSpace( errorMessage ) )
-			{
-				var ResponseError = new ResponseError { Code = errorCode, Message = errorMessage };
+			var errorCode = GetElementValue( messages, ns, "error", "data_item", "code" );
+			var errorMessage = GetElementValue( messages, ns, "error", "data_item", "message" );
 
-				return ResponseError;
-			}
-
-			return null;
+			var ResponseError = new ResponseError { Code = errorCode, Message = errorMessage };
+			return ResponseError;
 		}
 
 		public TParseResult Parse( WebResponse response )
