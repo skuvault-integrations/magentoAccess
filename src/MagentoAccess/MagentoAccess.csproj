@@ -78,8 +78,8 @@
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Models\BaseResponse\ResponseError.cs" />
     <Compile Include="Models\Credentials\MagentoUserCredentials.cs" />
-    <Compile Include="Models\GetInventory\GetInventoryResponse.cs" />
-    <Compile Include="Models\GetInventory\InventoryItem.cs" />
+    <Compile Include="Models\GetSrockItems\GetStockItemsResponse.cs" />
+    <Compile Include="Models\GetSrockItems\StockItem.cs" />
     <Compile Include="Models\GetOrders\Address.cs" />
     <Compile Include="Models\GetOrders\Comment.cs" />
     <Compile Include="Models\GetOrders\GetOrdersResponse.cs" />
@@ -89,10 +89,8 @@
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\GetProduct\GetProductResponse.cs" />
     <Compile Include="Models\GetProduct\StockData.cs" />
-    <Compile Include="Models\PutInventory\PutInventoryItem.cs" />
-    <Compile Include="Models\PutInventory\PutInventoryResponse.cs" />
-    <Compile Include="Models\PutInventory\PutStockResponseItem.cs" />
-    <Compile Include="Models\UpdateProducts\InventoryStatusRequest.cs" />
+    <Compile Include="Models\PutStockItems\PutStockItemsResponse.cs" />
+    <Compile Include="Models\PutStockItems\StockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
     <Compile Include="Services\InMemoryTokenManager.cs" />

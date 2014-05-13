@@ -10,11 +10,11 @@ using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using LINQtoCSV;
-using MagentoAccess.Models.GetInventory;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.GetSrockItems;
+using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services.Parsers;
 
 namespace MagentoAccess.Services
@@ -151,14 +151,14 @@ namespace MagentoAccess.Services
 			return this.InvokeCall< MagentoProductsResponseParser, GetProductsResponse >( "products", true );
 		}
 
-		public GetInventoryResponse GetInventory()
+		public GetStockItemsResponse GetInventory()
 		{
-			return this.InvokeCall< MegentoInventoryResponseParser, GetInventoryResponse >( "stockitems", true );
+			return this.InvokeCall< MegentoInventoryResponseParser, GetStockItemsResponse >( "stockitems", true );
 		}
 
-		public PutInventoryResponse PutInventory()
+		public PutStockItemsResponse PutInventory()
 		{
-			return this.InvokeCall< MegentoPutInventoryResponseParser, PutInventoryResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
+			return this.InvokeCall< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
 		}
 
 		public GetOrdersResponse GetOrders()

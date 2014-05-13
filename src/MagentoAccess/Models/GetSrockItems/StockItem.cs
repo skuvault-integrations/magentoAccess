@@ -1,6 +1,6 @@
-﻿namespace MagentoAccess.Models.GetInventory
+﻿namespace MagentoAccess.Models.GetSrockItems
 {
-	public class InventoryItem
+	public class StockItem
 	{
 		public string ItemId { get; set; }
 		public string Qty { get; set; }

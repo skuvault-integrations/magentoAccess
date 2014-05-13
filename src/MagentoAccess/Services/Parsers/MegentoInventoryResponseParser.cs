@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
-using MagentoAccess.Models.GetInventory;
+using MagentoAccess.Models.GetSrockItems;
 
 namespace MagentoAccess.Services.Parsers
 {
-	public class MegentoInventoryResponseParser : MagentoBaseResponseParser< GetInventoryResponse >
+	public class MegentoInventoryResponseParser : MagentoBaseResponseParser< GetStockItemsResponse >
 	{
-		protected override GetInventoryResponse ParseWithWxceptionHanding( XElement root )
+		protected override GetStockItemsResponse ParseWithWxceptionHanding( XElement root )
 		{
 			XNamespace ns = "";
 
@@ -16,7 +16,7 @@ namespace MagentoAccess.Services.Parsers
 
 			var orders = inventoryItems.Select( x =>
 			{
-				var resultOrder = new InventoryItem
+				var resultOrder = new StockItem
 				{
 					ItemId = GetElementValue( x, ns, "item_id" ),
 					Qty = GetElementValue( x, ns, "qty" ),
@@ -26,7 +26,7 @@ namespace MagentoAccess.Services.Parsers
 				return resultOrder;
 			} ).ToList();
 
-			return new GetInventoryResponse { Items = orders };
+			return new GetStockItemsResponse { Items = orders };
 		}
 	}
 }

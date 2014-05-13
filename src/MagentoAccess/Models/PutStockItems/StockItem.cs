@@ -1,6 +1,6 @@
-namespace MagentoAccess.Models.PutInventory
+namespace MagentoAccess.Models.PutStockItems
 {
-	public class PutStockResponseItem
+	public class StockItem
 	{
 		public string Message { get; set; }
 		public string Code { get; set; }
