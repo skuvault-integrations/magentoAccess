@@ -208,33 +208,21 @@ namespace MagentoAccess.Services
 
 			this._consumer = new DesktopConsumer( service, tokenManager );
 
-			//s
-			byte[] encodedBody=null;
-			if( !string.IsNullOrWhiteSpace( body ) )
-				encodedBody = new UTF8Encoding().GetBytes( body );
-			//e
-
 			var webRequest = this._consumer.PrepareAuthorizedRequest( resourceEndpoint, this._accessToken );
-
-			//s
-			if (encodedBody != null)
-			{
-				webRequest.ContentLength = encodedBody.Length;
-				webRequest.ContentType = "text/xml";
-			}
-			//e
 
 			webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 
-			//s
-			if (encodedBody != null)
+			if (!string.IsNullOrWhiteSpace(body))
 			{
+				var encodedBody = new UTF8Encoding().GetBytes(body);
+
+				webRequest.ContentLength = encodedBody.Length;
+				webRequest.ContentType = "text/xml";
 				var getRequestStremTask = webRequest.GetRequestStreamAsync();
 				getRequestStremTask.Wait();
 				using (var newStream = getRequestStremTask.Result)
 					newStream.Write(encodedBody, 0, encodedBody.Length);
 			}
-			//e
 
 			return webRequest;
 		}
