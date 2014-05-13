@@ -143,35 +143,35 @@ namespace MagentoAccess.Services
 
 		public GetProductResponse GetProduct( string id )
 		{
-			return this.InvokeGetCall< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true );
+			return this.InvokeCall< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true );
 		}
 
 		public GetProductsResponse GetProducts()
 		{
-			return this.InvokeGetCall< MagentoProductsResponseParser, GetProductsResponse >( "products", true );
+			return this.InvokeCall< MagentoProductsResponseParser, GetProductsResponse >( "products", true );
 		}
 
 		public GetInventoryResponse GetInventory()
 		{
-			return this.InvokeGetCall< MegentoInventoryResponseParser, GetInventoryResponse >( "stockitems", true );
+			return this.InvokeCall< MegentoInventoryResponseParser, GetInventoryResponse >( "stockitems", true );
 		}
 
 		public PutInventoryResponse PutInventory()
 		{
-			return this.InvokeGetCall< MegentoPutInventoryResponseParser, PutInventoryResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
+			return this.InvokeCall< MegentoPutInventoryResponseParser, PutInventoryResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
 		}
 
 		public GetOrdersResponse GetOrders()
 		{
-			return this.InvokeGetCall< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true );
+			return this.InvokeCall< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true );
 		}
 
-		public TParsed InvokeGetCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
+		protected TParsed InvokeCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
 		{
 			var res = default( TParsed );
 			try
 			{
-				var webRequest = this.CreateMagentoStandartGetRequest( partialUrl, needAuthorise, requestType, body );
+				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 
 				var webRequestServices = new WebRequestServices();
 
@@ -189,7 +189,7 @@ namespace MagentoAccess.Services
 			return res;
 		}
 
-		protected HttpWebRequest CreateMagentoStandartGetRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType, string body )
+		protected HttpWebRequest CreateMagentoStandartRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType, string body )
 		{
 			var urlParrts = new List< string > { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
 			var locationUri = string.Join( "/", urlParrts );
