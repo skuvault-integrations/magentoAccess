@@ -9,6 +9,7 @@ using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
+using DotNetOpenAuth.OAuth.Messages;
 using LINQtoCSV;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
@@ -212,16 +213,16 @@ namespace MagentoAccess.Services
 
 			webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 
-			if (!string.IsNullOrWhiteSpace(body))
+			if( !string.IsNullOrWhiteSpace( body ) )
 			{
-				var encodedBody = new UTF8Encoding().GetBytes(body);
+				var encodedBody = new UTF8Encoding().GetBytes( body );
 
 				webRequest.ContentLength = encodedBody.Length;
 				webRequest.ContentType = "text/xml";
 				var getRequestStremTask = webRequest.GetRequestStreamAsync();
 				getRequestStremTask.Wait();
-				using (var newStream = getRequestStremTask.Result)
-					newStream.Write(encodedBody, 0, encodedBody.Length);
+				using( var newStream = getRequestStremTask.Result )
+					newStream.Write( encodedBody, 0, encodedBody.Length );
 			}
 
 			return webRequest;
@@ -284,5 +285,54 @@ namespace MagentoAccess.Services
 			var grantedAccess = this.consumer.ProcessUserAuthorization( this.requestToken, this.verificationKey );
 			return this.AccessToken = grantedAccess.AccessToken;
 		}
+	}
+
+	internal class InMemoryTokenManager : IConsumerTokenManager
+	{
+		public Dictionary< string, string > tokensAndSecrets = new Dictionary< string, string >();
+
+		internal InMemoryTokenManager()
+		{
+		}
+
+		public string ConsumerKey { get; internal set; }
+
+		public string ConsumerSecret { get; internal set; }
+
+		#region ITokenManager Members
+		public string GetConsumerSecret( string consumerKey )
+		{
+			if( consumerKey == this.ConsumerKey )
+				return this.ConsumerSecret;
+			else
+				throw new ArgumentException( "Unrecognized consumer key.", "consumerKey" );
+		}
+
+		public string GetTokenSecret( string token )
+		{
+			return this.tokensAndSecrets[ token ];
+		}
+
+		public void StoreNewRequestToken( UnauthorizedTokenRequest request, ITokenSecretContainingMessage response )
+		{
+			this.tokensAndSecrets[ response.Token ] = response.TokenSecret;
+		}
+
+		public void ExpireRequestTokenAndStoreNewAccessToken( string consumerKey, string requestToken, string accessToken, string accessTokenSecret )
+		{
+			this.tokensAndSecrets.Remove( requestToken );
+			this.tokensAndSecrets[ accessToken ] = accessTokenSecret;
+		}
+
+		/// <summary>
+		/// Classifies a token as a request token or an access token.
+		/// </summary>
+		/// <param name="token">The token to classify.</param>
+		/// <returns>Request or Access token, or invalid if the token is not recognized.</returns>
+		public TokenType GetTokenType( string token )
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
 	}
 }

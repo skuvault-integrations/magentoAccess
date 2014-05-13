@@ -93,7 +93,6 @@
     <Compile Include="Models\PutStockItems\StockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
-    <Compile Include="Services\InMemoryTokenManager.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
