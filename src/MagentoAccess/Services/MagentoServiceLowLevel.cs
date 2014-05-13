@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
@@ -13,6 +14,7 @@ using MagentoAccess.Models.GetInventory;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services.Parsers;
 
 namespace MagentoAccess.Services
@@ -154,17 +156,22 @@ namespace MagentoAccess.Services
 			return this.InvokeGetCall< MegentoInventoryResponseParser, GetInventoryResponse >( "stockitems", true );
 		}
 
+		public PutInventoryResponse PutInventory()
+		{
+			return this.InvokeGetCall< MegentoPutInventoryResponseParser, PutInventoryResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
+		}
+
 		public GetOrdersResponse GetOrders()
 		{
 			return this.InvokeGetCall< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true );
 		}
 
-		public TParsed InvokeGetCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
+		public TParsed InvokeGetCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
 		{
 			var res = default( TParsed );
 			try
 			{
-				var webRequest = this.CreateMagentoStandartGetRequest( partialUrl, needAuthorise, requestType );
+				var webRequest = this.CreateMagentoStandartGetRequest( partialUrl, needAuthorise, requestType, body );
 
 				var webRequestServices = new WebRequestServices();
 
@@ -182,7 +189,7 @@ namespace MagentoAccess.Services
 			return res;
 		}
 
-		protected HttpWebRequest CreateMagentoStandartGetRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType )
+		protected HttpWebRequest CreateMagentoStandartGetRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType, string body )
 		{
 			var urlParrts = new List< string > { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
 			var locationUri = string.Join( "/", urlParrts );
@@ -201,8 +208,34 @@ namespace MagentoAccess.Services
 
 			this._consumer = new DesktopConsumer( service, tokenManager );
 
+			//s
+			byte[] encodedBody=null;
+			if( !string.IsNullOrWhiteSpace( body ) )
+				encodedBody = new UTF8Encoding().GetBytes( body );
+			//e
+
 			var webRequest = this._consumer.PrepareAuthorizedRequest( resourceEndpoint, this._accessToken );
+
+			//s
+			if (encodedBody != null)
+			{
+				webRequest.ContentLength = encodedBody.Length;
+				webRequest.ContentType = "text/xml";
+			}
+			//e
+
 			webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+
+			//s
+			if (encodedBody != null)
+			{
+				var getRequestStremTask = webRequest.GetRequestStreamAsync();
+				getRequestStremTask.Wait();
+				using (var newStream = getRequestStremTask.Result)
+					newStream.Write(encodedBody, 0, encodedBody.Length);
+			}
+			//e
+
 			return webRequest;
 		}
 	}
