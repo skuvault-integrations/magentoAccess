@@ -28,14 +28,15 @@ namespace MagentoAccess.Services
 		private string _accessTokenUrl;
 		private HttpDeliveryMethods _accessTokenHttpDeliveryMethod;
 		private string _baseMagentoUrl;
-		private string _restApiUrl = "api/rest";
+		private const string RestApiUrl = "api/rest";
 		private string _consumerKey;
 		private string _consumerSecretKey;
 
 		private DesktopConsumer _consumer;
 		private string _accessToken;
 		private string _accessTokenSecret;
-		private HttpDeliveryMethods _authorizationHeaderRequest;
+
+		protected IWebRequestServices webRequestServices { get; set; }
 
 		public string AccessToken
 		{
@@ -85,6 +86,7 @@ namespace MagentoAccess.Services
 			this._accessTokenUrl = accessTokenUrl;
 			this._accessTokenHttpDeliveryMethod = HttpDeliveryMethods.PostRequest;
 			this._baseMagentoUrl = baseMagentoUrl;
+			this.webRequestServices = new WebRequestServices();
 		}
 
 		public MagentoServiceLowLevel(
@@ -106,6 +108,7 @@ namespace MagentoAccess.Services
 			this._accessToken = accessToken;
 			this._accessTokenSecret = accessTokenSecret;
 			this._baseMagentoUrl = baseMagentoUrl;
+			this.webRequestServices = new WebRequestServices();
 		}
 
 		public async Task GetAccessToken()
@@ -174,9 +177,7 @@ namespace MagentoAccess.Services
 			{
 				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 
-				var webRequestServices = new WebRequestServices();
-
-				using( var memStream = webRequestServices.GetResponseStream( webRequest ) )
+				using( var memStream = this.webRequestServices.GetResponseStream( webRequest ) )
 				{
 					res = new TParser().Parse( memStream, false );
 					return res;
@@ -192,7 +193,7 @@ namespace MagentoAccess.Services
 
 		protected HttpWebRequest CreateMagentoStandartRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType, string body )
 		{
-			var urlParrts = new List< string > { this._baseMagentoUrl, this._restApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
+			var urlParrts = new List< string > { this._baseMagentoUrl, RestApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
 			var locationUri = string.Join( "/", urlParrts );
 			var resourceEndpoint = new MessageReceivingEndpoint( locationUri, needAuthorise ? requestType | HttpDeliveryMethods.AuthorizationHeaderRequest : requestType );
 
