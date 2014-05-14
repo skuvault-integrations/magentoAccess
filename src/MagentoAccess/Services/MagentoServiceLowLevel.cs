@@ -160,10 +160,24 @@ namespace MagentoAccess.Services
 			return this.InvokeCall< MegentoInventoryResponseParser, GetStockItemsResponse >( "stockitems", true );
 		}
 
-		public PutStockItemsResponse PutInventory()
+		public PutStockItemsResponse PutInventory( IEnumerable< InventoryItem > inventoryItems )
 		{
-			//todo: introduce parameter
-			return this.InvokeCall< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
+			var inventoryItemsFormated = inventoryItems.Select( x =>
+			{
+				Condition.Requires( x.ItemId ).IsNotNullOrWhiteSpace();
+
+				var productIdSection = string.IsNullOrWhiteSpace( x.ProductId ) ? string.Empty : string.Format( "<product_id>{0}</product_id>", x.ProductId );
+
+				var stockIdSection = string.IsNullOrWhiteSpace( x.StockId ) ? string.Empty : string.Format( "<stock_id>{0}</stock_id>", x.StockId );
+
+				var res = string.Format( "<data_item item_id=\"{0}\">{1}{2}<qty>{3}</qty><min_qty>{4}</min_qty></data_item>", x.ItemId, productIdSection, stockIdSection, x.Qty, x.MinQty );
+
+				return res;
+			} );
+
+			var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
+
+			return this.InvokeCall< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) );
 		}
 
 		public GetOrdersResponse GetOrders()

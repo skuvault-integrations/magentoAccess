@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
@@ -23,6 +24,6 @@ namespace MagentoAccess.Services
 
 		GetStockItemsResponse GetInventory();
 
-		PutStockItemsResponse PutInventory();
+		PutStockItemsResponse PutInventory( IEnumerable< InventoryItem > inventoryItems );
 	}
 }

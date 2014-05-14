@@ -90,6 +90,7 @@
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\GetProduct\GetProductResponse.cs" />
     <Compile Include="Models\GetProduct\StockData.cs" />
+    <Compile Include="Models\PutStockItems\InventoryItem.cs" />
     <Compile Include="Models\PutStockItems\PutStockItemsResponse.cs" />
     <Compile Include="Models\PutStockItems\StockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
