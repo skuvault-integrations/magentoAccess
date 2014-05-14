@@ -189,7 +189,7 @@ namespace MagentoAccess.Services
 		{
 			var res = default( TParsed );
 			try
-			{
+			{//todo:add action policy
 				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 
 				using( var memStream = this.webRequestServices.GetResponseStream( webRequest ) )
