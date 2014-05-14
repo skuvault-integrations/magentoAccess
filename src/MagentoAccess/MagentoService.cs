@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using LINQtoCSV;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
@@ -11,14 +9,15 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
-		public virtual IMagentoServiceLowLevel MagentoServiceLowLevel {get;set;}
+		public virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
 
-		public delegate void SaveAccessToken(string token, string secret);
+		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken { get; set; }
 
-		public MagentoService(MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials) {
-			MagentoServiceLowLevel = new MagentoServiceLowLevel(
+		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
+		{
+			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
 				magentoAuthenticatedUserCredentials.ConsumerKey,
 				magentoAuthenticatedUserCredentials.ConsumerSckretKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
@@ -27,9 +26,9 @@ namespace MagentoAccess
 				);
 		}
 
-		public MagentoService(MagentoNonAuthenticatedUserCredentials magentoUserCredentials)
+		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials )
 		{
-			MagentoServiceLowLevel = new MagentoServiceLowLevel(
+			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
 				magentoUserCredentials.ConsumerKey,
 				magentoUserCredentials.ConsumerSckretKey,
 				magentoUserCredentials.BaseMagentoUrl,
@@ -39,35 +38,35 @@ namespace MagentoAccess
 				);
 		}
 
-		public IEnumerable<Order> GetOrders(DateTime dateFrom, DateTime dateTo)
+		public IEnumerable< Order > GetOrders( DateTime dateFrom, DateTime dateTo )
 		{
-			if (string.IsNullOrWhiteSpace(MagentoServiceLowLevel.AccessToken))
+			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
 			{
-				var authorizeTask = MagentoServiceLowLevel.PopulateAccessToken();
+				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
 				authorizeTask.Wait();
 
-				if (AfterGettingToken != null)
-					AfterGettingToken.Invoke(MagentoServiceLowLevel.AccessToken, MagentoServiceLowLevel.AccessTokenSecret);
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 			}
 
 			//todo: filter by date
-			var res = MagentoServiceLowLevel.GetOrders();
+			var res = this.MagentoServiceLowLevel.GetOrders();
 			return res.Orders;
 		}
 
 		public IEnumerable< Product > GetProducts()
 		{
-			if (string.IsNullOrWhiteSpace(MagentoServiceLowLevel.AccessToken))
+			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
 			{
-				var authorizeTask = MagentoServiceLowLevel.PopulateAccessToken();
+				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
 				authorizeTask.Wait();
 
-				if (AfterGettingToken != null)
-					AfterGettingToken.Invoke(MagentoServiceLowLevel.AccessToken, MagentoServiceLowLevel.AccessTokenSecret);
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 			}
 
 			//todo: filter by date
-			var res = MagentoServiceLowLevel.GetProducts();
+			var res = this.MagentoServiceLowLevel.GetProducts();
 			return res.Products;
 		}
 	}

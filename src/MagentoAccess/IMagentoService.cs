@@ -7,7 +7,7 @@ namespace MagentoAccess
 {
 	public interface IMagentoService
 	{
-		IEnumerable<Order> GetOrders(DateTime dateFrom, DateTime dateTo);
+		IEnumerable< Order > GetOrders( DateTime dateFrom, DateTime dateTo );
 
 		//Task<IEnumerable<Order>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
 
@@ -15,7 +15,7 @@ namespace MagentoAccess
 
 		//Task UpdateProductsAsync(IEnumerable<InventoryStatusRequest> products);
 
-		IEnumerable<Product> GetProducts();
+		IEnumerable< Product > GetProducts();
 
 		//Task<IEnumerable<Item>> GetProductsAsync();
 

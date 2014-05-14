@@ -74,7 +74,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			[ CsvColumn( Name = "AccessTokenUrl", FieldIndex = 4 ) ]
 			public string AccessTokenUrl { get; set; }
 		}
-		
+
 		internal class FlatCsvLineAccessToken
 		{
 			public FlatCsvLineAccessToken()
