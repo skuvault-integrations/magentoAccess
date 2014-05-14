@@ -1,8 +1,12 @@
-﻿namespace MagentoAccess
+﻿using System;
+using System.Collections.Generic;
+using MagentoAccess.Models.GetOrders;
+
+namespace MagentoAccess
 {
 	public interface IMagentoService
 	{
-		//IEnumerable<Order> GetOrders(DateTime dateFrom, DateTime dateTo);
+		IEnumerable<Order> GetOrders(DateTime dateFrom, DateTime dateTo);
 
 		//Task<IEnumerable<Order>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
 

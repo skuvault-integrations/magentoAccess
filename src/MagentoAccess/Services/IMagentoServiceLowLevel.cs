@@ -1,4 +1,7 @@
-﻿namespace MagentoAccess.Services
+﻿using System.Threading.Tasks;
+using MagentoAccess.Models.GetOrders;
+
+namespace MagentoAccess.Services
 {
 	public interface IMagentoServiceLowLevel
 	{
@@ -21,5 +24,8 @@
 		//IEnumerable<InventoryStatusResponse> ReviseInventoriesStatus(IEnumerable<InventoryStatusRequest> inventoryStatuses);
 
 		//Task<IEnumerable<InventoryStatusResponse>> ReviseInventoriesStatusAsync(IEnumerable<InventoryStatusRequest> inventoryStatuses);
+		string AccessToken { get; }
+		Task GetAccessToken();
+		GetOrdersResponse GetOrders();
 	}
 }

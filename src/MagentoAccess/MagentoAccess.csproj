@@ -77,7 +77,8 @@
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Models\BaseResponse\ResponseError.cs" />
-    <Compile Include="Models\Credentials\MagentoUserCredentials.cs" />
+    <Compile Include="Models\Credentials\MagentoAuthenticatedUserCredentials.cs" />
+    <Compile Include="Models\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
     <Compile Include="Models\GetSrockItems\GetStockItemsResponse.cs" />
     <Compile Include="Models\GetSrockItems\StockItem.cs" />
     <Compile Include="Models\GetOrders\Address.cs" />
