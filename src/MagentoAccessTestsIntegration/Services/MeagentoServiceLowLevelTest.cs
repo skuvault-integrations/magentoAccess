@@ -26,7 +26,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Act
 			if( accessToken == null )
 			{
-				var authorizeTask = service.GetAccessToken();
+				var authorizeTask = service.PopulateAccessToken();
 				authorizeTask.Wait();
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}
@@ -55,7 +55,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Act
 			if( accessToken == null )
 			{
-				var authorizeTask = service.GetAccessToken();
+				var authorizeTask = service.PopulateAccessToken();
 				authorizeTask.Wait();
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}
@@ -84,7 +84,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Act
 			if( accessToken == null )
 			{
-				var authorizeTask = service.GetAccessToken();
+				var authorizeTask = service.PopulateAccessToken();
 				authorizeTask.Wait();
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}
@@ -113,7 +113,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Act
 			if( accessToken == null )
 			{
-				var authorizeTask = service.GetAccessToken();
+				var authorizeTask = service.PopulateAccessToken();
 				authorizeTask.Wait();
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}
@@ -142,7 +142,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Act
 			if( accessToken == null )
 			{
-				var authorizeTask = service.GetAccessToken();
+				var authorizeTask = service.PopulateAccessToken();
 				authorizeTask.Wait();
 				testData.CreateAccessTokenFile( service.AccessToken, service.AccessTokenSecret );
 			}

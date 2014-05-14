@@ -111,7 +111,7 @@ namespace MagentoAccess.Services
 			this.webRequestServices = new WebRequestServices();
 		}
 
-		public async Task GetAccessToken()
+		public async Task PopulateAccessToken()
 		{
 			try
 			{
@@ -162,6 +162,7 @@ namespace MagentoAccess.Services
 
 		public PutStockItemsResponse PutInventory()
 		{
+			//todo: introduce parameter
 			return this.InvokeCall< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, "<?xml version=\"1.0\"?><magento_api><data_item item_id=\"1\"><product_id>1</product_id><stock_id>1</stock_id><qty>100.0000</qty><min_qty>0.0000</min_qty></data_item></magento_api>" );
 		}
 

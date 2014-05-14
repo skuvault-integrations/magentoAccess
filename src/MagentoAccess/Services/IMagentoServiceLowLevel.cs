@@ -1,31 +1,28 @@
 ﻿using System.Threading.Tasks;
 using MagentoAccess.Models.GetOrders;
+using MagentoAccess.Models.GetProduct;
+using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.GetSrockItems;
+using MagentoAccess.Models.PutStockItems;
 
 namespace MagentoAccess.Services
 {
 	public interface IMagentoServiceLowLevel
 	{
-		//IEnumerable<Order> GetOrders(DateTime createTimeFrom, DateTime createTimeTo);
-
-		//Task<IEnumerable<Order>> GetOrdersAsync(DateTime createTimeFrom, DateTime createTimeTo);
-
-		//InventoryStatusResponse ReviseInventoryStatus(InventoryStatusRequest inventoryStatusResponse);
-
-		//Task<InventoryStatusResponse> ReviseInventoryStatusAsync(InventoryStatusRequest inventoryStatusResponse);
-
-		////IEnumerable<Item> GetItems();
-
-		//Task<IEnumerable<Item>> GetItemsAsync();
-
-		////Item GetItem(string id);
-
-		////Task<Item> GetItemAsync(string id);
-
-		//IEnumerable<InventoryStatusResponse> ReviseInventoriesStatus(IEnumerable<InventoryStatusRequest> inventoryStatuses);
-
-		//Task<IEnumerable<InventoryStatusResponse>> ReviseInventoriesStatusAsync(IEnumerable<InventoryStatusRequest> inventoryStatuses);
 		string AccessToken { get; }
-		Task GetAccessToken();
+
+		string AccessTokenSecret { get; }
+
+		Task PopulateAccessToken();
+
 		GetOrdersResponse GetOrders();
+
+		GetProductResponse GetProduct( string id );
+
+		GetProductsResponse GetProducts();
+
+		GetStockItemsResponse GetInventory();
+
+		PutStockItemsResponse PutInventory();
 	}
 }

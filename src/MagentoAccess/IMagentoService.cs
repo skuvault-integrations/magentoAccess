@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MagentoAccess.Models.GetOrders;
+using MagentoAccess.Models.GetProducts;
 
 namespace MagentoAccess
 {
@@ -14,7 +15,7 @@ namespace MagentoAccess
 
 		//Task UpdateProductsAsync(IEnumerable<InventoryStatusRequest> products);
 
-		//IEnumerable<Item> GetProducts();
+		IEnumerable<Product> GetProducts();
 
 		//Task<IEnumerable<Item>> GetProductsAsync();
 
