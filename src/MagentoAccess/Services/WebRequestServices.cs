@@ -68,7 +68,7 @@ namespace MagentoAccess.Services
 		#region ResponseHanding
 		public Stream GetResponseStream( WebRequest webRequest )
 		{
-			//this.LogTraceStartGetResponse();
+			//todo: this.LogTraceStartGetResponse();
 			using( var response = ( HttpWebResponse )webRequest.GetResponse() )
 			using( var dataStream = response.GetResponseStream() )
 			{
@@ -78,7 +78,7 @@ namespace MagentoAccess.Services
 				memoryStream.Position = 0;
 				return memoryStream;
 			}
-			//this.LogTraceEndGetResponse();
+			//todo: this.LogTraceEndGetResponse();
 		}
 
 		public async Task< Stream > GetResponseStreamAsync( WebRequest webRequest )

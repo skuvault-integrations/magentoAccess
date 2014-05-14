@@ -140,7 +140,7 @@ namespace MagentoAccess.Services
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
 			}
-			catch( ProtocolException ex )
+			catch( ProtocolException )
 			{
 			}
 		}
@@ -183,7 +183,7 @@ namespace MagentoAccess.Services
 					return res;
 				}
 			}
-			catch( ProtocolException ex )
+			catch( ProtocolException )
 			{
 				//todo: log
 			}
