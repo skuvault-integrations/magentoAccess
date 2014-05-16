@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services;
 
 namespace MagentoAccess
@@ -68,6 +69,20 @@ namespace MagentoAccess
 			//todo: filter by date
 			var res = this.MagentoServiceLowLevel.GetProducts();
 			return res.Products;
+		}
+
+		public void UpdateProducts( IEnumerable< InventoryItem > products )
+		{
+			if (string.IsNullOrWhiteSpace(this.MagentoServiceLowLevel.AccessToken))
+			{
+				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
+				authorizeTask.Wait();
+
+				if (this.AfterGettingToken != null)
+					this.AfterGettingToken.Invoke(this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret);
+			}
+
+			this.MagentoServiceLowLevel.PutInventory(products);
 		}
 	}
 }
