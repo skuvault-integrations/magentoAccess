@@ -28,6 +28,7 @@ namespace MagentoAccess.Services.Parsers
 
 				resultOrder.Customer = GetElementValue( x, ns, "customer_id" );
 
+				//todo: rid of 'if' statement(in all places), just GetElementValue( x, ns, "base_discount_amount" ).ToDecimalDotOrComaSeparated()
 				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_discount_amount" ) ) )
 					resultOrder.BaseDiscount = temp.ToDecimalDotOrComaSeparated();
 
@@ -111,7 +112,7 @@ namespace MagentoAccess.Services.Parsers
 
 				resultOrder.StoreName = GetElementValue( x, ns, "store_name" );
 
-				resultOrder.CreatedAt = GetElementValue( x, ns, "created_at" );
+				resultOrder.CreatedAt = GetElementValue(x, ns, "created_at").ToDateTime();
 
 				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "shipping_incl_tax" ) ) )
 					resultOrder.ShippingInclTax = temp.ToDecimalDotOrComaSeparated();
