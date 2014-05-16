@@ -18,6 +18,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.GetSrockItems;
 using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services.Parsers;
+using Netco.Logging;
 
 namespace MagentoAccess.Services
 {
@@ -203,7 +204,7 @@ namespace MagentoAccess.Services
 			}
 			catch( ProtocolException )
 			{
-				//todo: log
+				this.Log().Trace("[magento] Invoke call partial url:[0} throw an exception .", partialUrl);
 			}
 
 			return res;
