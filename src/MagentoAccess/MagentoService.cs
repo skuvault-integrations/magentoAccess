@@ -44,6 +44,8 @@ namespace MagentoAccess
 			this.Authorize();
 
 			//todo: filter by date
+			//http://www.magentocommerce.com/api/rest/get_filters.html
+			//http://192.168.0.104/magento/api/rest/orders?filter[1][attribute]=created_at&filter[1][from]=2013-05-09%2004:53:43&filter[1][to]=2015-05-09%2004:53:43
 			var res = this.MagentoServiceLowLevel.GetOrders();
 			return res.Orders;
 		}
