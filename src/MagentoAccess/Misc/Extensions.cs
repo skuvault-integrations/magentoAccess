@@ -13,6 +13,19 @@ namespace MagentoAccess.Misc
 			return result;
 		}
 
+		public static DateTime ToDateTime( this string srcString )
+		{
+			try
+			{
+				var dateTime = DateTime.Parse( srcString, CultureInfo.InvariantCulture );
+				return dateTime;
+			}
+			catch
+			{
+				return default( DateTime );
+			}
+		}
+
 		public static decimal ToDecimalDotOrComaSeparated( this string srcString )
 		{
 			decimal parsedNumber;
