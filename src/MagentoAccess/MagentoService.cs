@@ -41,14 +41,7 @@ namespace MagentoAccess
 
 		public IEnumerable< Order > GetOrders( DateTime dateFrom, DateTime dateTo )
 		{
-			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
-			{
-				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
-				authorizeTask.Wait();
-
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-			}
+			this.Authorize();
 
 			//todo: filter by date
 			var res = this.MagentoServiceLowLevel.GetOrders();
@@ -57,14 +50,7 @@ namespace MagentoAccess
 
 		public IEnumerable< Product > GetProducts()
 		{
-			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
-			{
-				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
-				authorizeTask.Wait();
-
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-			}
+			this.Authorize();
 
 			//todo: filter by date
 			var res = this.MagentoServiceLowLevel.GetProducts();
@@ -73,16 +59,21 @@ namespace MagentoAccess
 
 		public void UpdateProducts( IEnumerable< InventoryItem > products )
 		{
-			if (string.IsNullOrWhiteSpace(this.MagentoServiceLowLevel.AccessToken))
+			this.Authorize();
+
+			this.MagentoServiceLowLevel.PutInventory(products);
+		}
+
+		protected void Authorize()
+		{
+			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
 			{
 				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
 				authorizeTask.Wait();
 
-				if (this.AfterGettingToken != null)
-					this.AfterGettingToken.Invoke(this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret);
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 			}
-
-			this.MagentoServiceLowLevel.PutInventory(products);
 		}
 	}
 }
