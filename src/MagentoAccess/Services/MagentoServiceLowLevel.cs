@@ -193,13 +193,11 @@ namespace MagentoAccess.Services
 			{
 				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 
-				ActionPolicies.Get.Do(() =>
+				ActionPolicies.Get.Do( () =>
 				{
-					using (var memStream = this.webRequestServices.GetResponseStream(webRequest))
-					{
-						res = new TParser().Parse(memStream, false);
-					}
-				});
+					using( var memStream = this.webRequestServices.GetResponseStream( webRequest ) )
+						res = new TParser().Parse( memStream, false );
+				} );
 
 				return res;
 			}

@@ -2,13 +2,14 @@
 {
 	public class MagentoAuthenticatedUserCredentials
 	{
-		public MagentoAuthenticatedUserCredentials(string accessToken, string accessTokenSecret, string baseMagentoUrl, string consumerSckretKey, string consumerKey)
+		public MagentoAuthenticatedUserCredentials( string accessToken, string accessTokenSecret, string baseMagentoUrl, string consumerSckretKey, string consumerKey )
 		{
-			AccessTokenSecret = accessTokenSecret;
-			AccessToken = accessToken;
-			BaseMagentoUrl = baseMagentoUrl;
-			ConsumerKey = consumerKey; ;
-			ConsumerSckretKey = consumerSckretKey;
+			this.AccessTokenSecret = accessTokenSecret;
+			this.AccessToken = accessToken;
+			this.BaseMagentoUrl = baseMagentoUrl;
+			this.ConsumerKey = consumerKey;
+			;
+			this.ConsumerSckretKey = consumerSckretKey;
 		}
 
 		public string AccessTokenSecret { get; set; }

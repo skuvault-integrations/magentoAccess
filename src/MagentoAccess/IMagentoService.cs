@@ -12,7 +12,7 @@ namespace MagentoAccess
 
 		//Task<IEnumerable<Order>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
 
-		void UpdateProducts(IEnumerable<InventoryItem> products);
+		void UpdateProducts( IEnumerable< InventoryItem > products );
 
 		//Task UpdateProductsAsync(IEnumerable<InventoryStatusRequest> products);
 

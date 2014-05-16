@@ -1,9 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using MagentoAccess;
-using MagentoAccess.Models.Credentials;
-using MagentoAccessTestsIntegration.TestEnvironment;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration
 {

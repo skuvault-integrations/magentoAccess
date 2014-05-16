@@ -44,14 +44,14 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetOrders();
 
 			//------------ Assert
-			res.Orders.Count.Should().BeGreaterThan(0);
+			res.Orders.Count.Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]
 		public void PutInventory_StoreContainsInventory_InventoryUpdateResultContainsMessageForEachItem()
 		{
 			//------------ Arrange
-			var inventoryItems = new List< InventoryItem > { new InventoryItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 77, StockId = "1" } };
+			var inventoryItems = new List< InventoryItem > { new InventoryItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 277, StockId = "1" } };
 
 			//------------ Act
 			var res = this._service.PutInventory( inventoryItems );
@@ -68,7 +68,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetProducts();
 
 			//------------ Assert
-			res.Products.Count.Should().BeGreaterThan(0);
+			res.Products.Count.Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]
@@ -79,7 +79,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetInventory();
 
 			//------------ Assert
-			res.Items.Count.Should().BeGreaterThan(0);
+			res.Items.Count.Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]

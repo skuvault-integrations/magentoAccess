@@ -61,7 +61,7 @@ namespace MagentoAccess
 		{
 			this.Authorize();
 
-			this.MagentoServiceLowLevel.PutInventory(products);
+			this.MagentoServiceLowLevel.PutInventory( products );
 		}
 
 		private void Authorize()

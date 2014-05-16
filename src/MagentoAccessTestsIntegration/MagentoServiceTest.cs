@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration
 {
 	[ TestFixture ]
-	public class MagentoServiceTest:BaseTest
+	public class MagentoServiceTest : BaseTest
 	{
 		[ Test ]
 		public void GetOrders_UserAlreadyHasAccessTokens_GetsOrders()
