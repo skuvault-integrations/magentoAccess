@@ -11,6 +11,7 @@ using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using DotNetOpenAuth.OAuth.Messages;
 using LINQtoCSV;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
@@ -189,14 +190,18 @@ namespace MagentoAccess.Services
 		{
 			var res = default( TParsed );
 			try
-			{//todo:add action policy
+			{
 				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 
-				using( var memStream = this.webRequestServices.GetResponseStream( webRequest ) )
+				ActionPolicies.Get.Do(() =>
 				{
-					res = new TParser().Parse( memStream, false );
-					return res;
-				}
+					using (var memStream = this.webRequestServices.GetResponseStream(webRequest))
+					{
+						res = new TParser().Parse(memStream, false);
+					}
+				});
+
+				return res;
 			}
 			catch( ProtocolException )
 			{
