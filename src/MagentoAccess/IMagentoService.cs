@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.PutStockItems;
 
 namespace MagentoAccess
 {
@@ -11,7 +12,7 @@ namespace MagentoAccess
 
 		//Task<IEnumerable<Order>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
 
-		//void UpdateProducts(IEnumerable<InventoryStatusRequest> products);
+		void UpdateProducts(IEnumerable<InventoryItem> products);
 
 		//Task UpdateProductsAsync(IEnumerable<InventoryStatusRequest> products);
 

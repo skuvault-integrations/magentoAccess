@@ -44,7 +44,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetOrders();
 
 			//------------ Assert
-			res.Should().NotBeNull();
+			res.Orders.Count.Should().BeGreaterThan(0);
 		}
 
 		[ Test ]
@@ -68,7 +68,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetProducts();
 
 			//------------ Assert
-			res.Should().NotBeNull();
+			res.Products.Count.Should().BeGreaterThan(0);
 		}
 
 		[ Test ]
@@ -79,7 +79,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetInventory();
 
 			//------------ Assert
-			res.Should().NotBeNull();
+			res.Items.Count.Should().BeGreaterThan(0);
 		}
 
 		[ Test ]
