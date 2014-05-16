@@ -12,7 +12,6 @@ namespace MagentoAccess.Services
 	public class WebRequestServices : IWebRequestServices
 	{
 		#region BaseRequests
-		//todo: kill, what is it?
 		public WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters )
 		{
 			var parametrizedServiceUrl = serviceUrl;
@@ -37,7 +36,6 @@ namespace MagentoAccess.Services
 			return serviceRequest;
 		}
 
-		//todo: kill, what is it?
 		public async Task< WebRequest > CreateServiceGetRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders )
 		{
 			try
@@ -64,6 +62,21 @@ namespace MagentoAccess.Services
 			catch( Exception )
 			{
 				throw;
+			}
+		}
+
+		public void PopulateRequestByBody(string body, HttpWebRequest webRequest)
+		{
+			if (!string.IsNullOrWhiteSpace(body))
+			{
+				var encodedBody = new UTF8Encoding().GetBytes(body);
+
+				webRequest.ContentLength = encodedBody.Length;
+				webRequest.ContentType = "text/xml";
+				var getRequestStremTask = webRequest.GetRequestStreamAsync();
+				getRequestStremTask.Wait();
+				using (var newStream = getRequestStremTask.Result)
+					newStream.Write(encodedBody, 0, encodedBody.Length);
 			}
 		}
 		#endregion

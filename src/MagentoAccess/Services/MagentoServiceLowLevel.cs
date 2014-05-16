@@ -232,17 +232,7 @@ namespace MagentoAccess.Services
 
 			webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 
-			if( !string.IsNullOrWhiteSpace( body ) )
-			{
-				var encodedBody = new UTF8Encoding().GetBytes( body );
-
-				webRequest.ContentLength = encodedBody.Length;
-				webRequest.ContentType = "text/xml";
-				var getRequestStremTask = webRequest.GetRequestStreamAsync();
-				getRequestStremTask.Wait();
-				using( var newStream = getRequestStremTask.Result )
-					newStream.Write( encodedBody, 0, encodedBody.Length );
-			}
+			webRequestServices.PopulateRequestByBody(body, webRequest);
 
 			return webRequest;
 		}
