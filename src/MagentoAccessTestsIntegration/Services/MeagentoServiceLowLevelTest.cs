@@ -41,10 +41,11 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var res = this._service.GetOrders();
+			var getOrdersTask = this._service.GetOrdersAsync();
+			getOrdersTask.Wait();
 
 			//------------ Assert
-			res.Orders.Count.Should().BeGreaterThan( 0 );
+			getOrdersTask.Result.Orders.Count.Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]

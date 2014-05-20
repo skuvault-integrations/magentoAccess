@@ -14,10 +14,11 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var res = this._service.GetOrders( DateTime.Now.AddMonths( -3 ), DateTime.Now );
+			var getOrdersTask = this._service.GetOrdersAsync( DateTime.Now.AddMonths( -3 ), DateTime.Now );
+			getOrdersTask.Wait();
 
 			//------------ Assert
-			res.Should().NotBeNull().And.NotBeEmpty();
+			getOrdersTask.Result.Should().NotBeNull().And.NotBeEmpty();
 		}
 
 		[ Test ]

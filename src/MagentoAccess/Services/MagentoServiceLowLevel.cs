@@ -181,16 +181,16 @@ namespace MagentoAccess.Services
 			return this.InvokeCall< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) );
 		}
 
-		public GetOrdersResponse GetOrders()
+		public async Task< GetOrdersResponse > GetOrdersAsync()
 		{
-			return this.InvokeCall< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true );
+			return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true ).ConfigureAwait( false );
 		}
 
-		public GetOrdersResponse GetOrders( DateTime dateFrom, DateTime dateTo )
+		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			var filterUrl = string.Format( "filter[1][attribute]=created_at&filter[1][from]={0}&filter[1][to]={1}", dateFrom.ToUrlParameterString(), dateTo.ToUrlParameterString() );
 			var url = string.Format( "{0}?{1}", "orders", filterUrl );
-			return this.InvokeCall< MegentoOrdersResponseParser, GetOrdersResponse >( url, true );
+			return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( url, true ).ConfigureAwait( false );
 		}
 
 		protected TParsed InvokeCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
@@ -211,6 +211,29 @@ namespace MagentoAccess.Services
 			catch( ProtocolException )
 			{
 				this.Log().Trace( "[magento] Invoke call partial url:[0} throw an exception .", partialUrl );
+			}
+
+			return res;
+		}
+
+		protected async Task< TParsed > InvokeCallAsync< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
+		{
+			var res = default( TParsed );
+			try
+			{
+				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					using( var memStream = await this.webRequestServices.GetResponseStreamAsync( webRequest ).ConfigureAwait( false ) )
+						res = new TParser().Parse( memStream, false );
+				} ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( ProtocolException )
+			{
+				this.Log().Trace( "[magento] Invoke call async partial url:[0} throw an exception .", partialUrl );
 			}
 
 			return res;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
@@ -39,19 +40,19 @@ namespace MagentoAccess
 				);
 		}
 
-		public IEnumerable< Order > GetOrders( DateTime dateFrom, DateTime dateTo )
+		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			this.Authorize();
 
-			var res = this.MagentoServiceLowLevel.GetOrders( dateFrom, dateTo );
+			var res = await this.MagentoServiceLowLevel.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
 			return res.Orders;
 		}
 
-		public IEnumerable< Order > GetOrders()
+		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
 			this.Authorize();
 
-			var res = this.MagentoServiceLowLevel.GetOrders();
+			var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
 			return res.Orders;
 		}
 
@@ -59,7 +60,6 @@ namespace MagentoAccess
 		{
 			this.Authorize();
 
-			//todo: filter by date
 			var res = this.MagentoServiceLowLevel.GetProducts();
 			return res.Products;
 		}
