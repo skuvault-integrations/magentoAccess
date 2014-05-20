@@ -9,7 +9,7 @@ namespace MagentoAccessTestsIntegration
 	public class MagentoServiceTest : BaseTest
 	{
 		[ Test ]
-		public void GetOrders_UserAlreadyHasAccessTokens_GetsOrders()
+		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders()
 		{
 			//------------ Arrange
 
@@ -22,7 +22,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetProducts_UserAlreadyHasAccessTokens_GetsProducts()
+		public void GetProducts_UserAlreadyHasAccessTokens_ReceiveProducts()
 		{
 			//------------ Arrange
 

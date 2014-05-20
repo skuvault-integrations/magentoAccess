@@ -68,7 +68,7 @@ namespace MagentoAccess
 		{
 			this.Authorize();
 
-			await this.MagentoServiceLowLevel.PutInventoryAsync(products).ConfigureAwait(false);
+			await this.MagentoServiceLowLevel.PutInventoryAsync( products ).ConfigureAwait( false );
 		}
 
 		private void Authorize()

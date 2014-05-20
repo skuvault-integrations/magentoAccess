@@ -36,7 +36,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetOrders_StoreContainsOrders_GetsItems()
+		public void GetOrders_StoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
 
@@ -49,7 +49,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void PutInventory_StoreContainsInventory_InventoryUpdateResultContainsMessageForEachItem()
+		public void PutInventory_StoreContainsInventory_ReceiveSucceessMessagesForEachRequestedItem()
 		{
 			//------------ Arrange
 			var inventoryItems = new List< InventoryItem > { new InventoryItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 277, StockId = "1" } };
@@ -60,11 +60,11 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Assert
 			putInventoryTask.Result.Items.Count.Should().Be( inventoryItems.Count );
-			putInventoryTask.Result.Items.TrueForAll(x => x.Code == "200").Should().BeTrue();
+			putInventoryTask.Result.Items.TrueForAll( x => x.Code == "200" ).Should().BeTrue();
 		}
 
 		[ Test ]
-		public void GetProducts_StoreWithProducts_GetsProducts()
+		public void GetProducts_StoreWithProducts_ReceiveProducts()
 		{
 			//------------ Arrange
 			//------------ Act
@@ -76,7 +76,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetInventory_StoreContainsInventory_GetsInventory()
+		public void GetInventory_StoreContainsInventory_ReceveInventory()
 		{
 			//------------ Arrange
 			//------------ Act
@@ -87,7 +87,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetProduct_StoreWithProducts_GetsProduct()
+		public void GetProduct_StoreWithProducts_ReceiveProduct()
 		{
 			//------------ Arrange
 			//------------ Act
