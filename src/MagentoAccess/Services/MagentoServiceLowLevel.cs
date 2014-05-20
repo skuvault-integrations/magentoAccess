@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
 using DotNetOpenAuth.Messaging;
@@ -187,6 +186,13 @@ namespace MagentoAccess.Services
 			return this.InvokeCall< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true );
 		}
 
+		public GetOrdersResponse GetOrders( DateTime dateFrom, DateTime dateTo )
+		{
+			var filterUrl = string.Format( "filter[1][attribute]=created_at&filter[1][from]={0}&filter[1][to]={1}", dateFrom.ToUrlParameterString(), dateTo.ToUrlParameterString() );
+			var url = string.Format( "{0}?{1}", "orders", filterUrl );
+			return this.InvokeCall< MegentoOrdersResponseParser, GetOrdersResponse >( url, true );
+		}
+
 		protected TParsed InvokeCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
 		{
 			var res = default( TParsed );
@@ -204,7 +210,7 @@ namespace MagentoAccess.Services
 			}
 			catch( ProtocolException )
 			{
-				this.Log().Trace("[magento] Invoke call partial url:[0} throw an exception .", partialUrl);
+				this.Log().Trace( "[magento] Invoke call partial url:[0} throw an exception .", partialUrl );
 			}
 
 			return res;
@@ -233,7 +239,7 @@ namespace MagentoAccess.Services
 
 			webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
 
-			webRequestServices.PopulateRequestByBody(body, webRequest);
+			this.webRequestServices.PopulateRequestByBody( body, webRequest );
 
 			return webRequest;
 		}
