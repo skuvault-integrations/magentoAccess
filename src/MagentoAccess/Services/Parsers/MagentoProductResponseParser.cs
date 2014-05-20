@@ -6,7 +6,7 @@ namespace MagentoAccess.Services.Parsers
 {
 	public class MagentoProductResponseParser : MagentoBaseResponseParser< GetProductResponse >
 	{
-		protected override GetProductResponse ParseWithWxceptionHanding( XElement root )
+		protected override GetProductResponse ParseWithoutExceptionHanding( XElement root )
 		{
 			var ns = "";
 
@@ -23,11 +23,11 @@ namespace MagentoAccess.Services.Parsers
 			{
 				resultProduct.StockData = new StockData();
 
-				resultProduct.StockData.Qty = GetElementValue( stockData, ns, "qty" ).ToDecimalDotOrComaSeparated();
-				resultProduct.StockData.MinQty = GetElementValue( stockData, ns, "min_qty" ).ToDecimalDotOrComaSeparated();
-				resultProduct.StockData.MinSaleQty = GetElementValue( stockData, ns, "min_sale_qty" ).ToDecimalDotOrComaSeparated();
-				resultProduct.StockData.MaxSaleQty = GetElementValue( stockData, ns, "max_sale_qty" ).ToDecimalDotOrComaSeparated();
-				resultProduct.StockData.IsInStock = GetElementValue( stockData, ns, "is_in_stock" ).ToDecimalDotOrComaSeparated();
+				resultProduct.StockData.Qty = GetElementValue( stockData, ns, "qty" ).ToDecimalOrDefault();
+				resultProduct.StockData.MinQty = GetElementValue( stockData, ns, "min_qty" ).ToDecimalOrDefault();
+				resultProduct.StockData.MinSaleQty = GetElementValue( stockData, ns, "min_sale_qty" ).ToDecimalOrDefault();
+				resultProduct.StockData.MaxSaleQty = GetElementValue( stockData, ns, "max_sale_qty" ).ToDecimalOrDefault();
+				resultProduct.StockData.IsInStock = GetElementValue( stockData, ns, "is_in_stock" ).ToDecimalOrDefault();
 			}
 
 			return resultProduct;

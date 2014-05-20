@@ -20,7 +20,7 @@ namespace MagentoAccess.Misc
 			return result;
 		}
 
-		public static DateTime ToDateTime( this string srcString )
+		public static DateTime ToDateTimeOrDefault( this string srcString )
 		{
 			try
 			{
@@ -33,20 +33,24 @@ namespace MagentoAccess.Misc
 			}
 		}
 
-		public static decimal ToDecimalDotOrComaSeparated( this string srcString )
+		public static decimal ToDecimalOrDefault(this string srcString)
 		{
 			decimal parsedNumber;
 
-			if( string.IsNullOrWhiteSpace( srcString ) )
-				return default( decimal );
-
 			try
 			{
-				parsedNumber = decimal.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
+				parsedNumber = decimal.Parse(srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 			}
-			catch( Exception )
+			catch
 			{
-				parsedNumber = decimal.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
+				try
+				{
+					parsedNumber = decimal.Parse(srcString, new NumberFormatInfo { NumberDecimalSeparator = "," });
+				}
+				catch
+				{
+					parsedNumber = default(decimal);
+				}
 			}
 
 			return parsedNumber;

@@ -6,7 +6,7 @@ namespace MagentoAccess.Services.Parsers
 {
 	public class MegentoInventoryResponseParser : MagentoBaseResponseParser< GetStockItemsResponse >
 	{
-		protected override GetStockItemsResponse ParseWithWxceptionHanding( XElement root )
+		protected override GetStockItemsResponse ParseWithoutExceptionHanding( XElement root )
 		{
 			XNamespace ns = "";
 

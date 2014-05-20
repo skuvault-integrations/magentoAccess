@@ -82,7 +82,7 @@ namespace MagentoAccess.Services.Parsers
 				return Parse( stream );
 		}
 
-		protected virtual TParseResult ParseWithWxceptionHanding( XElement root )
+		protected virtual TParseResult ParseWithoutExceptionHanding( XElement root )
 		{
 			return default( TParseResult );
 		}
@@ -94,11 +94,10 @@ namespace MagentoAccess.Services.Parsers
 			try
 			{
 				var root = XElement.Load( stream );
-				return this.ParseWithWxceptionHanding( root );
+				return this.ParseWithoutExceptionHanding( root );
 			}
 			catch( Exception ex )
 			{
-				//todo: reuse
 				var buffer = new byte[ stream.Length ];
 				stream.Read( buffer, 0, ( int )stream.Length );
 				var utf8Encoding = new UTF8Encoding();

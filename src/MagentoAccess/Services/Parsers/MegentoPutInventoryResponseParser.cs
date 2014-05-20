@@ -7,7 +7,7 @@ namespace MagentoAccess.Services.Parsers
 {
 	public class MegentoPutInventoryResponseParser : MagentoBaseResponseParser< PutStockItemsResponse >
 	{
-		protected override PutStockItemsResponse ParseWithWxceptionHanding( XElement root )
+		protected override PutStockItemsResponse ParseWithoutExceptionHanding( XElement root )
 		{
 			XNamespace ns = "";
 

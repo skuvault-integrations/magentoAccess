@@ -7,7 +7,7 @@ namespace MagentoAccess.Services.Parsers
 {
 	public class MagentoProductsResponseParser : MagentoBaseResponseParser< GetProductsResponse >
 	{
-		protected override GetProductsResponse ParseWithWxceptionHanding( XElement root )
+		protected override GetProductsResponse ParseWithoutExceptionHanding( XElement root )
 		{
 			var ns = "";
 
@@ -21,7 +21,7 @@ namespace MagentoAccess.Services.Parsers
 				{
 					EntityId = GetElementValue( x, ns, "entity_id" ),
 					Sku = GetElementValue( x, ns, "sku" ),
-					Price = GetElementValue( x, ns, "price" ).ToDecimalDotOrComaSeparated(),
+					Price = GetElementValue( x, ns, "price" ).ToDecimalOrDefault(),
 					Name = GetElementValue( x, ns, "name" ),
 					Description = GetElementValue( x, ns, "description" )
 				};
