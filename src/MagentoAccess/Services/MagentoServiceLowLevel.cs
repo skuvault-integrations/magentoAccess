@@ -146,14 +146,14 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public GetProductResponse GetProduct( string id )
+		public async Task< GetProductResponse > GetProductAsync( string id )
 		{
-			return this.InvokeCall< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true );
+			return await this.InvokeCallAsync< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true ).ConfigureAwait( false );
 		}
 
-		public GetProductsResponse GetProducts()
+		public async Task< GetProductsResponse > GetProductsAsync()
 		{
-			return this.InvokeCall< MagentoProductsResponseParser, GetProductsResponse >( "products", true );
+			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( "products", true ).ConfigureAwait( false );
 		}
 
 		public GetStockItemsResponse GetInventory()

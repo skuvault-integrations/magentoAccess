@@ -56,11 +56,11 @@ namespace MagentoAccess
 			return res.Orders;
 		}
 
-		public IEnumerable< Product > GetProducts()
+		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
 			this.Authorize();
 
-			var res = this.MagentoServiceLowLevel.GetProducts();
+			var res = await this.MagentoServiceLowLevel.GetProductsAsync().ConfigureAwait( false );
 			return res.Products;
 		}
 

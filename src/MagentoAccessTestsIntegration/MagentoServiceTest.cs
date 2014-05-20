@@ -27,10 +27,11 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var res = this._service.GetProducts();
+			var getProductsTask = this._service.GetProductsAsync();
+			getProductsTask.Wait();
 
 			//------------ Assert
-			res.Should().NotBeNull().And.NotBeEmpty();
+			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();
 		}
 	}
 }

@@ -66,10 +66,11 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._service.GetProducts();
+			var getProductsTask = this._service.GetProductsAsync();
+			getProductsTask.Wait();
 
 			//------------ Assert
-			res.Products.Count.Should().BeGreaterThan( 0 );
+			getProductsTask.Result.Products.Count.Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]
@@ -88,7 +89,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._service.GetProduct( "1" );
+			var res = this._service.GetProductAsync( "1" );
 
 			//------------ Assert
 			res.Should().NotBeNull();

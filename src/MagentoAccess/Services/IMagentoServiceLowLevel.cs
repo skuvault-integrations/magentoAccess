@@ -17,9 +17,9 @@ namespace MagentoAccess.Services
 
 		Task PopulateAccessToken();
 
-		GetProductResponse GetProduct( string id );
+		Task< GetProductResponse > GetProductAsync( string id );
 
-		GetProductsResponse GetProducts();
+		Task< GetProductsResponse > GetProductsAsync();
 
 		GetStockItemsResponse GetInventory();
 

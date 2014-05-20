@@ -17,7 +17,7 @@ namespace MagentoAccess
 
 		//Task UpdateProductsAsync(IEnumerable<InventoryStatusRequest> products);
 
-		IEnumerable< Product > GetProducts();
+		Task< IEnumerable< Product > > GetProductsAsync();
 
 		//Task<IEnumerable<Item>> GetProductsAsync();
 
