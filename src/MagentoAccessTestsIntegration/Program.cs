@@ -3,7 +3,7 @@
 namespace MagentoAccessTestsIntegration
 {
 	[ TestFixture ]
-	public class Programm
+	public class Program
 	{
 		[ Test ]
 		public void GetOrders()

@@ -188,7 +188,7 @@ namespace MagentoAccess.Services.Parsers
 						comment.IsVisibleOnFront = GetElementValue( addr, ns, "is_visible_on_front" );
 						comment.CommentText = GetElementValue( addr, ns, "comment" );
 
-						//todo: enum
+						//todo: to enum
 						comment.Status = GetElementValue( addr, ns, "status" );
 
 						return comment;

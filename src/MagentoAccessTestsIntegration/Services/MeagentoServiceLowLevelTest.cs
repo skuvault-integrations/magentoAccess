@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services;
@@ -68,11 +69,12 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var getProductsTask = this._service.GetProductsAsync();
+			var getProductsTask = this._service.GetProductsAsync(1,2);
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.Products.Count.Should().BeGreaterThan( 0 );
+			getProductsTask.Result.Products.Count().Should().Be( 2 );
+
 		}
 
 		[ Test ]

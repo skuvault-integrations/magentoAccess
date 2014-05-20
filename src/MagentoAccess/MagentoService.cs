@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using DotNetOpenAuth.Messaging;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services;
+using Netco.Extensions;
 
 namespace MagentoAccess
 {
@@ -56,12 +60,51 @@ namespace MagentoAccess
 			return res.Orders;
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync()
+		public async Task<IEnumerable<Product>> GetProductsAsync()
 		{
 			this.Authorize();
 
-			var res = await this.MagentoServiceLowLevel.GetProductsAsync().ConfigureAwait( false );
-			return res.Products;
+			int page = 1;
+			const int itemsPerPage = 100;
+
+			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync(page, itemsPerPage).ConfigureAwait(false);
+
+			var productsChunk = getProductsResponse.Products;
+			if (productsChunk.Count() < itemsPerPage)
+				return productsChunk;
+
+			var receivedProducts = new List<Product>();
+
+			var lastReceiveProducts = productsChunk;
+
+			bool isLastAndCurrentResponsesHaveTheSameProducts;
+
+			do
+			{
+				receivedProducts.AddRange(productsChunk);
+
+				var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync(++page, itemsPerPage);
+				getProductsTask.Wait();
+				productsChunk = getProductsTask.Result.Products;
+
+				//var repeatedItems = from l in lastReceiveProducts join c in productsChunk on l.EntityId equals c.EntityId select l;
+				var repeatedItems = from c in productsChunk join l in lastReceiveProducts on c.EntityId equals l.EntityId select l;
+
+				lastReceiveProducts = productsChunk;
+
+				isLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
+
+				// try to get items that was added before last iteration
+				if (isLastAndCurrentResponsesHaveTheSameProducts)
+				{
+					var notRrepeatedItems = productsChunk.Where(x => !repeatedItems.Exists(r => r.EntityId == x.EntityId));
+					receivedProducts.AddRange(notRrepeatedItems);
+				}
+
+
+			} while (!isLastAndCurrentResponsesHaveTheSameProducts);
+
+			return receivedProducts;
 		}
 
 		public async Task UpdateProductsAsync( IEnumerable< InventoryItem > products )

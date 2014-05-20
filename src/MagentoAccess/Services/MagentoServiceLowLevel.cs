@@ -151,9 +151,11 @@ namespace MagentoAccess.Services
 			return await this.InvokeCallAsync< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true ).ConfigureAwait( false );
 		}
 
-		public async Task< GetProductsResponse > GetProductsAsync()
+		public async Task< GetProductsResponse > GetProductsAsync( int page, int limit )
 		{
-			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( "products", true ).ConfigureAwait( false );
+			var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
+			var resultUrl = string.Format( "{0}?{1}", "products", limitFilter );
+			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( resultUrl, true ).ConfigureAwait( false );
 		}
 
 		public GetStockItemsResponse GetInventory()
