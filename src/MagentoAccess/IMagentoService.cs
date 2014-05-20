@@ -13,13 +13,9 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Order > > GetOrdersAsync();
 
-		void UpdateProducts( IEnumerable< InventoryItem > products );
-
-		//Task UpdateProductsAsync(IEnumerable<InventoryStatusRequest> products);
+		Task UpdateProductsAsync( IEnumerable< InventoryItem > products );
 
 		Task< IEnumerable< Product > > GetProductsAsync();
-
-		//Task<IEnumerable<Item>> GetProductsAsync();
 
 		//Task<IEnumerable<Item>> GetProductsAsync(DateTime createTimeFrom);
 

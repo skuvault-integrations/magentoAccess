@@ -161,7 +161,7 @@ namespace MagentoAccess.Services
 			return this.InvokeCall< MegentoInventoryResponseParser, GetStockItemsResponse >( "stockitems", true );
 		}
 
-		public PutStockItemsResponse PutInventory( IEnumerable< InventoryItem > inventoryItems )
+		public async Task< PutStockItemsResponse > PutInventoryAsync( IEnumerable< InventoryItem > inventoryItems )
 		{
 			var inventoryItemsFormated = inventoryItems.Select( x =>
 			{
@@ -178,7 +178,7 @@ namespace MagentoAccess.Services
 
 			var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
 
-			return this.InvokeCall< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) );
+			return await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) ).ConfigureAwait( false );
 		}
 
 		public async Task< GetOrdersResponse > GetOrdersAsync()

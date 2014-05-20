@@ -23,7 +23,7 @@ namespace MagentoAccess.Services
 
 		GetStockItemsResponse GetInventory();
 
-		PutStockItemsResponse PutInventory( IEnumerable< InventoryItem > inventoryItems );
+		Task< PutStockItemsResponse > PutInventoryAsync( IEnumerable< InventoryItem > inventoryItems );
 
 		Task< GetOrdersResponse > GetOrdersAsync();
 

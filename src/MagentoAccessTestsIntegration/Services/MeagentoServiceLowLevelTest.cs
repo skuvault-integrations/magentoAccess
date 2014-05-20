@@ -55,10 +55,12 @@ namespace MagentoAccessTestsIntegration.Services
 			var inventoryItems = new List< InventoryItem > { new InventoryItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 277, StockId = "1" } };
 
 			//------------ Act
-			var res = this._service.PutInventory( inventoryItems );
+			var putInventoryTask = this._service.PutInventoryAsync( inventoryItems );
+			putInventoryTask.Wait();
 
 			//------------ Assert
-			res.Items.Count.Should().Be( inventoryItems.Count );
+			putInventoryTask.Result.Items.Count.Should().Be( inventoryItems.Count );
+			putInventoryTask.Result.Items.TrueForAll(x => x.Code == "200").Should().BeTrue();
 		}
 
 		[ Test ]

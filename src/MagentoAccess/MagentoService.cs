@@ -64,11 +64,11 @@ namespace MagentoAccess
 			return res.Products;
 		}
 
-		public void UpdateProducts( IEnumerable< InventoryItem > products )
+		public async Task UpdateProductsAsync( IEnumerable< InventoryItem > products )
 		{
 			this.Authorize();
 
-			this.MagentoServiceLowLevel.PutInventory( products );
+			await this.MagentoServiceLowLevel.PutInventoryAsync(products).ConfigureAwait(false);
 		}
 
 		private void Authorize()
