@@ -17,8 +17,6 @@ namespace MagentoAccess.Services
 
 		Task PopulateAccessToken();
 
-		GetOrdersResponse GetOrders();
-
 		GetProductResponse GetProduct( string id );
 
 		GetProductsResponse GetProducts();
@@ -26,6 +24,8 @@ namespace MagentoAccess.Services
 		GetStockItemsResponse GetInventory();
 
 		PutStockItemsResponse PutInventory( IEnumerable< InventoryItem > inventoryItems );
+
+		GetOrdersResponse GetOrders();
 
 		GetOrdersResponse GetOrders( DateTime dateFrom, DateTime dateTo );
 	}
