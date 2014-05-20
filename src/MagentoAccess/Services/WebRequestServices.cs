@@ -65,18 +65,18 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public void PopulateRequestByBody(string body, HttpWebRequest webRequest)
+		public void PopulateRequestByBody( string body, HttpWebRequest webRequest )
 		{
-			if (!string.IsNullOrWhiteSpace(body))
+			if( !string.IsNullOrWhiteSpace( body ) )
 			{
-				var encodedBody = new UTF8Encoding().GetBytes(body);
+				var encodedBody = new UTF8Encoding().GetBytes( body );
 
 				webRequest.ContentLength = encodedBody.Length;
 				webRequest.ContentType = "text/xml";
 				var getRequestStremTask = webRequest.GetRequestStreamAsync();
 				getRequestStremTask.Wait();
-				using (var newStream = getRequestStremTask.Result)
-					newStream.Write(encodedBody, 0, encodedBody.Length);
+				using( var newStream = getRequestStremTask.Result )
+					newStream.Write( encodedBody, 0, encodedBody.Length );
 			}
 		}
 		#endregion
@@ -84,30 +84,30 @@ namespace MagentoAccess.Services
 		#region ResponseHanding
 		public Stream GetResponseStream( WebRequest webRequest )
 		{
-			this.LogTraceGetResponseStarted(webRequest);
+			this.LogTraceGetResponseStarted( webRequest );
 			try
 			{
-				using (var response = (HttpWebResponse)webRequest.GetResponse())
-				using (var dataStream = response.GetResponseStream())
+				using( var response = ( HttpWebResponse )webRequest.GetResponse() )
+				using( var dataStream = response.GetResponseStream() )
 				{
 					var memoryStream = new MemoryStream();
-					if (dataStream != null)
-						dataStream.CopyTo(memoryStream, 0x100);
+					if( dataStream != null )
+						dataStream.CopyTo( memoryStream, 0x100 );
 					memoryStream.Position = 0;
-					this.LogTraceGetResponseEnded(webRequest,memoryStream);
+					this.LogTraceGetResponseEnded( webRequest, memoryStream );
 					return memoryStream;
 				}
 			}
 			catch
 			{
-				this.LogTraceGetResponseException(webRequest);
+				this.LogTraceGetResponseException( webRequest );
 				throw;
 			}
 		}
 
 		public async Task< Stream > GetResponseStreamAsync( WebRequest webRequest )
 		{
-			this.LogTraceGetResponseAsyncStarted(webRequest);
+			this.LogTraceGetResponseAsyncStarted( webRequest );
 			try
 			{
 				using( var response = ( HttpWebResponse )await webRequest.GetResponseAsync().ConfigureAwait( false ) )
@@ -116,67 +116,65 @@ namespace MagentoAccess.Services
 					var memoryStream = new MemoryStream();
 					await dataStream.CopyToAsync( memoryStream, 0x100 ).ConfigureAwait( false );
 					memoryStream.Position = 0;
-					this.LogTraceGetResponseAsyncEnded(webRequest, memoryStream);
+					this.LogTraceGetResponseAsyncEnded( webRequest, memoryStream );
 					return memoryStream;
 				}
 			}
 			catch
 			{
-				this.LogTraceGetResponseAsyncException(webRequest);
+				this.LogTraceGetResponseAsyncException( webRequest );
 				throw;
 			}
 		}
 		#endregion
 
-
-
 		#region logging
-		private void LogTraceGetResponseStarted(WebRequest webRequest)
+		private void LogTraceGetResponseStarted( WebRequest webRequest )
 		{
-			this.Log().Trace("[magento] Get response url:[0} started.", webRequest.RequestUri);
+			this.Log().Trace( "[magento] Get response url:[0} started.", webRequest.RequestUri );
 		}
 
-		private void LogTraceGetResponseEnded(WebRequest webRequest, Stream webResponseStream)
+		private void LogTraceGetResponseEnded( WebRequest webRequest, Stream webResponseStream )
 		{
-			using (Stream streamCopy = new MemoryStream((int)webResponseStream.Length))
+			using( Stream streamCopy = new MemoryStream( ( int )webResponseStream.Length ) )
 			{
 				var sourcePos = webResponseStream.Position;
-				webResponseStream.CopyTo(streamCopy);
+				webResponseStream.CopyTo( streamCopy );
 				webResponseStream.Position = sourcePos;
 				streamCopy.Position = 0;
 
-				var responseStr = new StreamReader(streamCopy).ReadToEnd();
-				this.Log().Trace("[magento] Get response url:{0} ended with {1}.", webRequest.RequestUri, responseStr);
+				var responseStr = new StreamReader( streamCopy ).ReadToEnd();
+				this.Log().Trace( "[magento] Get response url:{0} ended with {1}.", webRequest.RequestUri, responseStr );
 			}
 		}
 
-		private void LogTraceGetResponseAsyncStarted(WebRequest webRequest)
+		private void LogTraceGetResponseAsyncStarted( WebRequest webRequest )
 		{
-			this.Log().Trace("[magento] Get response async url:[0} started.", webRequest.RequestUri);
+			this.Log().Trace( "[magento] Get response async url:[0} started.", webRequest.RequestUri );
 		}
 
-		private void LogTraceGetResponseAsyncEnded(WebRequest webRequest, Stream webResponseStream)
+		private void LogTraceGetResponseAsyncEnded( WebRequest webRequest, Stream webResponseStream )
 		{
-			using (Stream streamCopy = new MemoryStream((int)webResponseStream.Length))
+			using( Stream streamCopy = new MemoryStream( ( int )webResponseStream.Length ) )
 			{
 				var sourcePos = webResponseStream.Position;
-				webResponseStream.CopyTo(streamCopy);
+				webResponseStream.CopyTo( streamCopy );
 				webResponseStream.Position = sourcePos;
 				streamCopy.Position = 0;
 
-				var responseStr = new StreamReader(streamCopy).ReadToEnd();
-				this.Log().Trace("[magento] Get response async url:{0} ended with {1}.", webRequest.RequestUri, responseStr);
+				var responseStr = new StreamReader( streamCopy ).ReadToEnd();
+				this.Log().Trace( "[magento] Get response async url:{0} ended with {1}.", webRequest.RequestUri, responseStr );
 			}
 		}
 
-		private void LogTraceGetResponseException(WebRequest webRequest)
+		private void LogTraceGetResponseException( WebRequest webRequest )
 		{
-			this.Log().Trace("[magento] Get response url:[0} throw an exception .", webRequest.RequestUri);
+			this.Log().Trace( "[magento] Get response url:[0} throw an exception .", webRequest.RequestUri );
 		}
 
-		private void LogTraceGetResponseAsyncException(WebRequest webRequest)
+		private void LogTraceGetResponseAsyncException( WebRequest webRequest )
 		{
-			this.Log().Trace("[magento] Get response async url:[0} throw an exception .", webRequest.RequestUri);
+			this.Log().Trace( "[magento] Get response async url:[0} throw an exception .", webRequest.RequestUri );
 		}
 		#endregion
 	}

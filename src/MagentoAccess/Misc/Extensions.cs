@@ -15,8 +15,8 @@ namespace MagentoAccess.Misc
 
 		public static string ToUrlParameterString( this DateTime dateTime )
 		{
-			var strRes = XmlConvert.ToString(dateTime, "yyyy-MM-ddTHH:mm:ss");
-			var result = strRes.Replace("T", "%20");
+			var strRes = XmlConvert.ToString( dateTime, "yyyy-MM-ddTHH:mm:ss" );
+			var result = strRes.Replace( "T", "%20" );
 			return result;
 		}
 

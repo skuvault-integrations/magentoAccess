@@ -1,6 +1,5 @@
 ﻿using MagentoAccess;
 using MagentoAccess.Models.Credentials;
-using MagentoAccess.Services;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
@@ -13,20 +12,20 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private MagentoAccessToken _accessToken;
 		protected MagentoService _service;
 
-		[SetUp]
+		[ SetUp ]
 		public void Setup()
 		{
-			this._testData = new TestData(@"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv");
+			this._testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv" );
 			this._consumer = this._testData.GetMagentoConsumerCredentials();
 			this._authorityUrls = this._testData.GetMagentoUrls();
 			this._accessToken = this._testData.GetMagentoAccessToken();
-			this._service = new MagentoService(new MagentoAuthenticatedUserCredentials(
+			this._service = new MagentoService( new MagentoAuthenticatedUserCredentials(
 				this._accessToken.AccessToken,
 				this._accessToken.AccessTokenSecret,
 				this._authorityUrls.MagentoBaseUrl,
 				this._consumer.Secret,
 				this._consumer.Key
-				));
+				) );
 			this._service.AfterGettingToken += this._testData.CreateAccessTokenFile;
 		}
 	}

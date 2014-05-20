@@ -112,7 +112,7 @@ namespace MagentoAccess.Services.Parsers
 
 				resultOrder.StoreName = GetElementValue( x, ns, "store_name" );
 
-				resultOrder.CreatedAt = GetElementValue(x, ns, "created_at").ToDateTime();
+				resultOrder.CreatedAt = GetElementValue( x, ns, "created_at" ).ToDateTime();
 
 				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "shipping_incl_tax" ) ) )
 					resultOrder.ShippingInclTax = temp.ToDecimalDotOrComaSeparated();

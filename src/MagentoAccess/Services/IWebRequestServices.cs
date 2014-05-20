@@ -15,6 +15,6 @@ namespace MagentoAccess.Services
 
 		Task< WebRequest > CreateServiceGetRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders );
 
-		void PopulateRequestByBody(string body, HttpWebRequest webRequest);
+		void PopulateRequestByBody( string body, HttpWebRequest webRequest );
 	}
 }
