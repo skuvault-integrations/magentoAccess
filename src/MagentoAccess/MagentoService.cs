@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DotNetOpenAuth.Messaging;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
@@ -60,20 +58,20 @@ namespace MagentoAccess
 			return res.Orders;
 		}
 
-		public async Task<IEnumerable<Product>> GetProductsAsync()
+		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
 			this.Authorize();
 
-			int page = 1;
+			var page = 1;
 			const int itemsPerPage = 100;
 
-			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync(page, itemsPerPage).ConfigureAwait(false);
+			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
 
 			var productsChunk = getProductsResponse.Products;
-			if (productsChunk.Count() < itemsPerPage)
+			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk;
 
-			var receivedProducts = new List<Product>();
+			var receivedProducts = new List< Product >();
 
 			var lastReceiveProducts = productsChunk;
 
@@ -81,9 +79,9 @@ namespace MagentoAccess
 
 			do
 			{
-				receivedProducts.AddRange(productsChunk);
+				receivedProducts.AddRange( productsChunk );
 
-				var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync(++page, itemsPerPage);
+				var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync( ++page, itemsPerPage );
 				getProductsTask.Wait();
 				productsChunk = getProductsTask.Result.Products;
 
@@ -95,14 +93,12 @@ namespace MagentoAccess
 				isLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
 
 				// try to get items that was added before last iteration
-				if (isLastAndCurrentResponsesHaveTheSameProducts)
+				if( isLastAndCurrentResponsesHaveTheSameProducts )
 				{
-					var notRrepeatedItems = productsChunk.Where(x => !repeatedItems.Exists(r => r.EntityId == x.EntityId));
-					receivedProducts.AddRange(notRrepeatedItems);
+					var notRrepeatedItems = productsChunk.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
+					receivedProducts.AddRange( notRrepeatedItems );
 				}
-
-
-			} while (!isLastAndCurrentResponsesHaveTheSameProducts);
+			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
 			return receivedProducts;
 		}

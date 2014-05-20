@@ -69,12 +69,11 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var getProductsTask = this._service.GetProductsAsync(1,2);
+			var getProductsTask = this._service.GetProductsAsync( 1, 2 );
 			getProductsTask.Wait();
 
 			//------------ Assert
 			getProductsTask.Result.Products.Count().Should().Be( 2 );
-
 		}
 
 		[ Test ]
