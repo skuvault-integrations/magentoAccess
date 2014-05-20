@@ -17,8 +17,6 @@ namespace MagentoAccess.Services.Parsers
 
 			var orders = orderDataItems.Select( x =>
 			{
-				string temp;
-
 				var resultOrder = new Order();
 
 				resultOrder.OrderId = GetElementValue( x, ns, "entity_id" );
@@ -28,84 +26,57 @@ namespace MagentoAccess.Services.Parsers
 
 				resultOrder.Customer = GetElementValue( x, ns, "customer_id" );
 
-				//todo: rid of 'if' statement(in all places), just GetElementValue( x, ns, "base_discount_amount" ).ToDecimalDotOrComaSeparated()
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_discount_amount" ) ) )
-					resultOrder.BaseDiscount = temp.ToDecimalOrDefault();
+				resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_grand_total" ) ) )
-					resultOrder.BaseGrandTotal = temp.ToDecimalOrDefault();
+				resultOrder.BaseGrandTotal = GetElementValue( x, ns, "base_grand_total" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_shipping_amount" ) ) )
-					resultOrder.BaseShippingAmount = temp.ToDecimalOrDefault();
+				resultOrder.BaseShippingAmount = GetElementValue( x, ns, "base_shipping_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_shipping_tax_amount" ) ) )
-					resultOrder.BaseShippingTaxAmount = temp.ToDecimalOrDefault();
+				resultOrder.BaseShippingTaxAmount = GetElementValue( x, ns, "base_shipping_tax_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_subtotal" ) ) )
-					resultOrder.BaseSubtotal = temp.ToDecimalOrDefault();
+				resultOrder.BaseSubtotal = GetElementValue( x, ns, "base_subtotal" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_tax_amount" ) ) )
-					resultOrder.BaseTaxAmount = temp.ToDecimalOrDefault();
+				resultOrder.BaseTaxAmount = GetElementValue( x, ns, "base_tax_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_discount_amount" ) ) )
-					resultOrder.BaseDiscount = temp.ToDecimalOrDefault();
+				resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_total_paid" ) ) )
-					resultOrder.BaseTotalPaid = temp.ToDecimalOrDefault();
+				resultOrder.BaseTotalPaid = GetElementValue( x, ns, "base_total_paid" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_total_refunded" ) ) )
-					resultOrder.BaseTotalRefunded = temp.ToDecimalOrDefault();
+				resultOrder.BaseTotalRefunded = GetElementValue( x, ns, "base_total_refunded" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "discount_amount" ) ) )
-					resultOrder.DiscountAmount = temp.ToDecimalOrDefault();
+				resultOrder.DiscountAmount = GetElementValue( x, ns, "discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "grand_total" ) ) )
-					resultOrder.GrandTotal = temp.ToDecimalOrDefault();
+				resultOrder.GrandTotal = GetElementValue( x, ns, "grand_total" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "shipping_amount" ) ) )
-					resultOrder.ShippingAmount = temp.ToDecimalOrDefault();
+				resultOrder.ShippingAmount = GetElementValue( x, ns, "shipping_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "shipping_tax_amount" ) ) )
-					resultOrder.ShippingTaxAmount = temp.ToDecimalOrDefault();
+				resultOrder.ShippingTaxAmount = GetElementValue( x, ns, "shipping_tax_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "store_to_order_rate" ) ) )
-					resultOrder.StoreToOrderRate = temp.ToDecimalOrDefault();
+				resultOrder.StoreToOrderRate = GetElementValue( x, ns, "store_to_order_rate" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_discount_amount" ) ) )
-					resultOrder.BaseDiscount = temp.ToDecimalOrDefault();
+				resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "subtotal" ) ) )
-					resultOrder.Subtotal = temp.ToDecimalOrDefault();
+				resultOrder.Subtotal = GetElementValue( x, ns, "subtotal" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "tax_amount" ) ) )
-					resultOrder.TaxAmount = temp.ToDecimalOrDefault();
+				resultOrder.TaxAmount = GetElementValue( x, ns, "tax_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "total_paid" ) ) )
-					resultOrder.TotalPaid = temp.ToDecimalOrDefault();
+				resultOrder.TotalPaid = GetElementValue( x, ns, "total_paid" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "total_refunded" ) ) )
-					resultOrder.TotalRefunded = temp.ToDecimalOrDefault();
+				resultOrder.TotalRefunded = GetElementValue( x, ns, "total_refunded" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_shipping_discount_amount" ) ) )
-					resultOrder.BaseShippingDiscountAmount = temp.ToDecimalOrDefault();
+				resultOrder.BaseShippingDiscountAmount = GetElementValue( x, ns, "base_shipping_discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_subtotal_incl_tax" ) ) )
-					resultOrder.BaseSubtotalInclTax = temp.ToDecimalOrDefault();
+				resultOrder.BaseSubtotalInclTax = GetElementValue( x, ns, "base_subtotal_incl_tax" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_total_due" ) ) )
-					resultOrder.BaseTotalDue = temp.ToDecimalOrDefault();
+				resultOrder.BaseTotalDue = GetElementValue( x, ns, "base_total_due" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "base_discount_amount" ) ) )
-					resultOrder.BaseDiscount = temp.ToDecimalOrDefault();
+				resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "shipping_discount_amount" ) ) )
-					resultOrder.ShippingDiscountAmount = temp.ToDecimalOrDefault();
+				resultOrder.ShippingDiscountAmount = GetElementValue( x, ns, "shipping_discount_amount" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "subtotal_incl_tax" ) ) )
-					resultOrder.SubtotalInclTax = temp.ToDecimalOrDefault();
+				resultOrder.SubtotalInclTax = GetElementValue( x, ns, "subtotal_incl_tax" ).ToDecimalOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "total_due" ) ) )
-					resultOrder.TotalDue = temp.ToDecimalOrDefault();
+				resultOrder.TotalDue = GetElementValue( x, ns, "total_due" ).ToDecimalOrDefault();
 
 				//todo: to enum
 				resultOrder.BaseCurrencyCode = GetElementValue( x, ns, "base_currency_code" );
@@ -114,8 +85,7 @@ namespace MagentoAccess.Services.Parsers
 
 				resultOrder.CreatedAt = GetElementValue( x, ns, "created_at" ).ToDateTimeOrDefault();
 
-				if( !string.IsNullOrWhiteSpace( temp = GetElementValue( x, ns, "shipping_incl_tax" ) ) )
-					resultOrder.ShippingInclTax = temp.ToDecimalOrDefault();
+				resultOrder.ShippingInclTax = GetElementValue( x, ns, "shipping_incl_tax" ).ToDecimalOrDefault();
 
 				//todo: to enum
 				resultOrder.PaymentMethod = GetElementValue( x, ns, "payment_method" );
@@ -154,70 +124,54 @@ namespace MagentoAccess.Services.Parsers
 					resultOrder.Items = orderItemsDataItems.Select( addr =>
 					{
 						var order = new Item();
+
 						order.ItemId = GetElementValue( addr, ns, "item_id" );
+
 						order.ParentItemId = GetElementValue( addr, ns, "parent_item_id" );
+
 						order.Sku = GetElementValue( addr, ns, "sku" );
+
 						order.Name = GetElementValue( addr, ns, "name" );
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "qty_canceled" ) ) )
-							order.QtyCanceled = temp.ToDecimalOrDefault();
+						order.QtyCanceled = GetElementValue( addr, ns, "qty_canceled" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "qty_invoiced" ) ) )
-							order.QtyInvoiced = temp.ToDecimalOrDefault();
+						order.QtyInvoiced = GetElementValue( addr, ns, "qty_invoiced" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "qty_ordered" ) ) )
-							order.QtyOrdered = temp.ToDecimalOrDefault();
+						order.QtyOrdered = GetElementValue( addr, ns, "qty_ordered" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "qty_refunded" ) ) )
-							order.QtyRefunded = temp.ToDecimalOrDefault();
+						order.QtyRefunded = GetElementValue( addr, ns, "qty_refunded" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "qty_shipped" ) ) )
-							order.QtyShipped = temp.ToDecimalOrDefault();
+						order.QtyShipped = GetElementValue( addr, ns, "qty_shipped" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "price" ) ) )
-							order.Price = temp.ToDecimalOrDefault();
+						order.Price = GetElementValue( addr, ns, "price" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_price" ) ) )
-							order.BasePrice = temp.ToDecimalOrDefault();
+						order.BasePrice = GetElementValue( addr, ns, "base_price" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "original_price" ) ) )
-							order.OriginalPrice = temp.ToDecimalOrDefault();
+						order.OriginalPrice = GetElementValue( addr, ns, "original_price" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_original_price" ) ) )
-							order.BaseOriginalPrice = temp.ToDecimalOrDefault();
+						order.BaseOriginalPrice = GetElementValue( addr, ns, "base_original_price" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "tax_percent" ) ) )
-							order.TaxPercent = temp.ToDecimalOrDefault();
+						order.TaxPercent = GetElementValue( addr, ns, "tax_percent" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "tax_amount" ) ) )
-							order.TaxAmount = temp.ToDecimalOrDefault();
+						order.TaxAmount = GetElementValue( addr, ns, "tax_amount" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_tax_amount" ) ) )
-							order.BaseTaxAmount = temp.ToDecimalOrDefault();
+						order.BaseTaxAmount = GetElementValue( addr, ns, "base_tax_amount" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "discount_amount" ) ) )
-							order.DscountAmount = temp.ToDecimalOrDefault();
+						order.DscountAmount = GetElementValue( addr, ns, "discount_amount" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_discount_amount" ) ) )
-							order.BaseDiscountAmount = temp.ToDecimalOrDefault();
+						order.BaseDiscountAmount = GetElementValue( addr, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "row_total" ) ) )
-							order.RowTotal = temp.ToDecimalOrDefault();
+						order.RowTotal = GetElementValue( addr, ns, "row_total" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_row_total" ) ) )
-							order.BaseRowTotal = temp.ToDecimalOrDefault();
+						order.BaseRowTotal = GetElementValue( addr, ns, "base_row_total" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "price_incl_tax" ) ) )
-							order.PriceInclTax = temp.ToDecimalOrDefault();
+						order.PriceInclTax = GetElementValue( addr, ns, "price_incl_tax" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_price_incl_tax" ) ) )
-							order.BasePriceInclTax = temp.ToDecimalOrDefault();
+						order.BasePriceInclTax = GetElementValue( addr, ns, "base_price_incl_tax" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "row_total_incl_tax" ) ) )
-							order.RawTotalInclTax = temp.ToDecimalOrDefault();
+						order.RawTotalInclTax = GetElementValue( addr, ns, "row_total_incl_tax" ).ToDecimalOrDefault();
 
-						if( !string.IsNullOrWhiteSpace( temp = GetElementValue( addr, ns, "base_row_total_incl_tax" ) ) )
-							order.BaseRowTotalInclTax = temp.ToDecimalOrDefault();
+						order.BaseRowTotalInclTax = GetElementValue( addr, ns, "base_row_total_incl_tax" ).ToDecimalOrDefault();
 
 						return order;
 					} ).ToList();

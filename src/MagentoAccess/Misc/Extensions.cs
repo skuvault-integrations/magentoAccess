@@ -33,23 +33,23 @@ namespace MagentoAccess.Misc
 			}
 		}
 
-		public static decimal ToDecimalOrDefault(this string srcString)
+		public static decimal ToDecimalOrDefault( this string srcString )
 		{
 			decimal parsedNumber;
 
 			try
 			{
-				parsedNumber = decimal.Parse(srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+				parsedNumber = decimal.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
 			}
 			catch
 			{
 				try
 				{
-					parsedNumber = decimal.Parse(srcString, new NumberFormatInfo { NumberDecimalSeparator = "," });
+					parsedNumber = decimal.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
 				}
 				catch
 				{
-					parsedNumber = default(decimal);
+					parsedNumber = default( decimal );
 				}
 			}
 
