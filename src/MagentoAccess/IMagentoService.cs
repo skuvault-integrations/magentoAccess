@@ -16,9 +16,5 @@ namespace MagentoAccess
 		Task UpdateProductsAsync( IEnumerable< InventoryItem > products );
 
 		Task< IEnumerable< Product > > GetProductsAsync();
-
-		//Task<IEnumerable<Item>> GetProductsAsync(DateTime createTimeFrom);
-
-		//Task<IEnumerable<Item>> GetProductsAsync(DateTime createTimeFromStart, DateTime createTimeFromTo);
 	}
 }

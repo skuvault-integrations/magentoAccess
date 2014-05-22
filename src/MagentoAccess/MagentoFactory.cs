@@ -5,26 +5,16 @@ namespace MagentoAccess
 {
 	public class MagentoFactory : IMagentoFactory
 	{
-		private readonly MagentoAuthenticatedUserCredentials _userCredentials;
-		private readonly MagentoNonAuthenticatedUserCredentials _userNonAuthCredentials;
-
-		public MagentoFactory( MagentoAuthenticatedUserCredentials userCredentials )
+		public IMagentoService CreateService( MagentoAuthenticatedUserCredentials userAuthCredentials )
 		{
-			Condition.Requires( userCredentials, "userCredentials" ).IsNotNull();
-			this._userCredentials = userCredentials;
+			Condition.Requires( userAuthCredentials, "userAuthCredentials" ).IsNotNull();
+			return new MagentoService( userAuthCredentials );
 		}
 
-		public MagentoFactory( MagentoNonAuthenticatedUserCredentials userNonAuthCredentials )
+		public IMagentoService CreateService( MagentoNonAuthenticatedUserCredentials userNonAuthCredentials )
 		{
 			Condition.Requires( userNonAuthCredentials, "userNonAuthCredentials" ).IsNotNull();
-			this._userNonAuthCredentials = userNonAuthCredentials;
-		}
-
-		public IMagentoService CreateService()
-		{
-			return ( this._userCredentials != null ) ?
-				new MagentoService( this._userCredentials ) :
-				new MagentoService( this._userNonAuthCredentials );
+			return new MagentoService( userNonAuthCredentials );
 		}
 	}
 }
