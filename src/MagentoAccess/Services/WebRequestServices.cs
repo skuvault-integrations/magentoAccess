@@ -131,7 +131,7 @@ namespace MagentoAccess.Services
 		#region logging
 		private void LogTraceGetResponseStarted( WebRequest webRequest )
 		{
-			this.Log().Trace( "[magento] Get response url:[0} started.", webRequest.RequestUri );
+			this.Log().Trace( "[magento] Get response url:{0} started.", webRequest.RequestUri );
 		}
 
 		private void LogTraceGetResponseEnded( WebRequest webRequest, Stream webResponseStream )
@@ -150,7 +150,7 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseAsyncStarted( WebRequest webRequest )
 		{
-			this.Log().Trace( "[magento] Get response async url:[0} started.", webRequest.RequestUri );
+			this.Log().Trace( "[magento] Get response async url:{0} started.", webRequest.RequestUri );
 		}
 
 		private void LogTraceGetResponseAsyncEnded( WebRequest webRequest, Stream webResponseStream )
@@ -169,12 +169,12 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseException( WebRequest webRequest )
 		{
-			this.Log().Trace( "[magento] Get response url:[0} throw an exception .", webRequest.RequestUri );
+			this.Log().Trace( "[magento] Get response url:{0} throw an exception .", webRequest.RequestUri );
 		}
 
 		private void LogTraceGetResponseAsyncException( WebRequest webRequest )
 		{
-			this.Log().Trace( "[magento] Get response async url:[0} throw an exception .", webRequest.RequestUri );
+			this.Log().Trace( "[magento] Get response async url:{0} throw an exception .", webRequest.RequestUri );
 		}
 		#endregion
 	}
