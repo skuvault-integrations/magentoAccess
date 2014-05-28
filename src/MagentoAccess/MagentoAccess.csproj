@@ -79,8 +79,8 @@
     <Compile Include="Models\BaseResponse\ResponseError.cs" />
     <Compile Include="Models\Credentials\MagentoAuthenticatedUserCredentials.cs" />
     <Compile Include="Models\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
-    <Compile Include="Models\GetSrockItems\GetStockItemsResponse.cs" />
-    <Compile Include="Models\GetSrockItems\StockItem.cs" />
+    <Compile Include="Models\GetStockItems\GetStockItemsResponse.cs" />
+    <Compile Include="Models\GetStockItems\StockItem.cs" />
     <Compile Include="Models\GetOrders\Address.cs" />
     <Compile Include="Models\GetOrders\Comment.cs" />
     <Compile Include="Models\GetOrders\GetOrdersResponse.cs" />
@@ -90,9 +90,9 @@
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\GetProduct\GetProductResponse.cs" />
     <Compile Include="Models\GetProduct\StockData.cs" />
-    <Compile Include="Models\PutStockItems\InventoryItem.cs" />
-    <Compile Include="Models\PutStockItems\PutStockItemsResponse.cs" />
     <Compile Include="Models\PutStockItems\StockItem.cs" />
+    <Compile Include="Models\PutStockItems\PutStockItemsResponse.cs" />
+    <Compile Include="Models\PutStockItems\ResponseStockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MagentoAccess.Models.GetSrockItems
+namespace MagentoAccess.Models.GetStockItems
 {
 	public class GetStockItemsResponse
 	{

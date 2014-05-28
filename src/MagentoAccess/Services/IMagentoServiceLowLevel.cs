@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.GetSrockItems;
+using MagentoAccess.Models.GetStockItems;
 using MagentoAccess.Models.PutStockItems;
+using StockItem = MagentoAccess.Models.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {
@@ -21,9 +22,9 @@ namespace MagentoAccess.Services
 
 		Task< GetProductsResponse > GetProductsAsync( int page, int limit );
 
-		Task< GetStockItemsResponse > GetInventoryAsync( int page, int limit );
+		Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit );
 
-		Task< PutStockItemsResponse > PutInventoryAsync( IEnumerable< InventoryItem > inventoryItems );
+		Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems );
 
 		Task< GetOrdersResponse > GetOrdersAsync();
 

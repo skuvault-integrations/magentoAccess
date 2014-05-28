@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutStockItems;
-using StockItem = MagentoAccess.Models.GetSrockItems.StockItem;
 
 namespace MagentoAccess
 {
@@ -14,10 +13,10 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Order > > GetOrdersAsync();
 
-		Task UpdateProductsAsync( IEnumerable< InventoryItem > products );
+		Task UpdateProductsAsync( IEnumerable< StockItem > products );
 
 		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
-		Task< IEnumerable< StockItem > > GetProductsAsync();
+		Task< IEnumerable< Models.GetStockItems.StockItem > > GetProductsAsync();
 	}
 }

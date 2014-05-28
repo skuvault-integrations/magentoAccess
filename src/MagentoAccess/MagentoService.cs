@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.PutStockItems;
+using MagentoAccess.Models.GetStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
-using StockItem = MagentoAccess.Models.GetSrockItems.StockItem;
 
 namespace MagentoAccess
 {
@@ -111,7 +110,7 @@ namespace MagentoAccess
 			var page = 1;
 			const int itemsPerPage = 100;
 
-			var getProductsResponse = await this.MagentoServiceLowLevel.GetInventoryAsync( page, itemsPerPage ).ConfigureAwait( false );
+			var getProductsResponse = await this.MagentoServiceLowLevel.GetStockItemsAsync( page, itemsPerPage ).ConfigureAwait( false );
 
 			var productsChunk = getProductsResponse.Items;
 			if( productsChunk.Count() < itemsPerPage )
@@ -127,7 +126,7 @@ namespace MagentoAccess
 			{
 				receivedProducts.AddRange( productsChunk );
 
-				var getProductsTask = this.MagentoServiceLowLevel.GetInventoryAsync( ++page, itemsPerPage );
+				var getProductsTask = this.MagentoServiceLowLevel.GetStockItemsAsync( ++page, itemsPerPage );
 				getProductsTask.Wait();
 				productsChunk = getProductsTask.Result.Items;
 
@@ -150,11 +149,11 @@ namespace MagentoAccess
 			return receivedProducts;
 		}
 
-		public async Task UpdateProductsAsync( IEnumerable< InventoryItem > products )
+		public async Task UpdateProductsAsync( IEnumerable< Models.PutStockItems.StockItem > products )
 		{
 			this.Authorize();
 
-			await this.MagentoServiceLowLevel.PutInventoryAsync( products ).ConfigureAwait( false );
+			await this.MagentoServiceLowLevel.PutStockItemsAsync( products ).ConfigureAwait( false );
 		}
 
 		private void Authorize()

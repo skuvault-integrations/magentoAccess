@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
-using MagentoAccess.Models.GetSrockItems;
+using MagentoAccess.Models.GetStockItems;
 
 namespace MagentoAccess.Services.Parsers
 {

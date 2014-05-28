@@ -56,6 +56,5 @@ namespace MagentoAccess.Models.GetOrders
 		pending_payment,
 		pending_paypal,
 		processing,
-
 	}
 }

@@ -4,6 +4,6 @@ namespace MagentoAccess.Models.PutStockItems
 {
 	public class PutStockItemsResponse
 	{
-		public List< StockItem > Items { get; set; }
+		public List< ResponseStockItem > Items { get; set; }
 	}
 }

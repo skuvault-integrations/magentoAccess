@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetOrders;
@@ -21,8 +22,8 @@ namespace MagentoAccess.Services.Parsers
 
 				resultOrder.OrderId = GetElementValue( x, ns, "entity_id" );
 
-				//todo: to enum
-				resultOrder.Status = GetElementValue( x, ns, "status" );
+				OrderStatusesEnum temp;
+				resultOrder.Status = Enum.TryParse( GetElementValue( x, ns, "status" ), out temp ) ? temp : OrderStatusesEnum.unknown;
 
 				resultOrder.Customer = GetElementValue( x, ns, "customer_id" );
 

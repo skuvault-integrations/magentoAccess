@@ -13,7 +13,7 @@ namespace MagentoAccess.Services.Parsers
 
 			var successElement = root.Element( ns + "success" );
 
-			List< StockItem > items = null;
+			List< ResponseStockItem > items = null;
 
 			if( successElement != null )
 			{
@@ -23,7 +23,7 @@ namespace MagentoAccess.Services.Parsers
 
 				items = successItems.Select( x =>
 				{
-					var resultOrder = new StockItem
+					var resultOrder = new ResponseStockItem
 					{
 						Message = GetElementValue( x, ns, "message" ),
 						Code = GetElementValue( x, ns, "code" ),

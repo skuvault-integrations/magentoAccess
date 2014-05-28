@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace MagentoAccess.Models.GetOrders
 {
@@ -33,13 +32,14 @@ namespace MagentoAccess.Models.GetOrders
 
 	public static class Extensions
 	{
- 		public static bool IsShipped(this Item item)
- 		{
-			return item.QtyOrdered.CompareTo(item.QtyCanceled + item.QtyShipped) == 0;
- 		}
-		public static bool IsShipped(this Order order)
+		public static bool IsShipped( this Item item )
 		{
-			return order.Items.ToList().TrueForAll(x => x.IsShipped());
+			return item.QtyOrdered.CompareTo( item.QtyCanceled + item.QtyShipped ) == 0;
+		}
+
+		public static bool IsShipped( this Order order )
+		{
+			return order.Items.ToList().TrueForAll( x => x.IsShipped() );
 		}
 	}
 }

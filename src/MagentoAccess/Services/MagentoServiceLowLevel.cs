@@ -14,10 +14,11 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProduct;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.GetSrockItems;
+using MagentoAccess.Models.GetStockItems;
 using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services.Parsers;
 using Netco.Logging;
+using StockItem = MagentoAccess.Models.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {
@@ -158,14 +159,14 @@ namespace MagentoAccess.Services
 			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( resultUrl, true ).ConfigureAwait( false );
 		}
 
-		public async Task< GetStockItemsResponse > GetInventoryAsync( int page, int limit )
+		public async Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit )
 		{
 			var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
 			var resultUrl = string.Format( "{0}?{1}", "stockitems", limitFilter );
 			return await this.InvokeCallAsync< MegentoInventoryResponseParser, GetStockItemsResponse >( resultUrl, true ).ConfigureAwait( false );
 		}
 
-		public async Task< PutStockItemsResponse > PutInventoryAsync( IEnumerable< InventoryItem > inventoryItems )
+		public async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems )
 		{
 			var inventoryItemsFormated = inventoryItems.Select( x =>
 			{

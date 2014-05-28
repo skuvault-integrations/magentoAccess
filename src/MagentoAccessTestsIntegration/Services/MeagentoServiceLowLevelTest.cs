@@ -53,10 +53,10 @@ namespace MagentoAccessTestsIntegration.Services
 		public void PutInventory_StoreContainsInventory_ReceiveSucceessMessagesForEachRequestedItem()
 		{
 			//------------ Arrange
-			var inventoryItems = new List< InventoryItem > { new InventoryItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 277, StockId = "1" } };
+			var inventoryItems = new List< StockItem > { new StockItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 277, StockId = "1" } };
 
 			//------------ Act
-			var putInventoryTask = this._service.PutInventoryAsync( inventoryItems );
+			var putInventoryTask = this._service.PutStockItemsAsync( inventoryItems );
 			putInventoryTask.Wait();
 
 			//------------ Assert
@@ -81,7 +81,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var getInventoryTask = this._service.GetInventoryAsync( 1, 100 );
+			var getInventoryTask = this._service.GetStockItemsAsync( 1, 100 );
 			getInventoryTask.Wait();
 
 			//------------ Assert
