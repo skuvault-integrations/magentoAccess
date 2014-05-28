@@ -1,5 +1,5 @@
 ﻿using MagentoAccess;
-using MagentoAccess.Models.Credentials;
+using MagentoAccess.Models.Services.Credentials;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment

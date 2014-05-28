@@ -5,9 +5,9 @@ namespace MagentoAccessTestsIntegration
 	[ TestFixture ]
 	public class Program
 	{
-		[ Test ]
-		public void GetOrders()
-		{
+		//[ Test ]
+		//public void GetOrders()
+		//{
 			//------------ Arrange
 
 			//var fact = new MagentoFactory(new MagentoAuthenticatedUserCredentials(accessToken.AccessToken, accessToken.AccessTokenSecret, magentoUrls.MagentoBaseUrl, consumer.Key, consumer.Secret));
@@ -18,6 +18,6 @@ namespace MagentoAccessTestsIntegration
 
 			////------------ Assert
 			//orders.Should().NotBeEmpty();
-		}
+		//}
 	}
 }
