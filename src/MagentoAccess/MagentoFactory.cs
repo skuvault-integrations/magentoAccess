@@ -1,5 +1,5 @@
 ﻿using CuttingEdge.Conditions;
-using MagentoAccess.Models.Credentials;
+using MagentoAccess.Models.Services.Credentials;
 
 namespace MagentoAccess
 {

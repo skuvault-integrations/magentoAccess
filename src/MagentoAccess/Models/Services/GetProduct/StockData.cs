@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess.Models.GetProduct
+﻿namespace MagentoAccess.Models.Services.GetProduct
 {
 	public class StockData
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MagentoAccess.Models.GetProducts
+namespace MagentoAccess.Models.Services.GetProducts
 {
 	public class GetProductsResponse
 	{

@@ -76,23 +76,26 @@
     <Compile Include="MagentoService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
-    <Compile Include="Models\BaseResponse\ResponseError.cs" />
-    <Compile Include="Models\Credentials\MagentoAuthenticatedUserCredentials.cs" />
-    <Compile Include="Models\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
-    <Compile Include="Models\GetStockItems\GetStockItemsResponse.cs" />
-    <Compile Include="Models\GetStockItems\StockItem.cs" />
-    <Compile Include="Models\GetOrders\Address.cs" />
-    <Compile Include="Models\GetOrders\Comment.cs" />
-    <Compile Include="Models\GetOrders\GetOrdersResponse.cs" />
-    <Compile Include="Models\GetOrders\Item.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
-    <Compile Include="Models\GetProducts\GetProductsResponse.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
-    <Compile Include="Models\GetProduct\GetProductResponse.cs" />
-    <Compile Include="Models\GetProduct\StockData.cs" />
-    <Compile Include="Models\PutStockItems\StockItem.cs" />
-    <Compile Include="Models\PutStockItems\PutStockItemsResponse.cs" />
-    <Compile Include="Models\PutStockItems\ResponseStockItem.cs" />
+    <Compile Include="Models\PutInventory\Inventory.cs" />
+    <Compile Include="Models\Services\BaseResponse\ResponseError.cs" />
+    <Compile Include="Models\Services\Credentials\MagentoAuthenticatedUserCredentials.cs" />
+    <Compile Include="Models\Services\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
+    <Compile Include="Models\Services\GetOrders\Address.cs" />
+    <Compile Include="Models\Services\GetOrders\Comment.cs" />
+    <Compile Include="Models\Services\GetOrders\GetOrdersResponse.cs" />
+    <Compile Include="Models\Services\GetOrders\Item.cs" />
+    <Compile Include="Models\Services\GetOrders\Order.cs" />
+    <Compile Include="Models\Services\GetProducts\GetProductsResponse.cs" />
+    <Compile Include="Models\Services\GetProducts\Product.cs" />
+    <Compile Include="Models\Services\GetProduct\GetProductResponse.cs" />
+    <Compile Include="Models\Services\GetProduct\StockData.cs" />
+    <Compile Include="Models\Services\GetStockItems\GetStockItemsResponse.cs" />
+    <Compile Include="Models\Services\GetStockItems\StockItem.cs" />
+    <Compile Include="Models\Services\PutStockItems\PutStockItemsResponse.cs" />
+    <Compile Include="Models\Services\PutStockItems\ResponseStockItem.cs" />
+    <Compile Include="Models\Services\PutStockItems\StockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
@@ -111,6 +114,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

@@ -1,5 +1,8 @@
-﻿namespace MagentoAccess.Models.GetOrders
+﻿using System;
+
+namespace MagentoAccess.Models.Services.GetOrders
 {
+	[ Serializable ]
 	public class Comment
 	{
 		public string IsCustomerNotified { get; set; }

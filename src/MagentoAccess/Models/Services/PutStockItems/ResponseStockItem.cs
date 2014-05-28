@@ -1,4 +1,4 @@
-namespace MagentoAccess.Models.PutStockItems
+namespace MagentoAccess.Models.Services.PutStockItems
 {
 	public class ResponseStockItem
 	{

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.GetOrders;
+using MagentoAccess.Models.Services.GetOrders;
 
 namespace MagentoAccess.Services.Parsers
 {
@@ -114,7 +114,7 @@ namespace MagentoAccess.Services.Parsers
 						address.Suffix = GetElementValue( addr, ns, "suffix" );
 						address.Company = GetElementValue( addr, ns, "company" );
 						return address;
-					} );
+					} ).ToList();
 				}
 
 				var orderItems = x.Element( ns + "order_items" );

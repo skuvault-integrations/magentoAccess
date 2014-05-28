@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess.Models.BaseResponse
+﻿namespace MagentoAccess.Models.Services.BaseResponse
 {
 	public class ResponseError
 	{

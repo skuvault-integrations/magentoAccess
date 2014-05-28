@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using MagentoAccess.Models.PutStockItems;
+using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;

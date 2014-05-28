@@ -11,14 +11,14 @@ using DotNetOpenAuth.OAuth.ChannelElements;
 using DotNetOpenAuth.OAuth.Messages;
 using LINQtoCSV;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.GetOrders;
-using MagentoAccess.Models.GetProduct;
-using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.GetStockItems;
-using MagentoAccess.Models.PutStockItems;
+using MagentoAccess.Models.Services.GetOrders;
+using MagentoAccess.Models.Services.GetProduct;
+using MagentoAccess.Models.Services.GetProducts;
+using MagentoAccess.Models.Services.GetStockItems;
+using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services.Parsers;
 using Netco.Logging;
-using StockItem = MagentoAccess.Models.PutStockItems.StockItem;
+using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {

@@ -1,6 +1,9 @@
-﻿namespace MagentoAccess.Models.GetOrders
+﻿using System;
+
+namespace MagentoAccess.Models.Services.GetOrders
 {
-	public class Address
+	[ Serializable ]
+	public sealed class Address
 	{
 		public string Region { get; set; }
 		public string Postcode { get; set; }

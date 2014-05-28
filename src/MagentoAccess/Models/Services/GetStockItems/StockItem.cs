@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess.Models.GetStockItems
+﻿namespace MagentoAccess.Models.Services.GetStockItems
 {
 	public class StockItem
 	{

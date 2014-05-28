@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.GetStockItems;
+using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.Services.Credentials;
+using MagentoAccess.Models.Services.GetProducts;
+using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
 
@@ -42,23 +44,23 @@ namespace MagentoAccess
 				);
 		}
 
-		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
+		public async Task< IEnumerable< Order2 > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			this.Authorize();
 
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
-			return res.Orders;
+			return res.Orders.Select( x => new Order2( x ) );
 		}
 
-		public async Task< IEnumerable< Order > > GetOrdersAsync()
+		public async Task< IEnumerable< Order2 > > GetOrdersAsync()
 		{
 			this.Authorize();
 
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
-			return res.Orders;
+			return res.Orders.Select( x => new Order2( x ) );
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
+		public async Task< IEnumerable< Product2 > > GetProductsSimpleAsync()
 		{
 			this.Authorize();
 
@@ -69,7 +71,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk;
+				return productsChunk.Select( x => new Product2( x ) );
 
 			var receivedProducts = new List< Product >();
 
@@ -100,10 +102,10 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts;
+			return receivedProducts.Select( x => new Product2( x ) );
 		}
 
-		public async Task< IEnumerable< StockItem > > GetProductsAsync()
+		public async Task< IEnumerable< Product2 > > GetProductsAsync()
 		{
 			this.Authorize();
 
@@ -114,7 +116,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Items;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk;
+				return productsChunk.Select( x => new Product2( x ) );
 
 			var receivedProducts = new List< StockItem >();
 
@@ -146,14 +148,22 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts;
+			return receivedProducts.Select( x => new Product2( x ) );
 		}
 
-		public async Task UpdateProductsAsync( IEnumerable< Models.PutStockItems.StockItem > products )
+		public async Task UpdateInventoryAsync( IEnumerable< Inventory2 > products )
 		{
 			this.Authorize();
 
-			await this.MagentoServiceLowLevel.PutStockItemsAsync( products ).ConfigureAwait( false );
+			var inventoryItems = products.Select( x => new Models.Services.PutStockItems.StockItem()
+			{
+				ItemId = x.ItemId,
+				MinQty = x.MinQty,
+				ProductId = x.ProductId,
+				Qty = x.Qty,
+				StockId = x.StockId,
+			} );
+			await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
 		}
 
 		private void Authorize()

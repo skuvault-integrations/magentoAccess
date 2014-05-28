@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MagentoAccess.Models.GetOrders;
-using MagentoAccess.Models.GetProduct;
-using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.GetStockItems;
-using MagentoAccess.Models.PutStockItems;
-using StockItem = MagentoAccess.Models.PutStockItems.StockItem;
+using MagentoAccess.Models.Services.GetOrders;
+using MagentoAccess.Models.Services.GetProduct;
+using MagentoAccess.Models.Services.GetProducts;
+using MagentoAccess.Models.Services.GetStockItems;
+using MagentoAccess.Models.Services.PutStockItems;
+using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {

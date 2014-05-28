@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
-namespace MagentoAccess.Models.GetOrders
+namespace MagentoAccess.Models.Services.GetOrders
 {
+	[ Serializable ]
 	public class Item
 	{
 		public string ItemId { get; set; }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 
 namespace MagentoAccess.Misc
@@ -54,6 +56,17 @@ namespace MagentoAccess.Misc
 			}
 
 			return parsedNumber;
+		}
+
+		public static T DeepClone<T>( this T obj )
+		{
+			using( var ms = new MemoryStream() )
+			{
+				var formstter = new BinaryFormatter();
+				formstter.Serialize( ms, obj );
+				ms.Position = 0;
+				return (T)formstter.Deserialize( ms );
+			}
 		}
 	}
 }
