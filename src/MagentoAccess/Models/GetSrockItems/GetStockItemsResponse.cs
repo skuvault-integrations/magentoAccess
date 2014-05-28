@@ -4,6 +4,6 @@ namespace MagentoAccess.Models.GetSrockItems
 {
 	public class GetStockItemsResponse
 	{
-		public List< StockItem > Items { get; set; }
+		public IEnumerable< StockItem > Items { get; set; }
 	}
 }

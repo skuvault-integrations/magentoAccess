@@ -21,7 +21,7 @@ namespace MagentoAccess.Services
 
 		Task< GetProductsResponse > GetProductsAsync( int page, int limit );
 
-		GetStockItemsResponse GetInventory();
+		Task< GetStockItemsResponse > GetInventoryAsync( int page, int limit );
 
 		Task< PutStockItemsResponse > PutInventoryAsync( IEnumerable< InventoryItem > inventoryItems );
 

@@ -77,14 +77,15 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetInventory_StoreContainsInventory_ReceveInventory()
+		public void GetInventory_StoreContainsInventory_ReceiveInventory()
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._service.GetInventory();
+			var getInventoryTask = this._service.GetInventoryAsync( 1, 100 );
+			getInventoryTask.Wait();
 
 			//------------ Assert
-			res.Items.Count.Should().BeGreaterThan( 0 );
+			getInventoryTask.Result.Items.Count().Should().BeGreaterThan( 0 );
 		}
 
 		[ Test ]

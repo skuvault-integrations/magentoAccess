@@ -8,6 +8,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
+using StockItem = MagentoAccess.Models.GetSrockItems.StockItem;
 
 namespace MagentoAccess
 {
@@ -96,6 +97,52 @@ namespace MagentoAccess
 				if( isLastAndCurrentResponsesHaveTheSameProducts )
 				{
 					var notRrepeatedItems = productsChunk.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
+					receivedProducts.AddRange( notRrepeatedItems );
+				}
+			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
+
+			return receivedProducts;
+		}
+
+		public async Task< IEnumerable< StockItem > > GetInventoryAsync()
+		{
+			this.Authorize();
+
+			var page = 1;
+			const int itemsPerPage = 100;
+
+			var getProductsResponse = await this.MagentoServiceLowLevel.GetInventoryAsync( page, itemsPerPage ).ConfigureAwait( false );
+
+			var productsChunk = getProductsResponse.Items;
+			if( productsChunk.Count() < itemsPerPage )
+				return productsChunk;
+
+			var receivedProducts = new List< StockItem >();
+
+			var lastReceiveProducts = productsChunk;
+
+			bool isLastAndCurrentResponsesHaveTheSameProducts;
+
+			do
+			{
+				receivedProducts.AddRange( productsChunk );
+
+				var getProductsTask = this.MagentoServiceLowLevel.GetInventoryAsync( ++page, itemsPerPage );
+				getProductsTask.Wait();
+				productsChunk = getProductsTask.Result.Items;
+
+				//var repeatedItems = from l in lastReceiveProducts join c in productsChunk on l.EntityId equals c.EntityId select l;
+				//todo: return qty too
+				var repeatedItems = from c in productsChunk join l in lastReceiveProducts on new { ItemId = c.ItemId, BackOrders = c.BackOrders, Qty = c.Qty } equals new { ItemId = l.ItemId, BackOrders = l.BackOrders, Qty = l.Qty } select l;
+
+				lastReceiveProducts = productsChunk;
+
+				isLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
+
+				// try to get items that was added before last iteration
+				if( isLastAndCurrentResponsesHaveTheSameProducts )
+				{
+					var notRrepeatedItems = productsChunk.Where( x => !repeatedItems.Exists( r => new { ItemId = r.ItemId, BackOrders = r.BackOrders, Qty = r.Qty } != new { ItemId = x.ItemId, BackOrders = x.BackOrders, Qty = x.Qty } ) );
 					receivedProducts.AddRange( notRrepeatedItems );
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
