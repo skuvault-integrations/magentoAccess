@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutStockItems;
+using StockItem = MagentoAccess.Models.GetSrockItems.StockItem;
 
 namespace MagentoAccess
 {
@@ -15,6 +16,8 @@ namespace MagentoAccess
 
 		Task UpdateProductsAsync( IEnumerable< InventoryItem > products );
 
-		Task< IEnumerable< Product > > GetProductsAsync();
+		Task< IEnumerable< Product > > GetProductsSimpleAsync();
+
+		Task< IEnumerable< StockItem > > GetProductsAsync();
 	}
 }

@@ -6,7 +6,7 @@ namespace MagentoAccess.Models.GetOrders
 	public class Order
 	{
 		public string OrderId { get; set; }
-		public string Status { get; set; }
+		public OrderStatusesEnum Status { get; set; }
 		public string Customer { get; set; }
 		public decimal BaseDiscount { get; set; }
 		public decimal BaseGrandTotal { get; set; }
@@ -39,5 +39,23 @@ namespace MagentoAccess.Models.GetOrders
 		public IEnumerable< Address > Addresses { get; set; }
 		public IEnumerable< Item > Items { get; set; }
 		public IEnumerable< Comment > Comments { get; set; }
+	}
+
+	public enum OrderStatusesEnum
+	{
+		unknown,
+		canceled,
+		closed,
+		complete,
+		fraud,
+		holded,
+		payment_review,
+		paypal_canceled_reversal,
+		paypal_reversed,
+		pending,
+		pending_payment,
+		pending_paypal,
+		processing,
+
 	}
 }

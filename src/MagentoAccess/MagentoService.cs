@@ -59,7 +59,7 @@ namespace MagentoAccess
 			return res.Orders;
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync()
+		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
 			this.Authorize();
 
@@ -104,7 +104,7 @@ namespace MagentoAccess
 			return receivedProducts;
 		}
 
-		public async Task< IEnumerable< StockItem > > GetInventoryAsync()
+		public async Task< IEnumerable< StockItem > > GetProductsAsync()
 		{
 			this.Authorize();
 
