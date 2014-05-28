@@ -6,7 +6,6 @@ using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
-using MagentoAccess.Models.Services.GetProducts;
 using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
@@ -44,23 +43,23 @@ namespace MagentoAccess
 				);
 		}
 
-		public async Task< IEnumerable< Order2 > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
+		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			this.Authorize();
 
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
-			return res.Orders.Select( x => new Order2( x ) );
+			return res.Orders.Select( x => new Order( x ) );
 		}
 
-		public async Task< IEnumerable< Order2 > > GetOrdersAsync()
+		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
 			this.Authorize();
 
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
-			return res.Orders.Select( x => new Order2( x ) );
+			return res.Orders.Select( x => new Order( x ) );
 		}
 
-		public async Task< IEnumerable< Product2 > > GetProductsSimpleAsync()
+		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
 			this.Authorize();
 
@@ -71,9 +70,9 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product2( x ) );
+				return productsChunk.Select( x => new Product( x ) );
 
-			var receivedProducts = new List< Product >();
+			var receivedProducts = new List< Models.Services.GetProducts.Product >();
 
 			var lastReceiveProducts = productsChunk;
 
@@ -102,10 +101,10 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product2( x ) );
+			return receivedProducts.Select( x => new Product( x ) );
 		}
 
-		public async Task< IEnumerable< Product2 > > GetProductsAsync()
+		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
 			this.Authorize();
 
@@ -116,7 +115,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Items;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product2( x ) );
+				return productsChunk.Select( x => new Product( x ) );
 
 			var receivedProducts = new List< StockItem >();
 
@@ -148,10 +147,10 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product2( x ) );
+			return receivedProducts.Select( x => new Product( x ) );
 		}
 
-		public async Task UpdateInventoryAsync( IEnumerable< Inventory2 > products )
+		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
 			this.Authorize();
 

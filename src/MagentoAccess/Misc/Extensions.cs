@@ -58,14 +58,14 @@ namespace MagentoAccess.Misc
 			return parsedNumber;
 		}
 
-		public static T DeepClone<T>( this T obj )
+		public static T DeepClone< T >( this T obj )
 		{
 			using( var ms = new MemoryStream() )
 			{
 				var formstter = new BinaryFormatter();
 				formstter.Serialize( ms, obj );
 				ms.Position = 0;
-				return (T)formstter.Deserialize( ms );
+				return ( T )formstter.Deserialize( ms );
 			}
 		}
 	}

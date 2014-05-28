@@ -9,14 +9,14 @@ namespace MagentoAccess
 {
 	public interface IMagentoService
 	{
-		Task< IEnumerable< Order2 > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo );
+		Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo );
 
-		Task< IEnumerable< Order2 > > GetOrdersAsync();
+		Task< IEnumerable< Order > > GetOrdersAsync();
 
-		Task UpdateInventoryAsync( IEnumerable< Inventory2 > products );
+		Task UpdateInventoryAsync( IEnumerable< Inventory > products );
 
-		Task< IEnumerable< Product2 > > GetProductsSimpleAsync();
+		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
-		Task< IEnumerable< Product2 > > GetProductsAsync();
+		Task< IEnumerable< Product > > GetProductsAsync();
 	}
 }

@@ -1,9 +1,8 @@
-﻿using MagentoAccess.Models.Services.GetProducts;
-using MagentoAccess.Models.Services.GetStockItems;
+﻿using MagentoAccess.Models.Services.GetStockItems;
 
 namespace MagentoAccess.Models.GetProducts
 {
-	public class Product2
+	public class Product
 	{
 		public string EntityId { get; set; }
 		public string Sku { get; set; }
@@ -11,7 +10,7 @@ namespace MagentoAccess.Models.GetProducts
 		public string Name { get; set; }
 		public string Description { get; set; }
 
-		public Product2( Product product )
+		public Product( Services.GetProducts.Product product )
 		{
 			this.EntityId = product.EntityId;
 			this.Sku = product.Sku;
@@ -21,7 +20,7 @@ namespace MagentoAccess.Models.GetProducts
 			this.EntityId = product.EntityId;
 		}
 
-		public Product2( StockItem stockItem )
+		public Product( StockItem stockItem )
 		{
 			this.EntityId = stockItem.ItemId;
 		}

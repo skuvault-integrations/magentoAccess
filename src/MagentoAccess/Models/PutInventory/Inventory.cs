@@ -1,6 +1,6 @@
 ﻿namespace MagentoAccess.Models.PutInventory
 {
-	public class Inventory2
+	public class Inventory
 	{
 		public string ItemId { get; set; }
 		public string ProductId { get; set; }
