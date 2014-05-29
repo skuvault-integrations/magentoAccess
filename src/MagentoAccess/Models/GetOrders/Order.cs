@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using MagentoAccess.Models.Services.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
 {
@@ -10,12 +11,11 @@ namespace MagentoAccess.Models.GetOrders
 		}
 	}
 
-
 	public static class OrderExtensions
 	{
 		public static bool IsShipped(this Order order)
 		{
-			return order.Items.ToList().TrueForAll(x => (x.QtyOrdered - x.QtyCanceled) == (x.QtyShipped));
+			return order.Items.ToList().TrueForAll(x => x.IsShipped());
 		}
 	}
 }
