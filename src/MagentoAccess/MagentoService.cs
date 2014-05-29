@@ -70,7 +70,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product( x ) );
+				return productsChunk.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 
 			var receivedProducts = new List< Models.Services.GetProducts.Product >();
 
@@ -101,7 +101,7 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product( x ) );
+			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
@@ -115,7 +115,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Items;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product( x ) );
+				return productsChunk.Select( x => new Product { EntityId = x.ItemId } );
 
 			var receivedProducts = new List< StockItem >();
 
@@ -147,7 +147,7 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product( x ) );
+			return receivedProducts.Select( x => new Product { EntityId = x.ItemId } );
 		}
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
