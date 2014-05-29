@@ -13,42 +13,42 @@ namespace MagentoAccess.Models.Services.GetOrders
 
 		public Order( Order order )
 		{
-			var t = order.DeepClone();
+			var clone = order.DeepClone();
 
-			this.OrderId = t.OrderId;
-			this.Status = t.Status;
-			this.Customer = t.Customer;
-			this.BaseDiscount = t.BaseDiscount;
-			this.BaseGrandTotal = t.BaseGrandTotal;
-			this.BaseShippingAmount = t.BaseShippingAmount;
-			this.BaseShippingTaxAmount = t.BaseShippingTaxAmount;
-			this.BaseSubtotal = t.BaseSubtotal;
-			this.BaseTaxAmount = t.BaseTaxAmount;
-			this.BaseTotalPaid = t.BaseTotalPaid;
-			this.BaseTotalRefunded = t.BaseTotalRefunded;
-			this.DiscountAmount = t.DiscountAmount;
-			this.GrandTotal = t.GrandTotal;
-			this.ShippingAmount = t.ShippingAmount;
-			this.ShippingTaxAmount = t.ShippingTaxAmount;
-			this.StoreToOrderRate = t.StoreToOrderRate;
-			this.Subtotal = t.Subtotal;
-			this.TaxAmount = t.TaxAmount;
-			this.TotalPaid = t.TotalPaid;
-			this.TotalRefunded = t.TotalRefunded;
-			this.BaseShippingDiscountAmount = t.BaseShippingDiscountAmount;
-			this.BaseSubtotalInclTax = t.BaseSubtotalInclTax;
-			this.BaseTotalDue = t.BaseTotalDue;
-			this.ShippingDiscountAmount = t.ShippingDiscountAmount;
-			this.SubtotalInclTax = t.SubtotalInclTax;
-			this.TotalDue = t.TotalDue;
-			this.BaseCurrencyCode = t.BaseCurrencyCode;
-			this.StoreName = t.StoreName;
-			this.CreatedAt = t.CreatedAt;
-			this.ShippingInclTax = t.ShippingInclTax;
-			this.PaymentMethod = t.PaymentMethod;
-			this.Addresses = t.Addresses;
-			this.Items = t.Items;
-			this.Comments = t.Comments;
+			this.OrderId = clone.OrderId;
+			this.Status = clone.Status;
+			this.Customer = clone.Customer;
+			this.BaseDiscount = clone.BaseDiscount;
+			this.BaseGrandTotal = clone.BaseGrandTotal;
+			this.BaseShippingAmount = clone.BaseShippingAmount;
+			this.BaseShippingTaxAmount = clone.BaseShippingTaxAmount;
+			this.BaseSubtotal = clone.BaseSubtotal;
+			this.BaseTaxAmount = clone.BaseTaxAmount;
+			this.BaseTotalPaid = clone.BaseTotalPaid;
+			this.BaseTotalRefunded = clone.BaseTotalRefunded;
+			this.DiscountAmount = clone.DiscountAmount;
+			this.GrandTotal = clone.GrandTotal;
+			this.ShippingAmount = clone.ShippingAmount;
+			this.ShippingTaxAmount = clone.ShippingTaxAmount;
+			this.StoreToOrderRate = clone.StoreToOrderRate;
+			this.Subtotal = clone.Subtotal;
+			this.TaxAmount = clone.TaxAmount;
+			this.TotalPaid = clone.TotalPaid;
+			this.TotalRefunded = clone.TotalRefunded;
+			this.BaseShippingDiscountAmount = clone.BaseShippingDiscountAmount;
+			this.BaseSubtotalInclTax = clone.BaseSubtotalInclTax;
+			this.BaseTotalDue = clone.BaseTotalDue;
+			this.ShippingDiscountAmount = clone.ShippingDiscountAmount;
+			this.SubtotalInclTax = clone.SubtotalInclTax;
+			this.TotalDue = clone.TotalDue;
+			this.BaseCurrencyCode = clone.BaseCurrencyCode;
+			this.StoreName = clone.StoreName;
+			this.CreatedAt = clone.CreatedAt;
+			this.ShippingInclTax = clone.ShippingInclTax;
+			this.PaymentMethod = clone.PaymentMethod;
+			this.Addresses = clone.Addresses;
+			this.Items = clone.Items;
+			this.Comments = clone.Comments;
 		}
 
 		public string OrderId { get; set; }
