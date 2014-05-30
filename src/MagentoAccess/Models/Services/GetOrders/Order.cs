@@ -82,9 +82,9 @@ namespace MagentoAccess.Models.Services.GetOrders
 		public DateTime CreatedAt { get; set; }
 		public decimal ShippingInclTax { get; set; }
 		public string PaymentMethod { get; set; }
-		public IEnumerable< Address > Addresses { get; set; }
-		public IEnumerable< Item > Items { get; set; }
-		public IEnumerable< Comment > Comments { get; set; }
+		public List< Address > Addresses { get; set; }
+		public List< Item > Items { get; set; }
+		public List< Comment > Comments { get; set; }
 	}
 
 	[ Serializable ]
