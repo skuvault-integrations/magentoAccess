@@ -83,6 +83,9 @@ namespace MagentoAccess
 		{
 			this.Authorize();
 
+			if( !products.Any() )
+				return;
+
 			var inventoryItems = products.Select( x => new StockItem()
 			{
 				ItemId = x.ItemId,
