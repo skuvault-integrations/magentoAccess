@@ -37,6 +37,8 @@ namespace MagentoAccess.Services
 		private DesktopConsumer _consumer;
 		private string _accessToken;
 		private string _accessTokenSecret;
+		private AuthenticationManager _authenticationManager;
+		private InMemoryTokenManager _tokenManager;
 
 		protected IWebRequestServices webRequestServices { get; set; }
 
@@ -147,7 +149,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task RequestVerificationKey()
+		public Uri RequestVerificationUri()
 		{
 			try
 			{
@@ -160,25 +162,41 @@ namespace MagentoAccess.Services
 					ProtocolVersion = ProtocolVersion.V10a,
 				};
 
-				var tokenManager = new InMemoryTokenManager();
-				tokenManager.ConsumerKey = this._consumerKey;
-				tokenManager.ConsumerSecret = this._consumerSecretKey;
+				this._tokenManager = new InMemoryTokenManager();
+				this._tokenManager.ConsumerKey = this._consumerKey;
+				this._tokenManager.ConsumerSecret = this._consumerSecretKey;
 
-				this._consumer = new DesktopConsumer( service, tokenManager );
+				this._consumer = new DesktopConsumer( service, this._tokenManager );
 
 				this._accessToken = string.Empty;
 
-				if( service.ProtocolVersion == ProtocolVersion.V10a )
-				{
-					var authenticationManager = new AuthenticationManager( this._consumer );
+				this._authenticationManager = new AuthenticationManager( this._consumer );
 
-					var verifiedCode = await authenticationManager.GetVerifiedCodeAsync().ConfigureAwait( false );
-					this._accessToken = authenticationManager.GetAccessToken( verifiedCode );
-					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
-				}
+				var verificationUri = this._authenticationManager.GetVerificationUri();
+
+				return verificationUri;
 			}
-			catch( ProtocolException )
+				//catch (ProtocolException)
+			catch
 			{
+				return null;
+			}
+		}
+
+		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode )
+		{
+			try
+			{
+				this._accessToken = string.Empty;
+
+				this._accessToken = this._authenticationManager.GetAccessToken( verificationCode );
+
+				this._accessTokenSecret = this._tokenManager.GetTokenSecret( this._accessToken );
+			}
+				//catch (ProtocolException)
+			catch
+			{
+				return;
 			}
 		}
 
@@ -336,6 +354,7 @@ namespace MagentoAccess.Services
 			return verificationUri;
 		}
 
+		//todo: inject as action
 		public async Task< string > GetVerifiedCodeAsync()
 		{
 			var browserAuthorizationLocation = this.GetVerificationUri();

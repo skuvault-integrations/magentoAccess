@@ -184,6 +184,7 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty } );
 		}
 
+		//todo: rid of 
 		private void Authorize()
 		{
 			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
@@ -195,5 +196,16 @@ namespace MagentoAccess
 					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 			}
 		}
+
+		public Uri RequestVerificationUri()
+		{
+			return this.MagentoServiceLowLevel.RequestVerificationUri();
+		}
+
+		public void PopulateAccessTokenAndAccessTokenSecret(string verificationCode)
+		{
+			this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret(verificationCode);
+		}
+
 	}
 }
