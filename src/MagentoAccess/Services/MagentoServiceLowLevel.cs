@@ -136,9 +136,44 @@ namespace MagentoAccess.Services
 
 				if( service.ProtocolVersion == ProtocolVersion.V10a )
 				{
-					var authorizer = new Authorize( this._consumer );
+					var authorizer = new AuthenticationManager( this._consumer );
 					var verifiedCode = await authorizer.GetVerifiedCodeAsync().ConfigureAwait( false );
 					this._accessToken = authorizer.GetAccessToken( verifiedCode );
+					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
+				}
+			}
+			catch( ProtocolException )
+			{
+			}
+		}
+
+		public async Task RequestVerificationKey()
+		{
+			try
+			{
+				var service = new ServiceProviderDescription
+				{
+					RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
+					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					ProtocolVersion = ProtocolVersion.V10a,
+				};
+
+				var tokenManager = new InMemoryTokenManager();
+				tokenManager.ConsumerKey = this._consumerKey;
+				tokenManager.ConsumerSecret = this._consumerSecretKey;
+
+				this._consumer = new DesktopConsumer( service, tokenManager );
+
+				this._accessToken = string.Empty;
+
+				if( service.ProtocolVersion == ProtocolVersion.V10a )
+				{
+					var authenticationManager = new AuthenticationManager( this._consumer );
+
+					var verifiedCode = await authenticationManager.GetVerifiedCodeAsync().ConfigureAwait( false );
+					this._accessToken = authenticationManager.GetAccessToken( verifiedCode );
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
 			}
@@ -283,21 +318,27 @@ namespace MagentoAccess.Services
 		public string VerifierCode { get; set; }
 	}
 
-	public partial class Authorize
+	public partial class AuthenticationManager
 	{
 		private readonly DesktopConsumer consumer;
 		private string requestToken;
 		private string verificationKey;
 		internal string AccessToken { get; set; }
 
-		internal Authorize( DesktopConsumer consumer )
+		internal AuthenticationManager( DesktopConsumer consumer )
 		{
 			this.consumer = consumer;
 		}
 
+		public Uri GetVerificationUri()
+		{
+			var verificationUri = this.consumer.RequestUserAuthorization( null, null, out this.requestToken );
+			return verificationUri;
+		}
+
 		public async Task< string > GetVerifiedCodeAsync()
 		{
-			var browserAuthorizationLocation = this.consumer.RequestUserAuthorization( null, null, out this.requestToken );
+			var browserAuthorizationLocation = this.GetVerificationUri();
 			Process.Start( browserAuthorizationLocation.AbsoluteUri );
 
 			var verifierCode = await Task.Factory.StartNew( () =>
