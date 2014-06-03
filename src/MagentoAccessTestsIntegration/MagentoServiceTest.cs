@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using FluentAssertions;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -32,6 +33,25 @@ namespace MagentoAccessTestsIntegration
 
 			//------------ Assert
 			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();
+		}
+
+		[Test]
+		public void GetProducts_UserHasNotGotAccessTokens_AuthCalled()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			var Uri = this._serviceNotAuth.RequestVerificationUri();
+
+			Process.Start(Uri.AbsoluteUri);
+
+			var verificationCode = string.Empty;
+
+			this._serviceNotAuth.PopulateAccessTokenAndAccessTokenSecret(verificationCode);
+
+			//------------ Assert
+			_serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
+			_serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 	}
 }

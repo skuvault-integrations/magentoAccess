@@ -11,6 +11,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private MagentoUrls _authorityUrls;
 		private MagentoAccessToken _accessToken;
 		protected MagentoService _service;
+		protected MagentoService _serviceNotAuth;
 
 		[ SetUp ]
 		public void Setup()
@@ -35,7 +36,16 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					this._authorityUrls.MagentoBaseUrl,
 					this._consumer.Secret,
 					this._consumer.Key
-					) );
+					));
+
+			this._serviceNotAuth = new MagentoService(new MagentoNonAuthenticatedUserCredentials(
+					this._consumer.Key,
+					this._consumer.Secret,
+					this._authorityUrls.MagentoBaseUrl,
+					this._authorityUrls.RequestTokenUrl,
+					this._authorityUrls.AuthorizeUrl,
+					this._authorityUrls.AccessTokenUrl
+					));
 
 			//if( this._accessToken == null )
 			//{
@@ -51,7 +61,9 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			//	this._consumer.Secret,
 			//	this._consumer.Key
 			//	) );
+
 			this._service.AfterGettingToken += this._testData.CreateAccessTokenFile;
+			this._serviceNotAuth.AfterGettingToken += this._testData.CreateAccessTokenFile;
 		}
 	}
 }
