@@ -13,9 +13,9 @@ namespace MagentoAccess.Models.GetOrders
 
 	public static class OrderExtensions
 	{
-		public static bool IsShipped(this Order order)
+		public static bool IsShipped( this Order order )
 		{
-			return order.Items.ToList().TrueForAll(x => x.IsShipped());
+			return order.Items.ToList().TrueForAll( x => x.IsShipped() );
 		}
 	}
 }

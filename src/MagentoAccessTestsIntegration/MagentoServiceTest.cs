@@ -27,7 +27,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._service.GetProductsSimpleAsync();
+			var getProductsTask = this._service.GetProductsAsync();
 			getProductsTask.Wait();
 
 			//------------ Assert

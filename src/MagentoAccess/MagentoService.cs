@@ -6,7 +6,7 @@ using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
-using MagentoAccess.Models.Services.GetStockItems;
+using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
 
@@ -63,6 +63,39 @@ namespace MagentoAccess
 		{
 			this.Authorize();
 
+			return await this.GetProductsWithIdSkuNameDescriptionPriceAsync();
+		}
+
+		public async Task< IEnumerable< Product > > GetProductsAsync()
+		{
+			this.Authorize();
+
+			var productsWithQty = await this.GetProductsWithIdQty().ConfigureAwait( false );
+
+			var productsWithSku = await this.GetProductsWithIdSkuNameDescriptionPriceAsync().ConfigureAwait( false );
+
+			var res = from pq in productsWithQty join ps in productsWithSku on pq.EntityId equals ps.EntityId select new Product() { Description = ps.Description, EntityId = ps.EntityId, Name = ps.Name, Sku = ps.Sku, Price = ps.Price, Qty = pq.Qty };
+
+			return res;
+		}
+
+		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
+		{
+			this.Authorize();
+
+			var inventoryItems = products.Select( x => new StockItem()
+			{
+				ItemId = x.ItemId,
+				MinQty = x.MinQty,
+				ProductId = x.ProductId,
+				Qty = x.Qty,
+				StockId = x.StockId,
+			} );
+			await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+		}
+
+		private async Task< IEnumerable< Product > > GetProductsWithIdSkuNameDescriptionPriceAsync()
+		{
 			var page = 1;
 			const int itemsPerPage = 100;
 
@@ -104,10 +137,8 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync()
+		private async Task< IEnumerable< Product > > GetProductsWithIdQty()
 		{
-			this.Authorize();
-
 			var page = 1;
 			const int itemsPerPage = 100;
 
@@ -117,7 +148,7 @@ namespace MagentoAccess
 			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk.Select( x => new Product { EntityId = x.ItemId } );
 
-			var receivedProducts = new List< StockItem >();
+			var receivedProducts = new List< Models.Services.GetStockItems.StockItem >();
 
 			var lastReceiveProducts = productsChunk;
 
@@ -147,22 +178,7 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product { EntityId = x.ItemId } );
-		}
-
-		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
-		{
-			this.Authorize();
-
-			var inventoryItems = products.Select( x => new Models.Services.PutStockItems.StockItem()
-			{
-				ItemId = x.ItemId,
-				MinQty = x.MinQty,
-				ProductId = x.ProductId,
-				Qty = x.Qty,
-				StockId = x.StockId,
-			} );
-			await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty } );
 		}
 
 		private void Authorize()
