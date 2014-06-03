@@ -101,6 +101,7 @@ namespace MagentoAccess.Services
 			catch
 			{
 				this.LogTraceGetResponseException( webRequest );
+				//throw;
 				throw;
 			}
 		}
@@ -123,6 +124,7 @@ namespace MagentoAccess.Services
 			catch
 			{
 				this.LogTraceGetResponseAsyncException( webRequest );
+				//throw;
 				throw;
 			}
 		}
