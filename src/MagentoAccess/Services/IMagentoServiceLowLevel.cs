@@ -29,5 +29,7 @@ namespace MagentoAccess.Services
 		Task< GetOrdersResponse > GetOrdersAsync();
 
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime dateFrom, DateTime dateTo );
+		Uri RequestVerificationUri();
+		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode );
 	}
 }
