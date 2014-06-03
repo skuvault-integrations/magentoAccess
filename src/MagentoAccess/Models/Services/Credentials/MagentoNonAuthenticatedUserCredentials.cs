@@ -1,4 +1,7 @@
-﻿namespace MagentoAccess.Models.Services.Credentials
+﻿using System;
+using CuttingEdge.Conditions;
+
+namespace MagentoAccess.Models.Services.Credentials
 {
 	public class MagentoNonAuthenticatedUserCredentials
 	{
@@ -10,6 +13,18 @@
 			this.RequestTokenUrl = requestTokenUrl;
 			this.AuthorizeUrl = authorizeUrl;
 			this.AccessTokenUrl = accessTokenUrl;
+		}
+
+		public MagentoNonAuthenticatedUserCredentials( string consumerKey, string consumerSckretKey, string baseMagentoUrl )
+			: this(
+				consumerKey,
+				consumerSckretKey,
+				baseMagentoUrl,
+				new Uri( new Uri( baseMagentoUrl ), "oauth/initiate" ).AbsoluteUri,
+				new Uri( new Uri( baseMagentoUrl ), "admin/oauth_authorize" ).AbsoluteUri,
+				new Uri( new Uri( baseMagentoUrl ), "oauth/token" ).AbsoluteUri )
+		{
+			Condition.Ensures(baseMagentoUrl).EndsWith("/");
 		}
 
 		public string ConsumerKey { get; private set; }
