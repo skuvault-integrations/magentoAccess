@@ -1,0 +1,1 @@
+MagentoAccess is .NET wrapper around [Magento API](http://www.magentocommerce.com/api/rest/introduction.html) was created to simplify and speed up working with it.
