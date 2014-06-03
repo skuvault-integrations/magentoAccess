@@ -1,5 +1,7 @@
 ﻿using MagentoAccess;
 using MagentoAccess.Models.Services.Credentials;
+using Netco.Logging;
+using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
@@ -36,16 +38,18 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					this._authorityUrls.MagentoBaseUrl,
 					this._consumer.Secret,
 					this._consumer.Key
-					));
+					) );
 
-			this._serviceNotAuth = new MagentoService(new MagentoNonAuthenticatedUserCredentials(
-					this._consumer.Key,
-					this._consumer.Secret,
-					this._authorityUrls.MagentoBaseUrl,
-					this._authorityUrls.RequestTokenUrl,
-					this._authorityUrls.AuthorizeUrl,
-					this._authorityUrls.AccessTokenUrl
-					));
+			this._serviceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
+				this._consumer.Key,
+				this._consumer.Secret,
+				this._authorityUrls.MagentoBaseUrl,
+				this._authorityUrls.RequestTokenUrl,
+				this._authorityUrls.AuthorizeUrl,
+				this._authorityUrls.AccessTokenUrl
+				) );
+
+			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 
 			//if( this._accessToken == null )
 			//{

@@ -17,7 +17,6 @@ using MagentoAccess.Models.Services.GetProducts;
 using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services.Parsers;
-using Netco.Logging;
 using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
@@ -144,8 +143,9 @@ namespace MagentoAccess.Services
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
 			}
-			catch( ProtocolException )
+			catch( Exception ex )
 			{
+				MagentoLogger.Log().Trace( ex, "An exception occured in PopulateAccessToken" );
 			}
 		}
 
@@ -177,8 +177,9 @@ namespace MagentoAccess.Services
 				return verificationUri;
 			}
 				//catch (ProtocolException)
-			catch
+			catch( Exception ex )
 			{
+				MagentoLogger.Log().Trace( ex, "An exception occured in RequestVerificationUri" );
 				return null;
 			}
 		}
@@ -194,8 +195,9 @@ namespace MagentoAccess.Services
 				this._accessTokenSecret = this._tokenManager.GetTokenSecret( this._accessToken );
 			}
 				//catch (ProtocolException)
-			catch
+			catch( Exception ex )
 			{
+				MagentoLogger.Log().Trace( ex, "An exception occured in PopulateAccessTokenAndAccessTokenSecret" );
 				return;
 			}
 		}
@@ -268,7 +270,7 @@ namespace MagentoAccess.Services
 			}
 			catch( ProtocolException )
 			{
-				this.Log().Trace( "[magento] Invoke call partial url:{0} throw an exception .", partialUrl );
+				MagentoLogger.Log().Trace( "[magento] Invoke call partial url:{0} throw an exception .", partialUrl );
 			}
 
 			return res;
@@ -291,7 +293,7 @@ namespace MagentoAccess.Services
 			}
 			catch( ProtocolException )
 			{
-				this.Log().Trace( "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
+				MagentoLogger.Log().Trace( "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
 			}
 
 			return res;

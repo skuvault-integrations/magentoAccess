@@ -202,10 +202,9 @@ namespace MagentoAccess
 			return this.MagentoServiceLowLevel.RequestVerificationUri();
 		}
 
-		public void PopulateAccessTokenAndAccessTokenSecret(string verificationCode)
+		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode )
 		{
-			this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret(verificationCode);
+			this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode );
 		}
-
 	}
 }

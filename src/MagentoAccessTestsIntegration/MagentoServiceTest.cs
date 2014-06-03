@@ -35,7 +35,8 @@ namespace MagentoAccessTestsIntegration
 			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();
 		}
 
-		[Test]
+		[ Test ]
+		[ Ignore ]
 		public void GetProducts_UserHasNotGotAccessTokens_AuthCalled()
 		{
 			//------------ Arrange
@@ -43,15 +44,15 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			var Uri = this._serviceNotAuth.RequestVerificationUri();
 
-			Process.Start(Uri.AbsoluteUri);
+			Process.Start( Uri.AbsoluteUri );
 
 			var verificationCode = string.Empty;
 
-			this._serviceNotAuth.PopulateAccessTokenAndAccessTokenSecret(verificationCode);
+			this._serviceNotAuth.PopulateAccessTokenAndAccessTokenSecret( verificationCode );
 
 			//------------ Assert
-			_serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
-			_serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
+			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
+			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 	}
 }

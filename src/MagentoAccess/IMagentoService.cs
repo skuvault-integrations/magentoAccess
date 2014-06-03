@@ -19,6 +19,6 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Product > > GetProductsAsync();
 		Uri RequestVerificationUri();
-		void PopulateAccessTokenAndAccessTokenSecret(string verificationCode);
+		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode );
 	}
 }
