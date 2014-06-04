@@ -24,7 +24,7 @@ namespace MagentoAccess.Models.Services.Credentials
 				new Uri( new Uri( baseMagentoUrl ), "admin/oauth_authorize" ).AbsoluteUri,
 				new Uri( new Uri( baseMagentoUrl ), "oauth/token" ).AbsoluteUri )
 		{
-			Condition.Ensures(baseMagentoUrl).EndsWith("/");
+			Condition.Ensures( baseMagentoUrl ).EndsWith( "/" );
 		}
 
 		public string ConsumerKey { get; private set; }
