@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Services;
 
 namespace MagentoAccess
 {
@@ -18,7 +19,9 @@ namespace MagentoAccess
 		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
 		Task< IEnumerable< Product > > GetProductsAsync();
-		Uri RequestVerificationUri();
-		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode );
+
+		VerificationData RequestVerificationUri();
+
+		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
 	}
 }

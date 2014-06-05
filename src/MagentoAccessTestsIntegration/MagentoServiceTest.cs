@@ -42,13 +42,29 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var Uri = this._serviceNotAuth.RequestVerificationUri();
+			var verificationData = this._serviceNotAuth.RequestVerificationUri();
+			var requestToken = verificationData.RequestToken;
+			var requestTokenSecret = verificationData.RequestTokenSecret;
 
-			Process.Start( Uri.AbsoluteUri );
+			Process.Start( verificationData.Uri.AbsoluteUri );
 
 			var verificationCode = string.Empty;
 
-			this._serviceNotAuth.PopulateAccessTokenAndAccessTokenSecret( verificationCode );
+			this._serviceNotAuth.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
+
+			//------------ Assert
+			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
+			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
+		}
+
+		[ Test ]
+		[ Ignore ]
+		public void Authorize_UserHasNotGotAccessTokens_AuthCalled()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			this._serviceNotAuth.Authorize();
 
 			//------------ Assert
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();

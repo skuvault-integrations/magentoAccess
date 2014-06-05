@@ -16,6 +16,8 @@ namespace MagentoAccess.Services
 
 		string AccessTokenSecret { get; }
 
+		string RequestToken { get; }
+
 		Task PopulateAccessToken();
 
 		Task< GetProductResponse > GetProductAsync( string id );
@@ -29,7 +31,9 @@ namespace MagentoAccess.Services
 		Task< GetOrdersResponse > GetOrdersAsync();
 
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime dateFrom, DateTime dateTo );
-		Uri RequestVerificationUri();
-		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode );
+
+		VerificationData RequestVerificationUri();
+
+		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
 	}
 }

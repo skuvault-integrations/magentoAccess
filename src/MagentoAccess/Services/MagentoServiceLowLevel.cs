@@ -51,6 +51,11 @@ namespace MagentoAccess.Services
 			get { return this._accessTokenSecret; }
 		}
 
+		public string RequestToken
+		{
+			get { return this._authenticationManager.RequestToken; }
+		}
+
 		public static string GetVerifierCode()
 		{
 			var cc = new CsvContext();
@@ -149,7 +154,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public Uri RequestVerificationUri()
+		public VerificationData RequestVerificationUri()
 		{
 			try
 			{
@@ -174,7 +179,9 @@ namespace MagentoAccess.Services
 
 				var verificationUri = this._authenticationManager.GetVerificationUri();
 
-				return verificationUri;
+				var tokenSecret = this._tokenManager.GetTokenSecret( this._authenticationManager.RequestToken );
+
+				return new VerificationData { RequestToken = this._authenticationManager.RequestToken, RequestTokenSecret = tokenSecret, Uri = verificationUri };
 			}
 				//catch (ProtocolException)
 			catch( Exception ex )
@@ -184,15 +191,32 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode )
+		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
 		{
 			try
 			{
+				var service = new ServiceProviderDescription
+				{
+					RequestTokenEndpoint = new MessageReceivingEndpoint( this._requestTokenUrl, this._requestTokenHttpDeliveryMethod ),
+					UserAuthorizationEndpoint = new MessageReceivingEndpoint( this._authorizeUrl, HttpDeliveryMethods.GetRequest ),
+					AccessTokenEndpoint = new MessageReceivingEndpoint( this._accessTokenUrl, this._accessTokenHttpDeliveryMethod ),
+					TamperProtectionElements = new ITamperProtectionChannelBindingElement[] { new HmacSha1SigningBindingElement() },
+					ProtocolVersion = ProtocolVersion.V10a,
+				};
+
+				var tokenManager = new InMemoryTokenManager();
+				tokenManager.ConsumerKey = this._consumerKey;
+				tokenManager.ConsumerSecret = this._consumerSecretKey;
+				tokenManager.tokensAndSecrets[ requestToken ] = requestTokenSecret;
+
+				this._consumer = new DesktopConsumer( service, tokenManager );
+
 				this._accessToken = string.Empty;
 
-				this._accessToken = this._authenticationManager.GetAccessToken( verificationCode );
+				var authorizer = new AuthenticationManager( this._consumer, requestToken );
 
-				this._accessTokenSecret = this._tokenManager.GetTokenSecret( this._accessToken );
+				this._accessToken = authorizer.GetAccessToken( verificationCode );
+				this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 			}
 				//catch (ProtocolException)
 			catch( Exception ex )
@@ -328,6 +352,13 @@ namespace MagentoAccess.Services
 		}
 	}
 
+	public class VerificationData
+	{
+		public Uri Uri { get; set; }
+		public string RequestToken { get; set; }
+		public string RequestTokenSecret { get; set; }
+	}
+
 	internal class FlatCsvLine
 	{
 		public FlatCsvLine()
@@ -343,11 +374,23 @@ namespace MagentoAccess.Services
 		private readonly DesktopConsumer consumer;
 		private string requestToken;
 		private string verificationKey;
+
 		internal string AccessToken { get; set; }
+
+		public string RequestToken
+		{
+			get { return this.requestToken; }
+		}
 
 		internal AuthenticationManager( DesktopConsumer consumer )
 		{
 			this.consumer = consumer;
+		}
+
+		public AuthenticationManager( DesktopConsumer consumer, string requestToken )
+		{
+			this.consumer = consumer;
+			this.requestToken = requestToken;
 		}
 
 		public Uri GetVerificationUri()
