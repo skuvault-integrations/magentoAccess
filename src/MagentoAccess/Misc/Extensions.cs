@@ -73,7 +73,7 @@ namespace MagentoAccess.Misc
 
 		public static string BuildUrl( this IEnumerable< string > urlParrts )
 		{
-			string resultUrl;
+			var resultUrl = string.Empty;
 			try
 			{
 				resultUrl = urlParrts.Aggregate( ( ac, x ) =>
@@ -82,6 +82,9 @@ namespace MagentoAccess.Misc
 					x = x.StartsWith( "/" ) ? x.TrimStart( '/' ) : x;
 					return string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
 				} );
+			}
+			catch
+			{
 			}
 
 			return resultUrl;

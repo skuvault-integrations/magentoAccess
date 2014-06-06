@@ -23,7 +23,7 @@ namespace MagentoAccess.Models.Services.Credentials
 				baseMagentoUrl,
 				new List< string > { baseMagentoUrl, "oauth/initiate" }.BuildUrl(),
 				new List< string > { baseMagentoUrl, "admin/oauth_authorize" }.BuildUrl(),
-				new List< string > { baseMagentoUrl, "ooauth/token" }.BuildUrl()
+				new List< string > { baseMagentoUrl, "oauth/token" }.BuildUrl()
 				)
 		{
 			Condition.Ensures( baseMagentoUrl ).EndsWith( "/" );

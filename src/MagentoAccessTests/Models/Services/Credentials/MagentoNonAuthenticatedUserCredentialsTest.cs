@@ -18,9 +18,9 @@ namespace MagentoAccessTests.Models.Services.Credentials
 				"does not metter",
 				"http://192.168.0.104/magento/" );
 			//------------ Assert
-			magentoNonAuthenticatedUserCredentials.AccessTokenUrl.Should().Be( "http://192.168.0.104/magento/oauth/token" );
-			magentoNonAuthenticatedUserCredentials.AuthorizeUrl.Should().Be( "http://192.168.0.104/magento/admin/oauth_authorize" );
-			magentoNonAuthenticatedUserCredentials.RequestTokenUrl.Should().Be( "http://192.168.0.104/magento/oauth/initiate" );
+			magentoNonAuthenticatedUserCredentials.AccessTokenUrl.Should().Be( "http://192.168.0.104/magento/oauth/token/" );
+			magentoNonAuthenticatedUserCredentials.AuthorizeUrl.Should().Be( "http://192.168.0.104/magento/admin/oauth_authorize/" );
+			magentoNonAuthenticatedUserCredentials.RequestTokenUrl.Should().Be( "http://192.168.0.104/magento/oauth/initiate/" );
 		}
 	}
 }
