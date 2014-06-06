@@ -187,14 +187,14 @@ namespace MagentoAccess
 		//todo: rid of 
 		public void Authorize()
 		{
-			if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
-			{
-				var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
-				authorizeTask.Wait();
+			//if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
+			//{
+			//	var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
+			//	authorizeTask.Wait();
 
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-			}
+			//	if( this.AfterGettingToken != null )
+			//		this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+			//}
 		}
 
 		public VerificationData RequestVerificationUri()
