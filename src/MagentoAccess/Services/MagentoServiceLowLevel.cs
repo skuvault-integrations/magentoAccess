@@ -326,7 +326,13 @@ namespace MagentoAccess.Services
 		protected HttpWebRequest CreateMagentoStandartRequest( string partialUrl, bool needAuthorise, HttpDeliveryMethods requestType, string body )
 		{
 			var urlParrts = new List< string > { this._baseMagentoUrl, RestApiUrl, partialUrl }.Where( x => !string.IsNullOrWhiteSpace( x ) ).ToList();
-			var locationUri = string.Join( "/", urlParrts );
+			var locationUri = urlParrts.Aggregate( ( ac, x ) =>
+			{
+				x = x.EndsWith( "/" ) ? x : x + "/";
+				x = x.StartsWith( "/" ) ? x.TrimStart( '/' ) : x;
+				return string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
+			} );
+
 			var resourceEndpoint = new MessageReceivingEndpoint( locationUri, needAuthorise ? requestType | HttpDeliveryMethods.AuthorizationHeaderRequest : requestType );
 
 			var service = new ServiceProviderDescription
