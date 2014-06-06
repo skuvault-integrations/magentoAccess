@@ -23,5 +23,7 @@ namespace MagentoAccess
 		VerificationData RequestVerificationUri();
 
 		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
+
+		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
 	}
 }
