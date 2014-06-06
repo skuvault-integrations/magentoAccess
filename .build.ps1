@@ -100,7 +100,7 @@ task NuGet Package, Version, {
 <package>
 	<metadata>
 		<id>MagentoAccess</id>
-		<version>$Version-rc1</version>
+		<version>$Version-rc2</version>
 		<authors>Slav Ivanyuk</authors>
 		<owners>Slav Ivanyuk</owners>
 		<projectUrl>https://github.com/slav/MagentoAccess</projectUrl>
