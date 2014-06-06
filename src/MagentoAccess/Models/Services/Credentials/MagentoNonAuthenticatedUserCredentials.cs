@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using CuttingEdge.Conditions;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Models.Services.Credentials
 {
@@ -20,9 +21,10 @@ namespace MagentoAccess.Models.Services.Credentials
 				consumerKey,
 				consumerSckretKey,
 				baseMagentoUrl,
-				new Uri( new Uri( baseMagentoUrl ), "oauth/initiate" ).AbsoluteUri,
-				new Uri( new Uri( baseMagentoUrl ), "admin/oauth_authorize" ).AbsoluteUri,
-				new Uri( new Uri( baseMagentoUrl ), "oauth/token" ).AbsoluteUri )
+				new List< string > { baseMagentoUrl, "oauth/initiate" }.BuildUrl(),
+				new List< string > { baseMagentoUrl, "admin/oauth_authorize" }.BuildUrl(),
+				new List< string > { baseMagentoUrl, "ooauth/token" }.BuildUrl()
+				)
 		{
 			Condition.Ensures( baseMagentoUrl ).EndsWith( "/" );
 		}

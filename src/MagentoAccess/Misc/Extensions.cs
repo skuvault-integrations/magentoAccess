@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 
@@ -67,6 +69,22 @@ namespace MagentoAccess.Misc
 				ms.Position = 0;
 				return ( T )formstter.Deserialize( ms );
 			}
+		}
+
+		public static string BuildUrl( this IEnumerable< string > urlParrts )
+		{
+			string resultUrl;
+			try
+			{
+				resultUrl = urlParrts.Aggregate( ( ac, x ) =>
+				{
+					x = x.EndsWith( "/" ) ? x : x + "/";
+					x = x.StartsWith( "/" ) ? x.TrimStart( '/' ) : x;
+					return string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
+				} );
+			}
+
+			return resultUrl;
 		}
 	}
 }
