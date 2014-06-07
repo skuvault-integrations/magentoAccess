@@ -176,7 +176,7 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty } );
 		}
 
-		public void InitiateDescktopAuthentication()
+		public void InitiateDesktopAuthentication()
 		{
 			this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
 			var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
