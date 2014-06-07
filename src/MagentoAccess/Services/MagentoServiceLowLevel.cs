@@ -9,7 +9,6 @@ using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using DotNetOpenAuth.OAuth.Messages;
-using LINQtoCSV;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.GetOrders;
 using MagentoAccess.Models.Services.GetProduct;
@@ -36,8 +35,17 @@ namespace MagentoAccess.Services
 		private DesktopConsumer _consumer;
 		private string _accessToken;
 		private string _accessTokenSecret;
+
 		private AuthenticationManager _authenticationManager;
 		private InMemoryTokenManager _tokenManager;
+
+		public delegate string GetVerifierCodeDelegate();
+
+		public GetVerifierCodeDelegate getVerifierCodeDelegate { get; set; }
+
+		public delegate string SaveVerifierCodeAct( string verifierCode );
+
+		public SaveVerifierCodeAct saveVerifierCodeAct { get; set; }
 
 		protected IWebRequestServices webRequestServices { get; set; }
 
@@ -56,18 +64,18 @@ namespace MagentoAccess.Services
 			get { return this._authenticationManager.RequestToken; }
 		}
 
-		public static string GetVerifierCode()
+		public string GetVerifierCode()
 		{
-			var cc = new CsvContext();
-			return Enumerable.FirstOrDefault( cc.Read< FlatCsvLine >( @"..\..\Files\magento_VerifierCode.csv", new CsvFileDescription { FirstLineHasColumnNames = true } ) ).VerifierCode;
+			if( this.getVerifierCodeDelegate != null )
+				return this.getVerifierCodeDelegate.Invoke();
+
+			return string.Empty;
 		}
 
-		public static void SaveVerifierCode( string verifierCode )
+		public void SaveVerifierCode( string verifierCode )
 		{
-			var cc = new CsvContext();
-			cc.Write< FlatCsvLine >(
-				new List< FlatCsvLine > { new FlatCsvLine { VerifierCode = verifierCode } },
-				@"..\..\Files\magento_VerifierCode.csv" );
+			if( this.saveVerifierCodeAct != null )
+				this.saveVerifierCodeAct.Invoke( verifierCode );
 		}
 
 		public MagentoServiceLowLevel(
@@ -361,16 +369,6 @@ namespace MagentoAccess.Services
 		public string RequestTokenSecret { get; set; }
 	}
 
-	internal class FlatCsvLine
-	{
-		public FlatCsvLine()
-		{
-		}
-
-		[ CsvColumn( Name = "VerifierCode", FieldIndex = 1 ) ]
-		public string VerifierCode { get; set; }
-	}
-
 	public partial class AuthenticationManager
 	{
 		private readonly DesktopConsumer consumer;
@@ -383,6 +381,10 @@ namespace MagentoAccess.Services
 		{
 			get { return this.requestToken; }
 		}
+
+		public delegate string GetVerificationCode();
+
+		public GetVerificationCode getVerificationCode { get; set; }
 
 		internal AuthenticationManager( DesktopConsumer consumer )
 		{
@@ -417,7 +419,7 @@ namespace MagentoAccess.Services
 					counter++;
 					try
 					{
-						tempVerifierCode = MagentoServiceLowLevel.GetVerifierCode();
+						tempVerifierCode = this.getVerificationCode.Invoke();
 					}
 					catch( Exception )
 					{
