@@ -151,7 +151,7 @@ namespace MagentoAccess.Services
 				if( service.ProtocolVersion == ProtocolVersion.V10a )
 				{
 					var authorizer = new AuthenticationManager( this._consumer );
-					var verifiedCode = await authorizer.GetVerifiedCodeAsync().ConfigureAwait( false );
+					var verifiedCode = await authorizer.InitiateVerificationProcessAsync().ConfigureAwait( false );
 					this._accessToken = authorizer.GetAccessToken( verifiedCode );
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
@@ -403,8 +403,7 @@ namespace MagentoAccess.Services
 			return verificationUri;
 		}
 
-		//todo: inject as action
-		public async Task< string > GetVerifiedCodeAsync()
+		public async Task< string > InitiateVerificationProcessAsync()
 		{
 			var browserAuthorizationLocation = this.GetVerificationUri();
 			Process.Start( browserAuthorizationLocation.AbsoluteUri );
