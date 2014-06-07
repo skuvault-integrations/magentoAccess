@@ -45,9 +45,6 @@
     <Reference Include="DotNetOpenAuth.OAuth.Consumer">
       <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
     </Reference>
-    <Reference Include="LINQtoCSV">
-      <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
-    </Reference>
     <Reference Include="Netco">
       <HintPath>..\packages\Netco.1.3.1\lib\net45\Netco.dll</HintPath>
     </Reference>
