@@ -78,9 +78,21 @@ namespace MagentoAccess.Misc
 			{
 				resultUrl = urlParrts.Aggregate( ( ac, x ) =>
 				{
-					x = x.EndsWith( "/" ) ? x : x + "/";
-					x = x.StartsWith( "/" ) ? x.TrimStart( '/' ) : x;
-					return string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
+					string result;
+
+					if( !string.IsNullOrWhiteSpace( ac ) )
+						ac = ac.EndsWith( "/" ) ? ac : ac + "/";
+
+					if( !string.IsNullOrWhiteSpace( x ) )
+					{
+						x = x.EndsWith( "/" ) ? x : x + "/";
+						x = x.StartsWith( "/" ) ? x.TrimStart( '/' ) : x;
+						result = string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
+					}
+					else
+						result = string.IsNullOrWhiteSpace( ac ) ? string.Empty : new Uri( ac ).AbsoluteUri;
+
+					return result;
 				} );
 			}
 			catch
