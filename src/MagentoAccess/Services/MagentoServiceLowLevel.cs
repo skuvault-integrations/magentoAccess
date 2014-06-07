@@ -39,9 +39,7 @@ namespace MagentoAccess.Services
 		private AuthenticationManager _authenticationManager;
 		private InMemoryTokenManager _tokenManager;
 
-		public delegate string GetVerifierCodeDelegate();
-
-		public GetVerifierCodeDelegate getVerifierCodeDelegate { get; set; }
+		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
 		public delegate string SaveVerifierCodeAct( string verifierCode );
 
@@ -66,8 +64,8 @@ namespace MagentoAccess.Services
 
 		public string GetVerifierCode()
 		{
-			if( this.getVerifierCodeDelegate != null )
-				return this.getVerifierCodeDelegate.Invoke();
+			if( this.TransmitVerificationCode != null )
+				return this.TransmitVerificationCode.Invoke();
 
 			return string.Empty;
 		}
@@ -151,6 +149,7 @@ namespace MagentoAccess.Services
 				if( service.ProtocolVersion == ProtocolVersion.V10a )
 				{
 					var authorizer = new AuthenticationManager( this._consumer );
+					authorizer.TransmitVerificationCode = this.TransmitVerificationCode;
 					var verifiedCode = await authorizer.StartBrowserToGetVerificationCodeAsync().ConfigureAwait( false );
 					this._accessToken = authorizer.GetAccessToken( verifiedCode );
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
@@ -382,8 +381,6 @@ namespace MagentoAccess.Services
 			get { return this.requestToken; }
 		}
 
-		public delegate string TransmitVerificationCodeDelegate();
-
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
 		internal AuthenticationManager( DesktopConsumer consumer )
@@ -438,6 +435,8 @@ namespace MagentoAccess.Services
 			return this.AccessToken = grantedAccess.AccessToken;
 		}
 	}
+
+	public delegate string TransmitVerificationCodeDelegate();
 
 	internal class InMemoryTokenManager : IConsumerTokenManager
 	{

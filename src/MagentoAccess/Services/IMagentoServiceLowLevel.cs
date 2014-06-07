@@ -18,6 +18,8 @@ namespace MagentoAccess.Services
 
 		string RequestToken { get; }
 
+		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+
 		Task InitiateDescktopAuthenticationProcess();
 
 		Task< GetProductResponse > GetProductAsync( string id );

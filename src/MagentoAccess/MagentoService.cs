@@ -20,6 +20,8 @@ namespace MagentoAccess
 
 		public SaveAccessToken AfterGettingToken { get; set; }
 
+		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{
 			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
@@ -176,6 +178,7 @@ namespace MagentoAccess
 
 		public void InitiateDescktopAuthentication()
 		{
+			this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
 			var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
 			authorizeTask.Wait();
 
