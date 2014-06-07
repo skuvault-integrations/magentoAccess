@@ -45,31 +45,23 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
-			this.Authorize();
-
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
 			return res.Orders.Select( x => new Order( x ) );
 		}
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
-			this.Authorize();
-
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
 			return res.Orders.Select( x => new Order( x ) );
 		}
 
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
-			this.Authorize();
-
 			return await this.GetProductsWithIdSkuNameDescriptionPriceAsync();
 		}
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
-			this.Authorize();
-
 			var productsWithQty = await this.GetProductsWithIdQty().ConfigureAwait( false );
 
 			var productsWithSku = await this.GetProductsWithIdSkuNameDescriptionPriceAsync().ConfigureAwait( false );
@@ -81,8 +73,6 @@ namespace MagentoAccess
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
-			this.Authorize();
-
 			if( !products.Any() )
 				return;
 
@@ -184,17 +174,13 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty } );
 		}
 
-		//todo: rid of 
-		public void Authorize()
+		public void InitiateDescktopAuthentication()
 		{
-			//if( string.IsNullOrWhiteSpace( this.MagentoServiceLowLevel.AccessToken ) )
-			//{
-			//	var authorizeTask = this.MagentoServiceLowLevel.PopulateAccessToken();
-			//	authorizeTask.Wait();
+			var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
+			authorizeTask.Wait();
 
-			//	if( this.AfterGettingToken != null )
-			//		this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-			//}
+			if( this.AfterGettingToken != null )
+				this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 		}
 
 		public VerificationData RequestVerificationUri()

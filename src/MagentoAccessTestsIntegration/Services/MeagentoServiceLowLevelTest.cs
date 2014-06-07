@@ -30,7 +30,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			if( this._accessToken == null )
 			{
-				var authorizeTask = this._service.InitiateAuthenticationProcess();
+				var authorizeTask = this._service.InitiateDescktopAuthenticationProcess();
 				authorizeTask.Wait();
 				this._testData.CreateAccessTokenFile( this._service.AccessToken, this._service.AccessTokenSecret );
 			}

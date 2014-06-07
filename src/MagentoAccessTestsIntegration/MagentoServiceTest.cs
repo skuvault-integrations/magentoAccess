@@ -64,7 +64,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			this._serviceNotAuth.Authorize();
+			this._serviceNotAuth.InitiateDescktopAuthentication();
 
 			//------------ Assert
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();

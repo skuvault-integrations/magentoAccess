@@ -127,7 +127,7 @@ namespace MagentoAccess.Services
 			this.webRequestServices = new WebRequestServices();
 		}
 
-		public async Task InitiateAuthenticationProcess()
+		public async Task InitiateDescktopAuthenticationProcess()
 		{
 			try
 			{
@@ -151,7 +151,7 @@ namespace MagentoAccess.Services
 				if( service.ProtocolVersion == ProtocolVersion.V10a )
 				{
 					var authorizer = new AuthenticationManager( this._consumer );
-					var verifiedCode = await authorizer.GetVerificationCodeAsync().ConfigureAwait( false );
+					var verifiedCode = await authorizer.StartBrowserToGetVerificationCodeAsync().ConfigureAwait( false );
 					this._accessToken = authorizer.GetAccessToken( verifiedCode );
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
@@ -403,7 +403,7 @@ namespace MagentoAccess.Services
 			return verificationUri;
 		}
 
-		public async Task< string > GetVerificationCodeAsync()
+		public async Task< string > StartBrowserToGetVerificationCodeAsync()
 		{
 			var browserAuthorizationLocation = this.GetVerificationUri();
 			Process.Start( browserAuthorizationLocation.AbsoluteUri );
