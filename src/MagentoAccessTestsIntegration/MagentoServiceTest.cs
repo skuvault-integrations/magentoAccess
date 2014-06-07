@@ -64,8 +64,8 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
+			this._serviceNotAuth.TransmitVerificationCode = () => this._transmitVerification;
 			this._serviceNotAuth.InitiateDescktopAuthentication();
-
 			//------------ Assert
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();

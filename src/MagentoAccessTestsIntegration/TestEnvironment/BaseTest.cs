@@ -12,16 +12,19 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private MagentoConsumerCredentials _consumer;
 		private MagentoUrls _authorityUrls;
 		private MagentoAccessToken _accessToken;
+
+		protected string _transmitVerification;
 		protected MagentoService _service;
 		protected MagentoService _serviceNotAuth;
 
 		[ SetUp ]
 		public void Setup()
 		{
-			this._testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv" );
+			this._testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
 			this._consumer = this._testData.GetMagentoConsumerCredentials();
 			this._authorityUrls = this._testData.GetMagentoUrls();
 			this._accessToken = this._testData.GetMagentoAccessToken();
+			this._transmitVerification = this._testData.TransmitVerification();
 
 			this._service = ( this._accessToken == null || string.IsNullOrWhiteSpace( this._accessToken.AccessToken ) || string.IsNullOrWhiteSpace( this._accessToken.AccessTokenSecret ) ) ?
 				new MagentoService( new MagentoNonAuthenticatedUserCredentials(

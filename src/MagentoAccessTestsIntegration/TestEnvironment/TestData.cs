@@ -9,12 +9,14 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private readonly FlatCsvLineConsumer _flatCsvLineConsumer;
 		private readonly FlatCsvLineUrls _flatCsvLineUrls;
 		private FlatCsvLineAccessToken _flatCsvLinesAccessToken;
+		private readonly FlatCsvLineVerification _flatCsvLinesVerification;
 		private string _accessTokenFilePath;
 
-		public TestData( string consumerKeyFilePath, string urlsFilePath, string accessTokenFilePath )
+		public TestData( string consumerKeyFilePath, string urlsFilePath, string accessTokenFilePath, string verificationPath )
 		{
 			var cc = new CsvContext();
 			this._accessTokenFilePath = accessTokenFilePath;
+			this._flatCsvLinesVerification = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineVerification >( verificationPath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
 			this._flatCsvLineConsumer = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineConsumer >( consumerKeyFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
 			this._flatCsvLineUrls = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineUrls >( urlsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
 			this._flatCsvLinesAccessToken = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineAccessToken >( accessTokenFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
@@ -41,6 +43,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		public MagentoAccessToken GetMagentoAccessToken()
 		{
 			return this._flatCsvLinesAccessToken == null ? null : new MagentoAccessToken( this._flatCsvLinesAccessToken.AccessToken, this._flatCsvLinesAccessToken.AccessTokenSecret );
+		}
+
+		public string TransmitVerification()
+		{
+			return this._flatCsvLinesVerification == null ? null : this._flatCsvLinesVerification.VerifierCode;
 		}
 
 		internal class FlatCsvLineConsumer
@@ -86,6 +93,16 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			[ CsvColumn( Name = "AccessTokenSecret", FieldIndex = 2 ) ]
 			public string AccessTokenSecret { get; set; }
+		}
+
+		internal class FlatCsvLineVerification
+		{
+			public FlatCsvLineVerification()
+			{
+			}
+
+			[ CsvColumn( Name = "VerifierCode", FieldIndex = 1 ) ]
+			public string VerifierCode { get; set; }
 		}
 	}
 }
