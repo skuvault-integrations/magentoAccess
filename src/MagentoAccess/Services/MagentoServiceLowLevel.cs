@@ -127,7 +127,7 @@ namespace MagentoAccess.Services
 			this.webRequestServices = new WebRequestServices();
 		}
 
-		public async Task PopulateAccessToken()
+		public async Task InitiateAuthenticationProcess()
 		{
 			try
 			{
@@ -151,7 +151,7 @@ namespace MagentoAccess.Services
 				if( service.ProtocolVersion == ProtocolVersion.V10a )
 				{
 					var authorizer = new AuthenticationManager( this._consumer );
-					var verifiedCode = await authorizer.InitiateVerificationProcessAsync().ConfigureAwait( false );
+					var verifiedCode = await authorizer.GetVerificationCodeAsync().ConfigureAwait( false );
 					this._accessToken = authorizer.GetAccessToken( verifiedCode );
 					this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 				}
@@ -382,9 +382,9 @@ namespace MagentoAccess.Services
 			get { return this.requestToken; }
 		}
 
-		public delegate string GetVerificationCode();
+		public delegate string TransmitVerificationCodeDelegate();
 
-		public GetVerificationCode getVerificationCode { get; set; }
+		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
 		internal AuthenticationManager( DesktopConsumer consumer )
 		{
@@ -403,7 +403,7 @@ namespace MagentoAccess.Services
 			return verificationUri;
 		}
 
-		public async Task< string > InitiateVerificationProcessAsync()
+		public async Task< string > GetVerificationCodeAsync()
 		{
 			var browserAuthorizationLocation = this.GetVerificationUri();
 			Process.Start( browserAuthorizationLocation.AbsoluteUri );
@@ -418,7 +418,7 @@ namespace MagentoAccess.Services
 					counter++;
 					try
 					{
-						tempVerifierCode = this.getVerificationCode.Invoke();
+						tempVerifierCode = this.TransmitVerificationCode.Invoke();
 					}
 					catch( Exception )
 					{

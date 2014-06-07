@@ -18,7 +18,7 @@ namespace MagentoAccess.Services
 
 		string RequestToken { get; }
 
-		Task PopulateAccessToken();
+		Task InitiateAuthenticationProcess();
 
 		Task< GetProductResponse > GetProductAsync( string id );
 
