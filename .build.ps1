@@ -100,7 +100,7 @@ task NuGet Package, Version, {
 <package>
 	<metadata>
 		<id>MagentoAccess</id>
-		<version>$Version-rc2</version>
+		<version>$Version-rc3</version>
 		<authors>Slav Ivanyuk</authors>
 		<owners>Slav Ivanyuk</owners>
 		<projectUrl>https://github.com/slav/MagentoAccess</projectUrl>
@@ -114,6 +114,7 @@ task NuGet Package, Version, {
 			<group targetFramework="net45">
 				<dependency id="Netco" version="1.3.1" />
 				<dependency id="CuttingEdge.Conditions" version="1.2.0.0" />
+				<dependency id="DotNetOpenAuth.OAuth.Consumer" version="4.3.4.13329" />
 			</group>
 		</dependencies>
 	</metadata>
