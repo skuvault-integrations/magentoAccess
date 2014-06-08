@@ -46,10 +46,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			this._serviceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
 				this._consumer.Key,
 				this._consumer.Secret,
-				this._authorityUrls.MagentoBaseUrl,
-				this._authorityUrls.RequestTokenUrl,
-				this._authorityUrls.AuthorizeUrl,
-				this._authorityUrls.AccessTokenUrl
+				this._authorityUrls.MagentoBaseUrl
 				) );
 
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();

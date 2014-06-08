@@ -70,5 +70,22 @@ namespace MagentoAccessTestsIntegration
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
+
+
+		[Test]
+		[Ignore]
+		public void GetVerificationURI_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			//this._serviceNotAuth.TransmitVerificationCode = () => this._transmitVerification;
+			var data = this._serviceNotAuth.RequestVerificationUri();
+			//------------ Assert
+			data.Should().NotBeNull();
+			data.RequestToken.Should().NotBeNullOrWhiteSpace();
+			data.RequestTokenSecret.Should().NotBeNullOrWhiteSpace();
+			data.Uri.Should().NotBeNull();
+		}
 	}
 }
