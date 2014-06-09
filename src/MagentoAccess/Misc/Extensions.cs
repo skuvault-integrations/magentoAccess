@@ -71,7 +71,7 @@ namespace MagentoAccess.Misc
 			}
 		}
 
-		public static string BuildUrl( this IEnumerable< string > urlParrts )
+		public static string BuildUrl( this IEnumerable< string > urlParrts, bool escapeUrl = false )
 		{
 			var resultUrl = string.Empty;
 			try
@@ -87,10 +87,19 @@ namespace MagentoAccess.Misc
 					{
 						x = x.EndsWith( "/" ) ? x : x + "/";
 						x = x.StartsWith( "/" ) ? x.TrimStart( '/' ) : x;
-						result = string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
+
+						if( escapeUrl )
+							result = string.IsNullOrWhiteSpace( ac ) ? new Uri( x ).AbsoluteUri : new Uri( new Uri( ac ), x ).AbsoluteUri;
+						else
+							result = string.IsNullOrWhiteSpace( ac ) ? x : string.Format( "{0}{1}", ac, x ); // new Uri(new Uri(ac), x).AbsoluteUri;
 					}
 					else
-						result = string.IsNullOrWhiteSpace( ac ) ? string.Empty : new Uri( ac ).AbsoluteUri;
+					{
+						if( escapeUrl )
+							result = string.IsNullOrWhiteSpace( ac ) ? string.Empty : new Uri( ac ).AbsoluteUri;
+						else
+							result = string.IsNullOrWhiteSpace( ac ) ? string.Empty : ac;
+					}
 
 					return result;
 				} );
