@@ -20,7 +20,7 @@ namespace MagentoAccess.Services.Parsers
 			{
 				var resultOrder = new Order();
 
-				resultOrder.OrderId = GetElementValue( x, ns, "entity_id" );
+				resultOrder.OrderId = GetElementValue( x, ns, "increment_id" );
 
 				OrderStatusesEnum temp;
 				resultOrder.Status = Enum.TryParse( GetElementValue( x, ns, "status" ), out temp ) ? temp : OrderStatusesEnum.unknown;
