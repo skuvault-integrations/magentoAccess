@@ -59,6 +59,8 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.20\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -97,9 +99,15 @@
     <Compile Include="Models\Services\PutStockItems\ResponseStockItem.cs" />
     <Compile Include="Models\Services\PutStockItems\StockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\MagentoSoapServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
+    <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\MegentoInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
@@ -113,8 +121,614 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\MagentoSoapServiceReference\Magento.wsdl" />
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.apiEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.associativeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.callResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogAssignedProduct.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogAttributeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogAttributeOptionEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryAssignedProductsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryAssignProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryAttributeCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryAttributeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryAttributeOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryEntityNoChildren.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryLevelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryMoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryRemoveProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryTree.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryTreeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryUpdateProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogCategoryUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogInventoryStockItemEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogInventoryStockItemListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogInventoryStockItemMultiUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogInventoryStockItemUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeAddOptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaTypeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeMediaUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetAttributeAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetAttributeRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetGroupAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetGroupRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetGroupRenameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeSetRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeTierPriceInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeTierPriceUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductAttributeUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionTypesEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductCustomOptionValueUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductDownloadableLinkAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductDownloadableLinkListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductDownloadableLinkListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductDownloadableLinkRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductGetSpecialPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductImageEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkAssignResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkAttributeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkAttributesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductLinkUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductMultiUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductReturnEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductSetSpecialPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductSpecialPriceReturnEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTagUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTierPriceEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTypeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductTypeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.catalogProductUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerAddressCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerAddressDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerAddressEntityItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerAddressInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerAddressListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerAddressUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerCustomerCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerCustomerDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerCustomerEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerCustomerInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerCustomerListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerCustomerUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerGroupEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.customerGroupListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.directoryCountryEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.directoryCountryListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.directoryRegionEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.directoryRegionListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.endSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.existsFaltureEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.giftMessageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.giftMessageSetForQuoteItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.giftMessageSetForQuoteProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.giftMessageSetForQuoteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.globalFaultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.loginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.magentoInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.magentoInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.multiCallResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.resourceFaultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.resourcesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCreditmemoAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCreditmemoCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCreditmemoCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCreditmemoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCreditmemoInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderCreditmemoListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderHoldResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceCaptureResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderInvoiceVoidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentAddTrackResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentGetCarriersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentRemoveTrackResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderShipmentSendInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.salesOrderUnholdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartCouponAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartCouponRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartCustomerAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartCustomerSetResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartLicenseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartLicenseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartOrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartPaymentListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartPaymentMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartPaymentMethodResponseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartProductAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartProductListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartProductMoveToCustomerQuoteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartProductRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartProductUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartShippingListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartShippingMethodEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartShippingMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartTotalsEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.shoppingCartTotalsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.startSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.storeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.storeInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MagentoSoapServiceReference\MagentoAccess.MagentoSoapServiceReference.storeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\MagentoSoapServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MagentoSoapServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MagentoSoapServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MagentoSoapServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
