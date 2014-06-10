@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
@@ -36,12 +38,11 @@ namespace MagentoAccess.Services
 			this.UserName = userName;
 			this.Password = password;
 			this.Store = store;
-			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient(new BasicHttpBinding() { MaxReceivedMessageSize = long.MaxValue }, new EndpointAddress(endpointAddress));
+			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endpointAddress ) );
 		}
 
 		public async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
-			//var session = await this._magentoSoapService.loginAsync( this.UserName, this.Password ).ConfigureAwait( false );
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 			var filters = new filters { complex_filter = new complexFilter[ 2 ] };
@@ -53,12 +54,21 @@ namespace MagentoAccess.Services
 			return res;
 		}
 
-		public async Task< catalogProductListResponse > GetProductsAsync()
+		public async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
-			//var sessionId = await this._magentoSoapService.loginAsync( this.UserName, this.Password ).ConfigureAwait( false );
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-			//var filters = new filters { complex_filter = new complexFilter[0] };
+			var filters = new filters { complex_filter = new complexFilter[ 1 ] };
+			filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIds.Aggregate( ( ac, x ) => ac += "," + x ) } };
+
+			var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+
+			return res;
+		}
+
+		public async Task< catalogProductListResponse > GetProductsAsync()
+		{
+			var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 			var filters = new filters { filter = new associativeEntity[ 2 ] };
 			filters.filter[ 0 ] = new associativeEntity() { key = "page", value = "1" };
