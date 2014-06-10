@@ -80,5 +80,19 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Assert
 			getProductsTask.Result.Should().NotBeNull();
 		}
+
+		[Test]
+		public void GetSessionId_StoreContainsUser_ReceiveSessionId()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			_service.UserName = "qwe";
+			var getProductsTask = this._service.GetSessionId();
+			getProductsTask.Wait();
+
+			//------------ Assert
+			getProductsTask.Result.Should().NotBeNull();
+		}
 	}
 }
