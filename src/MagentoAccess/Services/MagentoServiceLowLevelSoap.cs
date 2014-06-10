@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using Netco.Logging;
 
 namespace MagentoAccess.Services
 {
@@ -26,14 +27,27 @@ namespace MagentoAccess.Services
 
 		protected const int SessionIdLifeTime = 3590;
 
-		protected async Task< string > GetSessionId()
+		private void LogTraceGetResponseException( FaultException exception )
 		{
-			if( string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
-				return this._sessionId;
+			this.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an exception.", exception.Action, exception.Code, exception );
+		}
 
-			var getSessionIdTask = await this._magentoSoapService.loginAsync( this.UserName, this.Password ).ConfigureAwait( false );
-			this._sessionIdCreatedAt = DateTime.UtcNow;
-			return this._sessionId = getSessionIdTask.result;
+		internal async Task< string > GetSessionId()
+		{
+			try
+			{
+				if( string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
+					return this._sessionId;
+
+				var getSessionIdTask = await this._magentoSoapService.loginAsync( this.UserName, this.Password ).ConfigureAwait( false );
+				this._sessionIdCreatedAt = DateTime.UtcNow;
+				return this._sessionId = getSessionIdTask.result;
+			}
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return null;
+			}
 		}
 
 		public MagentoServiceLowLevelSoap( string userName, string password, string baseMagentoUrl, string store )
@@ -48,6 +62,10 @@ namespace MagentoAccess.Services
 		public async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+			if( sessionId == null )
+				return new salesOrderListResponse();
+
 			filters filters;
 
 			if( string.IsNullOrWhiteSpace( this.Store ) )
@@ -69,6 +87,10 @@ namespace MagentoAccess.Services
 		public async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+			if( sessionId == null )
+				return new salesOrderListResponse();
+
 			filters filters;
 			if( string.IsNullOrWhiteSpace( this.Store ) )
 				filters = new filters { complex_filter = new complexFilter[ 1 ] };
@@ -89,6 +111,9 @@ namespace MagentoAccess.Services
 		{
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
+			if( sessionId == null )
+				return new catalogProductListResponse();
+
 			var filters = new filters { filter = new associativeEntity[ 0 ] };
 
 			var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
@@ -102,6 +127,9 @@ namespace MagentoAccess.Services
 		{
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
+			if( sessionId == null )
+				return new catalogInventoryStockItemListResponse();
+
 			var skusArray = skusOrIds.ToArray();
 
 			var res = await this._magentoSoapService.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
@@ -112,6 +140,9 @@ namespace MagentoAccess.Services
 		public async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
 		{
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+			if( sessionId == null )
+				return new salesOrderInfoResponse();
 
 			var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
 
