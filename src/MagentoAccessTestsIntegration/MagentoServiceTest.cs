@@ -71,9 +71,8 @@ namespace MagentoAccessTestsIntegration
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 
-
-		[Test]
-		[Ignore]
+		[ Test ]
+		[ Ignore ]
 		public void GetVerificationURI_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
 		{
 			//------------ Arrange

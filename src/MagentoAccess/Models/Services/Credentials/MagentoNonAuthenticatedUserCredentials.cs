@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CuttingEdge.Conditions;
 using MagentoAccess.Misc;
 
 namespace MagentoAccess.Models.Services.Credentials

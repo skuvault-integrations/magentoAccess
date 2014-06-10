@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 [ assembly : AssemblyTitle( "MagentoAccess" ) ]
 [ assembly : AssemblyConfiguration( "" ) ]
-[assembly: InternalsVisibleTo("MagentoAccessTestsIntegration")]
+[ assembly : InternalsVisibleTo( "MagentoAccessTestsIntegration" ) ]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 

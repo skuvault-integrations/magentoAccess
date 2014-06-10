@@ -37,15 +37,15 @@ namespace MagentoAccessTestsIntegration.Services
 			getOrdersTask.Result.Should().NotBeNull();
 		}
 
-		[Test]
+		[ Test ]
 		public void GetOrders_ByIdsStoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
 
 			//------------ Act
-			var ordersIds = new List<string>() { "100000001", "100000002"};
+			var ordersIds = new List< string >() { "100000001", "100000002" };
 
-			var getOrdersTask = this._service.GetOrdersAsync(ordersIds);
+			var getOrdersTask = this._service.GetOrdersAsync( ordersIds );
 			getOrdersTask.Wait();
 
 			//------------ Assert
