@@ -47,6 +47,28 @@ namespace MagentoAccess
 				);
 		}
 
+		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials, MagentoAuthenticatedUserSoapCredentials magentoSoapCredentials )
+			: this( magentoUserCredentials )
+		{
+			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
+				magentoSoapCredentials.UserName,
+				magentoSoapCredentials.UserPassword,
+				magentoSoapCredentials.BaseMagentoUrl,
+				null
+				);
+		}
+
+		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, MagentoAuthenticatedUserSoapCredentials magentoSoapCredentials )
+			: this( magentoAuthenticatedUserCredentials )
+		{
+			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
+				magentoSoapCredentials.UserName,
+				magentoSoapCredentials.UserPassword,
+				magentoSoapCredentials.BaseMagentoUrl,
+				null
+				);
+		}
+
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			var res = await this.MagentoServiceLowLevel.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
@@ -199,5 +221,12 @@ namespace MagentoAccess
 			if( this.AfterGettingToken != null )
 				this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 		}
+	}
+
+	public class MagentoAuthenticatedUserSoapCredentials
+	{
+		public string UserName { get; set; }
+		public string UserPassword { get; set; }
+		public string BaseMagentoUrl { get; set; }
 	}
 }
