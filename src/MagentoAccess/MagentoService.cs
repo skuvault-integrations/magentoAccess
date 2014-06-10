@@ -33,6 +33,13 @@ namespace MagentoAccess
 				magentoAuthenticatedUserCredentials.AccessToken,
 				magentoAuthenticatedUserCredentials.AccessTokenSecret
 				);
+
+			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
+				magentoAuthenticatedUserCredentials.SoapUserName,
+				magentoAuthenticatedUserCredentials.SoapUserPassword,
+				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
+				null
+				);
 		}
 
 		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials )
@@ -44,28 +51,6 @@ namespace MagentoAccess
 				magentoUserCredentials.RequestTokenUrl,
 				magentoUserCredentials.AuthorizeUrl,
 				magentoUserCredentials.AccessTokenUrl
-				);
-		}
-
-		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials, MagentoAuthenticatedUserSoapCredentials magentoSoapCredentials )
-			: this( magentoUserCredentials )
-		{
-			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
-				magentoSoapCredentials.UserName,
-				magentoSoapCredentials.UserPassword,
-				magentoSoapCredentials.BaseMagentoUrl,
-				null
-				);
-		}
-
-		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, MagentoAuthenticatedUserSoapCredentials magentoSoapCredentials )
-			: this( magentoAuthenticatedUserCredentials )
-		{
-			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
-				magentoSoapCredentials.UserName,
-				magentoSoapCredentials.UserPassword,
-				magentoSoapCredentials.BaseMagentoUrl,
-				null
 				);
 		}
 

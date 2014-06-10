@@ -36,23 +36,17 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					this._authorityUrls.RequestTokenUrl,
 					this._authorityUrls.AuthorizeUrl,
 					this._authorityUrls.AccessTokenUrl
-					),
-					new MagentoAuthenticatedUserSoapCredentials(
-						this._soapUserCredentials.UserName,
-						this._soapUserCredentials.Password,
-						this._authorityUrls.MagentoBaseUrl )
+					)
 					) :
 				new MagentoService( new MagentoAuthenticatedUserCredentials(
 					this._accessToken.AccessToken,
 					this._accessToken.AccessTokenSecret,
 					this._authorityUrls.MagentoBaseUrl,
 					this._consumer.Secret,
-					this._consumer.Key
-					),
-					new MagentoAuthenticatedUserSoapCredentials(
-						this._soapUserCredentials.UserName,
-						this._soapUserCredentials.Password,
-						this._authorityUrls.MagentoBaseUrl ) );
+					this._consumer.Key,
+					this._soapUserCredentials.UserName,
+					this._soapUserCredentials.Password
+					) );
 
 			this._serviceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
 				this._consumer.Key,
