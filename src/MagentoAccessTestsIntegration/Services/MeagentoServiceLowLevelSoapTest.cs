@@ -13,14 +13,16 @@ namespace MagentoAccessTestsIntegration.Services
 		private TestData _testData;
 		private MagentoUrls _authorityUrls;
 		private MagentoServiceLowLevelSoap _service;
+		private MagentoSoapCredentials _soapUserCredentials;
 
 		[ SetUp ]
 		public void Setup()
 		{
-			//this._testData = new TestData(@"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv");
-			//this._authorityUrls = this._testData.GetMagentoUrls();
-			//this._service = new MagentoServiceLowLevelSoap( "MaxKits", "123456", "http://192.168.0.103/magento/index.php/api/v2_soap/index/", null );
-			this._service = new MagentoServiceLowLevelSoap( "MaxKits", "123456", "http://192.168.0.103/magento/", null );
+			this._testData = new TestData(@"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv");
+			this._soapUserCredentials = this._testData.GetMagentoSoapUser();
+			this._authorityUrls = this._testData.GetMagentoUrls();
+
+			this._service = new MagentoServiceLowLevelSoap(_soapUserCredentials.UserName, _soapUserCredentials.Password, _authorityUrls.MagentoBaseUrl, null);
 		}
 
 		[ Test ]
