@@ -108,5 +108,14 @@ namespace MagentoAccess.Services
 
 			return res;
 		}
+
+		public async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
+		{
+			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+			var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+
+			return res;
+		}
 	}
 }

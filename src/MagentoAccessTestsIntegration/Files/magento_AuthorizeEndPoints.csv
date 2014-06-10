@@ -1,2 +1,2 @@
 MagentoUrl,RequestTokenUrl,AuthorizeUrl,AccessTokenUrl
-http://192.168.0.104/magento,http://192.168.0.104/magento/oauth/initiate,http://192.168.0.104/magento/admin/oauth_authorize,http://192.168.0.104/magento/oauth/token
+http://192.168.0.103/magento,http://192.168.0.104/magento/oauth/initiate,http://192.168.0.104/magento/admin/oauth_authorize,http://192.168.0.104/magento/oauth/token

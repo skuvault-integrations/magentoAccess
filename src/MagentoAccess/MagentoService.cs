@@ -71,8 +71,15 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
-			var res = await this.MagentoServiceLowLevel.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
-			return res.Orders.Select( x => new Order( x ) );
+			var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
+
+			var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
+
+			var commontask = await Task.WhenAll( ordersDetailsTasks ).ConfigureAwait( false );
+
+			var resultOrders = commontask.Select( x => new Order( x.result ) );
+
+			return resultOrders;
 		}
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
@@ -225,6 +232,13 @@ namespace MagentoAccess
 
 	public class MagentoAuthenticatedUserSoapCredentials
 	{
+		public MagentoAuthenticatedUserSoapCredentials( string userName, string userPassword, string baseMagentoUrl )
+		{
+			this.UserName = userName;
+			this.UserPassword = userPassword;
+			this.BaseMagentoUrl = baseMagentoUrl;
+		}
+
 		public string UserName { get; set; }
 		public string UserPassword { get; set; }
 		public string BaseMagentoUrl { get; set; }

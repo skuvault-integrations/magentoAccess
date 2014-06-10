@@ -45,6 +45,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			return this._flatCsvLinesAccessToken == null ? null : new MagentoAccessToken( this._flatCsvLinesAccessToken.AccessToken, this._flatCsvLinesAccessToken.AccessTokenSecret );
 		}
 
+		public MagentoSoapCredentials GetMagentoSoapUser()
+		{
+			return this._flatCsvLinesAccessToken == null ? null : new MagentoSoapCredentials( this._flatCsvLinesAccessToken.SoapUser, this._flatCsvLinesAccessToken.SoapPassword );
+		}
+
 		public string TransmitVerification()
 		{
 			return this._flatCsvLinesVerification == null ? null : this._flatCsvLinesVerification.VerifierCode;
@@ -93,6 +98,12 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			[ CsvColumn( Name = "AccessTokenSecret", FieldIndex = 2 ) ]
 			public string AccessTokenSecret { get; set; }
+
+			[ CsvColumn( Name = "SoapUser", FieldIndex = 3 ) ]
+			public string SoapUser { get; set; }
+
+			[ CsvColumn( Name = "SoapPassword", FieldIndex = 4 ) ]
+			public string SoapPassword { get; set; }
 		}
 
 		internal class FlatCsvLineVerification
@@ -103,6 +114,18 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			[ CsvColumn( Name = "VerifierCode", FieldIndex = 1 ) ]
 			public string VerifierCode { get; set; }
+		}
+	}
+
+	public class MagentoSoapCredentials
+	{
+		public string UserName { get; set; }
+		public string Password { get; set; }
+
+		public MagentoSoapCredentials( string soapUser, string soapPassword )
+		{
+			this.UserName = soapUser;
+			this.Password = soapPassword;
 		}
 	}
 }

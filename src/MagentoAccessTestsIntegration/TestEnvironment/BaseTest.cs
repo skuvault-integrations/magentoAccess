@@ -16,6 +16,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected string _transmitVerification;
 		protected MagentoService _service;
 		protected MagentoService _serviceNotAuth;
+		private MagentoSoapCredentials _soapUserCredentials;
 
 		[ SetUp ]
 		public void Setup()
@@ -24,6 +25,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			this._consumer = this._testData.GetMagentoConsumerCredentials();
 			this._authorityUrls = this._testData.GetMagentoUrls();
 			this._accessToken = this._testData.GetMagentoAccessToken();
+			this._soapUserCredentials = this._testData.GetMagentoSoapUser();
 			this._transmitVerification = this._testData.TransmitVerification();
 
 			this._service = ( this._accessToken == null || string.IsNullOrWhiteSpace( this._accessToken.AccessToken ) || string.IsNullOrWhiteSpace( this._accessToken.AccessTokenSecret ) ) ?
@@ -34,14 +36,23 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					this._authorityUrls.RequestTokenUrl,
 					this._authorityUrls.AuthorizeUrl,
 					this._authorityUrls.AccessTokenUrl
-					) ) :
+					),
+					new MagentoAuthenticatedUserSoapCredentials(
+						this._soapUserCredentials.UserName,
+						this._soapUserCredentials.Password,
+						this._authorityUrls.MagentoBaseUrl )
+					) :
 				new MagentoService( new MagentoAuthenticatedUserCredentials(
 					this._accessToken.AccessToken,
 					this._accessToken.AccessTokenSecret,
 					this._authorityUrls.MagentoBaseUrl,
 					this._consumer.Secret,
 					this._consumer.Key
-					) );
+					),
+					new MagentoAuthenticatedUserSoapCredentials(
+						this._soapUserCredentials.UserName,
+						this._soapUserCredentials.Password,
+						this._authorityUrls.MagentoBaseUrl ) );
 
 			this._serviceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
 				this._consumer.Key,

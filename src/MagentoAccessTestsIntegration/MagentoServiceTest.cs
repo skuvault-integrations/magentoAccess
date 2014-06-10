@@ -15,7 +15,10 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var getOrdersTask = this._service.GetOrdersAsync( DateTime.Now.AddMonths( -3 ), DateTime.Now );
+
+			var modifiedFrom = DateTime.Parse( "2014-05-08 15:02:58" );
+			var modifiedTo = DateTime.Parse( "2014-06-28 10:48:52" );
+			var getOrdersTask = this._service.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
