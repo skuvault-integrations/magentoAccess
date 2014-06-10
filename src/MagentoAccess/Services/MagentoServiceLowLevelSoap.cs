@@ -32,15 +32,27 @@ namespace MagentoAccess.Services
 			this.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an exception.", exception.Action, exception.Code, exception );
 		}
 
+		private void LogTraceGetResponseAsyncStarted( string info )
+		{
+			this.Log().Trace( "[magento] SOAP Call:{0}, started.", info );
+		}
+
+		private void LogTraceGetResponseAsyncEnded( string info )
+		{
+			this.Log().Trace( "[magento] SOAP Call:{0}, ended.", info );
+		}
+
 		internal async Task< string > GetSessionId()
 		{
 			try
 			{
+				this.LogTraceGetResponseAsyncStarted( string.Format( "GetSessionId" ) );
 				if( string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
 
 				var getSessionIdTask = await this._magentoSoapService.loginAsync( this.UserName, this.Password ).ConfigureAwait( false );
 				this._sessionIdCreatedAt = DateTime.UtcNow;
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetSessionId" ) );
 				return this._sessionId = getSessionIdTask.result;
 			}
 			catch( FaultException exception )
@@ -63,6 +75,8 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
+				this.LogTraceGetResponseAsyncStarted( string.Format( "GetOrdersAsync({0},{1})", modifiedFrom, modifiedTo ) );
+
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				if( sessionId == null )
@@ -83,6 +97,8 @@ namespace MagentoAccess.Services
 
 				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
 
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetOrdersAsync({0},{1})", modifiedFrom, modifiedTo ) );
+
 				return res;
 			}
 			catch( FaultException exception )
@@ -96,6 +112,10 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
+				var ordersIdsAgregated = ordersIds.Aggregate( ( ac, x ) => ac += "," + x );
+
+				this.LogTraceGetResponseAsyncStarted( string.Format( "GetOrdersAsync({0})", ordersIdsAgregated ) );
+
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				if( sessionId == null )
@@ -110,9 +130,11 @@ namespace MagentoAccess.Services
 					filters.complex_filter[ 1 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
 				}
 
-				filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIds.Aggregate( ( ac, x ) => ac += "," + x ) } };
+				filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIdsAgregated } };
 
 				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetOrdersAsync({0})", ordersIdsAgregated ) );
 
 				return res;
 			}
@@ -127,6 +149,8 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
+				this.LogTraceGetResponseAsyncStarted( string.Format( "GetProductsAsync()" ) );
+
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				if( sessionId == null )
@@ -137,6 +161,8 @@ namespace MagentoAccess.Services
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
 				var res = await this._magentoSoapService.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetProductsAsync()" ) );
 
 				return res;
 			}
@@ -151,6 +177,8 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
+				this.LogTraceGetResponseAsyncStarted( string.Format( "GetStockItemsAsync({0})", skusOrIds.Aggregate( ( ac, x ) => ac += "," + x ) ) );
+
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				if( sessionId == null )
@@ -159,6 +187,8 @@ namespace MagentoAccess.Services
 				var skusArray = skusOrIds.ToArray();
 
 				var res = await this._magentoSoapService.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
+
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetStockItemsAsync({0})", skusOrIds.Aggregate( ( ac, x ) => ac += "," + x ) ) );
 
 				return res;
 			}
@@ -173,12 +203,16 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
+				this.LogTraceGetResponseAsyncStarted( string.Format( "GetOrderAsync({0})", incrementId ) );
+
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				if( sessionId == null )
 					return new salesOrderInfoResponse();
 
 				var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetOrderAsync({0})", incrementId ) );
 
 				return res;
 			}
