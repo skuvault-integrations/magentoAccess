@@ -61,92 +61,132 @@ namespace MagentoAccess.Services
 
 		public async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
-			var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-			if( sessionId == null )
-				return new salesOrderListResponse();
-
-			filters filters;
-
-			if( string.IsNullOrWhiteSpace( this.Store ) )
-				filters = new filters { complex_filter = new complexFilter[ 2 ] };
-			else
+			try
 			{
-				filters = new filters { complex_filter = new complexFilter[ 3 ] };
-				filters.complex_filter[ 1 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				if( sessionId == null )
+					return new salesOrderListResponse();
+
+				filters filters;
+
+				if( string.IsNullOrWhiteSpace( this.Store ) )
+					filters = new filters { complex_filter = new complexFilter[ 2 ] };
+				else
+				{
+					filters = new filters { complex_filter = new complexFilter[ 3 ] };
+					filters.complex_filter[ 1 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+				}
+
+				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToString() } };
+				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToString() } };
+
+				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+
+				return res;
 			}
-
-			filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToString() } };
-			filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToString() } };
-
-			var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
-
-			return res;
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return new salesOrderListResponse();
+			}
 		}
 
 		public async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
-			var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-			if( sessionId == null )
-				return new salesOrderListResponse();
-
-			filters filters;
-			if( string.IsNullOrWhiteSpace( this.Store ) )
-				filters = new filters { complex_filter = new complexFilter[ 1 ] };
-			else
+			try
 			{
-				filters = new filters { complex_filter = new complexFilter[ 2 ] };
-				filters.complex_filter[ 1 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				if( sessionId == null )
+					return new salesOrderListResponse();
+
+				filters filters;
+				if( string.IsNullOrWhiteSpace( this.Store ) )
+					filters = new filters { complex_filter = new complexFilter[ 1 ] };
+				else
+				{
+					filters = new filters { complex_filter = new complexFilter[ 2 ] };
+					filters.complex_filter[ 1 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+				}
+
+				filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIds.Aggregate( ( ac, x ) => ac += "," + x ) } };
+
+				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+
+				return res;
 			}
-
-			filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIds.Aggregate( ( ac, x ) => ac += "," + x ) } };
-
-			var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
-
-			return res;
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return new salesOrderListResponse();
+			}
 		}
 
 		public async Task< catalogProductListResponse > GetProductsAsync()
 		{
-			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-			if( sessionId == null )
+				if( sessionId == null )
+					return new catalogProductListResponse();
+
+				var filters = new filters { filter = new associativeEntity[ 0 ] };
+
+				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
+
+				var res = await this._magentoSoapService.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
 				return new catalogProductListResponse();
-
-			var filters = new filters { filter = new associativeEntity[ 0 ] };
-
-			var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
-
-			var res = await this._magentoSoapService.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
-
-			return res;
+			}
 		}
 
 		public async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
-			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-			if( sessionId == null )
+				if( sessionId == null )
+					return new catalogInventoryStockItemListResponse();
+
+				var skusArray = skusOrIds.ToArray();
+
+				var res = await this._magentoSoapService.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
 				return new catalogInventoryStockItemListResponse();
-
-			var skusArray = skusOrIds.ToArray();
-
-			var res = await this._magentoSoapService.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
-
-			return res;
+			}
 		}
 
 		public async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
 		{
-			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-			if( sessionId == null )
+				if( sessionId == null )
+					return new salesOrderInfoResponse();
+
+				var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
 				return new salesOrderInfoResponse();
-
-			var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
-
-			return res;
+			}
 		}
 	}
 }
