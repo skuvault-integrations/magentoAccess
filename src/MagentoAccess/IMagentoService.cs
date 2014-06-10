@@ -25,6 +25,7 @@ namespace MagentoAccess
 		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
 
 		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
+
 		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 	}
 }

@@ -14,7 +14,9 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
-		public virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
+		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
+
+		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
 
