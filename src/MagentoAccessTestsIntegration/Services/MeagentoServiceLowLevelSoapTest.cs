@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -29,7 +30,8 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Act
 			var modifiedFrom = DateTime.Parse( "2014-05-08 15:02:58" );
 			var modifiedTo = DateTime.Parse( "2014-05-28 10:48:52" );
-			var getOrdersTask = this._service.GetOrders( modifiedFrom, modifiedTo );
+			var getOrdersTask = this._service.GetOrdersAsync( modifiedFrom, modifiedTo );
+			getOrdersTask.Wait();
 
 			//------------ Assert
 			getOrdersTask.Result.Should().NotBeNull();
@@ -41,7 +43,8 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._service.GetProducts();
+			var getProductsTask = this._service.GetProductsAsync();
+			getProductsTask.Wait();
 
 			//------------ Assert
 			getProductsTask.Result.Should().NotBeNull();
