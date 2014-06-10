@@ -81,18 +81,36 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask.Result.Should().NotBeNull();
 		}
 
-		[Test]
+		[ Test ]
 		public void GetSessionId_StoreContainsUser_ReceiveSessionId()
 		{
 			//------------ Arrange
 
 			//------------ Act
-			_service.UserName = "qwe";
 			var getProductsTask = this._service.GetSessionId();
 			getProductsTask.Wait();
 
 			//------------ Assert
 			getProductsTask.Result.Should().NotBeNull();
+		}
+
+		[ Test ]
+		public void GetSessionId_StoreDoNotContainsUser_ReceiveSessionId()
+		{
+			//------------ Arrange
+
+			//------------ Act
+
+			Action act = () =>
+			{
+				this._service.UserName = "incorrect password";
+				var getProductsTask = this._service.GetSessionId();
+				getProductsTask.Wait();
+			};
+
+			//------------ Assert
+
+			act.ShouldNotThrow();
 		}
 	}
 }
