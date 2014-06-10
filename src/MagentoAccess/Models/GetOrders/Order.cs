@@ -49,8 +49,8 @@ namespace MagentoAccess.Models.GetOrders
 			this.Customer = order.customer_id;
 			this.DiscountAmount = order.discount_amount.ToDecimalOrDefault();
 			this.GrandTotal = order.grand_total.ToDecimalOrDefault();
-			this.OrderIncrementalId = order.order_id;
-			this.OrderId = order.increment_id;
+			this.OrderIncrementalId = order.increment_id;
+			this.OrderId = order.order_id;
 			this.Items = order.items.Select( x => new Item
 			{
 				BaseDiscountAmount = x.base_discount_amount.ToDecimalOrDefault(),
