@@ -16,6 +16,8 @@ namespace MagentoAccess.Models.GetOrders
 
 		public OrderStateEnum State { get; set; }
 
+		public string OrderIncrementalId { get; set; }
+
 		public Order( salesOrderEntity order )
 		{
 			this.Addresses = new List< Address >
@@ -47,7 +49,8 @@ namespace MagentoAccess.Models.GetOrders
 			this.Customer = order.customer_id;
 			this.DiscountAmount = order.discount_amount.ToDecimalOrDefault();
 			this.GrandTotal = order.grand_total.ToDecimalOrDefault();
-			this.OrderId = order.order_id;
+			this.OrderIncrementalId = order.order_id;
+			this.OrderId = order.increment_id;
 			this.Items = order.items.Select( x => new Item
 			{
 				BaseDiscountAmount = x.base_discount_amount.ToDecimalOrDefault(),
@@ -84,6 +87,7 @@ namespace MagentoAccess.Models.GetOrders
 			this.Status = Enum.TryParse( order.status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.state, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
 		}
+
 	}
 
 	public enum OrderStateEnum
@@ -98,11 +102,29 @@ namespace MagentoAccess.Models.GetOrders
 		holded
 	}
 
+	public class OrderId
+	{
+		public OrderId( string id, bool isIncremental )
+		{
+			this.Id = id;
+			this.IsIncrementalId = isIncremental;
+		}
+
+		public string Id { get; private set; }
+
+		public bool IsIncrementalId { get; private set; }
+	}
+
 	public static class OrderExtensions
 	{
 		public static bool IsShipped( this Order order )
 		{
 			return order.Items.ToList().TrueForAll( x => x.IsShipped() );
+		}
+
+		public static OrderId GetId( this Order order )
+		{
+			return !string.IsNullOrWhiteSpace( order.OrderIncrementalId ) ? new OrderId( order.OrderIncrementalId, true ) : new OrderId( order.OrderId, false );
 		}
 	}
 }
