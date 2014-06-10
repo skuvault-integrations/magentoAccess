@@ -73,6 +73,12 @@ namespace MagentoAccess
 		{
 			var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
 
+			if( ordersBriefInfo == null )
+				return Enumerable.Empty< Order >();
+
+			if (ordersBriefInfo.result == null)
+				return Enumerable.Empty<Order>();
+
 			var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
 
 			var commontask = await Task.WhenAll( ordersDetailsTasks ).ConfigureAwait( false );
