@@ -64,5 +64,20 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Assert
 			getProductsTask.Result.Should().NotBeNull();
 		}
+
+		[ Test ]
+		public void GetStockItems_StoreContainsStockItems_ReceiveStockItems()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			var skusorids = new List< string >() { "501shirt", "311" };
+
+			var getProductsTask = this._service.GetStockItemsAsync( skusorids );
+			getProductsTask.Wait();
+
+			//------------ Assert
+			getProductsTask.Result.Should().NotBeNull();
+		}
 	}
 }

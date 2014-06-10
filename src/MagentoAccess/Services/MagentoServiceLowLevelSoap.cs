@@ -93,5 +93,16 @@ namespace MagentoAccess.Services
 
 			return res;
 		}
+
+		public async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync(List<string> skusOrIds)
+		{
+			var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+			var skusArray = skusOrIds.ToArray();
+
+			var res = await this._magentoSoapService.catalogInventoryStockItemListAsync(sessionId, skusArray).ConfigureAwait(false);
+
+			return res;
+		}
 	}
 }
