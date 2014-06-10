@@ -105,6 +105,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
+    <Compile Include="Services\IMagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />

@@ -4,18 +4,21 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Services
 {
-	internal class MagentoServiceLowLevelSoap
+	internal class MagentoServiceLowLevelSoap : IMagentoServiceLowLevelSoap
 	{
+		public string UserName { get; set; }
+
+		public string Password { get; set; }
+
+		public string Store { get; set; }
+
+		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
+
 		protected readonly Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
-
-		protected string UserName { get; set; }
-
-		protected string Password { get; set; }
-
-		protected string Store { get; set; }
 
 		protected string _sessionId;
 
@@ -33,12 +36,13 @@ namespace MagentoAccess.Services
 			return this._sessionId = getSessionIdTask.result;
 		}
 
-		public MagentoServiceLowLevelSoap( string userName, string password, string endpointAddress, string store )
+		public MagentoServiceLowLevelSoap( string userName, string password, string baseMagentoUrl, string store )
 		{
 			this.UserName = userName;
 			this.Password = password;
 			this.Store = store;
-			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endpointAddress ) );
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endPoint ) );
 		}
 
 		public async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -94,13 +98,13 @@ namespace MagentoAccess.Services
 			return res;
 		}
 
-		public async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync(List<string> skusOrIds)
+		public async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
 			var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 			var skusArray = skusOrIds.ToArray();
 
-			var res = await this._magentoSoapService.catalogInventoryStockItemListAsync(sessionId, skusArray).ConfigureAwait(false);
+			var res = await this._magentoSoapService.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
 
 			return res;
 		}
