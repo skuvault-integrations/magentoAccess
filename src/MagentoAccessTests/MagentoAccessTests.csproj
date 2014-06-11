@@ -81,7 +81,6 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="Misc\ExtensionsTest.cs" />
     <Compile Include="Models\Services\Credentials\MagentoNonAuthenticatedUserCredentialsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

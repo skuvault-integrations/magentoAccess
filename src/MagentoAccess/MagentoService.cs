@@ -45,8 +45,8 @@ namespace MagentoAccess
 				);
 
 			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
-				magentoAuthenticatedUserCredentials.SoapUserName,
-				magentoAuthenticatedUserCredentials.SoapUserPassword,
+				magentoAuthenticatedUserCredentials.SoapApiUser,
+				magentoAuthenticatedUserCredentials.SoapApiKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
 				null
 				);

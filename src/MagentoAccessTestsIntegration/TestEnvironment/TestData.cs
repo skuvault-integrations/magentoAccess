@@ -119,13 +119,13 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 	public class MagentoSoapCredentials
 	{
-		public string UserName { get; set; }
-		public string Password { get; set; }
+		public string ApiUser { get; set; }
+		public string ApiKey { get; set; }
 
-		public MagentoSoapCredentials( string soapUser, string soapPassword )
+		public MagentoSoapCredentials( string soapApiUser, string soapApiKey )
 		{
-			this.UserName = soapUser;
-			this.Password = soapPassword;
+			this.ApiUser = soapApiUser;
+			this.ApiKey = soapApiKey;
 		}
 	}
 }

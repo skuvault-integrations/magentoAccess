@@ -9,13 +9,13 @@ using Netco.Logging;
 
 namespace MagentoAccess.Services
 {
-	internal class MagentoServiceLowLevelSoap : IMagentoServiceLowLevelSoap
+	internal class MagentoServiceLowLevelSoap: IMagentoServiceLowLevelSoap
 	{
-		public string UserName { get; set; }
+		public string ApiUser{ get; set; }
 
-		public string Password { get; set; }
+		public string ApiKey{ get; set; }
 
-		public string Store { get; set; }
+		public string Store{ get; set; }
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
@@ -50,7 +50,7 @@ namespace MagentoAccess.Services
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
 
-				var getSessionIdTask = await this._magentoSoapService.loginAsync( this.UserName, this.Password ).ConfigureAwait( false );
+				var getSessionIdTask = await this._magentoSoapService.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
 				this._sessionIdCreatedAt = DateTime.UtcNow;
 				this.LogTraceGetResponseAsyncEnded( string.Format( "GetSessionId" ) );
 				return this._sessionId = getSessionIdTask.result;
@@ -62,10 +62,10 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public MagentoServiceLowLevelSoap( string userName, string password, string baseMagentoUrl, string store )
+		public MagentoServiceLowLevelSoap( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
-			this.UserName = userName;
-			this.Password = password;
+			this.ApiUser = apiUser;
+			this.ApiKey = apiKey;
 			this.Store = store;
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endPoint ) );
@@ -256,8 +256,8 @@ namespace MagentoAccess.Services
 			this.UpdateEntity = updateEntity;
 		}
 
-		public catalogInventoryStockItemUpdateEntity UpdateEntity { get; set; }
+		public catalogInventoryStockItemUpdateEntity UpdateEntity{ get; set; }
 
-		public string Id { get; set; }
+		public string Id{ get; set; }
 	}
 }

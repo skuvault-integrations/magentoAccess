@@ -24,7 +24,7 @@ namespace MagentoAccessTestsIntegration.Services
 			this._soapUserCredentials = this._testData.GetMagentoSoapUser();
 			this._authorityUrls = this._testData.GetMagentoUrls();
 
-			this._service = new MagentoServiceLowLevelSoap( this._soapUserCredentials.UserName, this._soapUserCredentials.Password, this._authorityUrls.MagentoBaseUrl, null );
+			this._service = new MagentoServiceLowLevelSoap( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 		}
 
 		[ Test ]
@@ -107,7 +107,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			Action act = () =>
 			{
-				this._service.UserName = "incorrect password";
+				this._service.ApiUser = "incorrect password";
 				var getProductsTask = this._service.GetSessionId();
 				getProductsTask.Wait();
 			};

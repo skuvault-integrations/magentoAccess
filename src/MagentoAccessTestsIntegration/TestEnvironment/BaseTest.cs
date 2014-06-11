@@ -44,8 +44,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					this._authorityUrls.MagentoBaseUrl,
 					this._consumer.Secret,
 					this._consumer.Key,
-					this._soapUserCredentials.UserName,
-					this._soapUserCredentials.Password
+					this._soapUserCredentials.ApiUser,
+					this._soapUserCredentials.ApiKey
 					) );
 
 			this._serviceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
