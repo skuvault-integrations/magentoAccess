@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using FluentAssertions;
+using MagentoAccess.Models.PutInventory;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
@@ -26,13 +28,30 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetProducts_UserAlreadyHasAccessTokens_ReceiveProducts()
+		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts()
 		{
 			//------------ Arrange
 
 			//------------ Act
 			var getProductsTask = this._service.GetProductsAsync();
 			getProductsTask.Wait();
+
+			//------------ Assert
+			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();
+		}
+
+		[ Test ]
+		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			var getProductsTask = this._service.GetProductsAsync();
+			getProductsTask.Wait();
+
+			var itemsToUpdate = getProductsTask.Result.Select( x => new Inventory() { ProductId = x.EntityId, Qty = long.Parse( "5" + x.EntityId.Last().ToString() ) } );
+			var updateInventoryTask = this._service.UpdateInventoryAsync( itemsToUpdate );
+			updateInventoryTask.Wait();
 
 			//------------ Assert
 			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();

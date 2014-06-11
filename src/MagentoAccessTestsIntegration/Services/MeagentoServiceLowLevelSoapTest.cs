@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
+using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -113,6 +115,24 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Assert
 
 			act.ShouldNotThrow();
+		}
+
+		[ Test ]
+		public void UpdateInventory_StoreWithItems_ItemsUpdated()
+		{
+			//------------ Arrange
+
+			//------------ Act
+
+			var productsAsync = this._service.GetProductsAsync();
+			productsAsync.Wait();
+
+			var itemsToUpdate = productsAsync.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "123" } ) ).ToList();
+
+			var getProductsTask = this._service.PutStockItemsAsync( itemsToUpdate );
+			getProductsTask.Wait();
+
+			//------------ Assert
 		}
 	}
 }
