@@ -15,5 +15,6 @@ namespace MagentoAccess.Services
 		Task< catalogProductListResponse > GetProductsAsync();
 		Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
 		Task< salesOrderInfoResponse > GetOrderAsync( string incrementId );
+		Task<bool> PutStockItemsAsync(List<PutStockItem> stockItems);
 	}
 }

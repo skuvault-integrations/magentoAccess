@@ -199,6 +199,30 @@ namespace MagentoAccess.Services
 			}
 		}
 
+		public async Task<bool> PutStockItemsAsync(List<PutStockItem> stockItems)
+		{
+			try
+			{
+				this.LogTraceGetResponseAsyncStarted( string.Format( "PutStockItemsAsync({0})", string.Join( ",", stockItems.Select( x => string.Format( "[id:{0},qty{1}]", x.Id, x.UpdateEntity.qty ) ) ) ) );
+
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				if( sessionId == null )
+					return false;
+
+				var res = await this._magentoSoapService.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItems.Select( x => x.Id ).ToArray(), stockItems.Select( x => x.UpdateEntity ).ToArray() ).ConfigureAwait( false );
+
+				this.LogTraceGetResponseAsyncEnded( string.Format( "GetStockItemsAsync({0})", res.result ) );
+
+				return res.result;
+			}
+			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return false;
+			}
+		}
+
 		public async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
 		{
 			try
@@ -222,5 +246,18 @@ namespace MagentoAccess.Services
 				return new salesOrderInfoResponse();
 			}
 		}
+	}
+
+	internal class PutStockItem
+	{
+		public PutStockItem( string id, catalogInventoryStockItemUpdateEntity updateEntity )
+		{
+			this.Id = id;
+			this.UpdateEntity = updateEntity;
+		}
+
+		public catalogInventoryStockItemUpdateEntity UpdateEntity { get; set; }
+
+		public string Id { get; set; }
 	}
 }
