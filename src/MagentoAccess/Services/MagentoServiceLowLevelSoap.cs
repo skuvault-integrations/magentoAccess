@@ -199,7 +199,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task<bool> PutStockItemsAsync(List<PutStockItem> stockItems)
+		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems )
 		{
 			try
 			{
