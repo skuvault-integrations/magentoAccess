@@ -87,7 +87,6 @@ namespace MagentoAccess.Models.GetOrders
 			this.Status = Enum.TryParse( order.status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.state, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
 		}
-
 	}
 
 	public enum OrderStateEnum

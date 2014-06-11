@@ -24,10 +24,10 @@ namespace MagentoAccess.Misc
 			return result;
 		}
 
-		public static string ToSoapParameterString(this DateTime dateTime)
+		public static string ToSoapParameterString( this DateTime dateTime )
 		{
-			var strRes = XmlConvert.ToString(dateTime, "yyyy-MM-ddTHH:mm:ss");
-			var result = strRes.Replace("T", " ");
+			var strRes = XmlConvert.ToString( dateTime, "yyyy-MM-ddTHH:mm:ss" );
+			var result = strRes.Replace( "T", " " );
 			return result;
 		}
 
