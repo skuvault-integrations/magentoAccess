@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
@@ -14,6 +16,14 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
+		private int _productsUpdateMaxChunkSize = 500;
+
+		private int _stockItemsListMaxChunkSize = 500;
+
+		public bool GetItemsBySoap = true;
+
+		public bool UpdateItemsBySoap = true;
+
 		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
@@ -86,13 +96,38 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
-			var productsWithQty = await this.GetProductsWithIdQty().ConfigureAwait( false );
+			if( this.GetItemsBySoap )
+			{
+				var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
-			var productsWithSku = await this.GetProductsWithIdSkuNameDescriptionPriceAsync().ConfigureAwait( false );
+				if( products == null || products.result == null )
+					return Enumerable.Empty< Product >();
 
-			var res = from pq in productsWithQty join ps in productsWithSku on pq.EntityId equals ps.EntityId select new Product() { Description = ps.Description, EntityId = ps.EntityId, Name = ps.Name, Sku = ps.Sku, Price = ps.Price, Qty = pq.Qty };
+				var productsDevidedByChunks = products.result.ToList().Batch( this._stockItemsListMaxChunkSize );
 
-			return res;
+				var getStockItemsAsyncTasks = productsDevidedByChunks.Select( stockItemsChunk => this.MagentoServiceLowLevelSoap.GetStockItemsAsync( stockItemsChunk.Select( x => x.sku ).ToList() ) );
+
+				var stockItemsResponses = await Task.WhenAll( getStockItemsAsyncTasks ).ConfigureAwait( false );
+
+				if( stockItemsResponses == null || !stockItemsResponses.Any() )
+					return Enumerable.Empty< Product >();
+
+				var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
+
+				var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product() { EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
+
+				return res;
+			}
+			else
+			{
+				var productsWithQty = await this.GetProductsWithIdQty().ConfigureAwait( false );
+
+				var productsWithSku = await this.GetProductsWithIdSkuNameDescriptionPriceAsync().ConfigureAwait( false );
+
+				var res = from pq in productsWithQty join ps in productsWithSku on pq.EntityId equals ps.EntityId select new Product() { Description = ps.Description, EntityId = ps.EntityId, Name = ps.Name, Sku = ps.Sku, Price = ps.Price, Qty = pq.Qty };
+
+				return res;
+			}
 		}
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
@@ -100,15 +135,28 @@ namespace MagentoAccess
 			if( !products.Any() )
 				return;
 
-			var inventoryItems = products.Select( x => new StockItem()
+			if( this.UpdateItemsBySoap )
 			{
-				ItemId = x.ItemId,
-				MinQty = x.MinQty,
-				ProductId = x.ProductId,
-				Qty = x.Qty,
-				StockId = x.StockId,
-			} );
-			await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+				var productToUpdate = products.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = x.Qty.ToString() } ) ).ToList();
+
+				var productsDevidedToChunks = productToUpdate.SplitToChunks( this._productsUpdateMaxChunkSize );
+
+				var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
+
+				await Task.WhenAll( updateProductsChunbksTasks ).ConfigureAwait( false );
+			}
+			else
+			{
+				var inventoryItems = products.Select( x => new StockItem()
+				{
+					ItemId = x.ItemId,
+					MinQty = x.MinQty,
+					ProductId = x.ProductId,
+					Qty = x.Qty,
+					StockId = x.StockId,
+				} );
+				await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+			}
 		}
 
 		private async Task< IEnumerable< Product > > GetProductsWithIdSkuNameDescriptionPriceAsync()
