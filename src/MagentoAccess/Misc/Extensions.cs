@@ -126,7 +126,7 @@ namespace MagentoAccess.Misc
 			{
 				var temp = source.Skip( i ).Take( chunkSize ).ToList();
 				chunks.Add( temp );
-				i += 500;
+				i += chunkSize;
 			}
 			return chunks;
 		}
