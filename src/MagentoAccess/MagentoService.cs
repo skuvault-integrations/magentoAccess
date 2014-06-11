@@ -220,18 +220,4 @@ namespace MagentoAccess
 				this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 		}
 	}
-
-	public class MagentoAuthenticatedUserSoapCredentials
-	{
-		public MagentoAuthenticatedUserSoapCredentials( string userName, string userPassword, string baseMagentoUrl )
-		{
-			this.UserName = userName;
-			this.UserPassword = userPassword;
-			this.BaseMagentoUrl = baseMagentoUrl;
-		}
-
-		public string UserName { get; set; }
-		public string UserPassword { get; set; }
-		public string BaseMagentoUrl { get; set; }
-	}
 }
