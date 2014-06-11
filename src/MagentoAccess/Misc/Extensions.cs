@@ -118,19 +118,34 @@ namespace MagentoAccess.Misc
 			return resultUrl;
 		}
 
-		public static IEnumerable< IEnumerable< T > > SplitToChunks< T >( this IEnumerable< T > source, int chunkSize )
+		public static List< List< T > > SplitToChunks< T >( this List< T > source, int chunkSize )
+		{
+			var i = 0;
+			var chunks = new List< List< T > >();
+			while( i < source.Count() )
+			{
+				var temp = source.Skip( i ).Take( chunkSize ).ToList();
+				chunks.Add( temp );
+				i += 500;
+			}
+			return chunks;
+		}
+
+		public static IEnumerable< IEnumerable< T > > Batch< T >(
+			this IEnumerable< T > source, int batchSize )
 		{
 			using( var enumerator = source.GetEnumerator() )
 			{
 				while( enumerator.MoveNext() )
-					yield return YieldBatchElement( enumerator, chunkSize - 1 );
+					yield return YieldBatchElements( enumerator, batchSize - 1 );
 			}
 		}
 
-		private static IEnumerable< T > YieldBatchElement< T >( IEnumerator< T > source, int chunkSize )
+		private static IEnumerable< T > YieldBatchElements< T >(
+			IEnumerator< T > source, int batchSize )
 		{
 			yield return source.Current;
-			for( var i = 0; i < chunkSize && source.MoveNext(); i++ )
+			for( var i = 0; i < batchSize && source.MoveNext(); i++ )
 			{
 				yield return source.Current;
 			}
