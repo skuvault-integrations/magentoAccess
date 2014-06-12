@@ -99,7 +99,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetSessionId_StoreDoNotContainsUser_ReceiveSessionId()
+		public void GetSessionId_StoreDoesNotContainsUser_NoExceptionThrowns()
 		{
 			//------------ Arrange
 
