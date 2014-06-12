@@ -193,8 +193,8 @@ namespace MagentoAccess.Services
 				//catch (ProtocolException)
 			catch( Exception ex )
 			{
-				MagentoLogger.Log().Trace( ex, "An exception occured in RequestVerificationUri" );
-				return null;
+				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to get to get 'Verification URI'" );
+				throw new MagentoAuthException( "An exception occured while attempting to get to get 'Verification URI'", ex );
 			}
 		}
 
@@ -228,8 +228,8 @@ namespace MagentoAccess.Services
 				//catch (ProtocolException)
 			catch( Exception ex )
 			{
-				MagentoLogger.Log().Trace( ex, "An exception occured in PopulateAccessTokenAndAccessTokenSecret" );
-				return;
+				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to  populate access token and access token secret" );
+				throw new MagentoAuthException( "An exception occured while attempting to  populate access token and access token secret", ex );
 			}
 		}
 
@@ -368,7 +368,7 @@ namespace MagentoAccess.Services
 		public string RequestTokenSecret { get; set; }
 	}
 
-	internal  class AuthenticationManager
+	internal class AuthenticationManager
 	{
 		private readonly DesktopConsumer consumer;
 		private string requestToken;
