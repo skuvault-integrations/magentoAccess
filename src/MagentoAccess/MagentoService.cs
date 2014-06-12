@@ -16,9 +16,7 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
-		public bool GetProductsBySoap = false;
-
-		public bool UpdateItemsBySoap = false;
+		public const bool UseSoapOnly = false;
 
 		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
 
@@ -93,7 +91,7 @@ namespace MagentoAccess
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
 			const int stockItemsListMaxChunkSize = 500;
-			if( this.GetProductsBySoap )
+			if( UseSoapOnly )
 			{
 				var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
@@ -134,7 +132,7 @@ namespace MagentoAccess
 			if( !inventories.Any() )
 				return;
 
-			if( this.UpdateItemsBySoap )
+			if( UseSoapOnly )
 			{
 				var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
