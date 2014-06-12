@@ -16,10 +16,6 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
-		private int _productsUpdateMaxChunkSize = 500;
-
-		private int _stockItemsListMaxChunkSize = 500;
-
 		public bool GetProductsBySoap = true;
 
 		public bool UpdateItemsBySoap = true;
@@ -96,6 +92,7 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
+			const int stockItemsListMaxChunkSize = 500;
 			if( this.GetProductsBySoap )
 			{
 				var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
@@ -103,7 +100,7 @@ namespace MagentoAccess
 				if( products == null || products.result == null )
 					return Enumerable.Empty< Product >();
 
-				var productsDevidedByChunks = products.result.ToList().Batch( this._stockItemsListMaxChunkSize );
+				var productsDevidedByChunks = products.result.ToList().Batch( stockItemsListMaxChunkSize );
 
 				var getStockItemsAsyncTasks = productsDevidedByChunks.Select( stockItemsChunk => this.MagentoServiceLowLevelSoap.GetStockItemsAsync( stockItemsChunk.Select( x => x.sku ).ToList() ) );
 
@@ -114,7 +111,7 @@ namespace MagentoAccess
 
 				var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
 
-				var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product() { EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
+				var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
 
 				return res;
 			}
@@ -124,7 +121,7 @@ namespace MagentoAccess
 
 				var productsWithSku = await this.GetProductsWithIdSkuNameDescriptionPriceAsync().ConfigureAwait( false );
 
-				var res = from pq in productsWithQty join ps in productsWithSku on pq.EntityId equals ps.EntityId select new Product() { Description = ps.Description, EntityId = ps.EntityId, Name = ps.Name, Sku = ps.Sku, Price = ps.Price, Qty = pq.Qty };
+				var res = from pq in productsWithQty join ps in productsWithSku on pq.EntityId equals ps.EntityId select new Product { Description = ps.Description, EntityId = ps.EntityId, Name = ps.Name, Sku = ps.Sku, Price = ps.Price, Qty = pq.Qty };
 
 				return res;
 			}
@@ -132,15 +129,16 @@ namespace MagentoAccess
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
+			const int productsUpdateMaxChunkSize = 500;
 			var inventories = products as IList< Inventory > ?? products.ToList();
 			if( !inventories.Any() )
 				return;
 
 			if( this.UpdateItemsBySoap )
 			{
-				var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = x.Qty.ToString() } ) ).ToList();
+				var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
-				var productsDevidedToChunks = productToUpdate.SplitToChunks( this._productsUpdateMaxChunkSize );
+				var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
 				var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
 
@@ -148,7 +146,7 @@ namespace MagentoAccess
 			}
 			else
 			{
-				var inventoryItems = inventories.Select( x => new StockItem()
+				var inventoryItems = inventories.Select( x => new StockItem
 				{
 					ItemId = x.ItemId,
 					MinQty = x.MinQty,
@@ -226,10 +224,9 @@ namespace MagentoAccess
 
 				var getProductsTask = this.MagentoServiceLowLevel.GetStockItemsAsync( ++page, itemsPerPage );
 				getProductsTask.Wait();
+
 				productsChunk = getProductsTask.Result.Items;
 
-				//var repeatedItems = from l in lastReceiveProducts join c in productsChunk on l.EntityId equals c.EntityId select l;
-				//todo: return qty too
 				var repeatedItems = from c in productsChunk join l in lastReceiveProducts on new { ItemId = c.ItemId, BackOrders = c.BackOrders, Qty = c.Qty } equals new { ItemId = l.ItemId, BackOrders = l.BackOrders, Qty = l.Qty } select l;
 
 				lastReceiveProducts = productsChunk;

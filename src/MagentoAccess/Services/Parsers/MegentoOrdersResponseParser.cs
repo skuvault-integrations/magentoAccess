@@ -188,8 +188,6 @@ namespace MagentoAccess.Services.Parsers
 						comment.IsCustomerNotified = GetElementValue( addr, ns, "is_customer_notified" );
 						comment.IsVisibleOnFront = GetElementValue( addr, ns, "is_visible_on_front" );
 						comment.CommentText = GetElementValue( addr, ns, "comment" );
-
-						//todo: to enum
 						comment.Status = GetElementValue( addr, ns, "status" );
 
 						return comment;
