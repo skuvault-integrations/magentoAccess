@@ -22,15 +22,15 @@ namespace MagentoAccess.Services
 {
 	public class MagentoServiceLowLevel : IMagentoServiceLowLevel
 	{
-		private string _requestTokenUrl;
-		private HttpDeliveryMethods _requestTokenHttpDeliveryMethod;
-		private string _authorizeUrl;
-		private string _accessTokenUrl;
-		private HttpDeliveryMethods _accessTokenHttpDeliveryMethod;
-		private string _baseMagentoUrl;
+		private readonly string _requestTokenUrl;
+		private readonly HttpDeliveryMethods _requestTokenHttpDeliveryMethod;
+		private readonly string _authorizeUrl;
+		private readonly string _accessTokenUrl;
+		private readonly HttpDeliveryMethods _accessTokenHttpDeliveryMethod;
+		private readonly string _baseMagentoUrl;
 		private const string RestApiUrl = "api/rest";
-		private string _consumerKey;
-		private string _consumerSecretKey;
+		private readonly string _consumerKey;
+		private readonly string _consumerSecretKey;
 
 		private DesktopConsumer _consumer;
 		private string _accessToken;

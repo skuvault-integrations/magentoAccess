@@ -56,21 +56,6 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 
-			//if( this._accessToken == null )
-			//{
-			//	var authorizeTask = this._service.PopulateAccessToken();
-			//	authorizeTask.Wait();
-			//	this._testData.CreateAccessTokenFile( this._service.AccessToken, this._service.AccessTokenSecret );
-			//}
-
-			//this._service = new MagentoService( new MagentoAuthenticatedUserCredentials(
-			//	this._accessToken.AccessToken,
-			//	this._accessToken.AccessTokenSecret,
-			//	this._authorityUrls.MagentoBaseUrl,
-			//	this._consumer.Secret,
-			//	this._consumer.Key
-			//	) );
-
 			this._service.AfterGettingToken += this._testData.CreateAccessTokenFile;
 			this._serviceNotAuth.AfterGettingToken += this._testData.CreateAccessTokenFile;
 		}
