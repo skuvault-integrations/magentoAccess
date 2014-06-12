@@ -265,7 +265,7 @@ namespace MagentoAccess.Services
 				var res = string.Format( "<data_item item_id=\"{0}\">{1}{2}<qty>{3}</qty><min_qty>{4}</min_qty></data_item>", x.ItemId, productIdSection, stockIdSection, x.Qty, x.MinQty );
 
 				return res;
-			} );
+			} ).ToList();
 
 			var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
 

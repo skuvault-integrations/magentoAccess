@@ -16,9 +16,9 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
-		public bool GetProductsBySoap = true;
+		public bool GetProductsBySoap = false;
 
-		public bool UpdateItemsBySoap = true;
+		public bool UpdateItemsBySoap = false;
 
 		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
 
@@ -87,7 +87,7 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
-			return await this.GetProductsWithIdSkuNameDescriptionPriceAsync();
+			return await this.GetRestProductsAsync();
 		}
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
@@ -111,17 +111,17 @@ namespace MagentoAccess
 
 				var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
 
-				var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
+				var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
 
 				return res;
 			}
 			else
 			{
-				var productsWithQty = await this.GetProductsWithIdQty().ConfigureAwait( false );
+				var stockItems = await this.GetRestStockItemsAsync().ConfigureAwait( false );
 
-				var productsWithSku = await this.GetProductsWithIdSkuNameDescriptionPriceAsync().ConfigureAwait( false );
+				var products = await this.GetRestProductsAsync().ConfigureAwait( false );
 
-				var res = from pq in productsWithQty join ps in productsWithSku on pq.EntityId equals ps.EntityId select new Product { Description = ps.Description, EntityId = ps.EntityId, Name = ps.Name, Sku = ps.Sku, Price = ps.Price, Qty = pq.Qty };
+				var res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
 
 				return res;
 			}
@@ -153,12 +153,12 @@ namespace MagentoAccess
 					ProductId = x.ProductId,
 					Qty = x.Qty,
 					StockId = x.StockId,
-				} );
+				} ).ToList();
 				await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
 			}
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsWithIdSkuNameDescriptionPriceAsync()
+		private async Task< IEnumerable< Product > > GetRestProductsAsync()
 		{
 			var page = 1;
 			const int itemsPerPage = 100;
@@ -201,7 +201,7 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsWithIdQty()
+		private async Task< IEnumerable< Product > > GetRestStockItemsAsync()
 		{
 			var page = 1;
 			const int itemsPerPage = 100;
@@ -241,7 +241,7 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty } );
+			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty, ProductId = x.ProductId } );
 		}
 
 		public void InitiateDesktopAuthentication()

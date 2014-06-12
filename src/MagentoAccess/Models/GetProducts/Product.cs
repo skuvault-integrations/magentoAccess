@@ -8,5 +8,6 @@
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public string Qty { get; set; }
+		public string ProductId { get; set; }
 	}
 }

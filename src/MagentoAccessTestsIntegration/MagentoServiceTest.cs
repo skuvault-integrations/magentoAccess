@@ -49,7 +49,7 @@ namespace MagentoAccessTestsIntegration
 			var getProductsTask = this._service.GetProductsAsync();
 			getProductsTask.Wait();
 
-			var itemsToUpdate = getProductsTask.Result.Select( x => new Inventory() { ProductId = x.EntityId, Qty = long.Parse( "5" + x.EntityId.Last().ToString() ) } );
+			var itemsToUpdate = getProductsTask.Result.Select( x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = long.Parse( "3" + x.EntityId.Last().ToString() ) } );
 			var updateInventoryTask = this._service.UpdateInventoryAsync( itemsToUpdate );
 			updateInventoryTask.Wait();
 

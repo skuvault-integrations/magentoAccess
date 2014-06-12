@@ -19,6 +19,7 @@ namespace MagentoAccess.Services.Parsers
 				var resultOrder = new StockItem
 				{
 					ItemId = GetElementValue( x, ns, "item_id" ),
+					ProductId = GetElementValue( x, ns, "product_id" ),
 					Qty = GetElementValue( x, ns, "qty" ),
 					BackOrders = GetElementValue( x, ns, "backorders" )
 				};
