@@ -20,7 +20,7 @@ namespace MagentoAccess
 
 		private int _stockItemsListMaxChunkSize = 500;
 
-		public bool GetItemsBySoap = true;
+		public bool GetProductsBySoap = true;
 
 		public bool UpdateItemsBySoap = true;
 
@@ -96,7 +96,7 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
-			if( this.GetItemsBySoap )
+			if( this.GetProductsBySoap )
 			{
 				var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
@@ -132,12 +132,13 @@ namespace MagentoAccess
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
-			if( !products.Any() )
+			var inventories = products as IList< Inventory > ?? products.ToList();
+			if( !inventories.Any() )
 				return;
 
 			if( this.UpdateItemsBySoap )
 			{
-				var productToUpdate = products.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = x.Qty.ToString() } ) ).ToList();
+				var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = x.Qty.ToString() } ) ).ToList();
 
 				var productsDevidedToChunks = productToUpdate.SplitToChunks( this._productsUpdateMaxChunkSize );
 
@@ -147,7 +148,7 @@ namespace MagentoAccess
 			}
 			else
 			{
-				var inventoryItems = products.Select( x => new StockItem()
+				var inventoryItems = inventories.Select( x => new StockItem()
 				{
 					ItemId = x.ItemId,
 					MinQty = x.MinQty,
