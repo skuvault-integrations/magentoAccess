@@ -16,7 +16,7 @@ namespace MagentoAccess
 {
 	public class MagentoService : IMagentoService
 	{
-		public const bool UseSoapOnly = false;
+		public bool UseSoapOnly { get; set; }
 
 		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
 
@@ -91,7 +91,7 @@ namespace MagentoAccess
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
 			const int stockItemsListMaxChunkSize = 500;
-			if( UseSoapOnly )
+			if( this.UseSoapOnly )
 			{
 				var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
@@ -132,7 +132,7 @@ namespace MagentoAccess
 			if( !inventories.Any() )
 				return;
 
-			if( UseSoapOnly )
+			if( this.UseSoapOnly )
 			{
 				var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
@@ -254,14 +254,36 @@ namespace MagentoAccess
 
 		public VerificationData RequestVerificationUri()
 		{
-			return this.MagentoServiceLowLevel.RequestVerificationUri();
+			try
+			{
+				return this.MagentoServiceLowLevel.RequestVerificationUri();
+			}
+			catch( Exception ex )
+			{
+				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to get to get 'Verification URI'" );
+				throw;
+			}
 		}
 
 		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
 		{
-			this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
-			if( this.AfterGettingToken != null )
-				this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+			try
+			{
+				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
+
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+			}
+			catch( MagentoAuthException ex )
+			{
+				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to  populate access token and access token secret" );
+				throw;
+			}
+			catch( Exception ex )
+			{
+				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to invoke 'after getting token' action" );
+				throw;
+			}
 		}
 	}
 }

@@ -29,7 +29,7 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseException( FaultException exception )
 		{
-			this.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an exception.", exception.Action, exception.Code, exception );
+			MagentoLogger.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an exception.", exception.Action, exception.Code, exception );
 		}
 
 		private void LogTraceGetResponseAsyncStarted( string info )
@@ -39,7 +39,7 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseAsyncEnded( string info )
 		{
-			this.Log().Trace( "[magento] SOAP Call:{0}, ended.", info );
+			MagentoLogger.Log().Trace( "[magento] SOAP Call:{0}, ended.", info );
 		}
 
 		internal async Task< string > GetSessionId()

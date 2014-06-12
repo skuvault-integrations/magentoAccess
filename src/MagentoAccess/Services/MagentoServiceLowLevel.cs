@@ -193,7 +193,6 @@ namespace MagentoAccess.Services
 				//catch (ProtocolException)
 			catch( Exception ex )
 			{
-				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to get to get 'Verification URI'" );
 				throw new MagentoAuthException( "An exception occured while attempting to get to get 'Verification URI'", ex );
 			}
 		}
@@ -228,7 +227,6 @@ namespace MagentoAccess.Services
 				//catch (ProtocolException)
 			catch( Exception ex )
 			{
-				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to  populate access token and access token secret" );
 				throw new MagentoAuthException( "An exception occured while attempting to  populate access token and access token secret", ex );
 			}
 		}
