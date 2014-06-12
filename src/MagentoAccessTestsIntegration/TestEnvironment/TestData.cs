@@ -47,7 +47,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		public MagentoSoapCredentials GetMagentoSoapUser()
 		{
-			return this._flatCsvLinesAccessToken == null ? null : new MagentoSoapCredentials( this._flatCsvLinesAccessToken.SoapUser, this._flatCsvLinesAccessToken.SoapPassword );
+			return this._flatCsvLinesAccessToken == null ? null : new MagentoSoapCredentials( this._flatCsvLinesAccessToken.SoapUserName, this._flatCsvLinesAccessToken.SoapApiKey );
 		}
 
 		public string TransmitVerification()
@@ -99,11 +99,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			[ CsvColumn( Name = "AccessTokenSecret", FieldIndex = 2 ) ]
 			public string AccessTokenSecret { get; set; }
 
-			[ CsvColumn( Name = "SoapUser", FieldIndex = 3 ) ]
-			public string SoapUser { get; set; }
+			[ CsvColumn( Name = "SoapUserName", FieldIndex = 3 ) ]
+			public string SoapUserName { get; set; }
 
-			[ CsvColumn( Name = "SoapPassword", FieldIndex = 4 ) ]
-			public string SoapPassword { get; set; }
+			[ CsvColumn( Name = "SoapApiKey", FieldIndex = 4 ) ]
+			public string SoapApiKey { get; set; }
 		}
 
 		internal class FlatCsvLineVerification
