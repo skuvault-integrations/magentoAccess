@@ -5,7 +5,7 @@ using MagentoAccess.Models.Services.PutStockItems;
 
 namespace MagentoAccess.Services.Parsers
 {
-	public class MegentoPutInventoryResponseParser : MagentoBaseResponseParser< PutStockItemsResponse >
+	internal class MegentoPutInventoryResponseParser : MagentoBaseResponseParser<PutStockItemsResponse>
 	{
 		protected override PutStockItemsResponse ParseWithoutExceptionHanding( XElement root )
 		{

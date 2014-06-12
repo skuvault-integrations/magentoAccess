@@ -20,7 +20,7 @@ using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {
-	public class MagentoServiceLowLevel : IMagentoServiceLowLevel
+	internal class MagentoServiceLowLevel : IMagentoServiceLowLevel
 	{
 		private readonly string _requestTokenUrl;
 		private readonly HttpDeliveryMethods _requestTokenHttpDeliveryMethod;
@@ -368,7 +368,7 @@ namespace MagentoAccess.Services
 		public string RequestTokenSecret { get; set; }
 	}
 
-	public partial class AuthenticationManager
+	internal  class AuthenticationManager
 	{
 		private readonly DesktopConsumer consumer;
 		private string requestToken;

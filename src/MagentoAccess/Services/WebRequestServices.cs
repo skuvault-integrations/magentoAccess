@@ -9,7 +9,7 @@ using Netco.Logging;
 
 namespace MagentoAccess.Services
 {
-	public class WebRequestServices : IWebRequestServices
+	internal class WebRequestServices : IWebRequestServices
 	{
 		#region BaseRequests
 		public WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters )

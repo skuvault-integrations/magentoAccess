@@ -2,7 +2,7 @@
 
 namespace MagentoAccess.Misc
 {
-	public class MagentoLogger
+	internal class MagentoLogger
 	{
 		public static ILogger Log()
 		{

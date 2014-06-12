@@ -3,7 +3,7 @@ using System.Net;
 
 namespace MagentoAccess.Services.Parsers
 {
-	public interface IMagentoBaseResponseParser< TParseResult >
+	internal interface IMagentoBaseResponseParser< TParseResult >
 	{
 		TParseResult Parse( WebResponse response );
 		TParseResult Parse( string str );

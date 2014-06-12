@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MagentoAccess.Services
 {
-	public interface IWebRequestServices
+	internal interface IWebRequestServices
 	{
 		Stream GetResponseStream( WebRequest webRequest );
 

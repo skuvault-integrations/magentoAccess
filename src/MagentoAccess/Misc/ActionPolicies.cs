@@ -6,7 +6,7 @@ using Netco.Utils;
 
 namespace MagentoAccess.Misc
 {
-	public static class ActionPolicies
+	internal static class ActionPolicies
 	{
 		private static readonly ActionPolicy _magentoSumbitPolicy = ActionPolicy.Handle< Exception >().Retry( 10, ( ex, i ) =>
 		{

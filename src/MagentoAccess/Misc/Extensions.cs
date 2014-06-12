@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace MagentoAccess.Misc
 {
-	public static class Extensions
+	internal static class Extensions
 	{
 		public static string ToStringUtcIso8601( this DateTime dateTime )
 		{

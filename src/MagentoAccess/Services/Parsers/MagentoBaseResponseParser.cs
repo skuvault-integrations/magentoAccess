@@ -8,7 +8,7 @@ using MagentoAccess.Models.Services.BaseResponse;
 
 namespace MagentoAccess.Services.Parsers
 {
-	public class MagentoBaseResponseParser< TParseResult > : IMagentoBaseResponseParser< TParseResult >
+	internal class MagentoBaseResponseParser<TParseResult> : IMagentoBaseResponseParser<TParseResult>
 	{
 		protected static string GetElementValue( XElement x, XNamespace ns, params string[] elementName )
 		{
