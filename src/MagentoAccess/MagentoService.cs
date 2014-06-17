@@ -22,6 +22,11 @@ namespace MagentoAccess
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
 
+		private void LogTraceException( Exception exception )
+		{
+			MagentoLogger.Log().Trace( "[magento] An exception occured, message{0}.", string.IsNullOrWhiteSpace( exception.Message ) ? PredefinedValues.NotAvailable : exception.Message, exception );
+		}
+
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken { get; set; }
@@ -60,99 +65,138 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
-			var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
+			try
+			{
+				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
 
-			if( ordersBriefInfo == null )
+				if( ordersBriefInfo == null )
+					return Enumerable.Empty< Order >();
+
+				if( ordersBriefInfo.result == null )
+					return Enumerable.Empty< Order >();
+
+				var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
+
+				var commontask = await Task.WhenAll( ordersDetailsTasks ).ConfigureAwait( false );
+
+				var resultOrders = commontask.Select( x => new Order( x.result ) );
+
+				return resultOrders;
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceException( exception );
 				return Enumerable.Empty< Order >();
-
-			if( ordersBriefInfo.result == null )
-				return Enumerable.Empty< Order >();
-
-			var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
-
-			var commontask = await Task.WhenAll( ordersDetailsTasks ).ConfigureAwait( false );
-
-			var resultOrders = commontask.Select( x => new Order( x.result ) );
-
-			return resultOrders;
+			}
 		}
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
-			var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
-			return res.Orders.Select( x => new Order( x ) );
+			try
+			{
+				var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
+				return res.Orders.Select( x => new Order( x ) );
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceException( exception );
+				return Enumerable.Empty< Order >();
+			}
 		}
 
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
-			return await this.GetRestProductsAsync();
+			try
+			{
+				return await this.GetRestProductsAsync();
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceException( exception );
+				return Enumerable.Empty< Product >();
+			}
 		}
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
-			const int stockItemsListMaxChunkSize = 500;
-			if( this.UseSoapOnly )
+			try
 			{
-				var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
+				const int stockItemsListMaxChunkSize = 500;
+				if( this.UseSoapOnly )
+				{
+					var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
-				if( products == null || products.result == null )
-					return Enumerable.Empty< Product >();
+					if( products == null || products.result == null )
+						return Enumerable.Empty< Product >();
 
-				var productsDevidedByChunks = products.result.ToList().Batch( stockItemsListMaxChunkSize );
+					var productsDevidedByChunks = products.result.ToList().Batch( stockItemsListMaxChunkSize );
 
-				var getStockItemsAsyncTasks = productsDevidedByChunks.Select( stockItemsChunk => this.MagentoServiceLowLevelSoap.GetStockItemsAsync( stockItemsChunk.Select( x => x.sku ).ToList() ) );
+					var getStockItemsAsyncTasks = productsDevidedByChunks.Select( stockItemsChunk => this.MagentoServiceLowLevelSoap.GetStockItemsAsync( stockItemsChunk.Select( x => x.sku ).ToList() ) );
 
-				var stockItemsResponses = await Task.WhenAll( getStockItemsAsyncTasks ).ConfigureAwait( false );
+					var stockItemsResponses = await Task.WhenAll( getStockItemsAsyncTasks ).ConfigureAwait( false );
 
-				if( stockItemsResponses == null || !stockItemsResponses.Any() )
-					return Enumerable.Empty< Product >();
+					if( stockItemsResponses == null || !stockItemsResponses.Any() )
+						return Enumerable.Empty< Product >();
 
-				var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
+					var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
 
-				var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
+					var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
 
-				return res;
+					return res;
+				}
+				else
+				{
+					var stockItems = await this.GetRestStockItemsAsync().ConfigureAwait( false );
+
+					var products = await this.GetRestProductsAsync().ConfigureAwait( false );
+
+					var res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
+
+					return res;
+				}
 			}
-			else
+			catch( Exception exception )
 			{
-				var stockItems = await this.GetRestStockItemsAsync().ConfigureAwait( false );
-
-				var products = await this.GetRestProductsAsync().ConfigureAwait( false );
-
-				var res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
-
-				return res;
+				this.LogTraceException( exception );
+				return Enumerable.Empty< Product >();
 			}
 		}
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
-			const int productsUpdateMaxChunkSize = 500;
-			var inventories = products as IList< Inventory > ?? products.ToList();
-			if( !inventories.Any() )
-				return;
-
-			if( this.UseSoapOnly )
+			try
 			{
-				var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
+				const int productsUpdateMaxChunkSize = 500;
+				var inventories = products as IList< Inventory > ?? products.ToList();
+				if( !inventories.Any() )
+					return;
 
-				var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
-
-				var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
-
-				await Task.WhenAll( updateProductsChunbksTasks ).ConfigureAwait( false );
-			}
-			else
-			{
-				var inventoryItems = inventories.Select( x => new StockItem
+				if( this.UseSoapOnly )
 				{
-					ItemId = x.ItemId,
-					MinQty = x.MinQty,
-					ProductId = x.ProductId,
-					Qty = x.Qty,
-					StockId = x.StockId,
-				} ).ToList();
-				await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+					var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
+
+					var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
+
+					var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
+
+					await Task.WhenAll( updateProductsChunbksTasks ).ConfigureAwait( false );
+				}
+				else
+				{
+					var inventoryItems = inventories.Select( x => new StockItem
+					{
+						ItemId = x.ItemId,
+						MinQty = x.MinQty,
+						ProductId = x.ProductId,
+						Qty = x.Qty,
+						StockId = x.StockId,
+					} ).ToList();
+					await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+				}
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceException( exception );
 			}
 		}
 
@@ -244,12 +288,19 @@ namespace MagentoAccess
 
 		public void InitiateDesktopAuthentication()
 		{
-			this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
-			var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
-			authorizeTask.Wait();
+			try
+			{
+				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
+				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
+				authorizeTask.Wait();
 
-			if( this.AfterGettingToken != null )
-				this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceException( exception );
+			}
 		}
 
 		public VerificationData RequestVerificationUri()
