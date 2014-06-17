@@ -4,7 +4,7 @@ using MagentoAccess.Models.Services.GetProduct;
 
 namespace MagentoAccess.Services.Parsers
 {
-	internal class MagentoProductResponseParser : MagentoBaseResponseParser<GetProductResponse>
+	internal class MagentoProductResponseParser : MagentoBaseResponseParser< GetProductResponse >
 	{
 		protected override GetProductResponse ParseWithoutExceptionHanding( XElement root )
 		{

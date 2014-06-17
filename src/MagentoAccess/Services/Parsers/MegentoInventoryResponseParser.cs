@@ -4,7 +4,7 @@ using MagentoAccess.Models.Services.GetStockItems;
 
 namespace MagentoAccess.Services.Parsers
 {
-	internal class MegentoInventoryResponseParser : MagentoBaseResponseParser<GetStockItemsResponse>
+	internal class MegentoInventoryResponseParser : MagentoBaseResponseParser< GetStockItemsResponse >
 	{
 		protected override GetStockItemsResponse ParseWithoutExceptionHanding( XElement root )
 		{

@@ -6,7 +6,7 @@ using MagentoAccess.Models.Services.GetOrders;
 
 namespace MagentoAccess.Services.Parsers
 {
-	internal class MegentoOrdersResponseParser : MagentoBaseResponseParser<GetOrdersResponse>
+	internal class MegentoOrdersResponseParser : MagentoBaseResponseParser< GetOrdersResponse >
 	{
 		protected override GetOrdersResponse ParseWithoutExceptionHanding( XElement root )
 		{
