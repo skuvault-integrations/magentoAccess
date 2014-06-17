@@ -4,6 +4,8 @@ using FluentAssertions;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Logging;
+using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services
@@ -34,6 +36,8 @@ namespace MagentoAccessTestsIntegration.Services
 				authorizeTask.Wait();
 				this._testData.CreateAccessTokenFile( this._service.AccessToken, this._service.AccessTokenSecret );
 			}
+
+			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 		}
 
 		[ Test ]
@@ -96,7 +100,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var res = this._service.GetProductAsync( "1" );
 
 			//------------ Assert
-			res.Should().NotBeNull();
+			res.Result.Should().NotBeNull();
 		}
 	}
 }

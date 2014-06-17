@@ -5,6 +5,8 @@ using FluentAssertions;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Logging;
+using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services
@@ -25,6 +27,8 @@ namespace MagentoAccessTestsIntegration.Services
 			this._authorityUrls = this._testData.GetMagentoUrls();
 
 			this._service = new MagentoServiceLowLevelSoap( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
+
+			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 		}
 
 		[ Test ]
@@ -39,7 +43,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.Should().NotBeNull();
+			getOrdersTask.Result.result.Should().NotBeEmpty();
 		}
 
 		[ Test ]
@@ -54,7 +58,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.Should().NotBeNull();
+			getOrdersTask.Result.result.Should().NotBeEmpty();
 		}
 
 		[ Test ]
@@ -67,7 +71,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.Should().NotBeNull();
+			getProductsTask.Result.result.Should().NotBeEmpty();
 		}
 
 		[ Test ]
@@ -82,7 +86,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.Should().NotBeNull();
+			getProductsTask.Result.result.Should().NotBeEmpty();
 		}
 
 		[ Test ]
