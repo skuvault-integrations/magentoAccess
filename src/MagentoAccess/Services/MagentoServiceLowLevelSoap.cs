@@ -5,19 +5,20 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
-using Netco.Logging;
 
 namespace MagentoAccess.Services
 {
-	internal class MagentoServiceLowLevelSoap: IMagentoServiceLowLevelSoap
+	internal class MagentoServiceLowLevelSoap : IMagentoServiceLowLevelSoap
 	{
-		public string ApiUser{ get; set; }
+		public string ApiUser { get; set; }
 
-		public string ApiKey{ get; set; }
+		public string ApiKey { get; set; }
 
-		public string Store{ get; set; }
+		public string Store { get; set; }
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
+
+		protected const string Na = "N/A";
 
 		protected readonly Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
 
@@ -29,7 +30,32 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseException( FaultException exception )
 		{
-			MagentoLogger.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an exception.", exception.Action, exception.Code, exception );
+			var faultName = Na;
+			if( exception != null )
+			{
+				if( exception.Code != null )
+				{
+					var name = string.IsNullOrWhiteSpace( exception.Code.Name ) ? Na : exception.Code.Name;
+					var nspace = string.IsNullOrWhiteSpace( exception.Code.Namespace ) ? Na : exception.Code.Namespace;
+					faultName = string.Format( "({0},{1})", name, nspace );
+				}
+			}
+
+			var actionInfo = Na;
+			if( exception != null )
+				actionInfo = string.IsNullOrWhiteSpace( exception.Action ) ? Na : exception.Action;
+
+			MagentoLogger.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an fault exception.", actionInfo, faultName, exception );
+		}
+
+		private void LogTraceGetResponseException( ProtocolException exception )
+		{
+			MagentoLogger.Log().Trace( "[magento] SOAP helplink:{0}, message:{1}, throw an protocol exception.", string.IsNullOrWhiteSpace( exception.HelpLink ) ? Na : exception.HelpLink, string.IsNullOrWhiteSpace( exception.Message ) ? Na : exception.Message, exception );
+		}
+
+		private void LogTraceGetResponseException( Exception exception )
+		{
+			MagentoLogger.Log().Trace( "[magento] SOAP message:{1}, throw an exception.", string.IsNullOrWhiteSpace( exception.Message ) ? Na : exception.Message, exception );
 		}
 
 		private void LogTraceGetResponseAsyncStarted( string info )
@@ -49,13 +75,25 @@ namespace MagentoAccess.Services
 				this.LogTraceGetResponseAsyncStarted( string.Format( "GetSessionId" ) );
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
+				loginResponse getSessionIdTask;
 
-				var getSessionIdTask = await this._magentoSoapService.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				getSessionIdTask = await this._magentoSoapService.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+
 				this._sessionIdCreatedAt = DateTime.UtcNow;
 				this.LogTraceGetResponseAsyncEnded( string.Format( "GetSessionId" ) );
 				return this._sessionId = getSessionIdTask.result;
 			}
-			catch( FaultException exception )
+			catch( FaultException faultException )
+			{
+				this.LogTraceGetResponseException( faultException );
+				return null;
+			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return null;
+			}
+			catch( Exception exception )
 			{
 				this.LogTraceGetResponseException( exception );
 				return null;
@@ -106,6 +144,16 @@ namespace MagentoAccess.Services
 				this.LogTraceGetResponseException( exception );
 				return new salesOrderListResponse();
 			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return null;
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return null;
+			}
 		}
 
 		public async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
@@ -143,6 +191,16 @@ namespace MagentoAccess.Services
 				this.LogTraceGetResponseException( exception );
 				return new salesOrderListResponse();
 			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return new salesOrderListResponse();
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return new salesOrderListResponse();
+			}
 		}
 
 		public async Task< catalogProductListResponse > GetProductsAsync()
@@ -167,6 +225,16 @@ namespace MagentoAccess.Services
 				return res;
 			}
 			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return new catalogProductListResponse();
+			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return new catalogProductListResponse();
+			}
+			catch( Exception exception )
 			{
 				this.LogTraceGetResponseException( exception );
 				return new catalogProductListResponse();
@@ -197,6 +265,16 @@ namespace MagentoAccess.Services
 				this.LogTraceGetResponseException( exception );
 				return new catalogInventoryStockItemListResponse();
 			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return new catalogInventoryStockItemListResponse();
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return new catalogInventoryStockItemListResponse();
+			}
 		}
 
 		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems )
@@ -217,6 +295,16 @@ namespace MagentoAccess.Services
 				return res.result;
 			}
 			catch( FaultException exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return false;
+			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return false;
+			}
+			catch( Exception exception )
 			{
 				this.LogTraceGetResponseException( exception );
 				return false;
@@ -245,6 +333,16 @@ namespace MagentoAccess.Services
 				this.LogTraceGetResponseException( exception );
 				return new salesOrderInfoResponse();
 			}
+			catch( ProtocolException protocolException )
+			{
+				this.LogTraceGetResponseException( protocolException );
+				return new salesOrderInfoResponse();
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceGetResponseException( exception );
+				return new salesOrderInfoResponse();
+			}
 		}
 	}
 
@@ -256,8 +354,8 @@ namespace MagentoAccess.Services
 			this.UpdateEntity = updateEntity;
 		}
 
-		public catalogInventoryStockItemUpdateEntity UpdateEntity{ get; set; }
+		public catalogInventoryStockItemUpdateEntity UpdateEntity { get; set; }
 
-		public string Id{ get; set; }
+		public string Id { get; set; }
 	}
 }
