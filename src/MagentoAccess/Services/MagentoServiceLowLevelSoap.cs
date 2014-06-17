@@ -34,7 +34,7 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseAsyncStarted( string info )
 		{
-			this.Log().Trace( "[magento] SOAP Call:{0}, started.", info );
+			MagentoLogger.Log().Trace( "[magento] SOAP Call:{0}, started.", info );
 		}
 
 		private void LogTraceGetResponseAsyncEnded( string info )
