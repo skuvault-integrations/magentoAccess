@@ -18,8 +18,6 @@ namespace MagentoAccess.Services
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
-		protected const string Na = "N/A";
-
 		protected readonly Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
 
 		protected string _sessionId;
@@ -30,32 +28,32 @@ namespace MagentoAccess.Services
 
 		private void LogTraceGetResponseException( FaultException exception )
 		{
-			var faultName = Na;
+			var faultName = PredefinedValues.NotAvailable;
 			if( exception != null )
 			{
 				if( exception.Code != null )
 				{
-					var name = string.IsNullOrWhiteSpace( exception.Code.Name ) ? Na : exception.Code.Name;
-					var nspace = string.IsNullOrWhiteSpace( exception.Code.Namespace ) ? Na : exception.Code.Namespace;
+					var name = string.IsNullOrWhiteSpace( exception.Code.Name ) ? PredefinedValues.NotAvailable : exception.Code.Name;
+					var nspace = string.IsNullOrWhiteSpace( exception.Code.Namespace ) ? PredefinedValues.NotAvailable : exception.Code.Namespace;
 					faultName = string.Format( "({0},{1})", name, nspace );
 				}
 			}
 
-			var actionInfo = Na;
+			var actionInfo = PredefinedValues.NotAvailable;
 			if( exception != null )
-				actionInfo = string.IsNullOrWhiteSpace( exception.Action ) ? Na : exception.Action;
+				actionInfo = string.IsNullOrWhiteSpace( exception.Action ) ? PredefinedValues.NotAvailable : exception.Action;
 
 			MagentoLogger.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an fault exception.", actionInfo, faultName, exception );
 		}
 
 		private void LogTraceGetResponseException( ProtocolException exception )
 		{
-			MagentoLogger.Log().Trace( "[magento] SOAP helplink:{0}, message:{1}, throw an protocol exception.", string.IsNullOrWhiteSpace( exception.HelpLink ) ? Na : exception.HelpLink, string.IsNullOrWhiteSpace( exception.Message ) ? Na : exception.Message, exception );
+			MagentoLogger.Log().Trace( "[magento] SOAP helplink:{0}, message:{1}, throw an protocol exception.", string.IsNullOrWhiteSpace( exception.HelpLink ) ? PredefinedValues.NotAvailable : exception.HelpLink, string.IsNullOrWhiteSpace( exception.Message ) ? PredefinedValues.NotAvailable : exception.Message, exception );
 		}
 
 		private void LogTraceGetResponseException( Exception exception )
 		{
-			MagentoLogger.Log().Trace( "[magento] SOAP message:{1}, throw an exception.", string.IsNullOrWhiteSpace( exception.Message ) ? Na : exception.Message, exception );
+			MagentoLogger.Log().Trace( "[magento] SOAP message:{1}, throw an exception.", string.IsNullOrWhiteSpace( exception.Message ) ? PredefinedValues.NotAvailable : exception.Message, exception );
 		}
 
 		private void LogTraceGetResponseAsyncStarted( string info )
