@@ -297,9 +297,13 @@ namespace MagentoAccess.Services
 
 				return res;
 			}
-			catch( ProtocolException )
+			catch( ProtocolException protocolException )
 			{
-				MagentoLogger.Log().Trace( "[magento] Invoke call partial url:{0} throw an exception .", partialUrl );
+				MagentoLogger.Log().Trace( protocolException, "[magento] Invoke call partial url:{0} throw partial exception.", partialUrl );
+			}
+			catch( Exception exception )
+			{
+				MagentoLogger.Log().Trace( exception, "[magento] Invoke call partial url:{0} throw an exception.", partialUrl );
 			}
 
 			return res;
@@ -320,9 +324,13 @@ namespace MagentoAccess.Services
 
 				return res;
 			}
-			catch( ProtocolException )
+			catch( ProtocolException protocolException )
 			{
-				MagentoLogger.Log().Trace( "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
+				MagentoLogger.Log().Trace( protocolException, "[magento] Invoke call async partial url:{0} throw an protocol exception .", partialUrl );
+			}
+			catch( Exception exception )
+			{
+				MagentoLogger.Log().Trace( exception, "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
 			}
 
 			return res;
