@@ -32,28 +32,24 @@ namespace MagentoAccess.Services
 			if( exception != null )
 			{
 				if( exception.Code != null )
-				{
-					var name = string.IsNullOrWhiteSpace( exception.Code.Name ) ? PredefinedValues.NotAvailable : exception.Code.Name;
-					var nspace = string.IsNullOrWhiteSpace( exception.Code.Namespace ) ? PredefinedValues.NotAvailable : exception.Code.Namespace;
-					faultName = string.Format( "({0},{1})", name, nspace );
-				}
+					faultName = string.IsNullOrWhiteSpace( exception.Code.Name ) ? PredefinedValues.NotAvailable : exception.Code.Name;
 			}
 
 			var actionInfo = PredefinedValues.NotAvailable;
 			if( exception != null )
 				actionInfo = string.IsNullOrWhiteSpace( exception.Action ) ? PredefinedValues.NotAvailable : exception.Action;
 
-			MagentoLogger.Log().Trace( "[magento] SOAP action:{0}, fault code:{1}, throw an fault exception.", actionInfo, faultName, exception );
+			MagentoLogger.Log().Trace( exception, "[magento] SOAP action:{0}, fault code:{1}, throw an fault exception.", actionInfo, faultName );
 		}
 
 		private void LogTraceGetResponseException( ProtocolException exception )
 		{
-			MagentoLogger.Log().Trace( "[magento] SOAP helplink:{0}, message:{1}, throw an protocol exception.", string.IsNullOrWhiteSpace( exception.HelpLink ) ? PredefinedValues.NotAvailable : exception.HelpLink, string.IsNullOrWhiteSpace( exception.Message ) ? PredefinedValues.NotAvailable : exception.Message, exception );
+			MagentoLogger.Log().Trace( exception, "[magento] SOAP helplink:{0}, throw a protocol exception.", string.IsNullOrWhiteSpace( exception.HelpLink ) ? PredefinedValues.NotAvailable : exception.HelpLink );
 		}
 
 		private void LogTraceGetResponseException( Exception exception )
 		{
-			MagentoLogger.Log().Trace( "[magento] SOAP message:{1}, throw an exception.", string.IsNullOrWhiteSpace( exception.Message ) ? PredefinedValues.NotAvailable : exception.Message, exception );
+			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
 		private void LogTraceGetResponseAsyncStarted( string info )

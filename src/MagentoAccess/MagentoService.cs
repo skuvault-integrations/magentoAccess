@@ -24,7 +24,7 @@ namespace MagentoAccess
 
 		private void LogTraceException( Exception exception )
 		{
-			MagentoLogger.Log().Trace( "[magento] An exception occured, message{0}.", string.IsNullOrWhiteSpace( exception.Message ) ? PredefinedValues.NotAvailable : exception.Message, exception );
+			MagentoLogger.Log().Trace( exception, "[magento] An exception occured." );
 		}
 
 		public delegate void SaveAccessToken( string token, string secret );
