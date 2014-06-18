@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
@@ -32,6 +33,20 @@ namespace MagentoAccess
 		public SaveAccessToken AfterGettingToken { get; set; }
 
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+
+		public async Task< MagentoCoreInfo > GetMagentoInfoAsync()
+		{
+			try
+			{
+				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
+				return new MagentoCoreInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition );
+			}
+			catch( Exception exception )
+			{
+				this.LogTraceException( exception );
+				throw;
+			}
+		}
 
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{

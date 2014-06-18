@@ -62,7 +62,7 @@ namespace MagentoAccess.Services
 			MagentoLogger.Log().Trace( "[magento] SOAP Call:{0}, ended.", info );
 		}
 
-		internal async Task< string > GetSessionId()
+		internal async Task< string > GetSessionId( bool throwException = false )
 		{
 			try
 			{
@@ -79,16 +79,25 @@ namespace MagentoAccess.Services
 			}
 			catch( FaultException faultException )
 			{
+				if( throwException )
+					throw;
+
 				this.LogTraceGetResponseException( faultException );
 				return null;
 			}
 			catch( ProtocolException protocolException )
 			{
+				if( throwException )
+					throw;
+
 				this.LogTraceGetResponseException( protocolException );
 				return null;
 			}
 			catch( Exception exception )
 			{
+				if( throwException )
+					throw;
+
 				this.LogTraceGetResponseException( exception );
 				return null;
 			}
@@ -337,6 +346,19 @@ namespace MagentoAccess.Services
 				this.LogTraceGetResponseException( exception );
 				return new salesOrderInfoResponse();
 			}
+		}
+
+		public async Task< magentoInfoResponse > GetMagentoInfoAsync()
+		{
+			this.LogTraceGetResponseAsyncStarted( "GetMagentoVersion()" );
+
+			var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+
+			var res = await this._magentoSoapService.magentoInfoAsync( sessionId ).ConfigureAwait( false );
+
+			this.LogTraceGetResponseAsyncEnded( "GetMagentoVersion()" );
+
+			return res;
 		}
 	}
 

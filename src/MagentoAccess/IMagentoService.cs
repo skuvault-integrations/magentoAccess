@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
@@ -27,5 +28,7 @@ namespace MagentoAccess
 		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
 
 		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+
+		Task< MagentoCoreInfo > GetMagentoInfoAsync();
 	}
 }

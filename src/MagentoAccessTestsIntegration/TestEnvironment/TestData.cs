@@ -8,7 +8,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 	{
 		private readonly FlatCsvLineConsumer _flatCsvLineConsumer;
 		private readonly FlatCsvLineUrls _flatCsvLineUrls;
-		private FlatCsvLineAccessToken _flatCsvLinesAccessToken;
+		private readonly FlatCsvLineAccessToken _flatCsvLinesAccessToken;
 		private readonly FlatCsvLineVerification _flatCsvLinesVerification;
 		private string _accessTokenFilePath;
 

@@ -58,6 +58,26 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		public void GetMagentoInfoAsync_StoreDoesNotContainsUser_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+
+			Action act = () =>
+			{
+				this._service.MagentoServiceLowLevelSoap.ApiKey = "incorrect key";
+				this._service.MagentoServiceLowLevelSoap.ApiUser = "incorrect user";
+				var magentoInfoAsyncTask = this._service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
 		[ Ignore ]
 		public void GetProducts_UserHasNotGotAccessTokens_AuthCalled()
 		{
