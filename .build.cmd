@@ -1,14 +1,11 @@
 @echo off
 IF %1.==. GOTO No1
 
-setlocal
-set PATH=%PATH%;tools\Invoke-Build
-
 set LOGDIR=%~dp0log\
 set LOGFILE=%LOGDIR%%1.log
 if not exist %LOGDIR% md %LOGDIR%
 
-powershell -NoProfile -ExecutionPolicy unrestricted "Build -Parameters @{Configuration='%1'} -Summary:$True" -verbose
+tools\Invoke-Build\ib -File:.build.ps1 -Summary -Verbose
 
 PAUSE
 GOTO End1
