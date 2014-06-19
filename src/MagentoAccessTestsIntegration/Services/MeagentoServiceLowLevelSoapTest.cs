@@ -138,5 +138,19 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Assert
 		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_StoreExist_StoreVersionRecived()
+		{
+			//------------ Arrange
+
+			//------------ Act
+
+			var productsAsync = this._service.GetMagentoInfoAsync();
+			productsAsync.Wait();
+
+			//------------ Assert
+			productsAsync.Result.result.magento_version.Should().NotBeNullOrWhiteSpace();
+		}
 	}
 }
