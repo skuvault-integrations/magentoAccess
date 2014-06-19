@@ -101,12 +101,13 @@ namespace MagentoAccessTestsIntegration
 
 		[ Test ]
 		[ Ignore ]
-		public void Authorize_UserHasNotGotAccessTokens_AuthCalled()
+		//this test is not completed to use it - manually fill verificatio code in file
+		public void InitiateDesktopAuthentication_UserHasNotGotAccessTokens_AuthCalled()
 		{
 			//------------ Arrange
 
 			//------------ Act
-			this._serviceNotAuth.TransmitVerificationCode = () => this._transmitVerification;
+			this._serviceNotAuth.TransmitVerificationCode = this.transmitVerificationCode;
 			this._serviceNotAuth.InitiateDesktopAuthentication();
 			//------------ Assert
 			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
@@ -115,7 +116,7 @@ namespace MagentoAccessTestsIntegration
 
 		[ Test ]
 		[ Ignore ]
-		public void GetVerificationURI_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
+		public void RequestVerificationUri_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
 		{
 			//------------ Arrange
 

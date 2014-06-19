@@ -1,5 +1,6 @@
 ﻿using MagentoAccess;
 using MagentoAccess.Models.Services.Credentials;
+using MagentoAccess.Services;
 using Netco.Logging;
 using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
@@ -13,7 +14,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private MagentoUrls _authorityUrls;
 		private MagentoAccessToken _accessToken;
 
-		protected string _transmitVerification;
+		protected TransmitVerificationCodeDelegate transmitVerificationCode;
 		protected MagentoService _service;
 		protected MagentoService _serviceNotAuth;
 		private MagentoSoapCredentials _soapUserCredentials;
@@ -26,7 +27,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			this._authorityUrls = this._testData.GetMagentoUrls();
 			this._accessToken = this._testData.GetMagentoAccessToken();
 			this._soapUserCredentials = this._testData.GetMagentoSoapUser();
-			this._transmitVerification = this._testData.TransmitVerification();
+			this.transmitVerificationCode = () => this._testData.TransmitVerification();
 
 			this._service = ( this._accessToken == null || string.IsNullOrWhiteSpace( this._accessToken.AccessToken ) || string.IsNullOrWhiteSpace( this._accessToken.AccessTokenSecret ) ) ?
 				new MagentoService( new MagentoNonAuthenticatedUserCredentials(
