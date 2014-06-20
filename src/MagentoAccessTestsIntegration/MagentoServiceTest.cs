@@ -235,7 +235,23 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_CorrectCredentials_NoExceptionThrowns()
+		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var magentoInfoAsyncTask = this._service.PingRestAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow()
 		{
 			//------------ Arrange
 

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Netco.Logging;
 
 namespace MagentoAccess.Services
 {
 	internal class WebRequestServices : IWebRequestServices
 	{
 		#region BaseRequests
+		[ Obsolete ]
 		public WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters )
 		{
 			var parametrizedServiceUrl = serviceUrl;
@@ -59,24 +59,44 @@ namespace MagentoAccess.Services
 
 				return serviceRequest;
 			}
-			catch( Exception )
+			catch( Exception exc )
 			{
-				throw;
+				string headers;
+				headers = rawHeaders == null ? "null" : rawHeaders.Aggregate( "", ( ac, x ) => string.Format( "[{0}-{1}]", x.Key ?? "null", x.Value ?? "null" ) );
+				throw new MagentoRestException( string.Format( "Exception occured on CreateServiceGetRequestAsync(serviceUrl:{0},body:{1}, headers{2})", serviceUrl ?? "null", body ?? "null", headers ), exc );
 			}
 		}
 
 		public void PopulateRequestByBody( string body, HttpWebRequest webRequest )
 		{
-			if( !string.IsNullOrWhiteSpace( body ) )
+			try
 			{
-				var encodedBody = new UTF8Encoding().GetBytes( body );
+				if( !string.IsNullOrWhiteSpace( body ) )
+				{
+					var encodedBody = new UTF8Encoding().GetBytes( body );
 
-				webRequest.ContentLength = encodedBody.Length;
-				webRequest.ContentType = "text/xml";
-				var getRequestStremTask = webRequest.GetRequestStreamAsync();
-				getRequestStremTask.Wait();
-				using( var newStream = getRequestStremTask.Result )
-					newStream.Write( encodedBody, 0, encodedBody.Length );
+					webRequest.ContentLength = encodedBody.Length;
+					webRequest.ContentType = "text/xml";
+					var getRequestStremTask = webRequest.GetRequestStreamAsync();
+					getRequestStremTask.Wait();
+					using( var newStream = getRequestStremTask.Result )
+						newStream.Write( encodedBody, 0, encodedBody.Length );
+				}
+			}
+			catch( Exception exc )
+			{
+				var webrequestUrl = "null";
+
+				if( webRequest != null )
+				{
+					if( webRequest.RequestUri != null )
+					{
+						if( webRequest.RequestUri.AbsoluteUri != null )
+							webrequestUrl = webRequest.RequestUri.AbsoluteUri;
+					}
+				}
+
+				throw new MagentoRestException( string.Format( "Exception occured on PopulateRequestByBody(body:{0}, webRequest:{1})", body ?? "null", webrequestUrl ), exc );
 			}
 		}
 		#endregion
@@ -84,7 +104,6 @@ namespace MagentoAccess.Services
 		#region ResponseHanding
 		public Stream GetResponseStream( WebRequest webRequest )
 		{
-			this.LogTraceGetResponseStarted( webRequest );
 			try
 			{
 				using( var response = ( HttpWebResponse )webRequest.GetResponse() )
@@ -94,21 +113,28 @@ namespace MagentoAccess.Services
 					if( dataStream != null )
 						dataStream.CopyTo( memoryStream, 0x100 );
 					memoryStream.Position = 0;
-					this.LogTraceGetResponseEnded( webRequest, memoryStream );
 					return memoryStream;
 				}
 			}
-			catch
+			catch( Exception ex )
 			{
-				this.LogTraceGetResponseException( webRequest );
-				//throw;
-				throw;
+				var webrequestUrl = "null";
+
+				if( webRequest != null )
+				{
+					if( webRequest.RequestUri != null )
+					{
+						if( webRequest.RequestUri.AbsoluteUri != null )
+							webrequestUrl = webRequest.RequestUri.AbsoluteUri;
+					}
+				}
+
+				throw new MagentoRestException( string.Format( "Exception occured on GetResponseStream( webRequest:{0})", webrequestUrl ), ex );
 			}
 		}
 
 		public async Task< Stream > GetResponseStreamAsync( WebRequest webRequest )
 		{
-			this.LogTraceGetResponseAsyncStarted( webRequest );
 			try
 			{
 				using( var response = ( HttpWebResponse )await webRequest.GetResponseAsync().ConfigureAwait( false ) )
@@ -117,66 +143,24 @@ namespace MagentoAccess.Services
 					var memoryStream = new MemoryStream();
 					await dataStream.CopyToAsync( memoryStream, 0x100 ).ConfigureAwait( false );
 					memoryStream.Position = 0;
-					this.LogTraceGetResponseAsyncEnded( webRequest, memoryStream );
 					return memoryStream;
 				}
 			}
-			catch
+			catch( Exception ex )
 			{
-				this.LogTraceGetResponseAsyncException( webRequest );
-				//throw;
-				throw;
+				var webrequestUrl = "null";
+
+				if( webRequest != null )
+				{
+					if( webRequest.RequestUri != null )
+					{
+						if( webRequest.RequestUri.AbsoluteUri != null )
+							webrequestUrl = webRequest.RequestUri.AbsoluteUri;
+					}
+				}
+
+				throw new MagentoRestException( string.Format( "Exception occured on GetResponseStreamAsync( webRequest:{0})", webrequestUrl ), ex );
 			}
-		}
-		#endregion
-
-		#region logging
-		private void LogTraceGetResponseStarted( WebRequest webRequest )
-		{
-			this.Log().Trace( "[magento] Get response url:{0} started.", webRequest.RequestUri );
-		}
-
-		private void LogTraceGetResponseEnded( WebRequest webRequest, Stream webResponseStream )
-		{
-			using( Stream streamCopy = new MemoryStream( ( int )webResponseStream.Length ) )
-			{
-				var sourcePos = webResponseStream.Position;
-				webResponseStream.CopyTo( streamCopy );
-				webResponseStream.Position = sourcePos;
-				streamCopy.Position = 0;
-
-				var responseStr = new StreamReader( streamCopy ).ReadToEnd();
-				this.Log().Trace( "[magento] Get response url:{0} ended with {1}.", webRequest.RequestUri, responseStr );
-			}
-		}
-
-		private void LogTraceGetResponseAsyncStarted( WebRequest webRequest )
-		{
-			this.Log().Trace( "[magento] Get response async url:{0} started.", webRequest.RequestUri );
-		}
-
-		private void LogTraceGetResponseAsyncEnded( WebRequest webRequest, Stream webResponseStream )
-		{
-			using( Stream streamCopy = new MemoryStream( ( int )webResponseStream.Length ) )
-			{
-				var sourcePos = webResponseStream.Position;
-				webResponseStream.CopyTo( streamCopy );
-				webResponseStream.Position = sourcePos;
-				streamCopy.Position = 0;
-
-				var responseStr = new StreamReader( streamCopy ).ReadToEnd();
-				this.Log().Trace( "[magento] Get response async url:{0} ended with {1}.", webRequest.RequestUri, responseStr );
-			}
-		}
-
-		private void LogTraceGetResponseException( WebRequest webRequest )
-		{
-			this.Log().Trace( "[magento] Get response url:{0} throw an exception .", webRequest.RequestUri );
-		}
-
-		private void LogTraceGetResponseAsyncException( WebRequest webRequest )
-		{
-			this.Log().Trace( "[magento] Get response async url:{0} throw an exception .", webRequest.RequestUri );
 		}
 		#endregion
 	}
