@@ -60,7 +60,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectApiKey_ExceptionThrowns()
+		public void PingSoapAsync_IncorrectApiKey_ThrowException()
 		{
 			//------------ Arrange
 
@@ -76,7 +76,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					"incorrect ApiKey" ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -85,7 +85,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectApiUser_ExceptionThrowns()
+		public void PingSoapAsync_IncorrectApiUser_ThrowException()
 		{
 			//------------ Arrange
 
@@ -101,7 +101,7 @@ namespace MagentoAccessTestsIntegration
 					"incorrect ApiUser",
 					this._testData.GetMagentoSoapUser().ApiKey ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -110,7 +110,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectAccessToken_ExceptionThrowns()
+		public void PingRestAsync_IncorrectAccessToken_ThrowException()
 		{
 			//------------ Arrange
 
@@ -126,7 +126,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -135,7 +135,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectAccessTokenSecret_ExceptionThrowns()
+		public void PingRestAsync_IncorrectAccessTokenSecret_ThrowException()
 		{
 			//------------ Arrange
 
@@ -151,7 +151,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -160,7 +160,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectBaseUrl_ExceptionThrowns()
+		public void PingRestAsync_IncorrectBaseUrl_ThrowException()
 		{
 			//------------ Arrange
 
@@ -176,7 +176,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -185,7 +185,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectConsumerSecret_ExceptionThrowns()
+		public void PingRestAsync_IncorrectConsumerSecret_ThrowException()
 		{
 			//------------ Arrange
 
@@ -201,7 +201,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -210,7 +210,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_IncorrectConsumerKey_ExceptionThrowns()
+		public void PingRestAsync_IncorrectConsumerKey_ThrowException()
 		{
 			//------------ Arrange
 
@@ -226,7 +226,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey ) );
 
-				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -242,7 +242,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var magentoInfoAsyncTask = this._service.GetMagentoInfoAsync();
+				var magentoInfoAsyncTask = this._service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 

@@ -80,9 +80,10 @@
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\MagentoLogger.cs" />
     <Compile Include="Misc\PredefinedValues.cs" />
-    <Compile Include="Models\GetMagentoCoreInfo\MagentoCoreInfo.cs" />
+    <Compile Include="Models\GetMagentoCoreInfo\PingSoapInfo.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
+    <Compile Include="Models\PingRest\MagentoCoreInfo.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
     <Compile Include="Models\Services\BaseResponse\ResponseError.cs" />
     <Compile Include="Models\Services\Credentials\MagentoAuthenticatedUserCredentials.cs" />

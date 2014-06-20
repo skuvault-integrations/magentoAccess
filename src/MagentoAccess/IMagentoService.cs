@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services;
 
@@ -29,6 +30,8 @@ namespace MagentoAccess
 
 		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
-		Task< MagentoCoreInfo > GetMagentoInfoAsync();
+		Task< PingSoapInfo > PingSoapAsync();
+
+		Task< PingRestInfo > PingRestAsync();
 	}
 }

@@ -7,6 +7,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Models.Services.PutStockItems;
@@ -44,34 +45,44 @@ namespace MagentoAccess
 
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
-		public async Task< MagentoCoreInfo > GetMagentoInfoAsync()
+		public async Task< PingSoapInfo > PingSoapAsync()
 		{
-			bool? soapWorks = null;
-			bool? restWorks = null;
 			try
 			{
-				this.LogTraceStarted( string.Format( "GetMagentoInfoAsync()" ) );
+				this.LogTraceStarted( string.Format( "PingSoapAsync()" ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
-				soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
+				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
 
-				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true );
-				restWorks = magentoOrders.Products != null;
-
-				var magentoCoreInfo = new MagentoCoreInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks.Value, restWorks.Value );
-				this.LogTraceEnded( string.Format( "GetMagentoInfoAsync()" ) );
+				var magentoCoreInfo = new PingSoapInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks );
+				this.LogTraceEnded( string.Format( "PingSoapAsync()" ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var exceptionText = string.Empty;
-				if( soapWorks.HasValue )
-					exceptionText += soapWorks.Value ? string.Empty : "SOAP auth error.";
+				var mexc = new MagentoAuthException( "SOAP auth error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
 
-				if( restWorks.HasValue )
-					exceptionText += restWorks.Value ? string.Empty : "REST auth error.";
+		public async Task< PingRestInfo > PingRestAsync()
+		{
+			try
+			{
+				this.LogTraceStarted( string.Format( "PingRestAsync()" ) );
 
-				var mexc = new MagentoAuthException( exceptionText, exception );
+				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true );
+				var restWorks = magentoOrders.Products != null;
+				var magentoCoreInfo = new PingRestInfo( restWorks );
+
+				this.LogTraceEnded( string.Format( "PingRestAsync()" ) );
+
+				return magentoCoreInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoAuthException( "REST auth error.", exception );
 				this.LogTraceException( mexc );
 				throw mexc;
 			}
