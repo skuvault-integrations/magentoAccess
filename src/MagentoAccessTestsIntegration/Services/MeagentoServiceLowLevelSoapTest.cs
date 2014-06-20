@@ -95,7 +95,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._service.GetSessionId();
+			var getProductsTask = this._service.GetSessionId( false );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -117,7 +117,7 @@ namespace MagentoAccessTestsIntegration.Services
 					this._testData.GetMagentoUrls().MagentoBaseUrl,
 					null );
 
-				var getProductsTask = service.GetSessionId();
+				var getProductsTask = service.GetSessionId( false );
 				getProductsTask.Wait();
 			};
 

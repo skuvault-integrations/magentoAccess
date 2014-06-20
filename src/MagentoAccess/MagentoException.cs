@@ -20,16 +20,16 @@ namespace MagentoAccess
 
 	public class MagentoSoapException : MagentoException
 	{
-		public MagentoSoapException(string message, Exception exception)
-			: base(message, exception)
+		public MagentoSoapException( string message, Exception exception )
+			: base( message, exception )
 		{
 		}
 	}
 
 	public class MagentoRestException : MagentoException
 	{
-		public MagentoRestException(string message, Exception exception)
-			: base(message, exception)
+		public MagentoRestException( string message, Exception exception )
+			: base( message, exception )
 		{
 		}
 	}

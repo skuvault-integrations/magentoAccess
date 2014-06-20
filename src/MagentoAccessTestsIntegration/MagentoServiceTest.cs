@@ -67,14 +67,14 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var service = new MagentoService(new MagentoAuthenticatedUserCredentials(
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
 					this._testData.GetMagentoAccessToken().AccessToken,
 					this._testData.GetMagentoAccessToken().AccessTokenSecret,
 					this._testData.GetMagentoUrls().MagentoBaseUrl,
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					"incorrect ApiKey"));
+					"incorrect ApiKey" ) );
 
 				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
 				magentoInfoAsyncTask.Wait();
@@ -92,14 +92,14 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var service = new MagentoService(new MagentoAuthenticatedUserCredentials(
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
 					this._testData.GetMagentoAccessToken().AccessToken,
 					this._testData.GetMagentoAccessToken().AccessTokenSecret,
 					this._testData.GetMagentoUrls().MagentoBaseUrl,
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					"incorrect ApiUser",
-					this._testData.GetMagentoSoapUser().ApiKey));
+					this._testData.GetMagentoSoapUser().ApiKey ) );
 
 				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
 				magentoInfoAsyncTask.Wait();

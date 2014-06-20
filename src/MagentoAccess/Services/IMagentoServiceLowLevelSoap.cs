@@ -7,7 +7,7 @@ namespace MagentoAccess.Services
 {
 	internal interface IMagentoServiceLowLevelSoap
 	{
-		string ApiUser { get;  }
+		string ApiUser { get; }
 		string ApiKey { get; }
 		string Store { get; }
 		Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );

@@ -31,7 +31,7 @@ namespace MagentoAccess.Services
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		internal async Task< string > GetSessionId( bool throwException = false )
+		internal async Task< string > GetSessionId( bool throwException = true )
 		{
 			try
 			{
@@ -69,7 +69,7 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				filters filters;
 
@@ -100,7 +100,7 @@ namespace MagentoAccess.Services
 			{
 				var ordersIdsAgregated = ordersIds.Aggregate( ( ac, x ) => ac += "," + x );
 
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				filters filters;
 				if( string.IsNullOrWhiteSpace( this.Store ) )
@@ -127,7 +127,7 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var filters = new filters { filter = new associativeEntity[ 0 ] };
 
@@ -147,7 +147,7 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var skusArray = skusOrIds.ToArray();
 
@@ -165,7 +165,7 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItems.Select( x => x.Id ).ToArray(), stockItems.Select( x => x.UpdateEntity ).ToArray() ).ConfigureAwait( false );
 
@@ -181,7 +181,7 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
 
@@ -197,7 +197,7 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId( true ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.magentoInfoAsync( sessionId ).ConfigureAwait( false );
 
