@@ -10,6 +10,14 @@ namespace MagentoAccess
 		}
 	}
 
+	public class MagentoAuthException : MagentoException
+	{
+		public MagentoAuthException(string message, Exception exception)
+			: base(message, exception)
+		{
+		}
+	}
+
 	public class MagentoRestAuthException : MagentoException
 	{
 		public MagentoRestAuthException( string message, Exception exception )

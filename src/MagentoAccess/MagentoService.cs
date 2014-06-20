@@ -28,6 +28,16 @@ namespace MagentoAccess
 			MagentoLogger.Log().Trace( exception, "[magento] An exception occured." );
 		}
 
+		private void LogTraceStarted( string info )
+		{
+			MagentoLogger.Log().Trace( "[magento] Start call:{0}.", info );
+		}
+
+		private void LogTraceEnded( string info )
+		{
+			MagentoLogger.Log().Trace( "[magento] End call:{0}.", info );
+		}
+
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken { get; set; }
@@ -36,20 +46,34 @@ namespace MagentoAccess
 
 		public async Task< MagentoCoreInfo > GetMagentoInfoAsync()
 		{
+			bool? soapWorks = null;
+			bool? restWorks = null;
 			try
 			{
+				this.LogTraceStarted( string.Format( "GetMagentoInfoAsync()" ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
+				soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
+
 				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true );
+				restWorks = magentoOrders.Products != null;
 
-				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
-				var restWorks = magentoOrders.Products != null;
+				var magentoCoreInfo = new MagentoCoreInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks.Value, restWorks.Value );
+				this.LogTraceEnded( string.Format( "GetMagentoInfoAsync()" ) );
 
-				return new MagentoCoreInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks, restWorks );
+				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				this.LogTraceException( exception );
-				throw;
+				var exceptionText = string.Empty;
+				if( soapWorks.HasValue )
+					exceptionText += soapWorks.Value ? string.Empty : "SOAP auth error.";
+
+				if( restWorks.HasValue )
+					exceptionText += restWorks.Value ? string.Empty : "REST auth error.";
+
+				var mexc = new MagentoAuthException( exceptionText, exception );
+				this.LogTraceException( mexc );
+				throw mexc;
 			}
 		}
 
@@ -87,6 +111,8 @@ namespace MagentoAccess
 		{
 			try
 			{
+				this.LogTraceStarted( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFrom, dateTo ) );
+
 				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
 
 				if( ordersBriefInfo == null )
@@ -101,6 +127,8 @@ namespace MagentoAccess
 
 				var resultOrders = commontask.Select( x => new Order( x.result ) );
 
+				this.LogTraceEnded( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFrom, dateTo ) );
+
 				return resultOrders;
 			}
 			catch( Exception exception )
@@ -114,8 +142,11 @@ namespace MagentoAccess
 		{
 			try
 			{
+				this.LogTraceStarted( string.Format( "GetOrdersAsync()" ) );
 				var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
-				return res.Orders.Select( x => new Order( x ) );
+				var resHandled = res.Orders.Select( x => new Order( x ) );
+				this.LogTraceEnded( string.Format( "GetOrdersAsync()" ) );
+				return resHandled;
 			}
 			catch( Exception exception )
 			{
@@ -128,7 +159,11 @@ namespace MagentoAccess
 		{
 			try
 			{
-				return await this.GetRestProductsAsync();
+				this.LogTraceStarted( string.Format( "GetProductsSimpleAsync()" ) );
+				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
+				this.LogTraceEnded( string.Format( "GetProductsSimpleAsync()" ) );
+
+				return res;
 			}
 			catch( Exception exception )
 			{
@@ -141,7 +176,9 @@ namespace MagentoAccess
 		{
 			try
 			{
+				this.LogTraceStarted( string.Format( "GetProductsAsync()" ) );
 				const int stockItemsListMaxChunkSize = 500;
+				IEnumerable< Product > res;
 				if( this.UseSoapOnly )
 				{
 					var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
@@ -160,9 +197,7 @@ namespace MagentoAccess
 
 					var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
 
-					var res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
-
-					return res;
+					res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
 				}
 				else
 				{
@@ -170,10 +205,11 @@ namespace MagentoAccess
 
 					var products = await this.GetRestProductsAsync().ConfigureAwait( false );
 
-					var res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
-
-					return res;
+					res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
 				}
+
+				this.LogTraceEnded( string.Format( "GetProductsAsync()" ) );
+				return res;
 			}
 			catch( Exception exception )
 			{
@@ -186,33 +222,36 @@ namespace MagentoAccess
 		{
 			try
 			{
+				this.LogTraceStarted( string.Format( "UpdateInventoryAsync(...)" ) );
 				const int productsUpdateMaxChunkSize = 500;
 				var inventories = products as IList< Inventory > ?? products.ToList();
-				if( !inventories.Any() )
-					return;
-
-				if( this.UseSoapOnly )
+				if( inventories.Any() )
 				{
-					var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
-
-					var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
-
-					var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
-
-					await Task.WhenAll( updateProductsChunbksTasks ).ConfigureAwait( false );
-				}
-				else
-				{
-					var inventoryItems = inventories.Select( x => new StockItem
+					if( this.UseSoapOnly )
 					{
-						ItemId = x.ItemId,
-						MinQty = x.MinQty,
-						ProductId = x.ProductId,
-						Qty = x.Qty,
-						StockId = x.StockId,
-					} ).ToList();
-					await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+						var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
+
+						var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
+
+						var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
+
+						await Task.WhenAll( updateProductsChunbksTasks ).ConfigureAwait( false );
+					}
+					else
+					{
+						var inventoryItems = inventories.Select( x => new StockItem
+						{
+							ItemId = x.ItemId,
+							MinQty = x.MinQty,
+							ProductId = x.ProductId,
+							Qty = x.Qty,
+							StockId = x.StockId,
+						} ).ToList();
+						await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+					}
 				}
+
+				this.LogTraceEnded( string.Format( "UpdateInventoryAsync(...)" ) );
 			}
 			catch( Exception exception )
 			{
@@ -310,12 +349,15 @@ namespace MagentoAccess
 		{
 			try
 			{
+				this.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
 				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
 				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
 				authorizeTask.Wait();
 
 				if( this.AfterGettingToken != null )
 					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+
+				this.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
 			}
 			catch( Exception exception )
 			{
@@ -327,7 +369,11 @@ namespace MagentoAccess
 		{
 			try
 			{
-				return this.MagentoServiceLowLevel.RequestVerificationUri();
+				this.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
+				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
+				this.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
+
+				return res;
 			}
 			catch( Exception ex )
 			{
@@ -340,19 +386,17 @@ namespace MagentoAccess
 		{
 			try
 			{
+				this.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
 				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
 
 				if( this.AfterGettingToken != null )
 					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-			}
-			catch( MagentoRestAuthException ex )
-			{
-				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to  populate access token and access token secret" );
-				throw;
+
+				this.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
 			}
 			catch( Exception ex )
 			{
-				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to invoke 'after getting token' action" );
+				this.LogTraceException( ex );
 				throw;
 			}
 		}
