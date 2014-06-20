@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
+using MagentoAccess;
 using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.Services.Credentials;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
@@ -58,23 +60,178 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_StoreDoesNotContainsUser_ExceptionThrowns()
+		public void GetMagentoInfoAsync_IncorrectApiKey_ExceptionThrowns()
 		{
 			//------------ Arrange
 
 			//------------ Act
-
 			Action act = () =>
 			{
 				this._service.MagentoServiceLowLevelSoap.ApiKey = "incorrect key";
+				var magentoInfoAsyncTask = this._service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_IncorrectApiUser_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
 				this._service.MagentoServiceLowLevelSoap.ApiUser = "incorrect user";
 				var magentoInfoAsyncTask = this._service.GetMagentoInfoAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
 			//------------ Assert
-
 			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_IncorrectAccessToken_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
+					"incorrect access token ",
+					this._testData.GetMagentoAccessToken().AccessTokenSecret,
+					this._testData.GetMagentoUrls().MagentoBaseUrl,
+					this._testData.GetMagentoConsumerCredentials().Secret,
+					this._testData.GetMagentoConsumerCredentials().Key,
+					this._testData.GetMagentoSoapUser().ApiUser,
+					this._testData.GetMagentoSoapUser().ApiKey ) );
+
+				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_IncorrectAccessTokenSecret_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
+					this._testData.GetMagentoAccessToken().AccessToken,
+					"incorrect access token secret",
+					this._testData.GetMagentoUrls().MagentoBaseUrl,
+					this._testData.GetMagentoConsumerCredentials().Secret,
+					this._testData.GetMagentoConsumerCredentials().Key,
+					this._testData.GetMagentoSoapUser().ApiUser,
+					this._testData.GetMagentoSoapUser().ApiKey ) );
+
+				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_IncorrectBaseUrl_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
+					this._testData.GetMagentoAccessToken().AccessToken,
+					this._testData.GetMagentoAccessToken().AccessTokenSecret,
+					"http://199.48.164.39/incorrectUrl",
+					this._testData.GetMagentoConsumerCredentials().Secret,
+					this._testData.GetMagentoConsumerCredentials().Key,
+					this._testData.GetMagentoSoapUser().ApiUser,
+					this._testData.GetMagentoSoapUser().ApiKey ) );
+
+				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_IncorrectConsumerSecret_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
+					this._testData.GetMagentoAccessToken().AccessToken,
+					this._testData.GetMagentoAccessToken().AccessTokenSecret,
+					this._testData.GetMagentoUrls().MagentoBaseUrl,
+					"incorrect consumer secret",
+					this._testData.GetMagentoConsumerCredentials().Key,
+					this._testData.GetMagentoSoapUser().ApiUser,
+					this._testData.GetMagentoSoapUser().ApiKey ) );
+
+				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_IncorrectConsumerKey_ExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
+					this._testData.GetMagentoAccessToken().AccessToken,
+					this._testData.GetMagentoAccessToken().AccessTokenSecret,
+					this._testData.GetMagentoUrls().MagentoBaseUrl,
+					this._testData.GetMagentoConsumerCredentials().Secret,
+					"incorrect consumer key",
+					this._testData.GetMagentoSoapUser().ApiUser,
+					this._testData.GetMagentoSoapUser().ApiKey ) );
+
+				var magentoInfoAsyncTask = service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		public void GetMagentoInfoAsync_CorrectCredentials_NoExceptionThrowns()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var magentoInfoAsyncTask = this._service.GetMagentoInfoAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldNotThrow< Exception >();
 		}
 
 		[ Test ]

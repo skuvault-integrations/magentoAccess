@@ -236,11 +236,11 @@ namespace MagentoAccess.Services
 			return await this.InvokeCallAsync< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true ).ConfigureAwait( false );
 		}
 
-		public async Task< GetProductsResponse > GetProductsAsync( int page, int limit )
+		public async Task< GetProductsResponse > GetProductsAsync( int page, int limit, bool thrownExc = false )
 		{
 			var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
 			var resultUrl = string.Format( "{0}?{1}", "products", limitFilter );
-			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( resultUrl, true ).ConfigureAwait( false );
+			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( resultUrl, true, throwException : thrownExc ).ConfigureAwait( false );
 		}
 
 		public async Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit )
@@ -287,10 +287,10 @@ namespace MagentoAccess.Services
 			var res = default( TParsed );
 			try
 			{
-				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 
 				ActionPolicies.Get.Do( () =>
 				{
+					var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 					using( var memStream = this.webRequestServices.GetResponseStream( webRequest ) )
 						res = new TParser().Parse( memStream, false );
 				} );
@@ -309,15 +309,14 @@ namespace MagentoAccess.Services
 			return res;
 		}
 
-		protected async Task< TParsed > InvokeCallAsync< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
+		protected async Task< TParsed > InvokeCallAsync< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null, bool throwException = false ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
 		{
 			var res = default( TParsed );
 			try
 			{
-				var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
-
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
 					using( var memStream = await this.webRequestServices.GetResponseStreamAsync( webRequest ).ConfigureAwait( false ) )
 						res = new TParser().Parse( memStream, false );
 				} ).ConfigureAwait( false );
@@ -327,10 +326,14 @@ namespace MagentoAccess.Services
 			catch( ProtocolException protocolException )
 			{
 				MagentoLogger.Log().Trace( protocolException, "[magento] Invoke call async partial url:{0} throw an protocol exception .", partialUrl );
+				if( throwException )
+					throw;
 			}
 			catch( Exception exception )
 			{
 				MagentoLogger.Log().Trace( exception, "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
+				if( throwException )
+					throw;
 			}
 
 			return res;

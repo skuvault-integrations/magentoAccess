@@ -9,7 +9,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 {
 	public class BaseTest
 	{
-		private TestData _testData;
+		protected TestData _testData;
 		private MagentoConsumerCredentials _consumer;
 		private MagentoUrls _authorityUrls;
 		private MagentoAccessToken _accessToken;

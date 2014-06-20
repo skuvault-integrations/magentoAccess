@@ -24,7 +24,7 @@ namespace MagentoAccess.Services
 
 		Task< GetProductResponse > GetProductAsync( string id );
 
-		Task< GetProductsResponse > GetProductsAsync( int page, int limit );
+		Task< GetProductsResponse > GetProductsAsync( int page, int limit, bool thrownExc = false );
 
 		Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit );
 
