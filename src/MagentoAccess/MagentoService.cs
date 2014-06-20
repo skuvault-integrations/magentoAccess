@@ -72,7 +72,7 @@ namespace MagentoAccess
 			{
 				this.LogTraceStarted( string.Format( "PingRestAsync()" ) );
 
-				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true );
+				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
 				var restWorks = magentoOrders.Products != null;
 				var magentoCoreInfo = new PingRestInfo( restWorks );
 
