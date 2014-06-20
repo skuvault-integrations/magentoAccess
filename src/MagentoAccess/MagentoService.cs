@@ -39,7 +39,12 @@ namespace MagentoAccess
 			try
 			{
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
-				return new MagentoCoreInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition );
+				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true );
+
+				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
+				var restWorks = magentoOrders.Products != null;
+
+				return new MagentoCoreInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks, restWorks );
 			}
 			catch( Exception exception )
 			{
