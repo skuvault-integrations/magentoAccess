@@ -157,7 +157,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception ex )
 			{
-				MagentoLogger.Log().Trace( ex, "An exception occured in PopulateAccessToken" );
+				throw new MagentoRestException( "An exception occured in PopulateAccessToken", ex );
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace MagentoAccess.Services
 				//catch (ProtocolException)
 			catch( Exception ex )
 			{
-				throw new MagentoAuthException( "An exception occured while attempting to get to get 'Verification URI'", ex );
+				throw new MagentoRestAuthException( "An exception occured while attempting to get to get 'Verification URI'", ex );
 			}
 		}
 
@@ -224,62 +224,109 @@ namespace MagentoAccess.Services
 				this._accessToken = authorizer.GetAccessToken( verificationCode );
 				this._accessTokenSecret = tokenManager.GetTokenSecret( this._accessToken );
 			}
-				//catch (ProtocolException)
 			catch( Exception ex )
 			{
-				throw new MagentoAuthException( "An exception occured while attempting to  populate access token and access token secret", ex );
+				throw new MagentoRestAuthException( "An exception occured while attempting to  populate access token and access token secret", ex );
 			}
 		}
 
 		public async Task< GetProductResponse > GetProductAsync( string id )
 		{
-			return await this.InvokeCallAsync< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true ).ConfigureAwait( false );
+			try
+			{
+				return await this.InvokeCallAsync< MagentoProductResponseParser, GetProductResponse >( string.Format( "products/{0}", id ), true ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoRestException( string.Format( "An error occured during GetProductAsync{0}", id ), exc );
+			}
 		}
 
 		public async Task< GetProductsResponse > GetProductsAsync( int page, int limit, bool thrownExc = false )
 		{
-			var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
-			var resultUrl = string.Format( "{0}?{1}", "products", limitFilter );
-			return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( resultUrl, true, throwException : thrownExc ).ConfigureAwait( false );
+			try
+			{
+				var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
+				var resultUrl = string.Format( "{0}?{1}", "products", limitFilter );
+				return await this.InvokeCallAsync< MagentoProductsResponseParser, GetProductsResponse >( resultUrl, true, throwException : thrownExc ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				if( thrownExc )
+					throw new MagentoRestException( string.Format( "An error occured during GetProductsAsync(page:{0},limit:{1})", page, limit ), exc );
+				else
+				{
+					MagentoLogger.Log().Trace( exc, string.Format( "[magento] GetProductsAsyncc(page:{0},limit:{1}) throw an exception .", page, limit ) );
+					return new GetProductsResponse();
+				}
+			}
 		}
 
 		public async Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit )
 		{
-			var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
-			var resultUrl = string.Format( "{0}?{1}", "stockitems", limitFilter );
-			return await this.InvokeCallAsync< MegentoInventoryResponseParser, GetStockItemsResponse >( resultUrl, true ).ConfigureAwait( false );
+			try
+			{
+				var limitFilter = string.Format( "page={0}&limit={1}", page, limit );
+				var resultUrl = string.Format( "{0}?{1}", "stockitems", limitFilter );
+				return await this.InvokeCallAsync< MegentoInventoryResponseParser, GetStockItemsResponse >( resultUrl, true ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoRestException( string.Format( "An error occured during GetStockItemsAsync(page:{0},limit{1})", page, limit ), exc );
+			}
 		}
 
 		public async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems )
 		{
-			var inventoryItemsFormated = inventoryItems.Select( x =>
+			try
 			{
-				Condition.Requires( x.ItemId ).IsNotNullOrWhiteSpace();
+				var inventoryItemsFormated = inventoryItems.Select( x =>
+				{
+					Condition.Requires( x.ItemId ).IsNotNullOrWhiteSpace();
 
-				var productIdSection = string.IsNullOrWhiteSpace( x.ProductId ) ? string.Empty : string.Format( "<product_id>{0}</product_id>", x.ProductId );
+					var productIdSection = string.IsNullOrWhiteSpace( x.ProductId ) ? string.Empty : string.Format( "<product_id>{0}</product_id>", x.ProductId );
 
-				var stockIdSection = string.IsNullOrWhiteSpace( x.StockId ) ? string.Empty : string.Format( "<stock_id>{0}</stock_id>", x.StockId );
+					var stockIdSection = string.IsNullOrWhiteSpace( x.StockId ) ? string.Empty : string.Format( "<stock_id>{0}</stock_id>", x.StockId );
 
-				var res = string.Format( "<data_item item_id=\"{0}\">{1}{2}<qty>{3}</qty><min_qty>{4}</min_qty></data_item>", x.ItemId, productIdSection, stockIdSection, x.Qty, x.MinQty );
+					var res = string.Format( "<data_item item_id=\"{0}\">{1}{2}<qty>{3}</qty><min_qty>{4}</min_qty></data_item>", x.ItemId, productIdSection, stockIdSection, x.Qty, x.MinQty );
 
-				return res;
-			} ).ToList();
+					return res;
+				} ).ToList();
 
-			var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
+				var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
 
-			return await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) ).ConfigureAwait( false );
+				return await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoRestException( string.Format( "An error occured during PutStockItemsAsync(...)" ), exc );
+			}
 		}
 
 		public async Task< GetOrdersResponse > GetOrdersAsync()
 		{
-			return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true ).ConfigureAwait( false );
+			try
+			{
+				return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( "orders", true ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoRestException( string.Format( "An error occured during GetOrdersAsync()" ), exc );
+			}
 		}
 
 		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
-			var filterUrl = string.Format( "filter[1][attribute]=created_at&filter[1][from]={0}&filter[1][to]={1}", dateFrom.ToUrlParameterString(), dateTo.ToUrlParameterString() );
-			var url = string.Format( "{0}?{1}", "orders", filterUrl );
-			return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( url, true ).ConfigureAwait( false );
+			try
+			{
+				var filterUrl = string.Format( "filter[1][attribute]=created_at&filter[1][from]={0}&filter[1][to]={1}", dateFrom.ToUrlParameterString(), dateTo.ToUrlParameterString() );
+				var url = string.Format( "{0}?{1}", "orders", filterUrl );
+				return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( url, true ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoRestException( string.Format( "An error occured during GetOrdersAsync(datefrom:{0},dateTo:{1})", dateFrom, dateTo ), exc );
+			}
 		}
 
 		protected TParsed InvokeCall< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
@@ -287,7 +334,6 @@ namespace MagentoAccess.Services
 			var res = default( TParsed );
 			try
 			{
-
 				ActionPolicies.Get.Do( () =>
 				{
 					var webRequest = this.CreateMagentoStandartRequest( partialUrl, needAuthorise, requestType, body );
@@ -297,16 +343,10 @@ namespace MagentoAccess.Services
 
 				return res;
 			}
-			catch( ProtocolException protocolException )
+			catch( Exception exc )
 			{
-				MagentoLogger.Log().Trace( protocolException, "[magento] Invoke call partial url:{0} throw partial exception.", partialUrl );
+				throw new MagentoRestException( string.Format( "InvokeCall(partialUrl:{0},needAuthorise{1}) throw an exception.", partialUrl, needAuthorise ), exc );
 			}
-			catch( Exception exception )
-			{
-				MagentoLogger.Log().Trace( exception, "[magento] Invoke call partial url:{0} throw an exception.", partialUrl );
-			}
-
-			return res;
 		}
 
 		protected async Task< TParsed > InvokeCallAsync< TParser, TParsed >( string partialUrl, bool needAuthorise = false, HttpDeliveryMethods requestType = HttpDeliveryMethods.GetRequest, string body = null, bool throwException = false ) where TParser : IMagentoBaseResponseParser< TParsed >, new()
@@ -323,17 +363,12 @@ namespace MagentoAccess.Services
 
 				return res;
 			}
-			catch( ProtocolException protocolException )
-			{
-				MagentoLogger.Log().Trace( protocolException, "[magento] Invoke call async partial url:{0} throw an protocol exception .", partialUrl );
-				if( throwException )
-					throw;
-			}
 			catch( Exception exception )
 			{
-				MagentoLogger.Log().Trace( exception, "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
 				if( throwException )
-					throw;
+					throw new MagentoRestException( string.Format( "InvokeCall(partialUrl:{0},needAuthorise{1}) throw an exception.", partialUrl, needAuthorise ), exception );
+				else
+					MagentoLogger.Log().Trace( exception, "[magento] Invoke call async partial url:{0} throw an exception .", partialUrl );
 			}
 
 			return res;

@@ -345,7 +345,7 @@ namespace MagentoAccess
 				if( this.AfterGettingToken != null )
 					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 			}
-			catch( MagentoAuthException ex )
+			catch( MagentoRestAuthException ex )
 			{
 				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to  populate access token and access token secret" );
 				throw;
