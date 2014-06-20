@@ -10,11 +10,11 @@ namespace MagentoAccess.Services
 {
 	internal class MagentoServiceLowLevelSoap : IMagentoServiceLowLevelSoap
 	{
-		public string ApiUser { get; set; }
+		public string ApiUser { get; private set; }
 
-		public string ApiKey { get; set; }
+		public string ApiKey { get; private set; }
 
-		public string Store { get; set; }
+		public string Store { get; private set; }
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 

@@ -103,7 +103,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetSessionId_StoreDoesNotContainsUser_NoExceptionThrowns()
+		public void GetSessionId_IncorrectApiUser_NoExceptionThrowns()
 		{
 			//------------ Arrange
 
@@ -111,8 +111,13 @@ namespace MagentoAccessTestsIntegration.Services
 
 			Action act = () =>
 			{
-				this._service.ApiUser = "incorrect password";
-				var getProductsTask = this._service.GetSessionId();
+				var service = new MagentoServiceLowLevelSoap(
+					"incorrect api user",
+					this._testData.GetMagentoSoapUser().ApiKey,
+					this._testData.GetMagentoUrls().MagentoBaseUrl,
+					null );
+
+				var getProductsTask = service.GetSessionId();
 				getProductsTask.Wait();
 			};
 

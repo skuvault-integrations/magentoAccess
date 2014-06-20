@@ -54,7 +54,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		public string TransmitVerification()
 		{
 			var cc = new CsvContext();
-			this._flatCsvLinesVerification = Enumerable.FirstOrDefault(cc.Read<FlatCsvLineVerification>(_verificationFilePath, new CsvFileDescription { FirstLineHasColumnNames = true }));
+			this._flatCsvLinesVerification = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineVerification >( this._verificationFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
 			return this._flatCsvLinesVerification == null ? null : this._flatCsvLinesVerification.VerifierCode;
 		}
 
