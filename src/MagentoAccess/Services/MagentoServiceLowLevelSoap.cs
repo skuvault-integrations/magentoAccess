@@ -123,6 +123,9 @@ namespace MagentoAccess.Services
 
 				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
 
+				//crutch for magento 1.7 
+				res.result = res.result.Where( x => x.updated_at.ToDateTimeOrDefault() >= modifiedFrom && x.updated_at.ToDateTimeOrDefault() <= modifiedTo ).ToArray();
+
 				return res;
 			}
 			catch( Exception exc )
