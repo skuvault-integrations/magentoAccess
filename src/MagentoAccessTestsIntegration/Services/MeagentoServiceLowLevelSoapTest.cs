@@ -18,6 +18,8 @@ namespace MagentoAccessTestsIntegration.Services
 		private MagentoUrls _authorityUrls;
 		private MagentoServiceLowLevelSoap _service;
 		private MagentoSoapCredentials _soapUserCredentials;
+		private int _shoppingCartId;
+		private int _customerId;
 
 		[ SetUp ]
 		public void Setup()
@@ -29,12 +31,59 @@ namespace MagentoAccessTestsIntegration.Services
 			this._service = new MagentoServiceLowLevelSoap( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
+
+			///
+			var shoppingCartIdTask = this._service.CreateCart( "0" );
+			shoppingCartIdTask.Wait();
+			this._shoppingCartId = shoppingCartIdTask.Result;
+
+			//var customerIdTask = this._service.CreateCustomer();
+			//customerIdTask.Wait();
+			//this._customerId = customerIdTask.Result;
+			this._customerId = 6;
+
+			//var shoppingCartCustomerSetTask = this._service.ShoppingCartCustomerSet( this._shoppingCartId, this._customerId, "password", "0" );
+			//shoppingCartCustomerSetTask.Wait();
+			//var isSuccess = shoppingCartCustomerSetTask.Result;
+
+			var shoppingCartCustomerSetTask = this._service.ShoppingCartGuestCustomerSet( this._shoppingCartId, "max", "qwe@qwe.com", "kits", "0" );
+			shoppingCartCustomerSetTask.Wait();
+			var isSuccess = shoppingCartCustomerSetTask.Result;
+
+			var shoppingCartAddressSet = this._service.ShoppingCartAddressSet( this._shoppingCartId, "0" );
+			shoppingCartAddressSet.Wait();
+			var isSuccess2 = shoppingCartAddressSet.Result;
+			//
+		}
+
+		[ TearDown ]
+		public void TearDown()
+		{
+			///
+			//var customerIdTask = this._service.DeleteCustomer(this._customerId);
+			//
 		}
 
 		[ Test ]
 		public void GetOrders_StoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
+
+			var shippingMenthodTask = this._service.ShoppingCartSetShippingMethod( this._shoppingCartId, "0" );
+			shippingMenthodTask.Wait();
+			var isshippingMenthodTaskSuccess = shippingMenthodTask.Result;
+
+			var paymentMenthodTask = this._service.ShoppingCartSetPaymentMethod( this._shoppingCartId, "0" );
+			paymentMenthodTask.Wait();
+			var ispaymentMenthodTaskSuccess = paymentMenthodTask.Result;
+
+			var productTask = this._service.ShoppingCartAddProduct( this._shoppingCartId, "1", "0" );
+			productTask.Wait();
+			var isSuccess = productTask.Result;
+
+			var orderIdTask = this._service.CreateOrder( this._shoppingCartId, "0" );
+			orderIdTask.Wait();
+			var orderId = orderIdTask.Result;
 
 			//------------ Act
 			var modifiedFrom = DateTime.Parse( "2014-05-08 15:02:58" );

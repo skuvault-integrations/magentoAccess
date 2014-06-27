@@ -73,16 +73,16 @@ namespace MagentoAccess.Services
 
 				filters filters;
 
-				if (string.IsNullOrWhiteSpace(this.Store))
-					filters = new filters { complex_filter = new complexFilter[2] };
+				if( string.IsNullOrWhiteSpace( this.Store ) )
+					filters = new filters { complex_filter = new complexFilter[ 2 ] };
 				else
 				{
-					filters = new filters { complex_filter = new complexFilter[3] };
-					filters.complex_filter[2] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+					filters = new filters { complex_filter = new complexFilter[ 3 ] };
+					filters.complex_filter[ 2 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
 				}
 
-				filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-				filters.complex_filter[1] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
+				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
+				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
 
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				/// 
@@ -243,6 +243,274 @@ namespace MagentoAccess.Services
 			catch( Exception exc )
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< int > CreateCart( string storeid )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.shoppingCartCreateAsync( sessionId, storeid ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync({0})", storeid ), exc );
+			}
+		}
+
+		public async Task< string > CreateOrder( int shoppingcartid, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.shoppingCartOrderAsync( sessionId, shoppingcartid, store, null ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< int > CreateCustomer(
+			string email = "na@na.com",
+			string firstname = "firstname",
+			string lastname = "lastname",
+			string password = "password",
+			int website_id = 0,
+			int store_id = 0,
+			int group_id = 0
+			)
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var customerCustomerEntityToCreate = new customerCustomerEntityToCreate()
+				{
+					email = email,
+					firstname = firstname,
+					lastname = lastname,
+					password = password,
+					website_id = website_id,
+					store_id = store_id,
+					group_id = group_id
+				};
+				var res = await this._magentoSoapService.customerCustomerCreateAsync( sessionId, customerCustomerEntityToCreate ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var cutomers = await this._magentoSoapService.customerCustomerListAsync( sessionId, new filters() ).ConfigureAwait( false );
+
+				var customer = cutomers.result.First( x => x.customer_id == customerId );
+
+				var customerShoppingCart = new shoppingCartCustomerEntity()
+				{
+					confirmation = ( customer.confirmation ? 1 : 0 ).ToString(),
+					customer_id = customer.customer_id,
+					customer_idSpecified = customer.customer_idSpecified,
+					email = customer.email,
+					firstname = customer.firstname,
+					group_id = customer.group_id,
+					group_idSpecified = customer.group_idSpecified,
+					lastname = customer.lastname,
+					mode = "customer",
+					password = customerPass,
+					store_id = customer.store_id,
+					store_idSpecified = customer.store_idSpecified,
+					website_id = customer.website_id,
+					website_idSpecified = customer.website_idSpecified
+				};
+				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId, shoppingCart, customerShoppingCart, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var customer = new shoppingCartCustomerEntity()
+				{
+					email = customerMail,
+					firstname = customerfirstname,
+					lastname = customerlastname,
+					website_id = 0,
+					store_id = 0,
+					mode = "guest",
+				};
+
+				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId, shoppingCart, customer, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var customerAddressEntities = new shoppingCartCustomerAddressEntity[ 2 ];
+
+				customerAddressEntities[ 0 ] = new shoppingCartCustomerAddressEntity()
+				{
+					mode = "shipping",
+					firstname = "testFirstname",
+					lastname = "testLastname",
+					company = "testCompany",
+					street = "testStreet",
+					city = "testCity",
+					region = "testRegion",
+					postcode = "testPostcode",
+					country_id = "1",
+					telephone = "0123456789",
+					fax = "0123456789",
+					is_default_shipping = 0,
+					is_default_billing = 0
+				};
+				customerAddressEntities[ 1 ] = new shoppingCartCustomerAddressEntity()
+				{
+					mode = "billing",
+					firstname = "testFirstname",
+					lastname = "testLastname",
+					company = "testCompany",
+					street = "testStreet",
+					city = "testCity",
+					region = "testRegion",
+					postcode = "testPostcode",
+					country_id = "1",
+					telephone = "0123456789",
+					fax = "0123456789",
+					is_default_shipping = 0,
+					is_default_billing = 0
+				};
+
+				var res = await this._magentoSoapService.shoppingCartCustomerAddressesAsync( sessionId, shoppingCart, customerAddressEntities, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > DeleteCustomer( int customerId )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.customerCustomerDeleteAsync( sessionId, customerId ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during DeleteCustomer()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var shoppingCartProductEntities = new shoppingCartProductEntity[ 1 ];
+
+				shoppingCartProductEntities[ 0 ] = new shoppingCartProductEntity() { product_id = productId, qty = 3 };
+
+				var res = await this._magentoSoapService.shoppingCartProductAddAsync( sessionId, shoppingCartId, shoppingCartProductEntities, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				//var payments = await this._magentoSoapService.shoppingCartPaymentListAsync(sessionId, shoppingCartId, store).ConfigureAwait(false);
+
+				var cartPaymentMethodEntity = new shoppingCartPaymentMethodEntity()
+				{
+					po_number = null,
+					//method = "checkmo",
+					method = "'cashondelivery'",
+					cc_cid = null,
+					cc_owner = null,
+					cc_number = null,
+					cc_type = null,
+					cc_exp_year = null,
+					cc_exp_month = null
+				};
+
+				var res = await this._magentoSoapService.shoppingCartPaymentMethodAsync( sessionId, shoppingCartId, cartPaymentMethodEntity, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.shoppingCartShippingListAsync( sessionId, shoppingCartId, store ).ConfigureAwait( false );
+
+				var shippings = res.result;
+				var shipping = shippings.First();
+
+				var shippingMethodResponse = await this._magentoSoapService.shoppingCartShippingMethodAsync( sessionId, shoppingCartId, shipping.code, store ).ConfigureAwait( false );
+
+				return shippingMethodResponse.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
 			}
 		}
 	}
