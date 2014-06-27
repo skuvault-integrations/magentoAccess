@@ -22,6 +22,7 @@ namespace MagentoAccessTestsIntegration.Services
 		private int _shoppingCartId;
 		private int _customerId;
 		private List< salesOrderListEntity > _orders;
+		private Dictionary< int, string > _productsIds;
 
 		[ SetUp ]
 		public void Setup()
@@ -32,7 +33,6 @@ namespace MagentoAccessTestsIntegration.Services
 
 			this._service = new MagentoServiceLowLevelSoap( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
-			this.CreateOrders();
 
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 		}
@@ -74,6 +74,27 @@ namespace MagentoAccessTestsIntegration.Services
 			this._orders = ordersTask.Result.result.OrderBy( x => x.updated_at ).ToList();
 		}
 
+		private void CreateProductstems()
+		{
+			this._productsIds = new Dictionary<int,string>();
+
+			var createProuctsTasks = new List<Task>();
+
+			for (var i = 0; i < 5; i++)
+			{
+				var tiks = DateTime.UtcNow.Ticks.ToString();
+				var sku = string.Format("TddTestSku{0}_{1}", i, tiks);
+				var name = string.Format("TddTestName{0}_{1}", i, tiks);
+				var shoppingCartIdTask = this._service.CreateProduct("0", name, sku);
+				createProuctsTasks.Add(shoppingCartIdTask);
+				//shoppingCartIdTask.Wait();
+				this._productsIds.Add(shoppingCartIdTask.Result, sku);
+			}
+
+			var commonTask = Task.WhenAll(createProuctsTasks);
+			commonTask.Wait();
+		}
+
 		[ TearDown ]
 		public void TearDown()
 		{
@@ -83,6 +104,7 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetOrders_StoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
+			this.CreateOrders();
 
 			//------------ Act
 			var modifiedFrom = DateTime.Parse( this._orders.First().updated_at ).AddSeconds( 1 );
@@ -98,6 +120,7 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetOrders_ByIdsStoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
+			this.CreateOrders();
 
 			//------------ Act
 			//var ordersIds = new List< string >() { "100000001", "100000002" };
@@ -114,6 +137,7 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetProducts_StoreContainsProducts_ReceiveProducts()
 		{
 			//------------ Arrange
+			this.CreateProductstems();
 
 			//------------ Act
 			var getProductsTask = this._service.GetProductsAsync();
@@ -127,15 +151,17 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetStockItems_StoreContainsStockItems_ReceiveStockItems()
 		{
 			//------------ Arrange
+			this.CreateProductstems();
 
 			//------------ Act
-			var skusorids = new List< string >() { "501shirt", "311" };
+			//var skusorids = new List< string >() { "501shirt", "311" };
+			var skusorids = _productsIds.Select((kv, i) => i % 2 == 0 ? kv.Key.ToString() : kv.Value).ToList();
 
 			var getProductsTask = this._service.GetStockItemsAsync( skusorids );
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.result.Should().NotBeEmpty();
+			getProductsTask.Result.result.Select(x => x.product_id).ShouldBeEquivalentTo(_productsIds.Select(x => x.Key));
 		}
 
 		[ Test ]
@@ -179,18 +205,24 @@ namespace MagentoAccessTestsIntegration.Services
 		public void UpdateInventory_StoreWithItems_ItemsUpdated()
 		{
 			//------------ Arrange
+			this.CreateProductstems();
 
 			//------------ Act
 
-			var productsAsync = this._service.GetProductsAsync();
+			var productsAsync = this._service.GetStockItemsAsync(_productsIds.Select(x => x.Value).ToList());
 			productsAsync.Wait();
-
+			
 			var itemsToUpdate = productsAsync.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "123" } ) ).ToList();
 
 			var getProductsTask = this._service.PutStockItemsAsync( itemsToUpdate );
 			getProductsTask.Wait();
 
 			//------------ Assert
+			var productsAsync2 = this._service.GetStockItemsAsync(_productsIds.Select(x => x.Value).ToList());
+			productsAsync2.Wait();
+
+			var itemsToUpdate2 = productsAsync.Result.result.Select(x => new PutStockItem(x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = x.qty })).ToList();
+			itemsToUpdate2.Should().BeEquivalentTo(itemsToUpdate);
 		}
 
 		[ Test ]
