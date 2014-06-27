@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Services;
@@ -20,6 +21,7 @@ namespace MagentoAccessTestsIntegration.Services
 		private MagentoSoapCredentials _soapUserCredentials;
 		private int _shoppingCartId;
 		private int _customerId;
+		private List< salesOrderListEntity > _orders;
 
 		[ SetUp ]
 		public void Setup()
@@ -30,69 +32,66 @@ namespace MagentoAccessTestsIntegration.Services
 
 			this._service = new MagentoServiceLowLevelSoap( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
+			this.CreateOrders();
+
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
+		}
 
-			///
-			var shoppingCartIdTask = this._service.CreateCart( "0" );
-			shoppingCartIdTask.Wait();
-			this._shoppingCartId = shoppingCartIdTask.Result;
+		private void CreateOrders()
+		{
+			var ordersIds = new List< string >();
 
-			//var customerIdTask = this._service.CreateCustomer();
-			//customerIdTask.Wait();
-			//this._customerId = customerIdTask.Result;
-			this._customerId = 6;
+			for( var i = 0; i < 5; i++ )
+			{
+				var shoppingCartIdTask = this._service.CreateCart( "0" );
+				shoppingCartIdTask.Wait();
+				this._shoppingCartId = shoppingCartIdTask.Result;
 
-			//var shoppingCartCustomerSetTask = this._service.ShoppingCartCustomerSet( this._shoppingCartId, this._customerId, "password", "0" );
-			//shoppingCartCustomerSetTask.Wait();
-			//var isSuccess = shoppingCartCustomerSetTask.Result;
+				var shoppingCartCustomerSetTask = this._service.ShoppingCartGuestCustomerSet( this._shoppingCartId, "max", "qwe@qwe.com", "kits", "0" );
+				shoppingCartCustomerSetTask.Wait();
 
-			var shoppingCartCustomerSetTask = this._service.ShoppingCartGuestCustomerSet( this._shoppingCartId, "max", "qwe@qwe.com", "kits", "0" );
-			shoppingCartCustomerSetTask.Wait();
-			var isSuccess = shoppingCartCustomerSetTask.Result;
+				var shoppingCartAddressSet = this._service.ShoppingCartAddressSet( this._shoppingCartId, "0" );
+				shoppingCartAddressSet.Wait();
 
-			var shoppingCartAddressSet = this._service.ShoppingCartAddressSet( this._shoppingCartId, "0" );
-			shoppingCartAddressSet.Wait();
-			var isSuccess2 = shoppingCartAddressSet.Result;
-			//
+				var productTask = this._service.ShoppingCartAddProduct( this._shoppingCartId, "1", "0" );
+				productTask.Wait();
+
+				var shippingMenthodTask = this._service.ShoppingCartSetShippingMethod( this._shoppingCartId, "0" );
+				shippingMenthodTask.Wait();
+
+				var paymentMenthodTask = this._service.ShoppingCartSetPaymentMethod( this._shoppingCartId, "0" );
+				paymentMenthodTask.Wait();
+
+				var orderIdTask = this._service.CreateOrder( this._shoppingCartId, "0" );
+				orderIdTask.Wait();
+				var orderId = orderIdTask.Result;
+				ordersIds.Add( orderId );
+				Task.Delay( 1000 );
+			}
+
+			var ordersTask = this._service.GetOrdersAsync( ordersIds );
+			ordersTask.Wait();
+			this._orders = ordersTask.Result.result.OrderBy( x => x.updated_at ).ToList();
 		}
 
 		[ TearDown ]
 		public void TearDown()
 		{
-			///
-			//var customerIdTask = this._service.DeleteCustomer(this._customerId);
-			//
 		}
 
 		[ Test ]
 		public void GetOrders_StoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
-			var productTask = this._service.ShoppingCartAddProduct( this._shoppingCartId, "1", "0" );
-			productTask.Wait();
-			var isSuccess = productTask.Result;
-
-			var shippingMenthodTask = this._service.ShoppingCartSetShippingMethod( this._shoppingCartId, "0" );
-			shippingMenthodTask.Wait();
-			var isshippingMenthodTaskSuccess = shippingMenthodTask.Result;
-
-			var paymentMenthodTask = this._service.ShoppingCartSetPaymentMethod( this._shoppingCartId, "0" );
-			paymentMenthodTask.Wait();
-			var ispaymentMenthodTaskSuccess = paymentMenthodTask.Result;
-
-
-			var orderIdTask = this._service.CreateOrder( this._shoppingCartId, "0" );
-			orderIdTask.Wait();
-			var orderId = orderIdTask.Result;
 
 			//------------ Act
-			var modifiedFrom = DateTime.Parse( "2014-05-08 15:02:58" );
-			var modifiedTo = DateTime.Parse( "2014-05-28 10:48:52" );
+			var modifiedFrom = DateTime.Parse( this._orders.First().updated_at ).AddSeconds( 1 );
+			var modifiedTo = DateTime.Parse( this._orders.Last().updated_at ).AddSeconds( -1 );
 			var getOrdersTask = this._service.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.result.Should().NotBeEmpty();
+			getOrdersTask.Result.result.ShouldBeEquivalentTo( this._orders.Take( this._orders.Count() - 1 ).Skip( 1 ) );
 		}
 
 		[ Test ]
@@ -101,13 +100,14 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var ordersIds = new List< string >() { "100000001", "100000002" };
+			//var ordersIds = new List< string >() { "100000001", "100000002" };
+			var ordersIds = this._orders.Select( x => x.increment_id ).ToList();
 
 			var getOrdersTask = this._service.GetOrdersAsync( ordersIds );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.result.Should().NotBeEmpty();
+			getOrdersTask.Result.result.ShouldBeEquivalentTo( this._orders );
 		}
 
 		[ Test ]

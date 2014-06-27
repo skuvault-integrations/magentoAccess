@@ -246,6 +246,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
+		#region JustForTesting
 		public async Task< int > CreateCart( string storeid )
 		{
 			try
@@ -514,6 +515,7 @@ namespace MagentoAccess.Services
 				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
 			}
 		}
+		#endregion
 	}
 
 	internal class PutStockItem
