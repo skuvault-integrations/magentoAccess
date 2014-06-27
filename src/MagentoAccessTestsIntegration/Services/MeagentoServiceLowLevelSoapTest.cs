@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services
 {
 	[ TestFixture ]
-	public class MeagentoServiceLowLevelSoapTest
+	public class MeagentoServiceLowLevelSoapTest:BaseTest
 	{
 		private TestData _testData;
 		private MagentoUrls _authorityUrls;
@@ -101,7 +101,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetOrders_StoreContainsOrders_ReceiveOrders()
+		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
 			this.CreateOrders();

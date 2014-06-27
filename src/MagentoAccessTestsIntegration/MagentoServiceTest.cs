@@ -170,7 +170,7 @@ namespace MagentoAccessTestsIntegration
 				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
 					this._testData.GetMagentoAccessToken().AccessToken,
 					this._testData.GetMagentoAccessToken().AccessTokenSecret,
-					"http://199.48.164.39/incorrectUrl",
+					this._testData.GetMagentoUrls().MagentoBaseUrl+"IncorrectUrlPart",
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
@@ -247,7 +247,7 @@ namespace MagentoAccessTestsIntegration
 			};
 
 			//------------ Assert
-			act.ShouldThrow< Exception >();
+			act.ShouldNotThrow< Exception >();
 		}
 
 		[ Test ]
