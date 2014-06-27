@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -11,7 +12,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration
 {
 	[ TestFixture ]
-	public class MagentoServiceTest : BaseTest
+	internal class MagentoServiceTest : BaseTest
 	{
 		[ Test ]
 		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders()
@@ -19,14 +20,20 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
+			var firstCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).First();
+			var lastCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).Last();
 
-			var modifiedFrom = DateTime.Parse( "2014-05-08 15:02:58" );
-			var modifiedTo = DateTime.Parse( "2014-06-28 10:48:52" );
-			var getOrdersTask = this._service.GetOrdersAsync( modifiedFrom, modifiedTo );
+			var modifiedFrom = DateTime.Parse( firstCreatedItem.updated_at ).AddSeconds( 1 );
+			var modifiedTo = DateTime.Parse( lastCreatedItem.updated_at ).AddSeconds( -1 );
+
+			var getOrdersTask = this._magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.Should().NotBeNull().And.NotBeEmpty();
+			var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.increment_id ).ToList();
+			var thatWasReturned = getOrdersTask.Result.Select( x => x.OrderIncrementalId ).ToList();
+
+			thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
 		}
 
 		[ Test ]
@@ -35,7 +42,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._service.GetProductsAsync();
+			var getProductsTask = this._magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -48,15 +55,39 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._service.GetProductsAsync();
+			var getProductsTask = this._magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
-			var itemsToUpdate = getProductsTask.Result.Select( x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = long.Parse( "3" + x.EntityId.Last().ToString() ) } );
-			var updateInventoryTask = this._service.UpdateInventoryAsync( itemsToUpdate );
+			var allProductsinMagent = getProductsTask.Result.ToList();
+			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+
+			var itemsToUpdate = onlyProductsCreatedForThisTests.Select( x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = 123 } );
+
+			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( itemsToUpdate );
 			updateInventoryTask.Wait();
 
+			/////
+
+			var getProductsTask2 = this._magentoService.GetProductsAsync();
+			getProductsTask2.Wait();
+
+			var allProductsinMagent2 = getProductsTask2.Result.ToList();
+			var onlyProductsCreatedForThisTests2 = allProductsinMagent2.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+
+			var itemsToUpdate2 = onlyProductsCreatedForThisTests2.Select( x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = 100500 } );
+
+			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( itemsToUpdate2 );
+			updateInventoryTask2.Wait();
+
 			//------------ Assert
-			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();
+			var getProductsTask3 = this._magentoService.GetProductsAsync();
+			getProductsTask3.Wait();
+
+			var allProductsinMagent3 = getProductsTask3.Result.ToList();
+			var onlyProductsCreatedForThisTests3 = allProductsinMagent3.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+
+			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
+			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
 		}
 
 		[ Test ]
@@ -170,7 +201,7 @@ namespace MagentoAccessTestsIntegration
 				var service = new MagentoService( new MagentoAuthenticatedUserCredentials(
 					this._testData.GetMagentoAccessToken().AccessToken,
 					this._testData.GetMagentoAccessToken().AccessTokenSecret,
-					this._testData.GetMagentoUrls().MagentoBaseUrl+"IncorrectUrlPart",
+					this._testData.GetMagentoUrls().MagentoBaseUrl + "IncorrectUrlPart",
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
@@ -242,7 +273,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var magentoInfoAsyncTask = this._service.PingRestAsync();
+				var magentoInfoAsyncTask = this._magentoService.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -258,7 +289,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var magentoInfoAsyncTask = this._service.PingSoapAsync();
+				var magentoInfoAsyncTask = this._magentoService.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -273,7 +304,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			var verificationData = this._serviceNotAuth.RequestVerificationUri();
+			var verificationData = this._magentoServiceNotAuth.RequestVerificationUri();
 			var requestToken = verificationData.RequestToken;
 			var requestTokenSecret = verificationData.RequestTokenSecret;
 
@@ -281,11 +312,11 @@ namespace MagentoAccessTestsIntegration
 
 			var verificationCode = string.Empty;
 
-			this._serviceNotAuth.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
+			this._magentoServiceNotAuth.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
 
 			//------------ Assert
-			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
-			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 
 		[ Test ]
@@ -296,11 +327,11 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
-			this._serviceNotAuth.TransmitVerificationCode = this.transmitVerificationCode;
-			this._serviceNotAuth.InitiateDesktopAuthentication();
+			this._magentoServiceNotAuth.TransmitVerificationCode = this.transmitVerificationCode;
+			this._magentoServiceNotAuth.InitiateDesktopAuthentication();
 			//------------ Assert
-			this._serviceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
-			this._serviceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 
 		[ Test ]
@@ -311,7 +342,7 @@ namespace MagentoAccessTestsIntegration
 
 			//------------ Act
 			//this._serviceNotAuth.TransmitVerificationCode = () => this._transmitVerification;
-			var data = this._serviceNotAuth.RequestVerificationUri();
+			var data = this._magentoServiceNotAuth.RequestVerificationUri();
 			//------------ Assert
 			data.Should().NotBeNull();
 			data.RequestToken.Should().NotBeNullOrWhiteSpace();

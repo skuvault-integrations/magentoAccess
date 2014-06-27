@@ -517,11 +517,11 @@ namespace MagentoAccess.Services
 		}
 		#endregion
 
-		public async Task<int> CreateProduct( string storeId,string name,string sku )
+		public async Task< int > CreateProduct( string storeId, string name, string sku )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait(false);
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var catalogProductCreateEntity = new catalogProductCreateEntity()
 				{
@@ -533,20 +533,20 @@ namespace MagentoAccess.Services
 					visibility = "4",
 					price = "100",
 					tax_class_id = "1",
-					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100",is_in_stock = 1,manage_stock = 1,use_config_manage_stock = 0,use_config_min_qty = 0,use_config_min_sale_qty = 0,is_qty_decimal = 0}
+					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100", is_in_stock = 1, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 				//var attributes = await this._magentoSoapService.catalogProductAttributeSetListAsync(sessionId).ConfigureAwait(false);
 
 				//var res = await this._magentoSoapService.catalogProductCreateAsync(sessionId, "simple", attributes.result.First().set_id.ToString(),"TddTestSku"+DateTime.UtcNow.Ticks.ToString(), catalogProductCreateEntity,"0").ConfigureAwait(false);
 
-				var res = await this._magentoSoapService.catalogProductCreateAsync(sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId).ConfigureAwait(false);
+				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
 
 				//product id
 				return res.result;
 			}
-			catch (Exception exc)
+			catch( Exception exc )
 			{
-				throw new MagentoSoapException(string.Format("An error occured during CreateProduct({0})", storeId), exc);
+				throw new MagentoSoapException( string.Format( "An error occured during CreateProduct({0})", storeId ), exc );
 			}
 		}
 	}
