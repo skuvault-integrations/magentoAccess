@@ -73,16 +73,16 @@ namespace MagentoAccess.Services
 
 				filters filters;
 
-				//if (string.IsNullOrWhiteSpace(this.Store))
-				//	filters = new filters { complex_filter = new complexFilter[2] };
-				//else
-				//{
-				//	filters = new filters { complex_filter = new complexFilter[3] };
-				//	filters.complex_filter[2] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
-				//}
+				if (string.IsNullOrWhiteSpace(this.Store))
+					filters = new filters { complex_filter = new complexFilter[2] };
+				else
+				{
+					filters = new filters { complex_filter = new complexFilter[3] };
+					filters.complex_filter[2] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+				}
 
-				//filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-				//filters.complex_filter[1] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
+				filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
+				filters.complex_filter[1] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
 
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				/// 
@@ -111,15 +111,15 @@ namespace MagentoAccess.Services
 
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-				if (string.IsNullOrWhiteSpace(this.Store))
-					filters = new filters { complex_filter = new complexFilter[1] };
-				else
-				{
-					filters = new filters { complex_filter = new complexFilter[2] };
-					filters.complex_filter[1] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
-				}
+				//if (string.IsNullOrWhiteSpace(this.Store))
+				//	filters = new filters { complex_filter = new complexFilter[1] };
+				//else
+				//{
+				//	filters = new filters { complex_filter = new complexFilter[2] };
+				//	filters.complex_filter[1] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+				//}
 
-				filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
+				//filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
 
 				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
 
