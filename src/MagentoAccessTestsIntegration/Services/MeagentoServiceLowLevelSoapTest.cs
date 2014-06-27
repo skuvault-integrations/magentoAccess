@@ -68,6 +68,9 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetOrders_StoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
+			var productTask = this._service.ShoppingCartAddProduct( this._shoppingCartId, "1", "0" );
+			productTask.Wait();
+			var isSuccess = productTask.Result;
 
 			var shippingMenthodTask = this._service.ShoppingCartSetShippingMethod( this._shoppingCartId, "0" );
 			shippingMenthodTask.Wait();
@@ -77,9 +80,6 @@ namespace MagentoAccessTestsIntegration.Services
 			paymentMenthodTask.Wait();
 			var ispaymentMenthodTaskSuccess = paymentMenthodTask.Result;
 
-			var productTask = this._service.ShoppingCartAddProduct( this._shoppingCartId, "1", "0" );
-			productTask.Wait();
-			var isSuccess = productTask.Result;
 
 			var orderIdTask = this._service.CreateOrder( this._shoppingCartId, "0" );
 			orderIdTask.Wait();

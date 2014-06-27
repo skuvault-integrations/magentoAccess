@@ -474,7 +474,8 @@ namespace MagentoAccess.Services
 				{
 					po_number = null,
 					//method = "checkmo",
-					method = "'cashondelivery'",
+					method = "checkmo",
+					//method = "'cashondelivery'",
 					cc_cid = null,
 					cc_owner = null,
 					cc_number = null,
