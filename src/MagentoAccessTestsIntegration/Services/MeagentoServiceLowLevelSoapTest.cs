@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -15,15 +16,23 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
-			this.CreateOrders();
 
 			//------------ Act
-			var modifiedFrom = DateTime.Parse( this._orders.First().updated_at ).AddSeconds( 1 );
-			var modifiedTo = DateTime.Parse( this._orders.Last().updated_at ).AddSeconds( -1 );
+			var firstCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).First();
+			var lastCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).Last();
+
+			var modifiedFrom = DateTime.Parse( firstCreatedItem.updated_at ).AddSeconds( 1 );
+			var modifiedTo = DateTime.Parse( lastCreatedItem.updated_at ).AddSeconds( -1 );
+
 			var getOrdersTask = this._magentoLowLevelSoapService.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
+			var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.increment_id ).ToList();
+			var thatWasReturned = getOrdersTask.Result.result.ToList().Select( x => x.increment_id ).ToList();
+
+			thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
+
 			getOrdersTask.Result.result.ShouldBeEquivalentTo( this._orders.Take( this._orders.Count() - 1 ).Skip( 1 ) );
 		}
 
@@ -31,7 +40,6 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetOrders_ByIdsStoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
-			this.CreateOrders();
 
 			//------------ Act
 			//var ordersIds = new List< string >() { "100000001", "100000002" };
@@ -48,7 +56,6 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetProducts_StoreContainsProducts_ReceiveProducts()
 		{
 			//------------ Arrange
-			this.CreateProductstems();
 
 			//------------ Act
 			var getProductsTask = this._magentoLowLevelSoapService.GetProductsAsync();
@@ -62,7 +69,6 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetStockItems_StoreContainsStockItems_ReceiveStockItems()
 		{
 			//------------ Arrange
-			this.CreateProductstems();
 
 			//------------ Act
 			//var skusorids = new List< string >() { "501shirt", "311" };
@@ -116,7 +122,6 @@ namespace MagentoAccessTestsIntegration.Services
 		public void UpdateInventory_StoreWithItems_ItemsUpdated()
 		{
 			//------------ Arrange
-			this.CreateProductstems();
 
 			//------------ Act
 
@@ -128,12 +133,22 @@ namespace MagentoAccessTestsIntegration.Services
 			var getProductsTask = this._magentoLowLevelSoapService.PutStockItemsAsync( itemsToUpdate );
 			getProductsTask.Wait();
 
-			//------------ Assert
+			////
+
 			var productsAsync2 = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync2.Wait();
 
-			var itemsToUpdate2 = productsAsync.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = x.qty } ) ).ToList();
-			itemsToUpdate2.Should().BeEquivalentTo( itemsToUpdate );
+			var itemsToUpdate2 = productsAsync2.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "100500" } ) ).ToList();
+
+			var getProductsTask2 = this._magentoLowLevelSoapService.PutStockItemsAsync( itemsToUpdate2 );
+			getProductsTask2.Wait();
+
+			//------------ Assert
+			var productsAsync3 = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			productsAsync3.Wait();
+
+			productsAsync2.Result.result.Should().OnlyContain( x => x.qty.ToDecimalOrDefault() == 123 );
+			productsAsync3.Result.result.Should().OnlyContain( x => x.qty.ToDecimalOrDefault() == 100500 );
 		}
 
 		[ Test ]
