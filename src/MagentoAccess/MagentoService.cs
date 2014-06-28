@@ -45,49 +45,6 @@ namespace MagentoAccess
 
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
-		public async Task< PingSoapInfo > PingSoapAsync()
-		{
-			try
-			{
-				this.LogTraceStarted( string.Format( "PingSoapAsync()" ) );
-				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
-				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
-
-				var magentoCoreInfo = new PingSoapInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks );
-				this.LogTraceEnded( string.Format( "PingSoapAsync()" ) );
-
-				return magentoCoreInfo;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoAuthException( "SOAP auth error.", exception );
-				this.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public async Task< PingRestInfo > PingRestAsync()
-		{
-			try
-			{
-				this.LogTraceStarted( string.Format( "PingRestAsync()" ) );
-
-				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
-				var restWorks = magentoOrders.Products != null;
-				var magentoCoreInfo = new PingRestInfo( restWorks );
-
-				this.LogTraceEnded( string.Format( "PingRestAsync()" ) );
-
-				return magentoCoreInfo;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoAuthException( "REST auth error.", exception );
-				this.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{
 			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
@@ -118,6 +75,49 @@ namespace MagentoAccess
 				);
 		}
 
+		public async Task< PingSoapInfo > PingSoapAsync()
+		{
+			try
+			{
+				this.LogTraceStarted( string.Format( "PingSoapAsync()" ) );
+				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
+				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
+
+				var magentoCoreInfo = new PingSoapInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks );
+				this.LogTraceEnded( string.Format( "PingSoapAsync()" ) );
+
+				return magentoCoreInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public async Task< PingRestInfo > PingRestAsync()
+		{
+			try
+			{
+				this.LogTraceStarted( string.Format( "PingRestAsync()" ) );
+
+				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
+				var restWorks = magentoOrders.Products != null;
+				var magentoCoreInfo = new PingRestInfo( restWorks );
+
+				this.LogTraceEnded( string.Format( "PingRestAsync()" ) );
+
+				return magentoCoreInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			try
@@ -144,8 +144,9 @@ namespace MagentoAccess
 			}
 			catch( Exception exception )
 			{
-				this.LogTraceException( exception );
-				return Enumerable.Empty< Order >();
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
 			}
 		}
 
@@ -161,8 +162,9 @@ namespace MagentoAccess
 			}
 			catch( Exception exception )
 			{
-				this.LogTraceException( exception );
-				return Enumerable.Empty< Order >();
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
 			}
 		}
 
@@ -178,8 +180,9 @@ namespace MagentoAccess
 			}
 			catch( Exception exception )
 			{
-				this.LogTraceException( exception );
-				return Enumerable.Empty< Product >();
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
 			}
 		}
 
@@ -224,8 +227,9 @@ namespace MagentoAccess
 			}
 			catch( Exception exception )
 			{
-				this.LogTraceException( exception );
-				return Enumerable.Empty< Product >();
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
 			}
 		}
 
@@ -266,7 +270,69 @@ namespace MagentoAccess
 			}
 			catch( Exception exception )
 			{
-				this.LogTraceException( exception );
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public void InitiateDesktopAuthentication()
+		{
+			try
+			{
+				this.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
+				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
+				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
+				authorizeTask.Wait();
+
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+
+				this.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public VerificationData RequestVerificationUri()
+		{
+			try
+			{
+				this.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
+				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
+				this.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
+
+				return res;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
+		{
+			try
+			{
+				this.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
+				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
+
+				if( this.AfterGettingToken != null )
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+
+				this.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( "Error.", exception );
+				this.LogTraceException( mexc );
+				throw mexc;
 			}
 		}
 
@@ -354,62 +420,6 @@ namespace MagentoAccess
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
 			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty, ProductId = x.ProductId } );
-		}
-
-		public void InitiateDesktopAuthentication()
-		{
-			try
-			{
-				this.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
-				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
-				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
-				authorizeTask.Wait();
-
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-
-				this.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
-			}
-			catch( Exception exception )
-			{
-				this.LogTraceException( exception );
-			}
-		}
-
-		public VerificationData RequestVerificationUri()
-		{
-			try
-			{
-				this.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
-				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
-				this.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
-
-				return res;
-			}
-			catch( Exception ex )
-			{
-				MagentoLogger.Log().Trace( ex, "An exception occured while attempting to get to get 'Verification URI'" );
-				throw;
-			}
-		}
-
-		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
-		{
-			try
-			{
-				this.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
-				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
-
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-
-				this.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
-			}
-			catch( Exception ex )
-			{
-				this.LogTraceException( ex );
-				throw;
-			}
 		}
 	}
 }
