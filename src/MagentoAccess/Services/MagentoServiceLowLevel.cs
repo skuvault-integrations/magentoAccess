@@ -125,7 +125,7 @@ namespace MagentoAccess.Services
 			this.webRequestServices = new WebRequestServices();
 		}
 
-		public async Task InitiateDescktopAuthenticationProcess()
+		public virtual async Task InitiateDescktopAuthenticationProcess()
 		{
 			try
 			{
@@ -161,7 +161,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public VerificationData RequestVerificationUri()
+		public virtual VerificationData RequestVerificationUri()
 		{
 			try
 			{
@@ -197,7 +197,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
+		public virtual void PopulateAccessTokenAndAccessTokenSecret(string verificationCode, string requestToken, string requestTokenSecret)
 		{
 			try
 			{
@@ -230,7 +230,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< GetProductResponse > GetProductAsync( string id )
+		public virtual async Task<GetProductResponse> GetProductAsync(string id)
 		{
 			try
 			{
@@ -242,7 +242,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< GetProductsResponse > GetProductsAsync( int page, int limit, bool thrownExc = false )
+		public virtual async Task<GetProductsResponse> GetProductsAsync(int page, int limit, bool thrownExc = false)
 		{
 			try
 			{
@@ -262,7 +262,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit )
+		public virtual async Task<GetStockItemsResponse> GetStockItemsAsync(int page, int limit)
 		{
 			try
 			{
@@ -276,7 +276,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems )
+		public virtual async Task<PutStockItemsResponse> PutStockItemsAsync(IEnumerable<StockItem> inventoryItems)
 		{
 			try
 			{
@@ -303,7 +303,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< GetOrdersResponse > GetOrdersAsync()
+		public virtual async Task<GetOrdersResponse> GetOrdersAsync()
 		{
 			try
 			{
@@ -315,7 +315,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			try
 			{

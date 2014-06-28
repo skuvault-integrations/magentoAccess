@@ -65,7 +65,7 @@ namespace MagentoAccess.Services
 			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endPoint ) );
 		}
 
-		public async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		public virtual async Task<salesOrderListResponse> GetOrdersAsync(DateTime modifiedFrom, DateTime modifiedTo)
 		{
 			try
 			{
@@ -134,7 +134,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public virtual async Task<salesOrderListResponse> GetOrdersAsync(IEnumerable<string> ordersIds)
 		{
 			try
 			{
@@ -163,7 +163,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< catalogProductListResponse > GetProductsAsync()
+		public virtual async Task<catalogProductListResponse> GetProductsAsync()
 		{
 			try
 			{
@@ -183,7 +183,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public virtual async Task<catalogInventoryStockItemListResponse> GetStockItemsAsync(List<string> skusOrIds)
 		{
 			try
 			{
@@ -201,7 +201,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems )
+		public virtual async Task<bool> PutStockItemsAsync(List<PutStockItem> stockItems)
 		{
 			try
 			{
@@ -217,7 +217,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
+		public virtual async Task<salesOrderInfoResponse> GetOrderAsync(string incrementId)
 		{
 			try
 			{
@@ -233,7 +233,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< magentoInfoResponse > GetMagentoInfoAsync()
+		public virtual async Task< magentoInfoResponse > GetMagentoInfoAsync()
 		{
 			try
 			{

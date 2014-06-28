@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace MagentoAccess
 {
@@ -38,6 +39,14 @@ namespace MagentoAccess
 	{
 		public MagentoRestException( string message, Exception exception )
 			: base( message, exception )
+		{
+		}
+	}
+
+	public class MagentoCommonException : MagentoException
+	{
+		public MagentoCommonException(string message, Exception exception, [CallerMemberName] string memberName = "")
+			: base( string.Format( "{0}:{1}", memberName, message ), exception )
 		{
 		}
 	}
