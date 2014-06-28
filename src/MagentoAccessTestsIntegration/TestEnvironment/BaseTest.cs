@@ -26,6 +26,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoServiceLowLevelSoap _magentoLowLevelSoapService;
 		protected List< salesOrderListEntity > _orders;
 		protected Dictionary< int, string > _productsIds;
+		protected MagentoServiceLowLevel _magentoServiceLowLevelRest;
+		protected MagentoServiceLowLevel _magentoServiceLowLevelRestNotAuth;
 
 		[ SetUp ]
 		public void Setup()
@@ -73,6 +75,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			this.transmitVerificationCode = () => this._testData.TransmitVerification();
 
 			this._magentoLowLevelSoapService = new MagentoServiceLowLevelSoap( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
+
+			this._magentoServiceLowLevelRestNotAuth = new MagentoServiceLowLevel( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
+
+			this._magentoServiceLowLevelRest = new MagentoServiceLowLevel( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
 
 			this.CreateOrders();
 			this.CreateProductstems();

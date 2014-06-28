@@ -2,51 +2,21 @@
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Models.Services.PutStockItems;
-using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
-using Netco.Logging;
-using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services
 {
 	[ TestFixture ]
-	public class MeagentoServiceLowLevelTest
+	internal class MeagentoServiceLowLevelTest : BaseTest
 	{
-		private TestData _testData;
-		private MagentoConsumerCredentials _consumer;
-		private MagentoUrls _authorityUrls;
-		private MagentoAccessToken _accessToken;
-		private MagentoServiceLowLevel _service;
-
-		[ SetUp ]
-		public void Setup()
-		{
-			this._testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
-			this._consumer = this._testData.GetMagentoConsumerCredentials();
-			this._authorityUrls = this._testData.GetMagentoUrls();
-			this._accessToken = this._testData.GetMagentoAccessToken();
-			this._service = ( this._accessToken == null ) ?
-				new MagentoServiceLowLevel( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl ) :
-				new MagentoServiceLowLevel( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
-
-			if( this._accessToken == null )
-			{
-				var authorizeTask = this._service.InitiateDescktopAuthenticationProcess();
-				authorizeTask.Wait();
-				this._testData.CreateAccessTokenFile( this._service.AccessToken, this._service.AccessTokenSecret );
-			}
-
-			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
-		}
-
 		[ Test ]
 		public void GetOrders_StoreContainsOrders_ReceiveOrders()
 		{
 			//------------ Arrange
 
 			//------------ Act
-			var getOrdersTask = this._service.GetOrdersAsync();
+			var getOrdersTask = this._magentoServiceLowLevelRest.GetOrdersAsync();
 			getOrdersTask.Wait();
 
 			//------------ Assert
@@ -60,7 +30,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var inventoryItems = new List< StockItem > { new StockItem { ItemId = "1", MinQty = 1, ProductId = "1", Qty = 277, StockId = "1" } };
 
 			//------------ Act
-			var putInventoryTask = this._service.PutStockItemsAsync( inventoryItems );
+			var putInventoryTask = this._magentoServiceLowLevelRest.PutStockItemsAsync( inventoryItems );
 			putInventoryTask.Wait();
 
 			//------------ Assert
@@ -72,8 +42,9 @@ namespace MagentoAccessTestsIntegration.Services
 		public void GetProducts_StoreWithProducts_ReceiveProducts()
 		{
 			//------------ Arrange
+
 			//------------ Act
-			var getProductsTask = this._service.GetProductsAsync( 1, 2 );
+			var getProductsTask = this._magentoServiceLowLevelRest.GetProductsAsync( 1, 2 );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -85,7 +56,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var getInventoryTask = this._service.GetStockItemsAsync( 1, 100 );
+			var getInventoryTask = this._magentoServiceLowLevelRest.GetStockItemsAsync( 1, 100 );
 			getInventoryTask.Wait();
 
 			//------------ Assert
@@ -97,7 +68,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._service.GetProductAsync( "1" );
+			var res = this._magentoServiceLowLevelRest.GetProductAsync(_productsIds.First().Key.ToString());
 
 			//------------ Assert
 			res.Result.Should().NotBeNull();
