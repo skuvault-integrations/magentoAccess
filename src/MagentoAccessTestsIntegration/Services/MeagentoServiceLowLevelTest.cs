@@ -68,7 +68,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._magentoServiceLowLevelRest.GetProductAsync(_productsIds.First().Key.ToString());
+			var res = this._magentoServiceLowLevelRest.GetProductAsync( this._productsIds.First().Key.ToString() );
 
 			//------------ Assert
 			res.Result.Should().NotBeNull();

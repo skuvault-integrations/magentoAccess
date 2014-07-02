@@ -65,7 +65,7 @@ namespace MagentoAccess.Services
 			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endPoint ) );
 		}
 
-		public virtual async Task<salesOrderListResponse> GetOrdersAsync(DateTime modifiedFrom, DateTime modifiedTo)
+		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			try
 			{
@@ -84,43 +84,6 @@ namespace MagentoAccess.Services
 				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
 				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
 
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				/// 
-				//if (string.IsNullOrWhiteSpace(this.Store))
-				//	filters = new filters { filter = new associativeEntity[1] };
-				//else
-				//{
-				//	filters = new filters { filter = new associativeEntity[2] };
-				//	filters.filter[1] = new associativeEntity() { key = "store_id", value = this.Store };
-				//}
-
-				//filters.filter[0] = new associativeEntity() { key = "updated_at", value = modifiedFrom.ToSoapParameterString() };
-
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-				//if (string.IsNullOrWhiteSpace(this.Store))
-				//	filters = new filters { complex_filter = new complexFilter[2] };
-				//else
-				//{
-				//	filters = new filters { complex_filter = new complexFilter[3] };
-				//	filters.complex_filter[2] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
-				//}
-
-				//filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "qteq", value = modifiedFrom.ToSoapParameterString() } };
-				//filters.complex_filter[1] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "lteq", value = modifiedTo.ToSoapParameterString() } };
-
-				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-				//if (string.IsNullOrWhiteSpace(this.Store))
-				//	filters = new filters { complex_filter = new complexFilter[1] };
-				//else
-				//{
-				//	filters = new filters { complex_filter = new complexFilter[2] };
-				//	filters.complex_filter[1] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
-				//}
-
-				//filters.complex_filter[0] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-
 				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
 
 				//crutch for magento 1.7 
@@ -134,7 +97,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task<salesOrderListResponse> GetOrdersAsync(IEnumerable<string> ordersIds)
+		public virtual async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
 			try
 			{
@@ -163,7 +126,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task<catalogProductListResponse> GetProductsAsync()
+		public virtual async Task< catalogProductListResponse > GetProductsAsync()
 		{
 			try
 			{
@@ -183,7 +146,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task<catalogInventoryStockItemListResponse> GetStockItemsAsync(List<string> skusOrIds)
+		public virtual async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
 			try
 			{
@@ -201,7 +164,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task<bool> PutStockItemsAsync(List<PutStockItem> stockItems)
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems )
 		{
 			try
 			{
@@ -217,7 +180,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task<salesOrderInfoResponse> GetOrderAsync(string incrementId)
+		public virtual async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
 		{
 			try
 			{
