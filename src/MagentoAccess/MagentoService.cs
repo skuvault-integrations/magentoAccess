@@ -141,7 +141,9 @@ namespace MagentoAccess
 
 				var resultOrders = commontask.Select( x => new Order( x.result ) );
 
-				this.LogTraceEnded( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFromUtc, dateToUtc ) );
+				var resultOrdersBriefInfo  = resultOrders.Select(x=>string.Format("id:{0},createdAt:{1}",x.OrderIncrementalId,x.CreatedAt));
+
+				this.LogTraceEnded(string.Format("GetOrdersAsync(dateFrom:{0},dateTo:{1}); Orders returned:{2} ", dateFromUtc, dateToUtc, string.Join("|", resultOrdersBriefInfo)));
 
 				return resultOrders;
 			}
