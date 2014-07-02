@@ -81,8 +81,8 @@ namespace MagentoAccess.Services
 					filters.complex_filter[ 2 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
 				}
 
-				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
+				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
+				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
 
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				/// 
