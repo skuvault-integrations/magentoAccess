@@ -122,9 +122,12 @@ namespace MagentoAccess
 		{
 			try
 			{
-				this.LogTraceStarted( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFrom, dateTo ) );
+				var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
+				var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
 
-				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFrom, dateTo ).ConfigureAwait( false );
+				this.LogTraceStarted( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFromUtc, dateToUtc ) );
+
+				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFromUtc, dateToUtc ).ConfigureAwait( false );
 
 				if( ordersBriefInfo == null )
 					return Enumerable.Empty< Order >();
@@ -138,7 +141,7 @@ namespace MagentoAccess
 
 				var resultOrders = commontask.Select( x => new Order( x.result ) );
 
-				this.LogTraceEnded( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFrom, dateTo ) );
+				this.LogTraceEnded( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFromUtc, dateToUtc ) );
 
 				return resultOrders;
 			}
