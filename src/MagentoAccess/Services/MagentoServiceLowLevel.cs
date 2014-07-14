@@ -299,7 +299,8 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoRestException( string.Format( "An error occured during PutStockItemsAsync(...)" ), exc );
+				var productsBriefInfo = string.Join( "|", inventoryItems.Select( x => string.Format( "ItemId:{0}, ProductId:{1}, Qty:{2}, StockId:{3}", x.ItemId, x.ProductId, x.Qty, x.StockId ) ) );
+				throw new MagentoRestException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
 

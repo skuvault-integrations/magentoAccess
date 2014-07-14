@@ -99,9 +99,10 @@ namespace MagentoAccess.Services
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
+			var ordersIdsAgregated = string.Empty;
 			try
 			{
-				var ordersIdsAgregated = ordersIds.Aggregate( ( ac, x ) => ac += "," + x );
+				ordersIdsAgregated = ordersIds.Aggregate( ( ac, x ) => ac += "," + x );
 
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -122,7 +123,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync(...)" ), exc );
+				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync({0})", ordersIdsAgregated ), exc );
 			}
 		}
 
@@ -160,7 +161,8 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync(...)" ), exc );
+				var productsBriefInfo = string.Join( "|", skusOrIds );
+				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
 
@@ -176,7 +178,8 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync(...)" ), exc );
+				var productsBriefInfo = string.Join( "|", stockItems.Select( x => string.Format( "Id:{0}, Qty:{1}", x.Id, x.UpdateEntity.qty ) ) );
+				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
 

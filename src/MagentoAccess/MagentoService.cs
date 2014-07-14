@@ -141,9 +141,9 @@ namespace MagentoAccess
 
 				var resultOrders = commontask.Select( x => new Order( x.result ) );
 
-				var resultOrdersBriefInfo  = resultOrders.Select(x=>string.Format("id:{0},createdAt:{1}",x.OrderIncrementalId,x.CreatedAt));
+				var resultOrdersBriefInfo = resultOrders.Select( x => string.Format( "id:{0},createdAt:{1}", x.OrderIncrementalId, x.CreatedAt ) );
 
-				this.LogTraceEnded(string.Format("GetOrdersAsync(dateFrom:{0},dateTo:{1}); Orders returned:{2} ", dateFromUtc, dateToUtc, string.Join("|", resultOrdersBriefInfo)));
+				this.LogTraceEnded( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1}); Orders returned:{2} ", dateFromUtc, dateToUtc, string.Join( "|", resultOrdersBriefInfo ) ) );
 
 				return resultOrders;
 			}
@@ -227,7 +227,8 @@ namespace MagentoAccess
 					res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
 				}
 
-				this.LogTraceEnded( string.Format( "GetProductsAsync()" ) );
+				var resBriefInfo = string.Join( "|", res.Select( x => string.Format( "Sku:{0},ProductId:{1},Qty:{2},EntityId:{3}", x.Sku, x.ProductId, x.Qty, x.EntityId ) ) );
+				this.LogTraceEnded( string.Format( "GetProductsAsync() with result: count {0}, {1}", res.Count(), resBriefInfo ) );
 				return res;
 			}
 			catch( Exception exception )
@@ -242,7 +243,10 @@ namespace MagentoAccess
 		{
 			try
 			{
-				this.LogTraceStarted( string.Format( "UpdateInventoryAsync(...)" ) );
+				var productsBriefInfo = string.Join( "|", products.Select( x => string.Format( "ItemId:{0}, ProductId:{1}, Qty:{2}, StockId:{3}", x.ItemId, x.ProductId, x.Qty, x.StockId ) ) );
+				productsBriefInfo = string.Format( "count:{0}, items:{1}", products.Count(), productsBriefInfo );
+				this.LogTraceStarted( string.Format( "UpdateInventoryAsync({0})", productsBriefInfo ) );
+
 				const int productsUpdateMaxChunkSize = 500;
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				if( inventories.Any() )
@@ -271,7 +275,7 @@ namespace MagentoAccess
 					}
 				}
 
-				this.LogTraceEnded( string.Format( "UpdateInventoryAsync(...)" ) );
+				this.LogTraceEnded( string.Format( "UpdateInventoryAsync({0})", productsBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
