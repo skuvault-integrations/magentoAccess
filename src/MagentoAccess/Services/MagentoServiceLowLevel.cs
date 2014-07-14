@@ -57,6 +57,31 @@ namespace MagentoAccess.Services
 			get { return this._accessTokenSecret; }
 		}
 
+		public string ConsumerKey
+		{
+			get { return this._consumerKey; }
+		}
+
+		public string ConsumerSecretKey
+		{
+			get { return this._consumerSecretKey; }
+		}
+
+		public string BaseMagentoUrl
+		{
+			get { return this._baseMagentoUrl; }
+		}
+
+		public string ToJsonRestInfo()
+		{
+			return string.Format( "{{BaseMagentoUrl:{0},ConsumerKey:{1},ConsumerSecret:{2},AccessToken:{3},AccessTokenSecret:{4}}}",
+				string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl,
+				string.IsNullOrWhiteSpace( this.ConsumerKey ) ? PredefinedValues.NotAvailable : this.ConsumerKey,
+				string.IsNullOrWhiteSpace( this.ConsumerSecretKey ) ? PredefinedValues.NotAvailable : this.ConsumerSecretKey,
+				string.IsNullOrWhiteSpace( this.AccessToken ) ? PredefinedValues.NotAvailable : this.AccessToken,
+				string.IsNullOrWhiteSpace( this.AccessTokenSecret ) ? PredefinedValues.NotAvailable : this.AccessTokenSecret );
+		}
+
 		public string RequestToken
 		{
 			get { return this._authenticationManager.RequestToken; }
@@ -299,7 +324,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				var productsBriefInfo = string.Join( "|", inventoryItems.Select( x => string.Format( "ItemId:{0}, ProductId:{1}, Qty:{2}, StockId:{3}", x.ItemId, x.ProductId, x.Qty, x.StockId ) ) );
+				var productsBriefInfo = inventoryItems.ToJson();
 				throw new MagentoRestException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}

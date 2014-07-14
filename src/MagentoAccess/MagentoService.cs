@@ -120,12 +120,14 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
+			var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
+			var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
+			var methodParameters = string.Format( "{{dateFrom:{0},dateTo:{1}}}", dateFromUtc, dateToUtc );
+			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+
 			try
 			{
-				var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
-				var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
-
-				this.LogTraceStarted( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1})", dateFromUtc, dateToUtc ) );
+				this.LogTraceStarted( string.Format( "{{RestInfo:{0}, MethodName:GetOrdersAsync, MethodParameters:{1}}}", restInfo, methodParameters ) );
 
 				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFromUtc, dateToUtc ).ConfigureAwait( false );
 
@@ -141,15 +143,15 @@ namespace MagentoAccess
 
 				var resultOrders = commontask.Select( x => new Order( x.result ) );
 
-				var resultOrdersBriefInfo = resultOrders.Select( x => string.Format( "id:{0},createdAt:{1}", x.OrderIncrementalId, x.CreatedAt ) );
+				var resultOrdersBriefInfo = resultOrders.ToJson();
 
-				this.LogTraceEnded( string.Format( "GetOrdersAsync(dateFrom:{0},dateTo:{1}); Orders returned:{2} ", dateFromUtc, dateToUtc, string.Join( "|", resultOrdersBriefInfo ) ) );
+				this.LogTraceEnded( string.Format( "RestInfo:{0}, MethodName:GetOrdersAsync, MethodParameters:{1}, MethodResult:{2}", restInfo, methodParameters, resultOrdersBriefInfo ) );
 
 				return resultOrders;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( "Error.", exception );
+				var mexc = new MagentoCommonException( string.Format( "Error. RestInfo:{0}, MethodName:GetOrdersAsync, MethodParameters:{1}", restInfo, methodParameters ), exception );
 				this.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -193,11 +195,13 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
+			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
 			try
 			{
-				this.LogTraceStarted( string.Format( "GetProductsAsync()" ) );
+				this.LogTraceStarted( string.Format( "{{RestInfo:{0}, MethodName:GetProductsAsync()}}", restInfo ) );
+
 				const int stockItemsListMaxChunkSize = 500;
-				IEnumerable< Product > res;
+				IEnumerable< Product > resultProducts;
 				if( this.UseSoapOnly )
 				{
 					var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
@@ -216,7 +220,7 @@ namespace MagentoAccess
 
 					var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
 
-					res = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
+					resultProducts = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
 				}
 				else
 				{
@@ -224,16 +228,18 @@ namespace MagentoAccess
 
 					var products = await this.GetRestProductsAsync().ConfigureAwait( false );
 
-					res = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
+					resultProducts = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
 				}
 
-				var resBriefInfo = string.Join( "|", res.Select( x => string.Format( "Sku:{0},ProductId:{1},Qty:{2},EntityId:{3}", x.Sku, x.ProductId, x.Qty, x.EntityId ) ) );
-				this.LogTraceEnded( string.Format( "GetProductsAsync() with result: count {0}, {1}", res.Count(), resBriefInfo ) );
-				return res;
+				var resultProductsBriefInfo = resultProducts.ToJson();
+
+				this.LogTraceEnded( string.Format( "{{RestInfo:{0}, MethodName:GetProductsAsync, MethodResult:{1}}}", restInfo, resultProductsBriefInfo ) );
+
+				return resultProducts;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( "Error.", exception );
+				var mexc = new MagentoCommonException( string.Format( "Error. RestInfo:{0}, MethodName:GetProductsAsync, MethodParameters:{1}", restInfo, PredefinedValues.NotAvailable ), exception );
 				this.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -241,11 +247,14 @@ namespace MagentoAccess
 
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
+			var productsBriefInfo = products.ToJson();
+
+			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
 			try
 			{
-				var productsBriefInfo = string.Join( "|", products.Select( x => string.Format( "ItemId:{0}, ProductId:{1}, Qty:{2}, StockId:{3}", x.ItemId, x.ProductId, x.Qty, x.StockId ) ) );
-				productsBriefInfo = string.Format( "count:{0}, items:{1}", products.Count(), productsBriefInfo );
-				this.LogTraceStarted( string.Format( "UpdateInventoryAsync({0})", productsBriefInfo ) );
+				var callInfo = string.Format( "{{RestInfo:{1}, MethodName:UpdateInventoryAsync(), MathodParameters:{0}}}", productsBriefInfo, restInfo );
+
+				this.LogTraceStarted( callInfo );
 
 				const int productsUpdateMaxChunkSize = 500;
 				var inventories = products as IList< Inventory > ?? products.ToList();
@@ -275,11 +284,11 @@ namespace MagentoAccess
 					}
 				}
 
-				this.LogTraceEnded( string.Format( "UpdateInventoryAsync({0})", productsBriefInfo ) );
+				this.LogTraceEnded( callInfo );
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( "Error.", exception );
+				var mexc = new MagentoCommonException( string.Format( "Error. RestInfo:{0}, MethodName:UpdateInventoryAsync, MethodParameters:{1}", restInfo, PredefinedValues.NotAvailable ), exception );
 				this.LogTraceException( mexc );
 				throw mexc;
 			}

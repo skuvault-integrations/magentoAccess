@@ -16,9 +16,14 @@ namespace MagentoAccess.Services
 
 		string AccessTokenSecret { get; }
 
+		string ConsumerKey { get; }
+
+		string ConsumerSecretKey { get; }
+
 		string RequestToken { get; }
 
 		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+		string BaseMagentoUrl { get; }
 
 		Task InitiateDescktopAuthenticationProcess();
 
@@ -37,5 +42,6 @@ namespace MagentoAccess.Services
 		VerificationData RequestVerificationUri();
 
 		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
+		string ToJsonRestInfo();
 	}
 }
