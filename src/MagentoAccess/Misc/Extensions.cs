@@ -48,6 +48,19 @@ namespace MagentoAccess.Misc
 			}
 		}
 
+		public static long ToLongOrDefault( this string srcString )
+		{
+			try
+			{
+				var dateTime = long.Parse( srcString, CultureInfo.InvariantCulture );
+				return dateTime;
+			}
+			catch
+			{
+				return default( long );
+			}
+		}
+
 		public static decimal ToDecimalOrDefault( this string srcString )
 		{
 			decimal parsedNumber;
@@ -143,6 +156,19 @@ namespace MagentoAccess.Misc
 				string.IsNullOrWhiteSpace( x.ProductId ) ? PredefinedValues.NotAvailable : x.ProductId,
 				x.Qty,
 				string.IsNullOrWhiteSpace( x.StockId ) ? PredefinedValues.NotAvailable : x.StockId
+				) ) );
+			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", inventories.Count(), items );
+			return res;
+		}
+
+		public static string ToJson( this IEnumerable< InventoryBySku > source )
+		{
+			var inventories = source as IList< InventoryBySku > ?? source.ToList();
+			var items = string.Join( ",", inventories.Select( x => string.Format( "{{Sku:{0},StockId:{1},Qty:{2},MinQty:{3}}}",
+				string.IsNullOrWhiteSpace( x.Sku ) ? PredefinedValues.NotAvailable : x.Sku,
+				string.IsNullOrWhiteSpace( x.StockId ) ? PredefinedValues.NotAvailable : x.StockId,
+				x.Qty,
+				x.MinQty
 				) ) );
 			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", inventories.Count(), items );
 			return res;

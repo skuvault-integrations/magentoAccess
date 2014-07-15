@@ -39,6 +39,11 @@ namespace MagentoAccess
 			MagentoLogger.Log().Trace( "[magento] End call:{0}.", info );
 		}
 
+		private void LogTrace( string info )
+		{
+			MagentoLogger.Log().Trace( "[magento] Trace info:{0}.", info );
+		}
+
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken { get; set; }
@@ -317,6 +322,51 @@ namespace MagentoAccess
 
 						if( whenAll.IsFaulted )
 							throw new Exception( string.Format( "Returned only {0}", updateBriefInfo ) );
+					}
+				}
+
+				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ), exception );
+				this.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public async Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory )
+		{
+			var productsBriefInfo = inventory.ToJson();
+			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
+			const string currentMenthodName = "UpdateInventoryBySkuAsync";
+			try
+			{
+				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
+
+				var inventories = inventory as IList< InventoryBySku > ?? inventory.ToList();
+				var updateBriefInfo = PredefinedValues.NotAvailable;
+				if( inventories.Any() )
+				{
+					if( this.UseSoapOnly )
+					{
+						var stockitems = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
+						var productsWithSkuQtyId = from i in inventory join s in stockitems.result on i.Sku equals s.sku select new Inventory() { ItemId = s.product_id, ProductId = s.product_id, Qty = i.Qty };
+						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
+					}
+					else
+					{
+						var stockItems = await this.GetRestStockItemsAsync().ConfigureAwait( false );
+						var products = await this.GetRestProductsAsync().ConfigureAwait( false );
+						var productsWithSkuQtyId = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
+						var productsWithSkuUpdatedQtyId = ( from i in inventory join p in productsWithSkuQtyId on i.Sku equals p.Sku select new Product { ProductId = p.ProductId, EntityId = p.EntityId, Description = p.Description, Name = p.Name, Sku = p.Sku, Price = p.Price, Qty = i.Qty.ToString() } ).ToList();
+
+						var skutoIdConvertationInfo = productsWithSkuUpdatedQtyId.ToJson();
+						this.LogTrace( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, SkuConvertedToId:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, skutoIdConvertationInfo ) );
+
+						var resultProducts = productsWithSkuUpdatedQtyId.Select( x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() } );
+						await this.UpdateInventoryAsync( resultProducts ).ConfigureAwait( false );
 					}
 				}
 
