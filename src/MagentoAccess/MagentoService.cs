@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -79,7 +78,7 @@ namespace MagentoAccess
 		public async Task< PingSoapInfo > PingSoapAsync()
 		{
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "PingSoapAsync";
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}}}", currentMenthodName, soapInfo ) );
@@ -102,7 +101,7 @@ namespace MagentoAccess
 		public async Task< PingRestInfo > PingRestAsync()
 		{
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "PingRestAsync";
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
@@ -129,7 +128,7 @@ namespace MagentoAccess
 			var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
 			var methodParameters = string.Format( "{{dateFrom:{0},dateTo:{1}}}", dateFromUtc, dateToUtc );
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "GetOrdersAsync";
 
 			try
 			{
@@ -166,7 +165,7 @@ namespace MagentoAccess
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "GetOrdersAsync";
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
@@ -187,7 +186,7 @@ namespace MagentoAccess
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "GetProductsSimpleAsync";
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
@@ -210,7 +209,7 @@ namespace MagentoAccess
 		{
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "GetProductsAsync";
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}}}", currentMenthodName, soapInfo, restInfo ) );
@@ -264,13 +263,14 @@ namespace MagentoAccess
 			var productsBriefInfo = products.ToJson();
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			var currentMenthodName = MethodBase.GetCurrentMethod().Name;
+			const string currentMenthodName = "UpdateInventoryAsync";
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
 
 				const int productsUpdateMaxChunkSize = 500;
 				var inventories = products as IList< Inventory > ?? products.ToList();
+				var updateBriefInfo = PredefinedValues.NotAvailable;
 				if( inventories.Any() )
 				{
 					if( this.UseSoapOnly )
@@ -279,9 +279,9 @@ namespace MagentoAccess
 
 						var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
-						var updateProductsChunbksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
+						var updateProductsChunksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
 
-						await Task.WhenAll( updateProductsChunbksTasks ).ConfigureAwait( false );
+						await Task.WhenAll( updateProductsChunksTasks ).ConfigureAwait( false );
 					}
 					else
 					{
@@ -293,11 +293,13 @@ namespace MagentoAccess
 							Qty = x.Qty,
 							StockId = x.StockId,
 						} ).ToList();
-						await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+
+						var updateResult = await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
+						updateBriefInfo = updateResult.Items.ToJson();
 					}
 				}
 
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
+				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{

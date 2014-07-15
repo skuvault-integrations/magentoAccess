@@ -169,6 +169,17 @@ namespace MagentoAccess.Misc
 			return res;
 		}
 
+		public static string ToJson( this IEnumerable< ResponseStockItem > source )
+		{
+			var stockItems = source as IList< ResponseStockItem > ?? source.ToList();
+			var items = string.Join( ",", stockItems.Select( x => string.Format( "{{Code:{0},ItemId:{1},Message:{2}}}",
+				string.IsNullOrWhiteSpace( x.Code ) ? PredefinedValues.NotAvailable : x.Code,
+				string.IsNullOrWhiteSpace( x.ItemId ) ? PredefinedValues.NotAvailable : x.ItemId,
+				string.IsNullOrWhiteSpace( x.Message ) ? PredefinedValues.NotAvailable : x.Message ) ) );
+			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
+			return res;
+		}
+
 		public static string ToJson( this IEnumerable< StockItem > source )
 		{
 			var stockItems = source as IList< StockItem > ?? source.ToList();
