@@ -217,10 +217,10 @@ namespace MagentoAccess.Services
 
 		public string ToJsonSoapInfo()
 		{
-			return string.Format("{{ApiUser:{0},ApiKey:{1},Store:{2}}}",
-				string.IsNullOrWhiteSpace(this.ApiUser) ? PredefinedValues.NotAvailable : this.ApiUser,
-				string.IsNullOrWhiteSpace(this.ApiKey) ? PredefinedValues.NotAvailable : this.ApiKey,
-				string.IsNullOrWhiteSpace(this.Store) ? PredefinedValues.NotAvailable : this.Store
+			return string.Format( "{{ApiUser:{0},ApiKey:{1},Store:{2}}}",
+				string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser,
+				string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey,
+				string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store
 				);
 		}
 
