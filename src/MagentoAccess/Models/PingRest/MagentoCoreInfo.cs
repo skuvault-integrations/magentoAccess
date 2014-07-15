@@ -8,5 +8,10 @@
 		{
 			this.RestWorks = restWorks;
 		}
+
+		public string ToJson()
+		{
+			return string.Format("{{RestWorks:{0}}}", RestWorks);
+		}
 	}
 }

@@ -42,6 +42,7 @@ namespace MagentoAccess.Services
 		VerificationData RequestVerificationUri();
 
 		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
+
 		string ToJsonRestInfo();
 	}
 }
