@@ -62,7 +62,14 @@ namespace MagentoAccess.Services
 			this.ApiKey = apiKey;
 			this.Store = store;
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding() { MaxReceivedMessageSize = Int32.MaxValue }, new EndpointAddress( endPoint ) );
+			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding()
+			{
+				MaxReceivedMessageSize = Int32.MaxValue,
+				ReceiveTimeout = new TimeSpan( 0, 0, 30 ),
+				SendTimeout = new TimeSpan( 0, 0, 30 ),
+				OpenTimeout = new TimeSpan( 0, 0, 30 ),
+				CloseTimeout = new TimeSpan( 0, 0, 30 )
+			}, new EndpointAddress( endPoint ) );
 		}
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
