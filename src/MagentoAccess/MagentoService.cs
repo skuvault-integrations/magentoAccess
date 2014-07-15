@@ -86,7 +86,7 @@ namespace MagentoAccess
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks );
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodResult{2}}}", currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
+				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodResult:{2}}}", currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
@@ -172,7 +172,7 @@ namespace MagentoAccess
 				var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
 				var resHandled = res.Orders.Select( x => new Order( x ) );
 				var orderBriefInfo = resHandled.ToJson();
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult{2}}}", currentMenthodName, restInfo, orderBriefInfo ) );
+				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, orderBriefInfo ) );
 				return resHandled;
 			}
 			catch( Exception exception )
@@ -193,7 +193,7 @@ namespace MagentoAccess
 				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
 
 				var productBriefInfo = res.ToJson();
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult{2}}}", currentMenthodName, restInfo, productBriefInfo ) );
+				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, productBriefInfo ) );
 
 				return res;
 			}
@@ -320,7 +320,7 @@ namespace MagentoAccess
 					}
 				}
 
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
+				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
