@@ -268,13 +268,13 @@ namespace MagentoAccess
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
 
-				const int productsUpdateMaxChunkSize = 500;
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
 				if( inventories.Any() )
 				{
 					if( this.UseSoapOnly )
 					{
+						const int productsUpdateMaxChunkSize = 500;
 						var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
 						var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
@@ -285,6 +285,7 @@ namespace MagentoAccess
 					}
 					else
 					{
+						const int productsUpdateMaxChunkSize = 200;
 						var inventoryItems = inventories.Select( x => new StockItem
 						{
 							ItemId = x.ItemId,
@@ -294,8 +295,28 @@ namespace MagentoAccess
 							StockId = x.StockId,
 						} ).ToList();
 
-						var updateResult = await this.MagentoServiceLowLevel.PutStockItemsAsync( inventoryItems ).ConfigureAwait( false );
-						updateBriefInfo = updateResult.Items.ToJson();
+						var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
+
+						var updateProductsChunksTasks = new List< Task< PutStockItemsResponse > >();
+
+						//updateProductsChunksTasks = productsDevidedToChunks.Select(x => this.MagentoServiceLowLevel.PutStockItemsAsync(x)).ToList();
+
+						foreach( var productsDevidedToChunk in productsDevidedToChunks )
+						{
+							var stockItemsAsync = await this.MagentoServiceLowLevel.PutStockItemsAsync( productsDevidedToChunk ).ConfigureAwait( false );
+							updateProductsChunksTasks.Add( Task.FromResult( stockItemsAsync ) );
+						}
+
+						var whenAll = Task.WhenAll( updateProductsChunksTasks );
+
+						await whenAll.ConfigureAwait( false );
+
+						var updateResult = whenAll.Result.SelectMany( x => x.Items ).ToList();
+
+						updateBriefInfo = updateResult.ToJson();
+
+						if( whenAll.IsFaulted )
+							throw new Exception( string.Format( "Returned only {0}", updateBriefInfo ) );
 					}
 				}
 
