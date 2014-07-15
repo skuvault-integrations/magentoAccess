@@ -23,8 +23,8 @@ namespace MagentoAccessTestsIntegration
 			var firstCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).First();
 			var lastCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).Last();
 
-			var modifiedFrom = DateTime.Parse( firstCreatedItem.updated_at ).AddSeconds( 1 );
-			var modifiedTo = DateTime.Parse( lastCreatedItem.updated_at ).AddSeconds( -1 );
+			var modifiedFrom = new DateTime( DateTime.Parse( firstCreatedItem.updated_at ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
+			var modifiedTo = new DateTime( DateTime.Parse( lastCreatedItem.updated_at ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
 
 			var getOrdersTask = this._magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
