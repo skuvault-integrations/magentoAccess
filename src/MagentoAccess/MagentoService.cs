@@ -218,36 +218,59 @@ namespace MagentoAccess
 			try
 			{
 				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}}}", currentMenthodName, soapInfo, restInfo ) );
-				const int stockItemsListMaxChunkSize = 500;
+				const int stockItemsListMaxChunkSize = 1000;
 				IEnumerable< Product > resultProducts;
-				if( this.UseSoapOnly )
+				//if( this.UseSoapOnly )
 				{
-					var products = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
+					var catalogProductListResponse = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
-					if( products == null || products.result == null )
+					if( catalogProductListResponse == null || catalogProductListResponse.result == null )
 						return Enumerable.Empty< Product >();
 
-					var productsDevidedByChunks = products.result.ToList().Batch( stockItemsListMaxChunkSize );
+					var products = catalogProductListResponse.result.ToList();
 
-					var getStockItemsAsyncTasks = productsDevidedByChunks.Select( stockItemsChunk => this.MagentoServiceLowLevelSoap.GetStockItemsAsync( stockItemsChunk.Select( x => x.sku ).ToList() ) );
+					var productsDevidedByChunks = products.Batch( stockItemsListMaxChunkSize );
 
-					var stockItemsResponses = await Task.WhenAll( getStockItemsAsyncTasks ).ConfigureAwait( false );
+					// this code works to solw on 1 core server (but seems faster on multicore)
+					//var getStockItemsAsyncTasks = productsDevidedByChunks.Select( stockItemsChunk => this.MagentoServiceLowLevelSoap.GetStockItemsAsync( stockItemsChunk.Select( x => x.sku ).ToList() ) );
+					//var stockItemsResponses = await Task.WhenAll(getStockItemsAsyncTasks).ConfigureAwait(false);
+					//if (stockItemsResponses == null || !stockItemsResponses.Any())
+					//	return Enumerable.Empty<Product>();
+					//var stockItems = stockItemsResponses.Where(x => x != null && x.result != null).SelectMany(x => x.result).ToList();
 
-					if( stockItemsResponses == null || !stockItemsResponses.Any() )
-						return Enumerable.Empty< Product >();
+					// this code works faster on 1 core machine 
+					var getStockItemsAsync = new List< catalogInventoryStockItemEntity >();
+					foreach( var productsDevidedByChunk in productsDevidedByChunks )
+					{
+						var catalogInventoryStockItemListResponse = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.sku ).ToList() ).ConfigureAwait( false );
+						getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.result.ToList() );
+					}
+					var stockItems = getStockItemsAsync.ToList();
 
-					var stockItems = stockItemsResponses.Where( x => x != null && x.result != null ).SelectMany( x => x.result );
-
-					resultProducts = from stockItemEntity in stockItems join productEntity in products.result on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty };
+					resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty } ).ToList();
 				}
-				else
-				{
-					var stockItems = await this.GetRestStockItemsAsync().ConfigureAwait( false );
 
-					var products = await this.GetRestProductsAsync().ConfigureAwait( false );
+				// this code not works for magento 1.8.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
+				//else
+				//{
+				//var stockItemsAsync =  this.GetRestStockItemsAsync();
+				//#if DEBUG
+				//var temps = stockItems.Select(x => string.Format("INSERT INTO [dbo].[StockItems] ([EntityId] ,[ProductId] ,[Qty]) VALUES ('{0}','{1}','{2}');", x.EntityId, x.ProductId, x.Qty));
+				//var stockItemsStr = string.Join("\n", temps);
+				//#endif
 
-					resultProducts = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
-				}
+				//var productsAsync =  this.GetRestProductsAsync();
+				//#if DEBUG
+				//var tempp = products.Select(x => string.Format("INSERT INTO [dbo].[Products2]([EntityId] ,[ProductId] ,[Description] ,[Name] ,[Sku] ,[Price]) VALUES ('{0}','{1}','','','{4}','{5}');", x.EntityId, x.ProductId, x.Description, x.Name, x.Sku, x.Price));
+				//var productsStr = string.Join("\n", tempp);
+				//#endif
+				//await Task.WhenAll(stockItemsAsync, productsAsync).ConfigureAwait(false);
+
+				//var stockItems = stockItemsAsync.Result.ToList();
+				//var products = productsAsync.Result.ToList();
+
+				//resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty } ).ToList();
+				//}
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
@@ -316,7 +339,7 @@ namespace MagentoAccess
 
 						await whenAll.ConfigureAwait( false );
 
-						var updateResult = whenAll.Result.SelectMany( x => x.Items ).ToList();
+						var updateResult = whenAll.Result.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 
 						updateBriefInfo = updateResult.ToJson();
 
