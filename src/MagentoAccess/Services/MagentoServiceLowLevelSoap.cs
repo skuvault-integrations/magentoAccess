@@ -65,10 +65,10 @@ namespace MagentoAccess.Services
 			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding()
 			{
 				MaxReceivedMessageSize = Int32.MaxValue,
-				ReceiveTimeout = new TimeSpan( 0, 0, 30 ),
-				SendTimeout = new TimeSpan( 0, 0, 30 ),
-				OpenTimeout = new TimeSpan( 0, 0, 30 ),
-				CloseTimeout = new TimeSpan( 0, 0, 30 )
+				ReceiveTimeout = new TimeSpan( 0, 0, 30,0 ),
+				SendTimeout = new TimeSpan(0, 0, 30, 0),
+				OpenTimeout = new TimeSpan(0, 0, 30, 0),
+				CloseTimeout = new TimeSpan(0, 0, 30, 0)
 			}, new EndpointAddress( endPoint ) );
 		}
 
@@ -502,7 +502,7 @@ namespace MagentoAccess.Services
 		}
 		#endregion
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock )
 		{
 			try
 			{
@@ -518,7 +518,7 @@ namespace MagentoAccess.Services
 					visibility = "4",
 					price = "100",
 					tax_class_id = "1",
-					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100", is_in_stock = 1, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
+					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100", is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 				//var attributes = await this._magentoSoapService.catalogProductAttributeSetListAsync(sessionId).ConfigureAwait(false);
 

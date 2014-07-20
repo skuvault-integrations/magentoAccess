@@ -80,8 +80,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			this._magentoServiceLowLevelRest = new MagentoServiceLowLevel( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
 
-			this.CreateOrders();
 			this.CreateProductstems();
+			this.CreateOrders();
 		}
 
 		protected void CreateOrders()
@@ -100,7 +100,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				var shoppingCartAddressSet = this._magentoLowLevelSoapService.ShoppingCartAddressSet( _shoppingCartId, "0" );
 				shoppingCartAddressSet.Wait();
 
-				var productTask = this._magentoLowLevelSoapService.ShoppingCartAddProduct( _shoppingCartId, "1", "0" );
+				var productTask = this._magentoLowLevelSoapService.ShoppingCartAddProduct( _shoppingCartId, "2918", "0" );
 				productTask.Wait();
 
 				var shippingMenthodTask = this._magentoLowLevelSoapService.ShoppingCartSetShippingMethod( _shoppingCartId, "0" );
@@ -132,10 +132,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				var tiks = DateTime.UtcNow.Ticks.ToString();
 				var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
 				var name = string.Format( "TddTestName{0}_{1}", i, tiks );
-				var shoppingCartIdTask = this._magentoLowLevelSoapService.CreateProduct( "0", name, sku );
-				createProuctsTasks.Add( shoppingCartIdTask );
+				var productTask = this._magentoLowLevelSoapService.CreateProduct( "0", name, sku,1 );
+				createProuctsTasks.Add( productTask );
 				//shoppingCartIdTask.Wait();
-				this._productsIds.Add( shoppingCartIdTask.Result, sku );
+				this._productsIds.Add( productTask.Result, sku );
 			}
 
 			var commonTask = Task.WhenAll( createProuctsTasks );
