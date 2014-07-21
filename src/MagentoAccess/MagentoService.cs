@@ -300,51 +300,16 @@ namespace MagentoAccess
 				var updateBriefInfo = PredefinedValues.NotAvailable;
 				if( inventories.Any() )
 				{
-					if( this.UseSoapOnly )
+					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+
+					switch( pingres.Version )
 					{
-						const int productsUpdateMaxChunkSize = 500;
-						var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
-
-						var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
-
-						var updateProductsChunksTasks = productsDevidedToChunks.Select( x => this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ) );
-
-						await Task.WhenAll( updateProductsChunksTasks ).ConfigureAwait( false );
-					}
-					else
-					{
-						const int productsUpdateMaxChunkSize = 200;
-						var inventoryItems = inventories.Select( x => new StockItem
-						{
-							ItemId = x.ItemId,
-							MinQty = x.MinQty,
-							ProductId = x.ProductId,
-							Qty = x.Qty,
-							StockId = x.StockId,
-						} ).ToList();
-
-						var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
-
-						var updateProductsChunksTasks = new List< Task< PutStockItemsResponse > >();
-
-						//updateProductsChunksTasks = productsDevidedToChunks.Select(x => this.MagentoServiceLowLevel.PutStockItemsAsync(x)).ToList();
-
-						foreach( var productsDevidedToChunk in productsDevidedToChunks )
-						{
-							var stockItemsAsync = await this.MagentoServiceLowLevel.PutStockItemsAsync( productsDevidedToChunk ).ConfigureAwait( false );
-							updateProductsChunksTasks.Add( Task.FromResult( stockItemsAsync ) );
-						}
-
-						var whenAll = Task.WhenAll( updateProductsChunksTasks );
-
-						await whenAll.ConfigureAwait( false );
-
-						var updateResult = whenAll.Result.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
-
-						updateBriefInfo = updateResult.ToJson();
-
-						if( whenAll.IsFaulted )
-							throw new Exception( string.Format( "Returned only {0}", updateBriefInfo ) );
+						case MagentoVersions.M1702:
+							updateBriefInfo = await this.UpdateStockItemsByRest( inventories );
+							break;
+						default:
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories );
+							break;
 					}
 				}
 
@@ -380,14 +345,7 @@ namespace MagentoAccess
 					}
 					else
 					{
-						var stockItems = await this.GetRestStockItemsAsync().ConfigureAwait( false );
-						var products = await this.GetRestProductsAsync().ConfigureAwait( false );
-						var productsWithSkuQtyId = from stockItem in stockItems join product in products on stockItem.EntityId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty };
-						var productsWithSkuUpdatedQtyId = ( from i in inventory join p in productsWithSkuQtyId on i.Sku equals p.Sku select new Product { ProductId = p.ProductId, EntityId = p.EntityId, Description = p.Description, Name = p.Name, Sku = p.Sku, Price = p.Price, Qty = i.Qty.ToString() } ).ToList();
-
-						var skutoIdConvertationInfo = productsWithSkuUpdatedQtyId.ToJson();
-						this.LogTrace( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, SkuConvertedToId:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, skutoIdConvertationInfo ) );
-
+						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync().ConfigureAwait( false );
 						var resultProducts = productsWithSkuUpdatedQtyId.Select( x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() } );
 						await this.UpdateInventoryAsync( resultProducts ).ConfigureAwait( false );
 					}
@@ -547,6 +505,75 @@ namespace MagentoAccess
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
 			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty, ProductId = x.ProductId } );
+		}
+
+		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories )
+		{
+			string updateBriefInfo;
+			const int productsUpdateMaxChunkSize = 200;
+			var inventoryItems = inventories.Select( x => new StockItem
+			{
+				ItemId = x.ItemId,
+				MinQty = x.MinQty,
+				ProductId = x.ProductId,
+				Qty = x.Qty,
+				StockId = x.StockId,
+			} ).ToList();
+
+			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
+
+			var updateProductsChunksTasks = new List< Task< PutStockItemsResponse > >();
+
+			foreach( var productsDevidedToChunk in productsDevidedToChunks )
+			{
+				var stockItemsAsync = await this.MagentoServiceLowLevel.PutStockItemsAsync( productsDevidedToChunk ).ConfigureAwait( false );
+				updateProductsChunksTasks.Add( Task.FromResult( stockItemsAsync ) );
+			}
+
+			var whenAll = Task.WhenAll( updateProductsChunksTasks );
+
+			await whenAll.ConfigureAwait( false );
+
+			var updateResult = whenAll.Result.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
+			var secessefullyUpdated = updateResult.Where( x => x.Code == "200" );
+			var unSecessefullyUpdated = updateResult.Where( x => x.Code != "200" );
+
+			updateBriefInfo = updateResult.ToJson();
+
+			if( unSecessefullyUpdated.Any() )
+				throw new Exception( string.Format( "Not updated: {0}, Updated: {1}", unSecessefullyUpdated.ToJson(), secessefullyUpdated.ToJson() ) );
+
+			if( whenAll.IsFaulted )
+				throw new Exception( string.Format( "Updated: {0}", updateBriefInfo ) );
+
+			return updateBriefInfo;
+		}
+
+		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories )
+		{
+			string updateBriefInfo;
+			const int productsUpdateMaxChunkSize = 500;
+			var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
+
+			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
+
+			var notUpdatedProducts = new List< PutStockItem >();
+			var updatedProducts = new List< PutStockItem >();
+			foreach( var productsDevidedToChunk in productsDevidedToChunks )
+			{
+				var stockItemsAsync = await this.MagentoServiceLowLevelSoap.PutStockItemsAsync( productsDevidedToChunk ).ConfigureAwait( false );
+				if( stockItemsAsync )
+					updatedProducts.AddRange( productsDevidedToChunk );
+				else
+					notUpdatedProducts.AddRange( productsDevidedToChunk );
+			}
+
+			updateBriefInfo = updatedProducts.ToJson();
+			var temp = notUpdatedProducts.ToJson();
+
+			if( notUpdatedProducts.Any() )
+				throw new Exception( string.Format( "Not updated {0}", temp ) );
+			return updateBriefInfo;
 		}
 	}
 }

@@ -9,6 +9,7 @@ using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.PutStockItems;
+using MagentoAccess.Services;
 
 namespace MagentoAccess.Misc
 {
@@ -202,6 +203,16 @@ namespace MagentoAccess.Misc
 				string.IsNullOrWhiteSpace( x.Code ) ? PredefinedValues.NotAvailable : x.Code,
 				string.IsNullOrWhiteSpace( x.ItemId ) ? PredefinedValues.NotAvailable : x.ItemId,
 				string.IsNullOrWhiteSpace( x.Message ) ? PredefinedValues.NotAvailable : x.Message ) ) );
+			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
+			return res;
+		}
+
+		public static string ToJson( this IEnumerable< PutStockItem > source )
+		{
+			var stockItems = source as IList< PutStockItem > ?? source.ToList();
+			var items = string.Join( ",", stockItems.Select( x => string.Format( "{{Id:{0},qty:{1}",
+				string.IsNullOrWhiteSpace( x.Id ) ? PredefinedValues.NotAvailable : x.Id,
+				( x.UpdateEntity == null || string.IsNullOrWhiteSpace( x.UpdateEntity.qty ) ) ? PredefinedValues.NotAvailable : x.UpdateEntity.qty ) ) );
 			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
 			return res;
 		}
