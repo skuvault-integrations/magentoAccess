@@ -90,6 +90,7 @@ namespace MagentoAccessTestsIntegration
 			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
 		}
 
+		[ Ignore ]
 		[ Test ]
 		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts()
 		{
