@@ -132,7 +132,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				var tiks = DateTime.UtcNow.Ticks.ToString();
 				var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
 				var name = string.Format( "TddTestName{0}_{1}", i, tiks );
-				var productTask = this._magentoLowLevelSoapService.CreateProduct( "0", name, sku,1 );
+				var productTask = this._magentoLowLevelSoapService.CreateProduct( "0", name, sku, 1 );
 				createProuctsTasks.Add( productTask );
 				//shoppingCartIdTask.Wait();
 				this._productsIds.Add( productTask.Result, sku );

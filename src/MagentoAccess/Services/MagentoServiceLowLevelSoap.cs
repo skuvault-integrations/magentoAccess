@@ -65,10 +65,10 @@ namespace MagentoAccess.Services
 			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding()
 			{
 				MaxReceivedMessageSize = Int32.MaxValue,
-				ReceiveTimeout = new TimeSpan( 0, 0, 30,0 ),
-				SendTimeout = new TimeSpan(0, 0, 30, 0),
-				OpenTimeout = new TimeSpan(0, 0, 30, 0),
-				CloseTimeout = new TimeSpan(0, 0, 30, 0)
+				ReceiveTimeout = new TimeSpan( 0, 0, 30, 0 ),
+				SendTimeout = new TimeSpan( 0, 0, 30, 0 ),
+				OpenTimeout = new TimeSpan( 0, 0, 30, 0 ),
+				CloseTimeout = new TimeSpan( 0, 0, 30, 0 )
 			}, new EndpointAddress( endPoint ) );
 		}
 
