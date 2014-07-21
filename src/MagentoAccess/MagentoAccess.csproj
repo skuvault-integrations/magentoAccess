@@ -79,6 +79,7 @@
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\MagentoLogger.cs" />
+    <Compile Include="Misc\MagentoVersions.cs" />
     <Compile Include="Misc\PredefinedValues.cs" />
     <Compile Include="Models\GetMagentoCoreInfo\PingSoapInfo.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
