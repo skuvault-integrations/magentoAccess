@@ -78,6 +78,7 @@
     <Compile Include="MagentoService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
+    <Compile Include="Misc\IEnumerableExtensions.cs" />
     <Compile Include="Misc\MagentoLogger.cs" />
     <Compile Include="Misc\MagentoVersions.cs" />
     <Compile Include="Misc\PredefinedValues.cs" />
