@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,16 +6,14 @@ using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetMagentoCoreInfo;
+using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
-using MagentoAccess.Models.Services.GetOrders;
-using MagentoAccess.Models.Services.PutStockItems;
+using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
-using Order = MagentoAccess.Models.GetOrders.Order;
-using StockItem = MagentoAccess.Models.Services.GetStockItems.StockItem;
 
 namespace MagentoAccess
 {
@@ -151,11 +148,11 @@ namespace MagentoAccess
 				if( ordersBriefInfo.result == null )
 					return Enumerable.Empty< Order >();
 
-				var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync(15, async x => await MagentoServiceLowLevel.GetOrderAsync(x.order_id));
-				
-				var orderInfoResponses = salesOrderInfoResponses.SelectMany(x => x.Orders).ToList();
+				var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync( 15, async x => await this.MagentoServiceLowLevel.GetOrderAsync( x.order_id ) );
 
-				var resultOrders = orderInfoResponses.Select(x => new Order(x)).ToList();
+				var orderInfoResponses = salesOrderInfoResponses.SelectMany( x => x.Orders ).ToList();
+
+				var resultOrders = orderInfoResponses.Select( x => new Order( x ) ).ToList();
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
@@ -506,22 +503,23 @@ namespace MagentoAccess
 
 			receivedProducts.AddRange( productsChunk );
 
-			bool isLastAndCurrentResponsesHaveTheSameProducts;
-
 			var getProductsTasks = new List< Task< List< Models.Services.GetProducts.Product > > >();
-			for( var i = 0; i < 4; i++ )
-			{
-				getProductsTasks.Add( Task.Factory.StartNew( () => this.LocalReceivedProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
-			}
+
+			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
+			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
+			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
+			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
 
 			await Task.WhenAll( getProductsTasks ).ConfigureAwait( false );
 
-			var results = getProductsTasks.SelectMany( x => x.Result ).ToList().Distinct( new ProductComparer() ).ToList();
+			var results = getProductsTasks.SelectMany( x => x.Result ).ToList();
 			receivedProducts.AddRange( results );
+			receivedProducts = receivedProducts.Distinct( new ProductComparer() ).ToList();
+
 			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
-		private List< Models.Services.GetProducts.Product > LocalReceivedProducts( IEnumerable< Models.Services.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
+		private List< Models.Services.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
 		{
 			var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
 			var localLastReceivedProducts = lastReceiveProducts;
@@ -611,20 +609,12 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var updateProductsChunksTasks = new List< Task< PutStockItemsResponse > >();
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync( x ) );
 
-			foreach( var productsDevidedToChunk in productsDevidedToChunks )
-			{
-				var stockItemsAsync = await this.MagentoServiceLowLevel.PutStockItemsAsync( productsDevidedToChunk ).ConfigureAwait( false );
-				updateProductsChunksTasks.Add( Task.FromResult( stockItemsAsync ) );
-			}
+			var updateResult = batchResponses.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 
-			var whenAll = Task.WhenAll( updateProductsChunksTasks );
-
-			await whenAll.ConfigureAwait( false );
-
-			var updateResult = whenAll.Result.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 			var secessefullyUpdated = updateResult.Where( x => x.Code == "200" );
+
 			var unSecessefullyUpdated = updateResult.Where( x => x.Code != "200" );
 
 			updateBriefInfo = updateResult.ToJson();
@@ -632,36 +622,27 @@ namespace MagentoAccess
 			if( unSecessefullyUpdated.Any() )
 				throw new Exception( string.Format( "Not updated: {0}, Updated: {1}", unSecessefullyUpdated.ToJson(), secessefullyUpdated.ToJson() ) );
 
-			if( whenAll.IsFaulted )
-				throw new Exception( string.Format( "Updated: {0}", updateBriefInfo ) );
-
 			return updateBriefInfo;
 		}
 
 		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories )
 		{
-			string updateBriefInfo;
 			const int productsUpdateMaxChunkSize = 500;
 			var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
 			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var notUpdatedProducts = new List< PutStockItem >();
-			var updatedProducts = new List< PutStockItem >();
-			foreach( var productsDevidedToChunk in productsDevidedToChunks )
-			{
-				var stockItemsAsync = await this.MagentoServiceLowLevelSoap.PutStockItemsAsync( productsDevidedToChunk ).ConfigureAwait( false );
-				if( stockItemsAsync )
-					updatedProducts.AddRange( productsDevidedToChunk );
-				else
-					notUpdatedProducts.AddRange( productsDevidedToChunk );
-			}
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ), x ) );
 
-			updateBriefInfo = updatedProducts.ToJson();
-			var temp = notUpdatedProducts.ToJson();
+			var updateBriefInfo = batchResponses.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
+
+			var notUpdatedProducts = batchResponses.Where( x => !x.Item1 ).SelectMany( y => y.Item2 );
+
+			var notUpdatedBriefInfo = notUpdatedProducts.ToJson();
 
 			if( notUpdatedProducts.Any() )
-				throw new Exception( string.Format( "Not updated {0}", temp ) );
+				throw new Exception( string.Format( "Not updated {0}", notUpdatedBriefInfo ) );
+
 			return updateBriefInfo;
 		}
 	}

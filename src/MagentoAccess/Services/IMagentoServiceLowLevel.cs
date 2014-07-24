@@ -44,5 +44,7 @@ namespace MagentoAccess.Services
 		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
 
 		string ToJsonRestInfo();
+
+		Task<GetOrdersResponse> GetOrderAsync(string incrementId);
 	}
 }
