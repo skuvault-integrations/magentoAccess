@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -62,14 +66,35 @@ namespace MagentoAccess.Services
 			this.ApiKey = apiKey;
 			this.Store = store;
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( new BasicHttpBinding()
+
+			var customBinding = new CustomBinding
 			{
-				MaxReceivedMessageSize = Int32.MaxValue,
 				ReceiveTimeout = new TimeSpan( 0, 0, 30, 0 ),
 				SendTimeout = new TimeSpan( 0, 0, 30, 0 ),
 				OpenTimeout = new TimeSpan( 0, 0, 30, 0 ),
-				CloseTimeout = new TimeSpan( 0, 0, 30, 0 )
-			}, new EndpointAddress( endPoint ) );
+				CloseTimeout = new TimeSpan( 0, 0, 30, 0 ),
+				Name = "CustomHttpBinding",
+			};
+
+			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
+			{
+				MessageVersion = MessageVersion.Soap11,
+				WriteEncoding = new UTF8Encoding(),
+			};
+			var httpTransportBindingElement = new HttpTransportBindingElement
+			{
+				DecompressionEnabled = false,
+				MaxReceivedMessageSize = 999999999,
+				KeepAliveEnabled = true,
+				AllowCookies = false
+			};
+
+			customBinding.Elements.Add( textMessageEncodingBindingElement );
+			customBinding.Elements.Add( httpTransportBindingElement );
+
+			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+
+			this._magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
 		}
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -547,5 +572,108 @@ namespace MagentoAccess.Services
 		public catalogInventoryStockItemUpdateEntity UpdateEntity { get; set; }
 
 		public string Id { get; set; }
+	}
+
+	public class MessageInspector : IClientMessageInspector
+	{
+		public object BeforeSendRequest( ref Message request, IClientChannel channel )
+		{
+			HttpRequestMessageProperty httpRequestMessage;
+			object httpRequestMessageObject;
+			if( request.Properties.TryGetValue( HttpRequestMessageProperty.Name, out httpRequestMessageObject ) )
+			{
+				httpRequestMessage = httpRequestMessageObject as HttpRequestMessageProperty;
+				if( string.IsNullOrEmpty( httpRequestMessage.Headers[ "Accept-Encoding" ] ) )
+					httpRequestMessage.Headers.Remove( "Accept-Encoding" );
+			}
+			else
+			{
+				httpRequestMessage = new HttpRequestMessageProperty();
+				httpRequestMessage.Headers.Add( "Accept-Encoding", "" );
+				request.Properties.Add( HttpRequestMessageProperty.Name, httpRequestMessage );
+			}
+
+			/// 
+			return null;
+		}
+
+		public void AfterReceiveReply( ref Message reply, object correlationState )
+		{
+			//reply.Properties.FirstOrDefault().Value
+		}
+	}
+
+	internal class CustomBehavior : IEndpointBehavior
+	{
+		public void AddBindingParameters( ServiceEndpoint serviceEndpoint,
+			BindingParameterCollection bindingParameters )
+		{
+			try
+			{
+				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				{
+					var vs = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
+					if( vs != null && vs.Any() )
+						serviceEndpoint.Behaviors.Remove( vs.Single() );
+				}
+			}
+			catch( Exception )
+			{
+				throw;
+			}
+		}
+
+		public void ApplyClientBehavior( ServiceEndpoint serviceEndpoint,
+			ClientRuntime behavior )
+		{
+			try
+			{
+				//Add the inspector
+				behavior.MessageInspectors.Add( new MessageInspector() );
+
+				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				{
+					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
+					if( vsBehaviour != null && vsBehaviour.Any() )
+						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
+				}
+			}
+			catch( Exception )
+			{
+			}
+		}
+
+		public void ApplyDispatchBehavior( ServiceEndpoint serviceEndpoint,
+			EndpointDispatcher endpointDispatcher )
+		{
+			try
+			{
+				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				{
+					var vsBehaviour = serviceEndpoint.Behaviors.Where(i => i.GetType().Namespace.Contains("VisualStudio"));
+					if( vsBehaviour != null && vsBehaviour.Any() )
+						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
+				}
+			}
+			catch( Exception )
+			{
+			}
+		}
+
+		public void Validate( ServiceEndpoint serviceEndpoint )
+		{
+			try
+			{
+				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				{
+					var vsBehaviour = serviceEndpoint.Behaviors.Where(i => i.GetType().Namespace.Contains("VisualStudio"));
+					if( vsBehaviour != null && vsBehaviour.Any() )
+						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
+				}
+			}
+			catch( Exception )
+			{
+			}
+		}
 	}
 }
