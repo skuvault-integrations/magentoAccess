@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -484,42 +486,49 @@ namespace MagentoAccess
 
 			bool isLastAndCurrentResponsesHaveTheSameProducts;
 
-			Task.Factory.StartNew(() =>
+			var getProductsTasks = new List<Task<List< Models.Services.GetProducts.Product >>>();
+			for( int i = 0; i < 4; i++ )
 			{
-				var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
-				var localLastReceivedProducts = lastReceiveProducts;
-				do
-				{
-
-					Interlocked.Increment(ref page);
-
-					var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync(page, itemsPerPage);
-					getProductsTask.Wait();
-					var localProductsChunk = getProductsTask.Result.Products;
-
-					var repeatedItems = from c in localProductsChunk join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
-
-					localLastReceivedProducts = localProductsChunk;
-
-					localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
-
-					// try to get items that was added before last iteration
-					var localReceivedProducts = new List<Models.Services.GetProducts.Product>();
-					if (localIsLastAndCurrentResponsesHaveTheSameProducts)
-					{
-						var notRrepeatedItems = localProductsChunk.Where(x => !repeatedItems.Exists(r => r.EntityId == x.EntityId));
-						localReceivedProducts.AddRange(notRrepeatedItems);
-					}
-					else
-					{
-						localReceivedProducts.AddRange(localProductsChunk);
-					}
-				} while (!localIsLastAndCurrentResponsesHaveTheSameProducts);
-
-				return localLastReceivedProducts;
+				getProductsTasks.Add(Task.Factory.StartNew(() => this.LocalReceivedProducts(lastReceiveProducts, itemsPerPage, ref page)));
 			}
-			);
+
+			await Task.WhenAll(getProductsTasks).ConfigureAwait(false);
+
+			var results = getProductsTasks.SelectMany(x=>x.Result).ToList().Distinct(new ProductComparer()).ToList();
+			receivedProducts.AddRange(results);
 			return receivedProducts.Select(x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price });
+		}
+
+		private List< Models.Services.GetProducts.Product > LocalReceivedProducts( IEnumerable< Models.Services.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
+		{
+			var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
+			var localLastReceivedProducts = lastReceiveProducts;
+			var localReceivedProducts = new List< Models.Services.GetProducts.Product >();
+			do
+			{
+				Interlocked.Increment( ref page );
+
+				var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync( page, itemsPerPage );
+				getProductsTask.Wait();
+				var localProductsChunk = getProductsTask.Result.Products;
+
+				var repeatedItems = from c in localProductsChunk join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
+
+				localLastReceivedProducts = localProductsChunk;
+
+				localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
+
+				// try to get items that was added before last iteration
+				if( localIsLastAndCurrentResponsesHaveTheSameProducts )
+				{
+					var notRrepeatedItems = localProductsChunk.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
+					localReceivedProducts.AddRange( notRrepeatedItems );
+				}
+				else
+					localReceivedProducts.AddRange( localProductsChunk );
+			} while( !localIsLastAndCurrentResponsesHaveTheSameProducts );
+
+			return localReceivedProducts;
 		}
 
 		private async Task< IEnumerable< Product > > GetRestStockItemsAsync()
@@ -632,6 +641,19 @@ namespace MagentoAccess
 			if( notUpdatedProducts.Any() )
 				throw new Exception( string.Format( "Not updated {0}", temp ) );
 			return updateBriefInfo;
+		}
+	}
+
+	internal class ProductComparer : IEqualityComparer< Models.Services.GetProducts.Product >
+	{
+		public bool Equals( Models.Services.GetProducts.Product x, Models.Services.GetProducts.Product y )
+		{
+			return x.EntityId == y.EntityId;
+		}
+
+		public int GetHashCode( Models.Services.GetProducts.Product obj )
+		{
+			return obj.EntityId.GetHashCode();
 		}
 	}
 }
