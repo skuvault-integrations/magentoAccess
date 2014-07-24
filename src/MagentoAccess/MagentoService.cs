@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetMagentoCoreInfo;
-using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
+using MagentoAccess.Models.Services.GetOrders;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
+using Order = MagentoAccess.Models.GetOrders.Order;
 using StockItem = MagentoAccess.Models.Services.GetStockItems.StockItem;
 
 namespace MagentoAccess
@@ -150,34 +151,11 @@ namespace MagentoAccess
 				if( ordersBriefInfo.result == null )
 					return Enumerable.Empty< Order >();
 
-				///////////////////////
-				//var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
+				var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync(15, async x => await MagentoServiceLowLevel.GetOrderAsync(x.order_id));
+				
+				var orderInfoResponses = salesOrderInfoResponses.SelectMany(x => x.Orders).ToList();
 
-				//var ordersDetailsTasks = new List<Task<salesOrderInfoResponse>>();
-				//foreach (var x in ordersBriefInfo.result)
-				//{
-				//	var orderAsync = this.MagentoServiceLowLevelSoap.GetOrderAsync(x.increment_id);
-				//	ordersDetailsTasks.Add(orderAsync);
-				//	orderAsync.Wait();
-				//}
-				//var commontask = await Task.WhenAll(ordersDetailsTasks).ConfigureAwait(false);
-				//var resultOrders = commontask.Select(x => new Order(x.result)).ToList();
-				////////////////////
-
-				var salesOrderInfoResponses = new ConcurrentBag< salesOrderInfoResponse >();
-
-				Parallel.ForEach( ordersBriefInfo.result.ToList(), new ParallelOptions { MaxDegreeOfParallelism = 10 }, x =>
-				{
-					var salesOrderInfoResponseTask = this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id );
-					salesOrderInfoResponseTask.Wait();
-
-					var salesOrderInfoResponse = salesOrderInfoResponseTask.Result;
-					salesOrderInfoResponses.Add( salesOrderInfoResponse );
-				} );
-
-				var orderInfoResponses = salesOrderInfoResponses.ToList();
-
-				var resultOrders = orderInfoResponses.Select( x => new Order( x.result ) ).ToList();
+				var resultOrders = orderInfoResponses.Select(x => new Order(x)).ToList();
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
