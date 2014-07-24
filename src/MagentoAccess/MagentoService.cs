@@ -166,18 +166,18 @@ namespace MagentoAccess
 
 				var salesOrderInfoResponses = new ConcurrentBag< salesOrderInfoResponse >();
 
-				Parallel.ForEach( ordersBriefInfo.result.ToList(), new ParallelOptions{MaxDegreeOfParallelism = 10}, x =>
+				Parallel.ForEach( ordersBriefInfo.result.ToList(), new ParallelOptions { MaxDegreeOfParallelism = 10 }, x =>
 				{
-					var salesOrderInfoResponseTask =  this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id );
+					var salesOrderInfoResponseTask = this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id );
 					salesOrderInfoResponseTask.Wait();
 
 					var salesOrderInfoResponse = salesOrderInfoResponseTask.Result;
-					salesOrderInfoResponses.Add(salesOrderInfoResponse);
+					salesOrderInfoResponses.Add( salesOrderInfoResponse );
 				} );
 
 				var orderInfoResponses = salesOrderInfoResponses.ToList();
 
-				var resultOrders = orderInfoResponses.Select(x => new Order(x.result)).ToList();
+				var resultOrders = orderInfoResponses.Select( x => new Order( x.result ) ).ToList();
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
@@ -321,12 +321,12 @@ namespace MagentoAccess
 			var stockItems = stockItemsAsync.Result.ToList();
 
 			var products = productsAsync.Result.ToList();
-//#if DEBUG
-//			var temps = stockItems.Select( x => string.Format( "INSERT INTO [dbo].[StockItems] ([EntityId] ,[ProductId] ,[Qty]) VALUES ('{0}','{1}','{2}');", x.EntityId, x.ProductId, x.Qty ) );
-//			var stockItemsStr = string.Join( "\n", temps );
-//			var tempp = products.Select( x => string.Format( "INSERT INTO [dbo].[Products2]([EntityId] ,[ProductId] ,[Description] ,[Name] ,[Sku] ,[Price]) VALUES ('{0}','{1}','','','{4}','{5}');", x.EntityId, x.ProductId, x.Description, x.Name, x.Sku, x.Price ) );
-//			var productsStr = string.Join( "\n", tempp );
-//#endif
+			//#if DEBUG
+			//			var temps = stockItems.Select( x => string.Format( "INSERT INTO [dbo].[StockItems] ([EntityId] ,[ProductId] ,[Qty]) VALUES ('{0}','{1}','{2}');", x.EntityId, x.ProductId, x.Qty ) );
+			//			var stockItemsStr = string.Join( "\n", temps );
+			//			var tempp = products.Select( x => string.Format( "INSERT INTO [dbo].[Products2]([EntityId] ,[ProductId] ,[Description] ,[Name] ,[Sku] ,[Price]) VALUES ('{0}','{1}','','','{4}','{5}');", x.EntityId, x.ProductId, x.Description, x.Name, x.Sku, x.Price ) );
+			//			var productsStr = string.Join( "\n", tempp );
+			//#endif
 
 			resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty } ).ToList();
 			return resultProducts;
@@ -511,37 +511,36 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
-
-		private async Task<IEnumerable<Product>> GetRestProductsAsyncPparallel()
+		private async Task< IEnumerable< Product > > GetRestProductsAsyncPparallel()
 		{
 			var page = 1;
 			const int itemsPerPage = 100;
 
-			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync(page, itemsPerPage).ConfigureAwait(false);
+			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
 
 			var productsChunk = getProductsResponse.Products;
-			if (productsChunk.Count() < itemsPerPage)
-				return productsChunk.Select(x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price });
+			if( productsChunk.Count() < itemsPerPage )
+				return productsChunk.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 
-			var receivedProducts = new List<Models.Services.GetProducts.Product>();
+			var receivedProducts = new List< Models.Services.GetProducts.Product >();
 
 			var lastReceiveProducts = productsChunk;
 
-			receivedProducts.AddRange(productsChunk);
+			receivedProducts.AddRange( productsChunk );
 
 			bool isLastAndCurrentResponsesHaveTheSameProducts;
 
-			var getProductsTasks = new List<Task<List< Models.Services.GetProducts.Product >>>();
-			for( int i = 0; i < 4; i++ )
+			var getProductsTasks = new List< Task< List< Models.Services.GetProducts.Product > > >();
+			for( var i = 0; i < 4; i++ )
 			{
-				getProductsTasks.Add(Task.Factory.StartNew(() => this.LocalReceivedProducts(lastReceiveProducts, itemsPerPage, ref page)));
+				getProductsTasks.Add( Task.Factory.StartNew( () => this.LocalReceivedProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
 			}
 
-			await Task.WhenAll(getProductsTasks).ConfigureAwait(false);
+			await Task.WhenAll( getProductsTasks ).ConfigureAwait( false );
 
-			var results = getProductsTasks.SelectMany(x=>x.Result).ToList().Distinct(new ProductComparer()).ToList();
-			receivedProducts.AddRange(results);
-			return receivedProducts.Select(x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price });
+			var results = getProductsTasks.SelectMany( x => x.Result ).ToList().Distinct( new ProductComparer() ).ToList();
+			receivedProducts.AddRange( results );
+			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
 		private List< Models.Services.GetProducts.Product > LocalReceivedProducts( IEnumerable< Models.Services.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )

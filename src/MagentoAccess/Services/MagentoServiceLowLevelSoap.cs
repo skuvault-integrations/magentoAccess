@@ -574,7 +574,7 @@ namespace MagentoAccess.Services
 		public string Id { get; set; }
 	}
 
-	public class MessageInspector : IClientMessageInspector
+	internal class MessageInspector : IClientMessageInspector
 	{
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
@@ -650,7 +650,7 @@ namespace MagentoAccess.Services
 			{
 				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
 				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where(i => i.GetType().Namespace.Contains("VisualStudio"));
+					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
 					if( vsBehaviour != null && vsBehaviour.Any() )
 						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
 				}
@@ -666,7 +666,7 @@ namespace MagentoAccess.Services
 			{
 				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
 				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where(i => i.GetType().Namespace.Contains("VisualStudio"));
+					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
 					if( vsBehaviour != null && vsBehaviour.Any() )
 						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
 				}
