@@ -149,11 +149,34 @@ namespace MagentoAccess
 				if( ordersBriefInfo.result == null )
 					return Enumerable.Empty< Order >();
 
-				var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
+				///////////////////////
+				//var ordersDetailsTasks = ordersBriefInfo.result.Select( x => this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ) );
 
-				var commontask = await Task.WhenAll( ordersDetailsTasks ).ConfigureAwait( false );
+				//var ordersDetailsTasks = new List<Task<salesOrderInfoResponse>>();
+				//foreach (var x in ordersBriefInfo.result)
+				//{
+				//	var orderAsync = this.MagentoServiceLowLevelSoap.GetOrderAsync(x.increment_id);
+				//	ordersDetailsTasks.Add(orderAsync);
+				//	orderAsync.Wait();
+				//}
+				//var commontask = await Task.WhenAll(ordersDetailsTasks).ConfigureAwait(false);
+				//var resultOrders = commontask.Select(x => new Order(x.result)).ToList();
+				////////////////////
 
-				var resultOrders = commontask.Select( x => new Order( x.result ) );
+				var salesOrderInfoResponses = new ConcurrentBag< salesOrderInfoResponse >();
+
+				Parallel.ForEach( ordersBriefInfo.result.ToList(), new ParallelOptions{MaxDegreeOfParallelism = 10}, x =>
+				{
+					var salesOrderInfoResponseTask =  this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id );
+					salesOrderInfoResponseTask.Wait();
+
+					var salesOrderInfoResponse = salesOrderInfoResponseTask.Result;
+					salesOrderInfoResponses.Add(salesOrderInfoResponse);
+				} );
+
+				var orderInfoResponses = salesOrderInfoResponses.ToList();
+
+				var resultOrders = orderInfoResponses.Select(x => new Order(x.result)).ToList();
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
