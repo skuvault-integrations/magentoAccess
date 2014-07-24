@@ -13,17 +13,17 @@ namespace MagentoAccess.Services.Parsers
 		{
 			XNamespace ns = "";
 
-			if (((System.Xml.Linq.XElement)root.FirstNode).Name.ToString() != "data_item")
+			if( ( ( XElement )root.FirstNode ).Name.ToString() != "data_item" )
 			{
-				var tempOrder = ConvertToOrder(root, ns);
-				return new GetOrdersResponse { Orders = new List<Order>() { tempOrder } };
+				var tempOrder = ConvertToOrder( root, ns );
+				return new GetOrdersResponse { Orders = new List< Order >() { tempOrder } };
 			}
 
 			var dataItemsNodes = root.Nodes();
 
 			var orderDataItems = dataItemsNodes.Select( x => XElement.Parse( x.ToString() ) ).ToList();
 
-			var orders = orderDataItems.Select(x => ConvertToOrder(x, ns)).ToList();
+			var orders = orderDataItems.Select( x => ConvertToOrder( x, ns ) ).ToList();
 
 			return new GetOrdersResponse { Orders = orders };
 		}

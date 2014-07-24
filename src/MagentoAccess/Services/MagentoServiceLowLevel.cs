@@ -340,17 +340,17 @@ namespace MagentoAccess.Services
 				throw new MagentoRestException( string.Format( "An error occured during GetOrdersAsync()" ), exc );
 			}
 		}
-		
-		public virtual async Task<GetOrdersResponse> GetOrderAsync(string incrementId)
+
+		public virtual async Task< GetOrdersResponse > GetOrderAsync( string incrementId )
 		{
 			try
 			{
-				Condition.Ensures(incrementId).IsNotNullOrWhiteSpace();
-				return await this.InvokeCallAsync<MegentoOrdersResponseParser, GetOrdersResponse>(string.Format("orders/{0}", incrementId), true).ConfigureAwait(false);
+				Condition.Ensures( incrementId ).IsNotNullOrWhiteSpace();
+				return await this.InvokeCallAsync< MegentoOrdersResponseParser, GetOrdersResponse >( string.Format( "orders/{0}", incrementId ), true ).ConfigureAwait( false );
 			}
-			catch (Exception exc)
+			catch( Exception exc )
 			{
-				throw new MagentoRestException(string.Format("An error occured during GetOrdersAsync()"), exc);
+				throw new MagentoRestException( string.Format( "An error occured during GetOrdersAsync()" ), exc );
 			}
 		}
 

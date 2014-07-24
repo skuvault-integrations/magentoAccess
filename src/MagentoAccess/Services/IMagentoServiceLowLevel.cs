@@ -45,6 +45,6 @@ namespace MagentoAccess.Services
 
 		string ToJsonRestInfo();
 
-		Task<GetOrdersResponse> GetOrderAsync(string incrementId);
+		Task< GetOrdersResponse > GetOrderAsync( string incrementId );
 	}
 }
