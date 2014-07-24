@@ -464,6 +464,64 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
+
+		private async Task<IEnumerable<Product>> GetRestProductsAsyncPparallel()
+		{
+			var page = 1;
+			const int itemsPerPage = 100;
+
+			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync(page, itemsPerPage).ConfigureAwait(false);
+
+			var productsChunk = getProductsResponse.Products;
+			if (productsChunk.Count() < itemsPerPage)
+				return productsChunk.Select(x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price });
+
+			var receivedProducts = new List<Models.Services.GetProducts.Product>();
+
+			var lastReceiveProducts = productsChunk;
+
+			receivedProducts.AddRange(productsChunk);
+
+			bool isLastAndCurrentResponsesHaveTheSameProducts;
+
+			Task.Factory.StartNew(() =>
+			{
+				var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
+				var localLastReceivedProducts = lastReceiveProducts;
+				do
+				{
+
+					Interlocked.Increment(ref page);
+
+					var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync(page, itemsPerPage);
+					getProductsTask.Wait();
+					var localProductsChunk = getProductsTask.Result.Products;
+
+					var repeatedItems = from c in localProductsChunk join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
+
+					localLastReceivedProducts = localProductsChunk;
+
+					localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
+
+					// try to get items that was added before last iteration
+					var localReceivedProducts = new List<Models.Services.GetProducts.Product>();
+					if (localIsLastAndCurrentResponsesHaveTheSameProducts)
+					{
+						var notRrepeatedItems = localProductsChunk.Where(x => !repeatedItems.Exists(r => r.EntityId == x.EntityId));
+						localReceivedProducts.AddRange(notRrepeatedItems);
+					}
+					else
+					{
+						localReceivedProducts.AddRange(localProductsChunk);
+					}
+				} while (!localIsLastAndCurrentResponsesHaveTheSameProducts);
+
+				return localLastReceivedProducts;
+			}
+			);
+			return receivedProducts.Select(x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price });
+		}
+
 		private async Task< IEnumerable< Product > > GetRestStockItemsAsync()
 		{
 			var page = 1;
