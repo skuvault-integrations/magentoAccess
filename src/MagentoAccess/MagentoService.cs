@@ -15,6 +15,7 @@ using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
 using Netco.Extensions;
+using StockItem = MagentoAccess.Models.Services.GetStockItems.StockItem;
 
 namespace MagentoAccess
 {
@@ -586,7 +587,7 @@ namespace MagentoAccess
 			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk.Select( x => new Product { EntityId = x.ItemId } );
 
-			var receivedProducts = new List< Models.Services.GetStockItems.StockItem >();
+			var receivedProducts = new List< StockItem >();
 
 			var lastReceiveProducts = productsChunk;
 
@@ -622,7 +623,7 @@ namespace MagentoAccess
 		{
 			string updateBriefInfo;
 			const int productsUpdateMaxChunkSize = 200;
-			var inventoryItems = inventories.Select( x => new StockItem
+			var inventoryItems = inventories.Select( x => new Models.Services.PutStockItems.StockItem
 			{
 				ItemId = x.ItemId,
 				MinQty = x.MinQty,
