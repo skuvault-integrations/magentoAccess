@@ -350,6 +350,7 @@ namespace MagentoAccess
 					switch( pingres.Version )
 					{
 						case MagentoVersions.M1702:
+						case MagentoVersions.M1901:
 							updateBriefInfo = await this.UpdateStockItemsByRest( inventories );
 							break;
 						default:
