@@ -33,7 +33,7 @@ namespace MagentoAccess.Services
 
 		Task< GetStockItemsResponse > GetStockItemsAsync( int page, int limit );
 
-		Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems );
+		Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems, string mark );
 
 		Task< GetOrdersResponse > GetOrdersAsync();
 

@@ -301,7 +301,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems )
+		public virtual async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems, string markForLog = "" )
 		{
 			var stockItems = inventoryItems as IList< StockItem > ?? inventoryItems.ToList();
 			const string currentMenthodName = "PutStockItemsAsync";
@@ -309,7 +309,7 @@ namespace MagentoAccess.Services
 			var productsBriefInfo = stockItems.ToJson();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}, MathodParameters:{2}}}", currentMenthodName, restInfo, productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, markForLog, restInfo, productsBriefInfo ) );
 
 				var inventoryItemsFormated = stockItems.Select( x =>
 				{
@@ -329,7 +329,7 @@ namespace MagentoAccess.Services
 				var result = await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ), true ).ConfigureAwait( false );
 
 				var updateBriefInfo = result.Items.ToJson();
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0},RestInfo:{1}, MathodParameters:{2}, MethodResult:{3}}}", currentMenthodName, restInfo, productsBriefInfo, updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, restInfo, productsBriefInfo, updateBriefInfo ) );
 
 				return result;
 			}

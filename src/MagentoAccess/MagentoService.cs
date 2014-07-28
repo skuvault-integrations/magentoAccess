@@ -293,9 +293,10 @@ namespace MagentoAccess
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "UpdateInventoryAsync";
+			var mark = Guid.NewGuid().ToString();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MathodParameters:{4}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ) );
 
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -307,7 +308,7 @@ namespace MagentoAccess
 					{
 						case MagentoVersions.M1702:
 						case MagentoVersions.M1901:
-							updateBriefInfo = await this.UpdateStockItemsByRest( inventories ).ConfigureAwait( false );
+							updateBriefInfo = await this.UpdateStockItemsByRest( inventories, mark ).ConfigureAwait( false );
 							break;
 						default:
 							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories ).ConfigureAwait( false );
@@ -315,11 +316,11 @@ namespace MagentoAccess
 					}
 				}
 
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2},Mark:{3}, MathodParameters:{4}, MethodResult:{5}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo, updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ), exception );
+				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MethodParameters:{4}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -574,7 +575,7 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty, ProductId = x.ProductId } );
 		}
 
-		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories )
+		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories, string markForLog = "" )
 		{
 			string updateBriefInfo;
 			const int productsUpdateMaxChunkSize = 50;
@@ -589,7 +590,7 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync( x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync( x, markForLog ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var updateResult = batchResponses.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 
