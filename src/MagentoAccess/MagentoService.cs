@@ -284,9 +284,9 @@ namespace MagentoAccess
 		private async Task< IEnumerable< Product > > GetProductsByRest()
 		{
 			IEnumerable< Product > resultProducts;
-			////////////////////////////
+
 			// this code not works for magento 1.8.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
-			// this code works for magento 1.9.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
+			// this code works for magento 1.9.0.1
 			var stockItemsAsync = this.GetRestStockItemsAsync();
 
 			var productsAsync = this.GetRestProductsAsyncPparallel();

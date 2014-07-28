@@ -303,9 +303,10 @@ namespace MagentoAccess.Services
 
 		public virtual async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems )
 		{
+			var stockItems = inventoryItems as IList< StockItem > ?? inventoryItems.ToList();
 			try
 			{
-				var inventoryItemsFormated = inventoryItems.Select( x =>
+				var inventoryItemsFormated = stockItems.Select( x =>
 				{
 					Condition.Requires( x.ItemId ).IsNotNullOrWhiteSpace();
 
@@ -324,7 +325,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				var productsBriefInfo = inventoryItems.ToJson();
+				var productsBriefInfo = stockItems.ToJson();
 				throw new MagentoRestException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
