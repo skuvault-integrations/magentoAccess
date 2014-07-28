@@ -304,8 +304,13 @@ namespace MagentoAccess.Services
 		public virtual async Task< PutStockItemsResponse > PutStockItemsAsync( IEnumerable< StockItem > inventoryItems )
 		{
 			var stockItems = inventoryItems as IList< StockItem > ?? inventoryItems.ToList();
+			const string currentMenthodName = "PutStockItemsAsync";
+			var restInfo = this.ToJsonRestInfo();
+			var productsBriefInfo = stockItems.ToJson();
 			try
 			{
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}, MathodParameters:{2}}}", currentMenthodName, restInfo, productsBriefInfo ) );
+
 				var inventoryItemsFormated = stockItems.Select( x =>
 				{
 					Condition.Requires( x.ItemId ).IsNotNullOrWhiteSpace();
@@ -321,11 +326,15 @@ namespace MagentoAccess.Services
 
 				var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
 
-				return await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) ).ConfigureAwait( false );
+				var result = await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) ).ConfigureAwait( false );
+
+				var updateBriefInfo = result.Items.ToJson();
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0},RestInfo:{1}, MathodParameters:{2}, MethodResult:{3}}}", currentMenthodName, restInfo, productsBriefInfo, updateBriefInfo ) );
+
+				return result;
 			}
 			catch( Exception exc )
 			{
-				var productsBriefInfo = stockItems.ToJson();
 				throw new MagentoRestException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
