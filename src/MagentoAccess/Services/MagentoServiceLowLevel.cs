@@ -326,7 +326,7 @@ namespace MagentoAccess.Services
 
 				var inventoryItemsAggregated = string.Concat( inventoryItemsFormated );
 
-				var result = await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ) ).ConfigureAwait( false );
+				var result = await this.InvokeCallAsync< MegentoPutInventoryResponseParser, PutStockItemsResponse >( "stockitems", true, HttpDeliveryMethods.PutRequest, string.Format( "<?xml version=\"1.0\"?><magento_api>{0}</magento_api>", inventoryItemsAggregated ), true ).ConfigureAwait( false );
 
 				var updateBriefInfo = result.Items.ToJson();
 				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0},RestInfo:{1}, MathodParameters:{2}, MethodResult:{3}}}", currentMenthodName, restInfo, productsBriefInfo, updateBriefInfo ) );
