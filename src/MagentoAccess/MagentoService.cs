@@ -577,7 +577,7 @@ namespace MagentoAccess
 		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories )
 		{
 			string updateBriefInfo;
-			const int productsUpdateMaxChunkSize = 200;
+			const int productsUpdateMaxChunkSize = 50;
 			var inventoryItems = inventories.Select( x => new Models.Services.PutStockItems.StockItem
 			{
 				ItemId = x.ItemId,
