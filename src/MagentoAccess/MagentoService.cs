@@ -25,26 +25,6 @@ namespace MagentoAccess
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
 
-		private void LogTraceException( Exception exception )
-		{
-			MagentoLogger.Log().Trace( exception, "[magento] An exception occured." );
-		}
-
-		private void LogTraceStarted( string info )
-		{
-			MagentoLogger.Log().Trace( "[magento] Start call:{0}.", info );
-		}
-
-		private void LogTraceEnded( string info )
-		{
-			MagentoLogger.Log().Trace( "[magento] End call:{0}.", info );
-		}
-
-		private void LogTrace( string info )
-		{
-			MagentoLogger.Log().Trace( "[magento] Trace info:{0}.", info );
-		}
-
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken { get; set; }
@@ -87,19 +67,19 @@ namespace MagentoAccess
 			const string currentMenthodName = "PingSoapAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}}}", currentMenthodName, soapInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}}}", currentMenthodName, soapInfo ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks );
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodResult:{2}}}", currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodResult:{2}}}", currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}", currentMenthodName, soapInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -110,20 +90,20 @@ namespace MagentoAccess
 			const string currentMenthodName = "PingRestAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
 
 				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
 				var restWorks = magentoOrders.Products != null;
 				var magentoCoreInfo = new PingRestInfo( restWorks );
 
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, RestInfo:{1}", currentMenthodName, restInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -138,7 +118,7 @@ namespace MagentoAccess
 
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodParameters:{2}}}", currentMenthodName, soapInfo, methodParameters ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodParameters:{2}}}", currentMenthodName, soapInfo, methodParameters ) );
 
 				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFromUtc, dateToUtc ).ConfigureAwait( false );
 
@@ -156,14 +136,14 @@ namespace MagentoAccess
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
-				this.LogTraceEnded( string.Format( "MethodName:{0}, SoapInfo{1}, MethodParameters:{2}, MethodResult:{3}", currentMenthodName, soapInfo, methodParameters, resultOrdersBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "MethodName:{0}, SoapInfo{1}, MethodParameters:{2}, MethodResult:{3}", currentMenthodName, soapInfo, methodParameters, resultOrdersBriefInfo ) );
 
 				return resultOrders;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}", currentMenthodName, soapInfo, methodParameters ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -174,17 +154,17 @@ namespace MagentoAccess
 			const string currentMenthodName = "GetOrdersAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
 				var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
 				var resHandled = res.Orders.Select( x => new Order( x ) );
 				var orderBriefInfo = resHandled.ToJson();
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, orderBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, orderBriefInfo ) );
 				return resHandled;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, RestInfo:{1}", currentMenthodName, restInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -195,18 +175,18 @@ namespace MagentoAccess
 			const string currentMenthodName = "GetProductsSimpleAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
 				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
 
 				var productBriefInfo = res.ToJson();
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, productBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, productBriefInfo ) );
 
 				return res;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, RestInfo:{1}", currentMenthodName, restInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -218,7 +198,7 @@ namespace MagentoAccess
 			const string currentMenthodName = "GetProductsAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}}}", currentMenthodName, soapInfo, restInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}}}", currentMenthodName, soapInfo, restInfo ) );
 
 				IEnumerable< Product > resultProducts;
 
@@ -236,14 +216,14 @@ namespace MagentoAccess
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, MethodResult:{3}}}", currentMenthodName, soapInfo, restInfo, resultProductsBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, MethodResult:{3}}}", currentMenthodName, soapInfo, restInfo, resultProductsBriefInfo ) );
 
 				return resultProducts;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}, RestInfo:{2}", currentMenthodName, soapInfo, restInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -315,7 +295,7 @@ namespace MagentoAccess
 			const string currentMenthodName = "UpdateInventoryAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
 
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -335,12 +315,12 @@ namespace MagentoAccess
 					}
 				}
 
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -353,7 +333,7 @@ namespace MagentoAccess
 			const string currentMenthodName = "UpdateInventoryBySkuAsync";
 			try
 			{
-				this.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
 
 				var inventories = inventory as IList< InventoryBySku > ?? inventory.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -373,12 +353,12 @@ namespace MagentoAccess
 					}
 				}
 
-				this.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ), exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -387,7 +367,7 @@ namespace MagentoAccess
 		{
 			try
 			{
-				this.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
+				MagentoLogger.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
 				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
 				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
 				authorizeTask.Wait();
@@ -395,12 +375,12 @@ namespace MagentoAccess
 				if( this.AfterGettingToken != null )
 					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 
-				this.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
+				MagentoLogger.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( "Error.", exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -409,16 +389,16 @@ namespace MagentoAccess
 		{
 			try
 			{
-				this.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
+				MagentoLogger.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
 				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
-				this.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
+				MagentoLogger.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
 
 				return res;
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( "Error.", exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
@@ -427,18 +407,18 @@ namespace MagentoAccess
 		{
 			try
 			{
-				this.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
+				MagentoLogger.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
 				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
 
 				if( this.AfterGettingToken != null )
 					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
 
-				this.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
+				MagentoLogger.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
 			}
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( "Error.", exception );
-				this.LogTraceException( mexc );
+				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
 		}
