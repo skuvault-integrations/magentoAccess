@@ -327,10 +327,10 @@ namespace MagentoAccess
 					{
 						case MagentoVersions.M1702:
 						case MagentoVersions.M1901:
-							updateBriefInfo = await this.UpdateStockItemsByRest( inventories );
+							updateBriefInfo = await this.UpdateStockItemsByRest( inventories ).ConfigureAwait( false );
 							break;
 						default:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories );
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories ).ConfigureAwait( false );
 							break;
 					}
 				}
@@ -609,7 +609,7 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync( x ) );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync(1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync(x).ConfigureAwait(false)).ConfigureAwait(false);
 
 			var updateResult = batchResponses.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 
