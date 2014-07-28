@@ -589,7 +589,7 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync(1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync(x).ConfigureAwait(false)).ConfigureAwait(false);
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync( x ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var updateResult = batchResponses.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 
