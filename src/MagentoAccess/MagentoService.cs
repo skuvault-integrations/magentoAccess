@@ -207,10 +207,10 @@ namespace MagentoAccess
 				switch( pingres.Version )
 				{
 					case MagentoVersions.M1901:
-						resultProducts = await this.GetProductsByRest();
+						resultProducts = await this.GetProductsByRest().ConfigureAwait(false);
 						break;
 					default:
-						resultProducts = await this.GetProductsBySoap();
+						resultProducts = await this.GetProductsBySoap().ConfigureAwait(false);
 						break;
 				}
 
@@ -306,8 +306,10 @@ namespace MagentoAccess
 
 					switch( pingres.Version )
 					{
-						case MagentoVersions.M1702:
 						case MagentoVersions.M1901:
+							updateBriefInfo = await this.UpdateStockItemsBySoap(inventories).ConfigureAwait(false);
+							break;
+						case MagentoVersions.M1702:
 							updateBriefInfo = await this.UpdateStockItemsByRest( inventories, mark ).ConfigureAwait( false );
 							break;
 						default:
