@@ -80,8 +80,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			this._magentoServiceLowLevelRest = new MagentoServiceLowLevel( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
 
-			this.CreateProductstems();
-			this.CreateOrders();
+			//this.CreateProductstems();
+			//this.CreateOrders();
 		}
 
 		protected void CreateOrders()
