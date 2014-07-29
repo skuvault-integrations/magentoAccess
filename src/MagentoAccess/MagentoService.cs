@@ -207,10 +207,10 @@ namespace MagentoAccess
 				switch( pingres.Version )
 				{
 					case MagentoVersions.M1901:
-						resultProducts = await this.GetProductsByRest().ConfigureAwait(false);
+						resultProducts = await this.GetProductsByRest().ConfigureAwait( false );
 						break;
 					default:
-						resultProducts = await this.GetProductsBySoap().ConfigureAwait(false);
+						resultProducts = await this.GetProductsBySoap().ConfigureAwait( false );
 						break;
 				}
 
