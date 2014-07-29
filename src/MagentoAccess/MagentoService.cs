@@ -196,9 +196,10 @@ namespace MagentoAccess
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "GetProductsAsync";
+			var mark = Guid.NewGuid().ToString();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}}}", currentMenthodName, soapInfo, restInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, Mark:{3}}}", currentMenthodName, soapInfo, restInfo, mark ) );
 
 				IEnumerable< Product > resultProducts;
 
@@ -216,7 +217,7 @@ namespace MagentoAccess
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, MethodResult:{3}}}", currentMenthodName, soapInfo, restInfo, resultProductsBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, Mark:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, mark, resultProductsBriefInfo ) );
 
 				return resultProducts;
 			}
