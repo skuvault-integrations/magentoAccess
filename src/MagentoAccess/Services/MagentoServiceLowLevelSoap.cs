@@ -198,15 +198,26 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems )
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, string markForLog = "" )
 		{
 			try
 			{
+				const string currentMenthodName = "PutStockItemsAsync";
+				var jsonSoapInfo = this.ToJsonSoapInfo();
+				var productsBriefInfo = stockItems.ToJson();
+
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
+
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItems.Select( x => x.Id ).ToArray(), stockItems.Select( x => x.UpdateEntity ).ToArray() ).ConfigureAwait( false );
 
-				return res.result;
+				var result = res.result;
+
+				var updateBriefInfo = string.Format( "{{Success:{0}}}", result );
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
+
+				return result;
 			}
 			catch( Exception exc )
 			{

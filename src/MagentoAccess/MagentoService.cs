@@ -307,13 +307,13 @@ namespace MagentoAccess
 					switch( pingres.Version )
 					{
 						case MagentoVersions.M1901:
-							updateBriefInfo = await this.UpdateStockItemsBySoap(inventories).ConfigureAwait(false);
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
 							break;
 						case MagentoVersions.M1702:
 							updateBriefInfo = await this.UpdateStockItemsByRest( inventories, mark ).ConfigureAwait( false );
 							break;
 						default:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories ).ConfigureAwait( false );
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
 							break;
 					}
 				}
@@ -608,14 +608,14 @@ namespace MagentoAccess
 			return updateBriefInfo;
 		}
 
-		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories )
+		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories, string markForLog = "" )
 		{
 			const int productsUpdateMaxChunkSize = 500;
 			var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
 			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x ), x ) );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemsAsync( x, markForLog ), x ) );
 
 			var updateBriefInfo = batchResponses.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
 
