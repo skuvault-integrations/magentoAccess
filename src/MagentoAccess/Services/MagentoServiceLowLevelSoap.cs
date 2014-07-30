@@ -206,6 +206,20 @@ namespace MagentoAccess.Services
 				var jsonSoapInfo = this.ToJsonSoapInfo();
 				var productsBriefInfo = stockItems.ToJson();
 
+				stockItems.ForEach(x =>
+				{
+					if (x.UpdateEntity.qty.ToDecimalOrDefault() > 0)
+					{
+						x.UpdateEntity.is_in_stock = 1;
+						x.UpdateEntity.is_in_stockSpecified = true;
+					}
+					else
+					{
+						x.UpdateEntity.is_in_stock = 0;
+						x.UpdateEntity.is_in_stockSpecified = false;
+					}
+				});
+
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
