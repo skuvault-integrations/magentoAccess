@@ -69,10 +69,10 @@ namespace MagentoAccess.Services
 
 			var customBinding = new CustomBinding
 			{
-				ReceiveTimeout = new TimeSpan( 0, 0, 30, 0 ),
-				SendTimeout = new TimeSpan( 0, 0, 30, 0 ),
-				OpenTimeout = new TimeSpan( 0, 0, 30, 0 ),
-				CloseTimeout = new TimeSpan( 0, 0, 30, 0 ),
+				ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ),
+				SendTimeout = new TimeSpan( 0, 2, 30, 0 ),
+				OpenTimeout = new TimeSpan( 0, 2, 30, 0 ),
+				CloseTimeout = new TimeSpan( 0, 2, 30, 0 ),
 				Name = "CustomHttpBinding",
 			};
 

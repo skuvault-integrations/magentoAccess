@@ -611,7 +611,7 @@ namespace MagentoAccess
 
 		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories, string markForLog = "" )
 		{
-			const int productsUpdateMaxChunkSize = 250;
+			const int productsUpdateMaxChunkSize = 50;
 			var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
 
 			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
