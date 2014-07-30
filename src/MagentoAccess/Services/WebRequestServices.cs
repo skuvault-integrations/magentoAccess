@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Services
 {
@@ -148,7 +149,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception ex )
 			{
-				var webrequestUrl = "null";
+				var webrequestUrl = PredefinedValues.NotAvailable;
 
 				if( webRequest != null )
 				{
