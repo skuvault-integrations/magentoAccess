@@ -85,6 +85,8 @@ namespace MagentoAccess.Services
 			{
 				DecompressionEnabled = false,
 				MaxReceivedMessageSize = 999999999,
+				MaxBufferSize = 999999999,
+				MaxBufferPoolSize = 999999999,
 				KeepAliveEnabled = true,
 				AllowCookies = false
 			};
