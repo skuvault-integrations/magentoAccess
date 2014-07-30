@@ -87,7 +87,7 @@ task NuGet Package, Version, {
 		<tags>$project_short_name</tags>
 		<dependencies> 
 			<group targetFramework="net45">
-				<dependency id="Netco" version="1.3.1" />
+				<dependency id="Netco" version="1.4.3" />
 				<dependency id="CuttingEdge.Conditions" version="1.2.0.0" />
 				<dependency id="DotNetOpenAuth.OAuth.Consumer" version="4.3.4.13329" />
 			</group>

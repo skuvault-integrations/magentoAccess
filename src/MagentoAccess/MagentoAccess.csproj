@@ -46,7 +46,7 @@
       <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
     </Reference>
     <Reference Include="Netco">
-      <HintPath>..\packages\Netco.1.3.1\lib\net45\Netco.dll</HintPath>
+      <HintPath>..\packages\Netco.1.4.3\lib\net45\Netco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -78,7 +78,6 @@
     <Compile Include="MagentoService.cs" />
     <Compile Include="Misc\ActionPolicies.cs" />
     <Compile Include="Misc\Extensions.cs" />
-    <Compile Include="Misc\IEnumerableExtensions.cs" />
     <Compile Include="Misc\MagentoLogger.cs" />
     <Compile Include="Misc\MagentoVersions.cs" />
     <Compile Include="Misc\PredefinedValues.cs" />
