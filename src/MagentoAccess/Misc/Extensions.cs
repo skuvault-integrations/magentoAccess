@@ -64,6 +64,9 @@ namespace MagentoAccess.Misc
 
 		public static decimal ToDecimalOrDefault( this string srcString )
 		{
+			if( string.IsNullOrWhiteSpace( srcString ) )
+				return default( decimal );
+
 			decimal parsedNumber;
 
 			try

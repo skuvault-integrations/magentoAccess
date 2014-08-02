@@ -115,12 +115,15 @@ namespace MagentoAccess
 			var methodParameters = string.Format( "{{dateFrom:{0},dateTo:{1}}}", dateFromUtc, dateToUtc );
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "GetOrdersAsync";
+			var mark = Guid.NewGuid().ToString();
 
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodParameters:{2}}}", currentMenthodName, soapInfo, methodParameters ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}}}", currentMenthodName, soapInfo, methodParameters,mark ) );
 
 				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFromUtc, dateToUtc ).ConfigureAwait( false );
+
+				MagentoLogger.LogTrace(string.Format("{{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}}}", currentMenthodName, soapInfo, methodParameters, mark));
 
 				if( ordersBriefInfo == null )
 					return Enumerable.Empty< Order >();
@@ -128,21 +131,28 @@ namespace MagentoAccess
 				if( ordersBriefInfo.result == null )
 					return Enumerable.Empty< Order >();
 
-				var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync( 15, async x => await this.MagentoServiceLowLevel.GetOrderAsync( x.order_id ) );
+				//var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync( 15, async x => await this.MagentoServiceLowLevel.GetOrderAsync( x.order_id ).ConfigureAwait(false) );
+				//var orderInfoResponses = salesOrderInfoResponses.SelectMany(x => x.Orders).ToList();
+				//var resultOrders = orderInfoResponses.Select(x => new Order(x)).ToList();
 
-				var orderInfoResponses = salesOrderInfoResponses.SelectMany( x => x.Orders ).ToList();
-
-				var resultOrders = orderInfoResponses.Select( x => new Order( x ) ).ToList();
+				var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync(15, async x => 
+					{
+						var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync(x.increment_id).ConfigureAwait(false);
+						MagentoLogger.LogTrace(string.Format("OrderReceived: {{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, called from:{3}}}", "GetOrderAsync", soapInfo, x.increment_id, mark));
+						return res;
+					}
+					).ConfigureAwait(false);
+				var resultOrders = salesOrderInfoResponses.Select(x => new Order(x.result)).ToList();
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
-				MagentoLogger.LogTraceEnded( string.Format( "MethodName:{0}, SoapInfo{1}, MethodParameters:{2}, MethodResult:{3}", currentMenthodName, soapInfo, methodParameters, resultOrdersBriefInfo ) );
+				MagentoLogger.LogTraceEnded(string.Format("MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}, MethodResult:{4}", currentMenthodName, soapInfo, methodParameters, mark, resultOrdersBriefInfo));
 
 				return resultOrders;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}", currentMenthodName, soapInfo, methodParameters ), exception );
+				var mexc = new MagentoCommonException(string.Format("MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}", currentMenthodName, soapInfo, methodParameters, mark), exception);
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -308,10 +318,8 @@ namespace MagentoAccess
 					switch( pingres.Version )
 					{
 						case MagentoVersions.M1901:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
-							break;
 						case MagentoVersions.M1702:
-							updateBriefInfo = await this.UpdateStockItemsByRest( inventories, mark ).ConfigureAwait( false );
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
 							break;
 						default:
 							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );

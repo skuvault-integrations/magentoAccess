@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -43,10 +43,14 @@ namespace MagentoAccess.Services
 					return this._sessionId;
 				loginResponse getSessionIdTask;
 
-				getSessionIdTask = await this._magentoSoapService.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
-
+				getSessionIdTask = await this._magentoSoapService.loginAsync(this.ApiUser, this.ApiKey).ConfigureAwait(false);
 				this._sessionIdCreatedAt = DateTime.UtcNow;
 				return this._sessionId = getSessionIdTask.result;
+
+
+				//var res = this._magentoSoapService.login( this.ApiUser, this.ApiKey );
+				//return res;
+
 			}
 			catch( Exception exc )
 			{
@@ -62,25 +66,50 @@ namespace MagentoAccess.Services
 
 		public MagentoServiceLowLevelSoap( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
-			this.ApiUser = apiUser;
-			this.ApiKey = apiKey;
-			this.Store = store;
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			//this.ApiUser = apiUser;
+			//this.ApiKey = apiKey;
+			//this.Store = store;
+			//var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 
-			var customBinding = new CustomBinding
-			{
-				ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ),
-				SendTimeout = new TimeSpan( 0, 2, 30, 0 ),
-				OpenTimeout = new TimeSpan( 0, 2, 30, 0 ),
-				CloseTimeout = new TimeSpan( 0, 2, 30, 0 ),
-				Name = "CustomHttpBinding",
-			};
+			//var customBinding = new CustomBinding
+			//{
+			//	ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ),
+			//	SendTimeout = new TimeSpan( 0, 2, 30, 0 ),
+			//	OpenTimeout = new TimeSpan( 0, 2, 30, 0 ),
+			//	CloseTimeout = new TimeSpan( 0, 2, 30, 0 ),
+			//	Name = "CustomHttpBinding",
+			//};
 
 			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
 			{
 				MessageVersion = MessageVersion.Soap11,
-				WriteEncoding = new UTF8Encoding(),
+				WriteEncoding = new UTF8Encoding()
 			};
+			
+			//var httpTransportBindingElement = new HttpTransportBindingElement
+			//{
+			//	DecompressionEnabled = false,
+			//	MaxReceivedMessageSize = 999999999,
+			//	MaxBufferSize = 999999999,
+			//	MaxBufferPoolSize = 999999999,
+			//	KeepAliveEnabled = true,
+			//	AllowCookies = false
+			//};
+
+			//customBinding.Elements.Add(textMessageEncodingBindingElement);
+			//customBinding.Elements.Add( httpTransportBindingElement );
+
+			//this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+
+			//this._magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
+
+			////////////////////////////////////////////////
+			
+			this.ApiUser = apiUser;
+			this.ApiKey = apiKey;
+			this.Store = store;
+			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			
 			var httpTransportBindingElement = new HttpTransportBindingElement
 			{
 				DecompressionEnabled = false,
@@ -91,12 +120,41 @@ namespace MagentoAccess.Services
 				AllowCookies = false
 			};
 
-			customBinding.Elements.Add( textMessageEncodingBindingElement );
-			customBinding.Elements.Add( httpTransportBindingElement );
+			var customTextMessageBindingElement = new CustomTextMessageBindingElement()
+			{
+				MessageVersion = MessageVersion.Soap12WSAddressing10
+			};
 
-			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+			var myTextMessageEncodingBindingElement = new MyTextMessageEncodingBindingElement(textMessageEncodingBindingElement,"qwe")
+			{
+				MessageVersion = MessageVersion.Soap11,
+			};
 
-			this._magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+			ICollection<BindingElement> bindingElements = new List<BindingElement>();
+			HttpTransportBindingElement httpBindingElement = httpTransportBindingElement;
+			var textBindingElement = myTextMessageEncodingBindingElement;
+			bindingElements.Add(textBindingElement);
+			bindingElements.Add(httpBindingElement);
+
+			CustomBinding customBinding = new CustomBinding(bindingElements);
+			customBinding.ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 );
+			customBinding.SendTimeout = new TimeSpan( 0, 2, 30, 0 );
+			customBinding.OpenTimeout = new TimeSpan( 0, 2, 30, 0 );
+			customBinding.CloseTimeout = new TimeSpan( 0, 2, 30, 0 );
+			customBinding.Name = "CustomHttpBinding";
+
+			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient(customBinding, new EndpointAddress(endPoint));
+
+			this._magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
+
+			//ICollection<BindingElement> bindingElements = new List<BindingElement>();
+			//HttpTransportBindingElement httpBindingElement = new HttpTransportBindingElement();
+			//CustomTextMessageBindingElement textBindingElement = new CustomTextMessageBindingElement();
+			//bindingElements.Add(textBindingElement);
+			//bindingElements.Add(httpBindingElement);
+			//CustomBinding binding = new CustomBinding(bindingElements);
+
+
 		}
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -242,15 +300,33 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
+		public virtual async Task<salesOrderInfoResponse> GetOrderAsync(string incrementId)
 		{
+			var res2 = new salesOrderInfoResponse();
+			var cts = new CancellationTokenSource();
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				
+				//		var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				//return = await this._magentoSoapService.salesOrderInfoAsync(sessionId, incrementId).ConfigureAwait(false);
 
-				var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					await Task.Factory.StartNew( async () =>
+					{
+						cts.CancelAfter( 60000 );
 
-				return res;
+						var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+						var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+
+						res2 = res;
+					}, cts.Token ).ConfigureAwait( false );
+				}
+					).ConfigureAwait( false );
+
+				cts = null;
+				return res2;
 			}
 			catch( Exception exc )
 			{
@@ -599,108 +675,5 @@ namespace MagentoAccess.Services
 		public catalogInventoryStockItemUpdateEntity UpdateEntity { get; set; }
 
 		public string Id { get; set; }
-	}
-
-	internal class MessageInspector : IClientMessageInspector
-	{
-		public object BeforeSendRequest( ref Message request, IClientChannel channel )
-		{
-			HttpRequestMessageProperty httpRequestMessage;
-			object httpRequestMessageObject;
-			if( request.Properties.TryGetValue( HttpRequestMessageProperty.Name, out httpRequestMessageObject ) )
-			{
-				httpRequestMessage = httpRequestMessageObject as HttpRequestMessageProperty;
-				if( string.IsNullOrEmpty( httpRequestMessage.Headers[ "Accept-Encoding" ] ) )
-					httpRequestMessage.Headers.Remove( "Accept-Encoding" );
-			}
-			else
-			{
-				httpRequestMessage = new HttpRequestMessageProperty();
-				httpRequestMessage.Headers.Add( "Accept-Encoding", "" );
-				request.Properties.Add( HttpRequestMessageProperty.Name, httpRequestMessage );
-			}
-
-			/// 
-			return null;
-		}
-
-		public void AfterReceiveReply( ref Message reply, object correlationState )
-		{
-			//reply.Properties.FirstOrDefault().Value
-		}
-	}
-
-	internal class CustomBehavior : IEndpointBehavior
-	{
-		public void AddBindingParameters( ServiceEndpoint serviceEndpoint,
-			BindingParameterCollection bindingParameters )
-		{
-			try
-			{
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
-				{
-					var vs = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
-					if( vs != null && vs.Any() )
-						serviceEndpoint.Behaviors.Remove( vs.Single() );
-				}
-			}
-			catch( Exception )
-			{
-				throw;
-			}
-		}
-
-		public void ApplyClientBehavior( ServiceEndpoint serviceEndpoint,
-			ClientRuntime behavior )
-		{
-			try
-			{
-				//Add the inspector
-				behavior.MessageInspectors.Add( new MessageInspector() );
-
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
-				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
-					if( vsBehaviour != null && vsBehaviour.Any() )
-						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
-				}
-			}
-			catch( Exception )
-			{
-			}
-		}
-
-		public void ApplyDispatchBehavior( ServiceEndpoint serviceEndpoint,
-			EndpointDispatcher endpointDispatcher )
-		{
-			try
-			{
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
-				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
-					if( vsBehaviour != null && vsBehaviour.Any() )
-						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
-				}
-			}
-			catch( Exception )
-			{
-			}
-		}
-
-		public void Validate( ServiceEndpoint serviceEndpoint )
-		{
-			try
-			{
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
-				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
-					if( vsBehaviour != null && vsBehaviour.Any() )
-						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
-				}
-			}
-			catch( Exception )
-			{
-			}
-		}
 	}
 }
