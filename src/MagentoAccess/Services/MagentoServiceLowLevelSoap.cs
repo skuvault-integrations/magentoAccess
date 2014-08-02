@@ -570,7 +570,7 @@ namespace MagentoAccess.Services
 					visibility = "4",
 					price = "100",
 					tax_class_id = "1",
-					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100", is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
+					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 				//var attributes = await this._magentoSoapService.catalogProductAttributeSetListAsync(sessionId).ConfigureAwait(false);
 

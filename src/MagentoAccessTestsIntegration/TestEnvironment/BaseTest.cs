@@ -100,7 +100,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				var shoppingCartAddressSet = this._magentoLowLevelSoapService.ShoppingCartAddressSet( _shoppingCartId, "0" );
 				shoppingCartAddressSet.Wait();
 
-				var productTask = this._magentoLowLevelSoapService.ShoppingCartAddProduct( _shoppingCartId, "2918", "0" );
+				var productTask = this._magentoLowLevelSoapService.ShoppingCartAddProduct( _shoppingCartId, this._productsIds.First().Key.ToString(), "0" );
 				productTask.Wait();
 
 				var shippingMenthodTask = this._magentoLowLevelSoapService.ShoppingCartSetShippingMethod( _shoppingCartId, "0" );
