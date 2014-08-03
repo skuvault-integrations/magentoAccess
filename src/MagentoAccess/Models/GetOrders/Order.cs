@@ -38,7 +38,7 @@ namespace MagentoAccess.Models.GetOrders
 			};
 
 			this.BaseCurrencyCode = order.base_currency_code;
-			this.BaseDiscount = order.base_discount_amount.ToDecimalOrDefault();
+			this.BaseDiscount = order.base_discount_amount.ToDoubleOrDefault();
 			this.BaseGrandTotal = order.base_grand_total.ToDecimalOrDefault();
 			this.BaseShippingAmount = order.base_shipping_amount.ToDecimalOrDefault();
 			this.BaseSubtotal = order.base_subtotal.ToDecimalOrDefault();
@@ -47,7 +47,7 @@ namespace MagentoAccess.Models.GetOrders
 			this.BaseTotalRefunded = order.base_total_refunded.ToDecimalOrDefault();
 			this.CreatedAt = order.created_at.ToDateTimeOrDefault();
 			this.Customer = order.customer_id;
-			this.DiscountAmount = order.discount_amount.ToDecimalOrDefault();
+			this.DiscountAmount = order.discount_amount.ToDoubleOrDefault();
 			this.GrandTotal = order.grand_total.ToDecimalOrDefault();
 			this.OrderIncrementalId = order.increment_id;
 			this.OrderId = order.order_id;

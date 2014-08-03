@@ -39,7 +39,7 @@ namespace MagentoAccess.Services.Parsers
 
 			resultOrder.Customer = GetElementValue( x, ns, "customer_id" );
 
-			resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
+			resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDoubleOrDefault();
 
 			resultOrder.BaseGrandTotal = GetElementValue( x, ns, "base_grand_total" ).ToDecimalOrDefault();
 
@@ -51,13 +51,11 @@ namespace MagentoAccess.Services.Parsers
 
 			resultOrder.BaseTaxAmount = GetElementValue( x, ns, "base_tax_amount" ).ToDecimalOrDefault();
 
-			resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
-
 			resultOrder.BaseTotalPaid = GetElementValue( x, ns, "base_total_paid" ).ToDecimalOrDefault();
 
 			resultOrder.BaseTotalRefunded = GetElementValue( x, ns, "base_total_refunded" ).ToDecimalOrDefault();
 
-			resultOrder.DiscountAmount = GetElementValue( x, ns, "discount_amount" ).ToDecimalOrDefault();
+			resultOrder.DiscountAmount = GetElementValue( x, ns, "discount_amount" ).ToDoubleOrDefault();
 
 			resultOrder.GrandTotal = GetElementValue( x, ns, "grand_total" ).ToDecimalOrDefault();
 
@@ -66,8 +64,6 @@ namespace MagentoAccess.Services.Parsers
 			resultOrder.ShippingTaxAmount = GetElementValue( x, ns, "shipping_tax_amount" ).ToDecimalOrDefault();
 
 			resultOrder.StoreToOrderRate = GetElementValue( x, ns, "store_to_order_rate" ).ToDecimalOrDefault();
-
-			resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
 			resultOrder.Subtotal = GetElementValue( x, ns, "subtotal" ).ToDecimalOrDefault();
 
@@ -82,8 +78,6 @@ namespace MagentoAccess.Services.Parsers
 			resultOrder.BaseSubtotalInclTax = GetElementValue( x, ns, "base_subtotal_incl_tax" ).ToDecimalOrDefault();
 
 			resultOrder.BaseTotalDue = GetElementValue( x, ns, "base_total_due" ).ToDecimalOrDefault();
-
-			resultOrder.BaseDiscount = GetElementValue( x, ns, "base_discount_amount" ).ToDecimalOrDefault();
 
 			resultOrder.ShippingDiscountAmount = GetElementValue( x, ns, "shipping_discount_amount" ).ToDecimalOrDefault();
 

@@ -54,7 +54,7 @@ namespace MagentoAccess.Models.Services.GetOrders
 		public string OrderId { get; set; }
 		public OrderStatusesEnum Status { get; set; }
 		public string Customer { get; set; }
-		public decimal BaseDiscount { get; set; }
+		public double BaseDiscount { get; set; }
 		public decimal BaseGrandTotal { get; set; }
 		public decimal BaseShippingAmount { get; set; }
 		public decimal BaseShippingTaxAmount { get; set; }
@@ -62,7 +62,7 @@ namespace MagentoAccess.Models.Services.GetOrders
 		public decimal BaseTaxAmount { get; set; }
 		public decimal BaseTotalPaid { get; set; }
 		public decimal BaseTotalRefunded { get; set; }
-		public decimal DiscountAmount { get; set; }
+		public double DiscountAmount { get; set; }
 		public decimal GrandTotal { get; set; }
 		public decimal ShippingAmount { get; set; }
 		public decimal ShippingTaxAmount { get; set; }

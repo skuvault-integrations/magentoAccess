@@ -87,6 +87,32 @@ namespace MagentoAccess.Misc
 
 			return parsedNumber;
 		}
+		
+		public static double ToDoubleOrDefault(this string srcString)
+		{
+			if (string.IsNullOrWhiteSpace(srcString))
+				return default(double);
+
+			double parsedNumber;
+
+			try
+			{
+				parsedNumber = double.Parse(srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+			}
+			catch
+			{
+				try
+				{
+					parsedNumber = double.Parse(srcString, new NumberFormatInfo { NumberDecimalSeparator = "," });
+				}
+				catch
+				{
+					parsedNumber = default(double);
+				}
+			}
+
+			return parsedNumber;
+		}
 
 		public static T DeepClone< T >( this T obj )
 		{
