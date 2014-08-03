@@ -113,7 +113,7 @@
     <Compile Include="Services\IMagentoServiceLowLevel.cs" />
     <Compile Include="Services\IMagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
-    <Compile Include="Services\MagentoCustomMessageEncoder2.cs" />
+    <Compile Include="Services\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoapAdditions.cs" />

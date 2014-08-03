@@ -111,7 +111,7 @@ namespace MagentoAccess.Services
 				AllowCookies = false
 			};
 
-			var myTextMessageEncodingBindingElement = new MyTextMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
+			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
 			{
 				MessageVersion = MessageVersion.Soap11,
 			};
