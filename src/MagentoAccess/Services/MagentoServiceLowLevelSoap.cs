@@ -259,33 +259,29 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task<salesOrderInfoResponse> GetOrderAsync(string incrementId)
+		public virtual async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
 		{
-			var res2 = new salesOrderInfoResponse();
-			var cts = new CancellationTokenSource();
 			try
 			{
-				
-				//		var sessionId = await this.GetSessionId().ConfigureAwait( false );
-				//return = await this._magentoSoapService.salesOrderInfoAsync(sessionId, incrementId).ConfigureAwait(false);
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				const int maxCheckCount = 1;
+				const int timebetweenChecks = 120000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				var res = new salesOrderInfoResponse();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					await Task.Factory.StartNew( async () =>
-					{
-						cts.CancelAfter( 60000 );
+					if( this._magentoSoapService.State != CommunicationState.Opened )
+						this._magentoSoapService = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-						var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					using( var stateTimer = new Timer( tcb, this._magentoSoapService, 1000, timebetweenChecks ) )
+						res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
-						var res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
-
-						res2 = res;
-					}, cts.Token ).ConfigureAwait( false );
-				}
-					).ConfigureAwait( false );
-
-				cts = null;
-				return res2;
+				return res;
 			}
 			catch( Exception exc )
 			{
@@ -619,6 +615,29 @@ namespace MagentoAccess.Services
 			catch( Exception exc )
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during CreateProduct({0})", storeId ), exc );
+			}
+		}
+	}
+
+	internal class StatusChecker
+	{
+		private int invokeCount;
+		private int maxCount;
+
+		public StatusChecker( int count )
+		{
+			this.invokeCount = 0;
+			this.maxCount = count;
+		}
+
+		public void CheckStatus( Object stateInfo )
+		{
+			var serviceClient = ( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient )stateInfo;
+			Interlocked.Increment( ref this.invokeCount );
+			if( this.invokeCount == this.maxCount )
+			{
+				Interlocked.Exchange( ref this.invokeCount, 0 );
+				serviceClient.Abort();
 			}
 		}
 	}
