@@ -115,7 +115,6 @@
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoCustomMessageEncoder2.cs" />
     <Compile Include="Services\MagentoServiceLowLevel.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelCustomMessageEncoder.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
