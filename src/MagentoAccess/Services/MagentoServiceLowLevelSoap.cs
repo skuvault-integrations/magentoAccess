@@ -46,8 +46,6 @@ namespace MagentoAccess.Services
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = string.Empty;
 
@@ -55,6 +53,9 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -150,8 +151,6 @@ namespace MagentoAccess.Services
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new salesOrderListResponse();
 
@@ -159,6 +158,9 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -199,8 +201,6 @@ namespace MagentoAccess.Services
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new salesOrderListResponse();
 
@@ -208,6 +208,9 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -235,14 +238,15 @@ namespace MagentoAccess.Services
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new catalogProductListResponse();
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -268,14 +272,15 @@ namespace MagentoAccess.Services
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new catalogInventoryStockItemListResponse();
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -318,14 +323,15 @@ namespace MagentoAccess.Services
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = false;
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -359,8 +365,6 @@ namespace MagentoAccess.Services
 			{
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 300000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new salesOrderInfoResponse();
 
@@ -368,6 +372,9 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
@@ -391,14 +398,15 @@ namespace MagentoAccess.Services
 			{
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var statusChecker = new StatusChecker( maxCheckCount );
-				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new magentoInfoResponse();
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
+
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
