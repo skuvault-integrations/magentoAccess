@@ -43,11 +43,29 @@ namespace MagentoAccess.Services
 			{
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
-				loginResponse getSessionIdTask;
 
-				getSessionIdTask = await this._magentoSoapService.loginAsync(this.ApiUser, this.ApiKey).ConfigureAwait(false);
-				this._sessionIdCreatedAt = DateTime.UtcNow;
-				return this._sessionId = getSessionIdTask.result;
+				const int maxCheckCount = 1;
+				const int timebetweenChecks = 120000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				var res = string.Empty;
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( this._magentoSoapService.State != CommunicationState.Opened )
+						this._magentoSoapService = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					using( var stateTimer = new Timer( tcb, this._magentoSoapService, 1000, timebetweenChecks ) )
+					{
+						var loginResponse = await this._magentoSoapService.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+						this._sessionIdCreatedAt = DateTime.UtcNow;
+						this._sessionId = loginResponse.result;
+						res = this._sessionId;
+					}
+				} ).ConfigureAwait( false );
+
+				return res;
 			}
 			catch( Exception exc )
 			{
