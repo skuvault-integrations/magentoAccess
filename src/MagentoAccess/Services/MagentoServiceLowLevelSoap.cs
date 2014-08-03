@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -121,12 +122,7 @@ namespace MagentoAccess.Services
 			bindingElements.Add( textBindingElement );
 			bindingElements.Add( httpBindingElement );
 
-			var customBinding = new CustomBinding( bindingElements );
-			customBinding.ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 );
-			customBinding.SendTimeout = new TimeSpan( 0, 2, 30, 0 );
-			customBinding.OpenTimeout = new TimeSpan( 0, 2, 30, 0 );
-			customBinding.CloseTimeout = new TimeSpan( 0, 2, 30, 0 );
-			customBinding.Name = "CustomHttpBinding";
+			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
 
 			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
@@ -146,11 +142,11 @@ namespace MagentoAccess.Services
 				else
 				{
 					filters = new filters { complex_filter = new complexFilter[ 3 ] };
-					filters.complex_filter[ 2 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+					filters.complex_filter[ 2 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
 				}
 
-				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
+				filters.complex_filter[ 1 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "from", value = modifiedFrom.ToSoapParameterString() } };
+				filters.complex_filter[ 0 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "to", value = modifiedTo.ToSoapParameterString() } };
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
@@ -188,7 +184,7 @@ namespace MagentoAccess.Services
 			var ordersIdsAgregated = string.Empty;
 			try
 			{
-				ordersIdsAgregated = ordersIds.Aggregate( ( ac, x ) => ac += "," + x );
+				ordersIdsAgregated = string.Join(",", ordersIds);
 
 				filters filters;
 				if( string.IsNullOrWhiteSpace( this.Store ) )
@@ -196,10 +192,10 @@ namespace MagentoAccess.Services
 				else
 				{
 					filters = new filters { complex_filter = new complexFilter[ 2 ] };
-					filters.complex_filter[ 1 ] = new complexFilter() { key = "store_id", value = new associativeEntity() { key = "in", value = this.Store } };
+					filters.complex_filter[ 1 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
 				}
 
-				filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIdsAgregated } };
+				filters.complex_filter[ 0 ] = new complexFilter { key = "increment_id", value = new associativeEntity { key = "in", value = ordersIdsAgregated } };
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
@@ -468,24 +464,24 @@ namespace MagentoAccess.Services
 			string firstname = "firstname",
 			string lastname = "lastname",
 			string password = "password",
-			int website_id = 0,
-			int store_id = 0,
-			int group_id = 0
+			int websiteId = 0,
+			int storeId = 0,
+			int groupId = 0
 			)
 		{
 			try
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var customerCustomerEntityToCreate = new customerCustomerEntityToCreate()
+				var customerCustomerEntityToCreate = new customerCustomerEntityToCreate
 				{
 					email = email,
 					firstname = firstname,
 					lastname = lastname,
 					password = password,
-					website_id = website_id,
-					store_id = store_id,
-					group_id = group_id
+					website_id = websiteId,
+					store_id = storeId,
+					group_id = groupId
 				};
 				var res = await this._magentoSoapService.customerCustomerCreateAsync( sessionId, customerCustomerEntityToCreate ).ConfigureAwait( false );
 
@@ -507,9 +503,9 @@ namespace MagentoAccess.Services
 
 				var customer = cutomers.result.First( x => x.customer_id == customerId );
 
-				var customerShoppingCart = new shoppingCartCustomerEntity()
+				var customerShoppingCart = new shoppingCartCustomerEntity
 				{
-					confirmation = ( customer.confirmation ? 1 : 0 ).ToString(),
+					confirmation = ( customer.confirmation ? 1 : 0 ).ToString( CultureInfo.InvariantCulture ),
 					customer_id = customer.customer_id,
 					customer_idSpecified = customer.customer_idSpecified,
 					email = customer.email,
@@ -540,7 +536,7 @@ namespace MagentoAccess.Services
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var customer = new shoppingCartCustomerEntity()
+				var customer = new shoppingCartCustomerEntity
 				{
 					email = customerMail,
 					firstname = customerfirstname,
@@ -568,7 +564,7 @@ namespace MagentoAccess.Services
 
 				var customerAddressEntities = new shoppingCartCustomerAddressEntity[ 2 ];
 
-				customerAddressEntities[ 0 ] = new shoppingCartCustomerAddressEntity()
+				customerAddressEntities[ 0 ] = new shoppingCartCustomerAddressEntity
 				{
 					mode = "shipping",
 					firstname = "testFirstname",
@@ -584,7 +580,7 @@ namespace MagentoAccess.Services
 					is_default_shipping = 0,
 					is_default_billing = 0
 				};
-				customerAddressEntities[ 1 ] = new shoppingCartCustomerAddressEntity()
+				customerAddressEntities[ 1 ] = new shoppingCartCustomerAddressEntity
 				{
 					mode = "billing",
 					firstname = "testFirstname",
@@ -635,7 +631,7 @@ namespace MagentoAccess.Services
 
 				var shoppingCartProductEntities = new shoppingCartProductEntity[ 1 ];
 
-				shoppingCartProductEntities[ 0 ] = new shoppingCartProductEntity() { product_id = productId, qty = 3 };
+				shoppingCartProductEntities[ 0 ] = new shoppingCartProductEntity { product_id = productId, qty = 3 };
 
 				var res = await this._magentoSoapService.shoppingCartProductAddAsync( sessionId, shoppingCartId, shoppingCartProductEntities, store ).ConfigureAwait( false );
 
@@ -653,9 +649,7 @@ namespace MagentoAccess.Services
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				//var payments = await this._magentoSoapService.shoppingCartPaymentListAsync(sessionId, shoppingCartId, store).ConfigureAwait(false);
-
-				var cartPaymentMethodEntity = new shoppingCartPaymentMethodEntity()
+				var cartPaymentMethodEntity = new shoppingCartPaymentMethodEntity
 				{
 					po_number = null,
 					//method = "checkmo",
@@ -699,7 +693,6 @@ namespace MagentoAccess.Services
 				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
 			}
 		}
-		#endregion
 
 		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock )
 		{
@@ -707,7 +700,7 @@ namespace MagentoAccess.Services
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var catalogProductCreateEntity = new catalogProductCreateEntity()
+				var catalogProductCreateEntity = new catalogProductCreateEntity
 				{
 					name = name,
 					description = "Product description",
@@ -717,11 +710,8 @@ namespace MagentoAccess.Services
 					visibility = "4",
 					price = "100",
 					tax_class_id = "1",
-					stock_data = new catalogInventoryStockItemUpdateEntity() { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
+					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
-				//var attributes = await this._magentoSoapService.catalogProductAttributeSetListAsync(sessionId).ConfigureAwait(false);
-
-				//var res = await this._magentoSoapService.catalogProductCreateAsync(sessionId, "simple", attributes.result.First().set_id.ToString(),"TddTestSku"+DateTime.UtcNow.Ticks.ToString(), catalogProductCreateEntity,"0").ConfigureAwait(false);
 
 				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
 
@@ -733,12 +723,14 @@ namespace MagentoAccess.Services
 				throw new MagentoSoapException( string.Format( "An error occured during CreateProduct({0})", storeId ), exc );
 			}
 		}
+		#endregion
+
 	}
 
 	internal class StatusChecker
 	{
 		private int invokeCount;
-		private int maxCount;
+		private readonly int maxCount;
 
 		public StatusChecker( int count )
 		{
