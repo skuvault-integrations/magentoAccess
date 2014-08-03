@@ -24,7 +24,7 @@ namespace MagentoAccess.Services
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
-		protected readonly Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
 
 		protected string _sessionId;
 
@@ -63,19 +63,24 @@ namespace MagentoAccess.Services
 
 		public MagentoServiceLowLevelSoap( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
-			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
-			{
-				MessageVersion = MessageVersion.Soap11,
-				WriteEncoding = new UTF8Encoding()
-			};
-			
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
-			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			
+			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+		}
+
+		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
+		{
+			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
+			{
+				MessageVersion = MessageVersion.Soap11,
+				WriteEncoding = new UTF8Encoding()
+			};
+
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+
 			var httpTransportBindingElement = new HttpTransportBindingElement
 			{
 				DecompressionEnabled = false,
@@ -86,27 +91,29 @@ namespace MagentoAccess.Services
 				AllowCookies = false
 			};
 
-			var myTextMessageEncodingBindingElement = new MyTextMessageEncodingBindingElement(textMessageEncodingBindingElement,"qwe")
+			var myTextMessageEncodingBindingElement = new MyTextMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
 			{
 				MessageVersion = MessageVersion.Soap11,
 			};
 
-			ICollection<BindingElement> bindingElements = new List<BindingElement>();
-			HttpTransportBindingElement httpBindingElement = httpTransportBindingElement;
+			ICollection< BindingElement > bindingElements = new List< BindingElement >();
+			var httpBindingElement = httpTransportBindingElement;
 			var textBindingElement = myTextMessageEncodingBindingElement;
-			bindingElements.Add(textBindingElement);
-			bindingElements.Add(httpBindingElement);
+			bindingElements.Add( textBindingElement );
+			bindingElements.Add( httpBindingElement );
 
-			CustomBinding customBinding = new CustomBinding(bindingElements);
+			var customBinding = new CustomBinding( bindingElements );
 			customBinding.ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 );
 			customBinding.SendTimeout = new TimeSpan( 0, 2, 30, 0 );
 			customBinding.OpenTimeout = new TimeSpan( 0, 2, 30, 0 );
 			customBinding.CloseTimeout = new TimeSpan( 0, 2, 30, 0 );
 			customBinding.Name = "CustomHttpBinding";
 
-			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient(customBinding, new EndpointAddress(endPoint));
+			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			this._magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+
+			return magentoSoapService;
 		}
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
