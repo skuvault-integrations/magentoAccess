@@ -20,6 +20,8 @@ namespace MagentoAccess.Services
 
 		public string Store { get; private set; }
 
+		public string BaseMagentoUrl { get; set; }
+
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
 		protected readonly Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
@@ -70,6 +72,8 @@ namespace MagentoAccess.Services
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
+			this.BaseMagentoUrl = baseMagentoUrl;
+
 			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			
 			var httpTransportBindingElement = new HttpTransportBindingElement
