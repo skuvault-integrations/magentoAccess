@@ -46,11 +46,6 @@ namespace MagentoAccess.Services
 				getSessionIdTask = await this._magentoSoapService.loginAsync(this.ApiUser, this.ApiKey).ConfigureAwait(false);
 				this._sessionIdCreatedAt = DateTime.UtcNow;
 				return this._sessionId = getSessionIdTask.result;
-
-
-				//var res = this._magentoSoapService.login( this.ApiUser, this.ApiKey );
-				//return res;
-
 			}
 			catch( Exception exc )
 			{
@@ -66,44 +61,11 @@ namespace MagentoAccess.Services
 
 		public MagentoServiceLowLevelSoap( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
-			//this.ApiUser = apiUser;
-			//this.ApiKey = apiKey;
-			//this.Store = store;
-			//var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-
-			//var customBinding = new CustomBinding
-			//{
-			//	ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ),
-			//	SendTimeout = new TimeSpan( 0, 2, 30, 0 ),
-			//	OpenTimeout = new TimeSpan( 0, 2, 30, 0 ),
-			//	CloseTimeout = new TimeSpan( 0, 2, 30, 0 ),
-			//	Name = "CustomHttpBinding",
-			//};
-
 			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
 			{
 				MessageVersion = MessageVersion.Soap11,
 				WriteEncoding = new UTF8Encoding()
 			};
-			
-			//var httpTransportBindingElement = new HttpTransportBindingElement
-			//{
-			//	DecompressionEnabled = false,
-			//	MaxReceivedMessageSize = 999999999,
-			//	MaxBufferSize = 999999999,
-			//	MaxBufferPoolSize = 999999999,
-			//	KeepAliveEnabled = true,
-			//	AllowCookies = false
-			//};
-
-			//customBinding.Elements.Add(textMessageEncodingBindingElement);
-			//customBinding.Elements.Add( httpTransportBindingElement );
-
-			//this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
-
-			//this._magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
-
-			////////////////////////////////////////////////
 			
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
@@ -118,11 +80,6 @@ namespace MagentoAccess.Services
 				MaxBufferPoolSize = 999999999,
 				KeepAliveEnabled = true,
 				AllowCookies = false
-			};
-
-			var customTextMessageBindingElement = new CustomTextMessageBindingElement()
-			{
-				MessageVersion = MessageVersion.Soap12WSAddressing10
 			};
 
 			var myTextMessageEncodingBindingElement = new MyTextMessageEncodingBindingElement(textMessageEncodingBindingElement,"qwe")
@@ -146,15 +103,6 @@ namespace MagentoAccess.Services
 			this._magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient(customBinding, new EndpointAddress(endPoint));
 
 			this._magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
-
-			//ICollection<BindingElement> bindingElements = new List<BindingElement>();
-			//HttpTransportBindingElement httpBindingElement = new HttpTransportBindingElement();
-			//CustomTextMessageBindingElement textBindingElement = new CustomTextMessageBindingElement();
-			//bindingElements.Add(textBindingElement);
-			//bindingElements.Add(httpBindingElement);
-			//CustomBinding binding = new CustomBinding(bindingElements);
-
-
 		}
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
