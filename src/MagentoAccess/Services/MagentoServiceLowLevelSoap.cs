@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -44,21 +43,23 @@ namespace MagentoAccess.Services
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
 
-				const int maxCheckCount = 1;
-				const int timebetweenChecks = 120000;
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 120000;
 				var statusChecker = new StatusChecker( maxCheckCount );
 				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = string.Empty;
 
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					if( this._magentoSoapService.State != CommunicationState.Opened )
-						this._magentoSoapService = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-					using( var stateTimer = new Timer( tcb, this._magentoSoapService, 1000, timebetweenChecks ) )
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						var loginResponse = await this._magentoSoapService.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+						var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
 						this._sessionIdCreatedAt = DateTime.UtcNow;
 						this._sessionId = loginResponse.result;
 						res = this._sessionId;
@@ -138,8 +139,6 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
 				filters filters;
 
 				if( string.IsNullOrWhiteSpace( this.Store ) )
@@ -153,7 +152,25 @@ namespace MagentoAccess.Services
 				filters.complex_filter[ 1 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "from", value = modifiedFrom.ToSoapParameterString() } };
 				filters.complex_filter[ 0 ] = new complexFilter() { key = "updated_at", value = new associativeEntity() { key = "to", value = modifiedTo.ToSoapParameterString() } };
 
-				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				var res = new salesOrderListResponse();
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
 				//crutch for magento 1.7 
 				res.result = res.result.Where( x => x.updated_at.ToDateTimeOrDefault() >= modifiedFrom && x.updated_at.ToDateTimeOrDefault() <= modifiedTo ).ToArray();
@@ -173,8 +190,6 @@ namespace MagentoAccess.Services
 			{
 				ordersIdsAgregated = ordersIds.Aggregate( ( ac, x ) => ac += "," + x );
 
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
 				filters filters;
 				if( string.IsNullOrWhiteSpace( this.Store ) )
 					filters = new filters { complex_filter = new complexFilter[ 1 ] };
@@ -186,7 +201,25 @@ namespace MagentoAccess.Services
 
 				filters.complex_filter[ 0 ] = new complexFilter() { key = "increment_id", value = new associativeEntity() { key = "in", value = ordersIdsAgregated } };
 
-				var res = await this._magentoSoapService.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				var res = new salesOrderListResponse();
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
 				return res;
 			}
@@ -200,13 +233,28 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
 				var filters = new filters { filter = new associativeEntity[ 0 ] };
 
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
-				var res = await this._magentoSoapService.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				var res = new catalogProductListResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
 				return res;
 			}
@@ -220,11 +268,26 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
 				var skusArray = skusOrIds.ToArray();
 
-				var res = await this._magentoSoapService.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				var res = new catalogInventoryStockItemListResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
 				return res;
 			}
@@ -243,9 +306,9 @@ namespace MagentoAccess.Services
 				var jsonSoapInfo = this.ToJsonSoapInfo();
 				var productsBriefInfo = stockItems.ToJson();
 
-				stockItems.ForEach(x =>
+				stockItems.ForEach( x =>
 				{
-					if (x.UpdateEntity.qty.ToDecimalOrDefault() > 0)
+					if( x.UpdateEntity.qty.ToDecimalOrDefault() > 0 )
 					{
 						x.UpdateEntity.is_in_stock = 1;
 						x.UpdateEntity.is_in_stockSpecified = true;
@@ -255,20 +318,37 @@ namespace MagentoAccess.Services
 						x.UpdateEntity.is_in_stock = 0;
 						x.UpdateEntity.is_in_stockSpecified = false;
 					}
-				});
+				} );
 
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
 
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var res = false;
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-				var res = await this._magentoSoapService.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItems.Select( x => x.Id ).ToArray(), stockItems.Select( x => x.UpdateEntity ).ToArray() ).ConfigureAwait( false );
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-				var result = res.result;
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var updateBriefInfo = string.Format( "{{Success:{0}}}", result );
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					{
+						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
-				return result;
+						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItems.Select( x => x.Id ).ToArray(), stockItems.Select( x => x.UpdateEntity ).ToArray() ).ConfigureAwait( false );
+
+						res = temp.result;
+
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
+					}
+				} ).ConfigureAwait( false );
+
+				return res;
 			}
 			catch( Exception exc )
 			{
@@ -281,22 +361,24 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-				const int maxCheckCount = 1;
-				const int timebetweenChecks = 120000;
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 300000;
 				var statusChecker = new StatusChecker( maxCheckCount );
 				TimerCallback tcb = statusChecker.CheckStatus;
 
 				var res = new salesOrderInfoResponse();
 
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					if( this._magentoSoapService.State != CommunicationState.Opened )
-						this._magentoSoapService = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-					using( var stateTimer = new Timer( tcb, this._magentoSoapService, 1000, timebetweenChecks ) )
-						res = await this._magentoSoapService.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return res;
@@ -311,9 +393,24 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
 
-				var res = await this._magentoSoapService.magentoInfoAsync( sessionId ).ConfigureAwait( false );
+				var res = new magentoInfoResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					if( privateClient.State != CommunicationState.Opened )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
 				return res;
 			}
@@ -325,7 +422,8 @@ namespace MagentoAccess.Services
 
 		public string ToJsonSoapInfo()
 		{
-			return string.Format( "{{ApiUser:{0},ApiKey:{1},Store:{2}}}",
+			return string.Format( "{{BaseMagentoUrl:{0}, ApiUser:{1},ApiKey:{2},Store:{3}}}",
+				string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl,
 				string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser,
 				string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey,
 				string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store

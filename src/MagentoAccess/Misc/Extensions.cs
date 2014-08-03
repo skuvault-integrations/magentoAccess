@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
+using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
@@ -222,6 +223,14 @@ namespace MagentoAccess.Misc
 			var orders = source as IList< Order > ?? source.ToList();
 			var items = string.Join( ",", orders.Select( x => string.Format( "{{id:{0},createdAt:{1}}}", string.IsNullOrWhiteSpace( x.OrderIncrementalId ) ? PredefinedValues.NotAvailable : x.OrderIncrementalId, x.CreatedAt ) ) );
 			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", orders.Count(), items );
+			return res;
+		}
+
+		public static string ToJson(this IEnumerable<salesOrderListEntity> source)
+		{
+			var orders = source as IList<salesOrderListEntity> ?? source.ToList();
+			var items = string.Join(",", orders.Select(x => string.Format("{{id:{0}, updatedAt:{1}}}", string.IsNullOrWhiteSpace(x.increment_id) ? PredefinedValues.NotAvailable : x.increment_id, x.updated_at)));
+			var res = string.Format("{{Count:{0}, Items:[{1}]}}", orders.Count(), items);
 			return res;
 		}
 
