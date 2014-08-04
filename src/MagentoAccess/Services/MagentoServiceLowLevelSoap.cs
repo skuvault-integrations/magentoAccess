@@ -190,7 +190,7 @@ namespace MagentoAccess.Services
 			var ordersIdsAgregated = string.Empty;
 			try
 			{
-				ordersIdsAgregated = string.Join(",", ordersIds);
+				ordersIdsAgregated = string.Join( ",", ordersIds );
 
 				filters filters;
 				if( string.IsNullOrWhiteSpace( this.Store ) )
@@ -748,7 +748,6 @@ namespace MagentoAccess.Services
 			}
 		}
 		#endregion
-
 	}
 
 	internal class StatusChecker

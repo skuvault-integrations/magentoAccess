@@ -88,27 +88,27 @@ namespace MagentoAccess.Misc
 
 			return parsedNumber;
 		}
-		
-		public static double ToDoubleOrDefault(this string srcString)
+
+		public static double ToDoubleOrDefault( this string srcString )
 		{
-			if (string.IsNullOrWhiteSpace(srcString))
-				return default(double);
+			if( string.IsNullOrWhiteSpace( srcString ) )
+				return default( double );
 
 			double parsedNumber;
 
 			try
 			{
-				parsedNumber = double.Parse(srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+				parsedNumber = double.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
 			}
 			catch
 			{
 				try
 				{
-					parsedNumber = double.Parse(srcString, new NumberFormatInfo { NumberDecimalSeparator = "," });
+					parsedNumber = double.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
 				}
 				catch
 				{
-					parsedNumber = default(double);
+					parsedNumber = default( double );
 				}
 			}
 
@@ -226,11 +226,11 @@ namespace MagentoAccess.Misc
 			return res;
 		}
 
-		public static string ToJson(this IEnumerable<salesOrderListEntity> source)
+		public static string ToJson( this IEnumerable< salesOrderListEntity > source )
 		{
-			var orders = source as IList<salesOrderListEntity> ?? source.ToList();
-			var items = string.Join(",", orders.Select(x => string.Format("{{id:{0}, updatedAt:{1}}}", string.IsNullOrWhiteSpace(x.increment_id) ? PredefinedValues.NotAvailable : x.increment_id, x.updated_at)));
-			var res = string.Format("{{Count:{0}, Items:[{1}]}}", orders.Count(), items);
+			var orders = source as IList< salesOrderListEntity > ?? source.ToList();
+			var items = string.Join( ",", orders.Select( x => string.Format( "{{id:{0}, updatedAt:{1}}}", string.IsNullOrWhiteSpace( x.increment_id ) ? PredefinedValues.NotAvailable : x.increment_id, x.updated_at ) ) );
+			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", orders.Count(), items );
 			return res;
 		}
 
