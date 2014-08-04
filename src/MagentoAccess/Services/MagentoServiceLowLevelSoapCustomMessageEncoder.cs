@@ -29,10 +29,10 @@ namespace MagentoAccess.Services
 
 		public override bool IsContentTypeSupported( string contentType )
 		{
-			if( contentType == "text/xml; charset=utf-8,text/xml; charset=UTF-8" )
-				return true;
+			//if( contentType == "text/xml; charset=utf-8,text/xml; charset=UTF-8" )
+			return true;
 
-			return base.IsContentTypeSupported( contentType );
+			//return base.IsContentTypeSupported( contentType );
 		}
 
 		public override MessageVersion MessageVersion
