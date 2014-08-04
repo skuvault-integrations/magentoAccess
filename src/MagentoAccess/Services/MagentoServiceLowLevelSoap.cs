@@ -56,16 +56,18 @@ namespace MagentoAccess.Services
 				//	var statusChecker = new StatusChecker(maxCheckCount);
 				//	TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				if( privateClient.State != CommunicationState.Opened
+				    && privateClient.State != CommunicationState.Created
+				    && privateClient.State != CommunicationState.Opening )
+					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-					{
-						var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
-						this._sessionIdCreatedAt = DateTime.UtcNow;
-						this._sessionId = loginResponse.result;
-						res = this._sessionId;
-					}
+				{
+					var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+					this._sessionIdCreatedAt = DateTime.UtcNow;
+					this._sessionId = loginResponse.result;
+					res = this._sessionId;
+				}
 				//} ).ConfigureAwait( false );
 
 				return res;
@@ -158,10 +160,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
@@ -208,10 +212,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
@@ -244,10 +250,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
@@ -278,10 +286,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
@@ -329,10 +339,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
@@ -372,10 +384,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
@@ -404,10 +418,12 @@ namespace MagentoAccess.Services
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened )
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
