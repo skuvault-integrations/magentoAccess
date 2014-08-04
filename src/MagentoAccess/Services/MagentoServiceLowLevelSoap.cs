@@ -51,22 +51,22 @@ namespace MagentoAccess.Services
 
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker(maxCheckCount);
-					TimerCallback tcb = statusChecker.CheckStatus;
+				//await ActionPolicies.GetAsync.Do( async () =>
+				//{
+				//	var statusChecker = new StatusChecker(maxCheckCount);
+				//	TimerCallback tcb = statusChecker.CheckStatus;
 
 					if( privateClient.State != CommunicationState.Opened )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
 						var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
 						this._sessionIdCreatedAt = DateTime.UtcNow;
 						this._sessionId = loginResponse.result;
 						res = this._sessionId;
 					}
-				} ).ConfigureAwait( false );
+				//} ).ConfigureAwait( false );
 
 				return res;
 			}
