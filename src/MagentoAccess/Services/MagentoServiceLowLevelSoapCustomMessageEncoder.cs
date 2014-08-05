@@ -47,12 +47,11 @@ namespace MagentoAccess.Services
 
 		public override Message ReadMessage( ArraySegment< byte > buffer, BufferManager bufferManager, string contentType )
 		{
-			// crutch special for overstockjewlry. Thank you overstockjewlry for great weekends!
+			// crutch special for overstockj.
 			if( contentType == "text/xml; charset=utf-8,text/xml; charset=UTF-8" )
 				contentType = "text/xml; charset=utf-8";
 
 			var message = this.InnerMessageEncoder.ReadMessage( buffer, bufferManager, contentType );
-			//Console.WriteLine("greeting = " + message.Properties["greeting"].ToString());
 			return message;
 		}
 
