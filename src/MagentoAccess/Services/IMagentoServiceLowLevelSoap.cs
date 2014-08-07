@@ -18,5 +18,6 @@ namespace MagentoAccess.Services
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, string markForLog );
 		Task< magentoInfoResponse > GetMagentoInfoAsync();
 		string ToJsonSoapInfo();
+		Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog );
 	}
 }
