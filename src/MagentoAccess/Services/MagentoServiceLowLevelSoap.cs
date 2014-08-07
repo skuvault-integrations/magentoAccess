@@ -373,26 +373,22 @@ namespace MagentoAccess.Services
 
 		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog )
 		{
-			var stockItems = new List< PutStockItem >() { putStockItem };
 			try
 			{
-				const string currentMenthodName = "PutStockItemsAsync";
+				const string currentMenthodName = "PutStockItemAsync";
 				var jsonSoapInfo = this.ToJsonSoapInfo();
-				var productsBriefInfo = stockItems.ToJson();
+				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
 
-				stockItems.ForEach( x =>
+				if( putStockItem.UpdateEntity.qty.ToDecimalOrDefault() > 0 )
 				{
-					if( x.UpdateEntity.qty.ToDecimalOrDefault() > 0 )
-					{
-						x.UpdateEntity.is_in_stock = 1;
-						x.UpdateEntity.is_in_stockSpecified = true;
-					}
-					else
-					{
-						x.UpdateEntity.is_in_stock = 0;
-						x.UpdateEntity.is_in_stockSpecified = false;
-					}
-				} );
+					putStockItem.UpdateEntity.is_in_stock = 1;
+					putStockItem.UpdateEntity.is_in_stockSpecified = true;
+				}
+				else
+				{
+					putStockItem.UpdateEntity.is_in_stock = 0;
+					putStockItem.UpdateEntity.is_in_stockSpecified = false;
+				}
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
@@ -416,7 +412,7 @@ namespace MagentoAccess.Services
 					{
 						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
-						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, stockItems.First().Id, stockItems.First().UpdateEntity ).ConfigureAwait( false );
+						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.Id, putStockItem.UpdateEntity ).ConfigureAwait( false );
 
 						res = temp.result > 0;
 
@@ -429,7 +425,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				var productsBriefInfo = stockItems.ToJson();
+				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
 				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
