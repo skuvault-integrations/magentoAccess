@@ -366,7 +366,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception exc )
 			{
-				var productsBriefInfo = string.Join( "|", stockItems.Select( x => string.Format( "Id:{0}, Qty:{1}", x.Id, x.UpdateEntity.qty ) ) );
+				var productsBriefInfo = stockItems.ToJson();
 				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
