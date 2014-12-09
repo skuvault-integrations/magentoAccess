@@ -104,14 +104,22 @@ namespace MagentoAccess.Services
 
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 
-			var httpTransportBindingElement = new HttpTransportBindingElement
+			var httpTransportBindingElement = baseMagentoUrl.StartsWith( "https" ) ? new HttpsTransportBindingElement
 			{
 				DecompressionEnabled = false,
 				MaxReceivedMessageSize = 999999999,
 				MaxBufferSize = 999999999,
 				MaxBufferPoolSize = 999999999,
 				KeepAliveEnabled = true,
-				AllowCookies = false
+				AllowCookies = false,
+			} : new HttpTransportBindingElement
+			{
+				DecompressionEnabled = false,
+				MaxReceivedMessageSize = 999999999,
+				MaxBufferSize = 999999999,
+				MaxBufferPoolSize = 999999999,
+				KeepAliveEnabled = true,
+				AllowCookies = false,
 			};
 
 			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
