@@ -103,24 +103,31 @@ namespace MagentoAccess.Services
 			};
 
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-
-			var httpTransportBindingElement = baseMagentoUrl.StartsWith( "https" ) ? new HttpsTransportBindingElement
+			BindingElement httpTransportBindingElement;
+			if( baseMagentoUrl.StartsWith( "https" ) )
 			{
-				DecompressionEnabled = false,
-				MaxReceivedMessageSize = 999999999,
-				MaxBufferSize = 999999999,
-				MaxBufferPoolSize = 999999999,
-				KeepAliveEnabled = true,
-				AllowCookies = false,
-			} : new HttpTransportBindingElement
+				httpTransportBindingElement = new HttpsTransportBindingElement
+				{
+					DecompressionEnabled = false,
+					MaxReceivedMessageSize = 999999999,
+					MaxBufferSize = 999999999,
+					MaxBufferPoolSize = 999999999,
+					KeepAliveEnabled = true,
+					AllowCookies = false,
+				};
+			}
+			else
 			{
-				DecompressionEnabled = false,
-				MaxReceivedMessageSize = 999999999,
-				MaxBufferSize = 999999999,
-				MaxBufferPoolSize = 999999999,
-				KeepAliveEnabled = true,
-				AllowCookies = false,
-			};
+				httpTransportBindingElement = new HttpTransportBindingElement
+				{
+					DecompressionEnabled = false,
+					MaxReceivedMessageSize = 999999999,
+					MaxBufferSize = 999999999,
+					MaxBufferPoolSize = 999999999,
+					KeepAliveEnabled = true,
+					AllowCookies = false,
+				};
+			}
 
 			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
 			{
