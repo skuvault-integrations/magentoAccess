@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MagentoAccess;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Services;
 using Netco.Logging;
@@ -82,6 +83,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			//this.CreateProductstems();
 			//this.CreateOrders();
+			//this.DeleteProducts();
 		}
 
 		protected void CreateOrders()
@@ -140,6 +142,32 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			var commonTask = Task.WhenAll( createProuctsTasks );
 			commonTask.Wait();
+		}
+
+		protected void DeleteProducts()
+		{
+			var productsToRemove = GetOnlyProductsCreatedForThisTests();
+
+			var deleteProuctsTasks = new List< Task >();
+			foreach( var p in productsToRemove )
+			{
+				var tiks = DateTime.UtcNow.Ticks.ToString();
+				var productTask = this._magentoLowLevelSoapService.DeleteProduct( "0", 0, p.ProductId, "" );
+				deleteProuctsTasks.Add( productTask );
+			}
+
+			var commonTask = Task.WhenAll( deleteProuctsTasks );
+			commonTask.Wait();
+		}
+
+		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
+		{
+			var getProductsTask = this._magentoService.GetProductsAsync();
+			getProductsTask.Wait();
+
+			var allProductsinMagent = getProductsTask.Result.ToList();
+			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+			return onlyProductsCreatedForThisTests;
 		}
 	}
 }

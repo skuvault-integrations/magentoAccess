@@ -85,16 +85,6 @@ namespace MagentoAccessTestsIntegration
 			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
 		}
 
-		private IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
-		{
-			var getProductsTask = this._magentoService.GetProductsAsync();
-			getProductsTask.Wait();
-
-			var allProductsinMagent = getProductsTask.Result.ToList();
-			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
-			return onlyProductsCreatedForThisTests;
-		}
-
 		[ Ignore ]
 		[ Test ]
 		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts()

@@ -821,6 +821,22 @@ namespace MagentoAccess.Services
 				throw new MagentoSoapException( string.Format( "An error occured during CreateProduct({0})", storeId ), exc );
 			}
 		}
+
+		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var res = await this._magentoSoapService.catalogCategoryRemoveProductAsync( sessionId, categoryId, productId, identiferType ).ConfigureAwait( false );
+
+				//product id
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during DeleteProduct({0})", storeId ), exc );
+			}
+		}
 		#endregion
 	}
 
