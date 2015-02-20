@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccess.Misc;
+using MagentoAccess.Models;
+using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -22,22 +25,22 @@ namespace MagentoAccessTestsIntegration
 				//------------ Arrange
 
 				//------------ Act
-				//var firstCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).First();
-				//var lastCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).Last();
+				var firstCreatedItem = this._orders.OrderBy(x => x.updated_at.ToDateTimeOrDefault()).First();
+				var lastCreatedItem = this._orders.OrderBy(x => x.updated_at.ToDateTimeOrDefault()).Last();
 
-				//var modifiedFrom = new DateTime( DateTime.Parse( firstCreatedItem.updated_at ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
-				//var modifiedTo = new DateTime( DateTime.Parse( lastCreatedItem.updated_at ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
-				var modifiedFrom = new DateTime(DateTime.UtcNow.AddDays(-14).Ticks, DateTimeKind.Utc).AddSeconds(1);
-				var modifiedTo = new DateTime(DateTime.UtcNow.Ticks, DateTimeKind.Utc).AddSeconds(-1);
+				var modifiedFrom = new DateTime(DateTime.Parse(firstCreatedItem.updated_at).Ticks, DateTimeKind.Utc).AddSeconds(1);
+				var modifiedTo = new DateTime(DateTime.Parse(lastCreatedItem.updated_at).Ticks, DateTimeKind.Utc).AddSeconds(-1);
+				//var modifiedFrom = new DateTime(2015,2,10,23,23,59).AddSeconds(1);
+				//var modifiedTo = new DateTime(2015,3,10,23,30,39).AddSeconds(-1);
 
 				var getOrdersTask = this._magentoService.GetOrdersAsync(modifiedFrom, modifiedTo);
 				getOrdersTask.Wait();
 
 				//------------ Assert
-				//var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.increment_id ).ToList();
+				var thatMustBeReturned = this._orders.Where(x => x != firstCreatedItem && x != lastCreatedItem).Select(x => x.increment_id).ToList();
 				var thatWasReturned = getOrdersTask.Result.Select(x => x.OrderIncrementalId).ToList();
 
-				//thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
+				thatWasReturned.Should().BeEquivalentTo(thatMustBeReturned);
 			}
 			catch (Exception)
 			{
@@ -65,40 +68,31 @@ namespace MagentoAccessTestsIntegration
 			//------------ Arrange
 
 			//------------ Act
+			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests();
+			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => 123 ) );
+			updateInventoryTask.Wait();
+
+			/////
+			var onlyProductsCreatedForThisTests2 = GetOnlyProductsCreatedForThisTests();
+
+			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => 100500 ) );
+			updateInventoryTask2.Wait();
+
+			//------------ Assert
+			var onlyProductsCreatedForThisTests3 = GetOnlyProductsCreatedForThisTests();
+
+			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
+			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
+		}
+
+		private IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
+		{
 			var getProductsTask = this._magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
 			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
-
-			//var itemsToUpdate = allProductsinMagent.Select(x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = 123 });
-			var itemsToUpdate = allProductsinMagent.Select(x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = (long) x.Qty.ToDecimalOrDefault() });
-
-			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( itemsToUpdate );
-			updateInventoryTask.Wait();
-
-			/////
-
-			var getProductsTask2 = this._magentoService.GetProductsAsync();
-			getProductsTask2.Wait();
-
-			var allProductsinMagent2 = getProductsTask2.Result.ToList();
-			var onlyProductsCreatedForThisTests2 = allProductsinMagent2.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
-
-			var itemsToUpdate2 = onlyProductsCreatedForThisTests2.Select( x => new Inventory() { ProductId = x.ProductId, ItemId = x.EntityId, Qty = 100500 } );
-
-			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( itemsToUpdate2 );
-			updateInventoryTask2.Wait();
-
-			//------------ Assert
-			var getProductsTask3 = this._magentoService.GetProductsAsync();
-			getProductsTask3.Wait();
-
-			var allProductsinMagent3 = getProductsTask3.Result.ToList();
-			var onlyProductsCreatedForThisTests3 = allProductsinMagent3.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
-
-			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
-			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
+			return onlyProductsCreatedForThisTests;
 		}
 
 		[ Ignore ]
