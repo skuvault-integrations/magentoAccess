@@ -69,13 +69,13 @@ namespace MagentoAccessTestsIntegration
 
 			//------------ Act
 			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests();
-			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => 123 ) );
+			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => 123 ).ToList() );
 			updateInventoryTask.Wait();
 
 			/////
 			var onlyProductsCreatedForThisTests2 = GetOnlyProductsCreatedForThisTests();
 
-			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => 100500 ) );
+			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => 100500 ).ToList() );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert

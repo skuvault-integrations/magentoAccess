@@ -797,6 +797,7 @@ namespace MagentoAccess.Services
 			try
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync(sessionId, storeId).ConfigureAwait(false);
 
 				var catalogProductCreateEntity = new catalogProductCreateEntity
 				{
@@ -808,6 +809,8 @@ namespace MagentoAccess.Services
 					visibility = "4",
 					price = "100",
 					tax_class_id = "1",
+					categories = new[]{res0.result.ToString()},
+					category_ids = new[]{res0.result.ToString()},
 					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 
