@@ -29,6 +29,7 @@ namespace MagentoAccess.Services
 		protected string _sessionId;
 
 		protected DateTime _sessionIdCreatedAt;
+		private readonly CustomBinding _customBinding;
 
 		protected const int SessionIdLifeTime = 3590;
 
@@ -91,10 +92,28 @@ namespace MagentoAccess.Services
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
+			_customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 		}
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
+		{
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
+
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+
+			return magentoSoapService;
+		}
+
+		private async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
+		{
+			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl ) );
+			await Task.WhenAll( task ).ConfigureAwait( false );
+			return task.Result;
+		}
+
+		private static CustomBinding CustomBinding( string baseMagentoUrl )
 		{
 			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
 			{
@@ -140,13 +159,7 @@ namespace MagentoAccess.Services
 			bindingElements.Add( httpBindingElement );
 
 			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
-
-			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
-
-			return magentoSoapService;
+			return customBinding;
 		}
 
 		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -454,7 +467,7 @@ namespace MagentoAccess.Services
 
 				var res = new salesOrderInfoResponse();
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = await this.CreateMagentoServiceClientAsync( this.BaseMagentoUrl ).ConfigureAwait( false );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -469,7 +482,9 @@ namespace MagentoAccess.Services
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					{
 						res = await privateClient.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+					}
 				} ).ConfigureAwait( false );
 
 				return res;
@@ -797,7 +812,7 @@ namespace MagentoAccess.Services
 			try
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync(sessionId, storeId).ConfigureAwait(false);
+				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId, storeId ).ConfigureAwait( false );
 
 				var catalogProductCreateEntity = new catalogProductCreateEntity
 				{
@@ -809,8 +824,8 @@ namespace MagentoAccess.Services
 					visibility = "4",
 					price = "100",
 					tax_class_id = "1",
-					categories = new[]{res0.result.ToString()},
-					category_ids = new[]{res0.result.ToString()},
+					categories = new[] { res0.result.ToString() },
+					category_ids = new[] { res0.result.ToString() },
 					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 
