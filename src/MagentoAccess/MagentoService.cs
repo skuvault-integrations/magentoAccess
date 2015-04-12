@@ -119,7 +119,7 @@ namespace MagentoAccess
 
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}}}", currentMenthodName, soapInfo, methodParameters, mark ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\"}}", currentMenthodName, soapInfo, methodParameters, mark ) );
 
 				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFromUtc, dateToUtc ).ConfigureAwait( false );
 
@@ -129,13 +129,13 @@ namespace MagentoAccess
 				{
 					var ordersBriefInfoString = ordersBriefInfo.result.ToJson();
 
-					MagentoLogger.LogTrace( string.Format( "{{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}, BriefOrdersReceived:{4}}}", currentMenthodName, soapInfo, methodParameters, mark, ordersBriefInfoString ) );
+				MagentoLogger.LogTrace( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", BriefOrdersReceived:\"{4}\"}}", currentMenthodName, soapInfo, methodParameters, mark, ordersBriefInfoString ) );
 
 					var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync( 30, async x =>
 					{
-						MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, called from:{3}}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
+						MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
 						var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ).ConfigureAwait( false );
-						MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, called from:{3}}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
+						MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
 						return res;
 					} ).ConfigureAwait( false );
 
@@ -144,13 +144,13 @@ namespace MagentoAccess
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
-				MagentoLogger.LogTraceEnded( string.Format( "MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}, MethodResult:{4}", currentMenthodName, soapInfo, methodParameters, mark, resultOrdersBriefInfo ) );
+				MagentoLogger.LogTraceEnded( string.Format( "MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", MethodResult:\"{4}\"", currentMenthodName, soapInfo, methodParameters, mark, resultOrdersBriefInfo ) );
 
 				return resultOrders;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}, MethodParameters:{2}, Mark:{3}", currentMenthodName, soapInfo, methodParameters, mark ), exception );
+				var mexc = new MagentoCommonException( string.Format( "MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\"", currentMenthodName, soapInfo, methodParameters, mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
