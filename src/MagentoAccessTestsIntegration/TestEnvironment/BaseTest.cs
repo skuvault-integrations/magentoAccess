@@ -83,12 +83,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			//this.CreateProductstems();
 			//this.CreateOrders();
-			//this.DeleteProducts();
 		}
 		[TestFixtureTearDown]
 		public void TestFixtureTearDown()
 		{
-			this.DeleteProducts();
+			//this.DeleteProducts();
 		}
 
 		protected void CreateOrders()
