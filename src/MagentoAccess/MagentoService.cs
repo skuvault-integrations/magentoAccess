@@ -121,26 +121,36 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\"}}", currentMenthodName, soapInfo, methodParameters, mark ) );
 
-				var ordersBriefInfo = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( dateFromUtc, dateToUtc ).ConfigureAwait( false );
+				var interval = new TimeSpan( 7,0,0,0 );
+				var intervalOverlapping = new TimeSpan( 0, 0, 0, 1 );
 
-				var resultOrders = new List< Order >();
+				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
-				if( ordersBriefInfo != null && ordersBriefInfo.result != null )
+				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
-					var ordersBriefInfoString = ordersBriefInfo.result.ToJson();
+					MagentoLogger.LogTrace( string.Format( "OrdersRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, String.Format( "{0},{1}", x.Item1, x.Item2 ), mark ) );
+					var res = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2 ).ConfigureAwait( false );
+					MagentoLogger.LogTrace( string.Format( "OrdersReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, String.Format( "{0},{1}", x.Item1, x.Item2 ), mark ) );
+					return res;
+				} ).ConfigureAwait( false );
+
+				var ordersBriefInfo = ordersBriefInfos.Where( x => x != null && x.result != null ).SelectMany( x => x.result ).ToList();
+
+				ordersBriefInfo = ordersBriefInfo.Distinct( new SalesOrderByOrderIdComparer() ).ToList();
+				
+				var ordersBriefInfoString = ordersBriefInfo.ToJson();
 
 				MagentoLogger.LogTrace( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", BriefOrdersReceived:\"{4}\"}}", currentMenthodName, soapInfo, methodParameters, mark, ordersBriefInfoString ) );
 
-					var salesOrderInfoResponses = await ordersBriefInfo.result.ProcessInBatchAsync( 30, async x =>
-					{
-						MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
-						var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ).ConfigureAwait( false );
-						MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
-						return res;
-					} ).ConfigureAwait( false );
+				var salesOrderInfoResponses = await ordersBriefInfo.ProcessInBatchAsync( 16, async x =>
+				{
+					MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
+					var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ).ConfigureAwait( false );
+					MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
+					return res;
+				} ).ConfigureAwait( false );
 
-					resultOrders = salesOrderInfoResponses.Select( x => new Order( x.result ) ).ToList();
-				}
+				var resultOrders = salesOrderInfoResponses.Select( x => new Order( x.result ) ).ToList();
 
 				var resultOrdersBriefInfo = resultOrders.ToJson();
 
@@ -154,6 +164,22 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
+		}
+
+		private static List< Tuple< DateTime, DateTime > > SplitToDates( DateTime dateFromUtc, DateTime dateToUtc, TimeSpan interval, TimeSpan intervalOverlapping )
+		{
+			var dates = new List< Tuple< DateTime, DateTime > >();
+			var dateFromUtcCopy = dateFromUtc;
+			var dateToUtcCopy = dateToUtc;
+			while( dateFromUtcCopy < dateToUtcCopy )
+			{
+				dates.Add( Tuple.Create( dateFromUtcCopy, dateFromUtcCopy.Add( interval ).Add( intervalOverlapping ) ) );
+				dateFromUtcCopy = dateFromUtcCopy.Add( interval );
+			}
+			var lastInterval = dates.Last();
+			dates.Remove( lastInterval );
+			dates.Add( Tuple.Create( lastInterval.Item1, dateToUtc ) );
+			return dates;
 		}
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
@@ -667,6 +693,19 @@ namespace MagentoAccess
 		public int GetHashCode( Models.Services.GetProducts.Product obj )
 		{
 			return obj.EntityId.GetHashCode();
+		}
+	}
+
+	internal class SalesOrderByOrderIdComparer : IEqualityComparer< salesOrderListEntity >
+	{
+		public bool Equals( salesOrderListEntity x, salesOrderListEntity y )
+		{
+			return x.increment_id == y.increment_id && x.order_id == y.order_id;
+		}
+
+		public int GetHashCode( salesOrderListEntity obj )
+		{
+			return obj.order_id.GetHashCode() ^ obj.increment_id.GetHashCode();
 		}
 	}
 }
