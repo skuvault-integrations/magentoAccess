@@ -102,7 +102,6 @@ namespace MagentoAccess.Services
 				WriteEncoding = new UTF8Encoding()
 			};
 
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			BindingElement httpTransportBindingElement;
 			if( baseMagentoUrl.StartsWith( "https" ) )
 			{
@@ -142,6 +141,7 @@ namespace MagentoAccess.Services
 
 			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
 
+			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
