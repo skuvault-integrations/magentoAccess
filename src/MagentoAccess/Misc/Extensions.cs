@@ -226,6 +226,15 @@ namespace MagentoAccess.Misc
 			return res;
 		}
 
+		public static string ToJsonAsParallel( this IEnumerable< Order > source, int from, int take )
+		{
+			var orders = source as IList< Order > ?? source.ToList();
+			var objects = orders.Skip( from ).Take( take ).AsParallel().Select( x => string.Format( "{{id:{0},createdAt:{1}}}", string.IsNullOrWhiteSpace( x.OrderIncrementalId ) ? PredefinedValues.NotAvailable : x.OrderIncrementalId, x.CreatedAt ) );
+			var items = string.Join( ",", objects );
+			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", objects.Count(), items );
+			return res;
+		}
+
 		public static string ToJson( this IEnumerable< salesOrderListEntity > source )
 		{
 			var orders = source as IList< salesOrderListEntity > ?? source.ToList();
