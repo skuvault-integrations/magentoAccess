@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -121,7 +122,7 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\"}}", currentMenthodName, soapInfo, methodParameters, mark ) );
 
-				var interval = new TimeSpan( 7,0,0,0 );
+				var interval = new TimeSpan( 7, 0, 0, 0 );
 				var intervalOverlapping = new TimeSpan( 0, 0, 0, 1 );
 
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
@@ -137,7 +138,7 @@ namespace MagentoAccess
 				var ordersBriefInfo = ordersBriefInfos.Where( x => x != null && x.result != null ).SelectMany( x => x.result ).ToList();
 
 				ordersBriefInfo = ordersBriefInfo.Distinct( new SalesOrderByOrderIdComparer() ).ToList();
-				
+
 				var ordersBriefInfoString = ordersBriefInfo.ToJson();
 
 				MagentoLogger.LogTrace( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", BriefOrdersReceived:\"{4}\"}}", currentMenthodName, soapInfo, methodParameters, mark, ordersBriefInfoString ) );
@@ -150,11 +151,24 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var resultOrders = salesOrderInfoResponses.Select( x => new Order( x.result ) ).ToList();
+				var salesOrderInfoResponsesList = salesOrderInfoResponses.ToList();
+				for( int i = 0; i < 30; i++ )
+				{
+					salesOrderInfoResponsesList.AddRange( salesOrderInfoResponses.ToList() );
+				}
 
-				var resultOrdersBriefInfo = resultOrders.ToJson();
+				List< Order > resultOrders = new List< Order >();
 
-				MagentoLogger.LogTraceEnded( string.Format( "MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", MethodResult:\"{4}\"", currentMenthodName, soapInfo, methodParameters, mark, resultOrdersBriefInfo ) );
+				var batchSize = 500;
+				for( var i = 0; i < salesOrderInfoResponsesList.Count; i += batchSize )
+				{
+					var orderInfoResponses = salesOrderInfoResponsesList.Skip( i ).Take( batchSize );
+					var resultOrderPart = orderInfoResponses.AsParallel().Select( x => new Order( x.result ) ).ToList();
+					resultOrders.AddRange( resultOrderPart );
+					var resultOrdersBriefInfo = resultOrderPart.ToJsonAsParallel( 0, batchSize );
+					var partDescription = "From: " + i.ToString() + "," + ( ( i + batchSize < salesOrderInfoResponsesList.Count ) ? batchSize : salesOrderInfoResponsesList.Count % batchSize ).ToString() + " items(or few)";
+					MagentoLogger.LogTraceEnded( string.Format( "MethodName:\"{0}\",LogPart:\"{5}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", MethodResult:\"{4}\"", currentMenthodName, soapInfo, methodParameters, mark, resultOrdersBriefInfo, partDescription ) );
+				}
 
 				return resultOrders;
 			}
