@@ -157,9 +157,9 @@ namespace MagentoAccess
 					salesOrderInfoResponsesList.AddRange( salesOrderInfoResponses.ToList() );
 				}
 
-				List< Order > resultOrders = new List< Order >();
+				var resultOrders = new List< Order >();
 
-				var batchSize = 500;
+				const int batchSize = 500;
 				for( var i = 0; i < salesOrderInfoResponsesList.Count; i += batchSize )
 				{
 					var orderInfoResponses = salesOrderInfoResponsesList.Skip( i ).Take( batchSize );
