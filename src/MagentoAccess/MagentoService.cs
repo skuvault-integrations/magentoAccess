@@ -152,10 +152,6 @@ namespace MagentoAccess
 				} ).ConfigureAwait( false );
 
 				var salesOrderInfoResponsesList = salesOrderInfoResponses.ToList();
-				for( int i = 0; i < 30; i++ )
-				{
-					salesOrderInfoResponsesList.AddRange( salesOrderInfoResponses.ToList() );
-				}
 
 				var resultOrders = new List< Order >();
 
