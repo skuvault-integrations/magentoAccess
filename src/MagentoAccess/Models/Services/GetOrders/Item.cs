@@ -8,6 +8,7 @@ namespace MagentoAccess.Models.Services.GetOrders
 	{
 		public string ItemId { get; set; }
 		public string ParentItemId { get; set; }
+		public string ProductType { get; set; }
 		public string Sku { get; set; }
 		public string Name { get; set; }
 		public decimal QtyCanceled { get; set; }

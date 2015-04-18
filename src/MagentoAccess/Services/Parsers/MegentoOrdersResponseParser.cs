@@ -136,6 +136,8 @@ namespace MagentoAccess.Services.Parsers
 
 					order.ParentItemId = GetElementValue( addr, ns, "parent_item_id" );
 
+					order.ProductType = GetElementValue( addr, ns, "product_type" );
+
 					order.Sku = GetElementValue( addr, ns, "sku" );
 
 					order.Name = GetElementValue( addr, ns, "name" );

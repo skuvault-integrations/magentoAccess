@@ -64,6 +64,7 @@ namespace MagentoAccess.Models.GetOrders
 				DscountAmount = x.discount_amount.ToDecimalOrDefault(),
 				OriginalPrice = x.original_price.ToDecimalOrDefault(),
 				Price = x.price.ToDecimalOrDefault(),
+				ProductType = x.product_type,
 				QtyCanceled = x.qty_canceled.ToDecimalOrDefault(),
 				QtyInvoiced = x.qty_invoiced.ToDecimalOrDefault(),
 				QtyOrdered = x.qty_ordered.ToDecimalOrDefault(),
