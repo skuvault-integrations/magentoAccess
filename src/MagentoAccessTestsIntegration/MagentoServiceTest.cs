@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models;
-using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -25,26 +23,25 @@ namespace MagentoAccessTestsIntegration
 				//------------ Arrange
 
 				//------------ Act
-				var firstCreatedItem = this._orders.OrderBy(x => x.updated_at.ToDateTimeOrDefault()).First();
-				var lastCreatedItem = this._orders.OrderBy(x => x.updated_at.ToDateTimeOrDefault()).Last();
+				var firstCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).First();
+				var lastCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).Last();
 
-				var modifiedFrom = new DateTime(DateTime.Parse(firstCreatedItem.updated_at).Ticks, DateTimeKind.Utc).AddSeconds(1);
-				var modifiedTo = new DateTime(DateTime.Parse(lastCreatedItem.updated_at).Ticks, DateTimeKind.Utc).AddSeconds(-1);
+				var modifiedFrom = new DateTime( DateTime.Parse( firstCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
+				var modifiedTo = new DateTime( DateTime.Parse( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
 				//var modifiedFrom = new DateTime(2015,2,10,23,23,59).AddSeconds(1);
 				//var modifiedTo = new DateTime(2015,3,10,23,30,39).AddSeconds(-1);
 
-				var getOrdersTask = this._magentoService.GetOrdersAsync(modifiedFrom, modifiedTo);
+				var getOrdersTask = this._magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
 				getOrdersTask.Wait();
 
 				//------------ Assert
-				var thatMustBeReturned = this._orders.Where(x => x != firstCreatedItem && x != lastCreatedItem).Select(x => x.increment_id).ToList();
-				var thatWasReturned = getOrdersTask.Result.Select(x => x.OrderIncrementalId).ToList();
+				var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.incrementId ).ToList();
+				var thatWasReturned = getOrdersTask.Result.Select( x => x.OrderIncrementalId ).ToList();
 
-				thatWasReturned.Should().BeEquivalentTo(thatMustBeReturned);
+				thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
 			}
-			catch (Exception)
+			catch( Exception )
 			{
-				
 				throw;
 			}
 		}

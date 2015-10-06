@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.SOAP.GetOrders;
 
 namespace MagentoAccess.Services
 {
@@ -213,7 +214,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
 			var ordersIdsAgregated = string.Empty;
 			try
@@ -254,7 +255,7 @@ namespace MagentoAccess.Services
 						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return res;
+				return  new GetOrdersResponse(res);
 			}
 			catch( Exception exc )
 			{

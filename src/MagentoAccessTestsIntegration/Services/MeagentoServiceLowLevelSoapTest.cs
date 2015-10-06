@@ -18,17 +18,17 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var firstCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).First();
-			var lastCreatedItem = this._orders.OrderBy( x => x.updated_at.ToDateTimeOrDefault() ).Last();
+			var firstCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).First();
+			var lastCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).Last();
 
-			var modifiedFrom = DateTime.Parse( firstCreatedItem.updated_at ).AddSeconds( 1 );
-			var modifiedTo = DateTime.Parse( lastCreatedItem.updated_at ).AddSeconds( -1 );
+			var modifiedFrom = DateTime.Parse( firstCreatedItem.UpdatedAt ).AddSeconds( 1 );
+			var modifiedTo = DateTime.Parse( lastCreatedItem.UpdatedAt ).AddSeconds( -1 );
 
 			var getOrdersTask = this._magentoLowLevelSoapService.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.increment_id ).ToList();
+			var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.incrementId ).ToList();
 			var thatWasReturned = getOrdersTask.Result.result.ToList().Select( x => x.increment_id ).ToList();
 
 			thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
@@ -43,13 +43,13 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 			//var ordersIds = new List< string >() { "100000001", "100000002" };
-			var ordersIds = this._orders.Select( x => x.increment_id ).ToList();
+			var ordersIds = this._orders.Select( x => x.incrementId ).ToList();
 
 			var getOrdersTask = this._magentoLowLevelSoapService.GetOrdersAsync( ordersIds );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.result.ShouldBeEquivalentTo( this._orders );
+			getOrdersTask.Result.Orders.ShouldBeEquivalentTo( this._orders );
 		}
 
 		[ Test ]

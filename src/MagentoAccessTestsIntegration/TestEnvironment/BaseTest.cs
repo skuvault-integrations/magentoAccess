@@ -25,7 +25,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoService _magentoServiceNotAuth;
 		protected MagentoSoapCredentials _soapUserCredentials;
 		protected MagentoServiceLowLevelSoap _magentoLowLevelSoapService;
-		protected List< salesOrderListEntity > _orders;
+		protected List< MagentoAccess.Models.Services.SOAP.GetOrders.Order > _orders;
 		protected Dictionary< int, string > _productsIds;
 		protected MagentoServiceLowLevel _magentoServiceLowLevelRest;
 		protected MagentoServiceLowLevel _magentoServiceLowLevelRestNotAuth;
@@ -124,7 +124,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			var ordersTask = this._magentoLowLevelSoapService.GetOrdersAsync( ordersIds );
 			ordersTask.Wait();
-			this._orders = ordersTask.Result.result.OrderBy( x => x.updated_at ).ToList();
+			this._orders = ordersTask.Result.Orders.ToList().OrderBy( x => x.UpdatedAt ).ToList();
 		}
 
 		protected void CreateProductstems()

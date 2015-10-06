@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Services;
 
 namespace MagentoAccessTests.TestEnvironment
@@ -27,7 +28,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< salesOrderListResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public override Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
 			throw new Exception();
 		}
