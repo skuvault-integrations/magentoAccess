@@ -11,6 +11,8 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MagentoAccess.Misc
 {
@@ -276,6 +278,30 @@ namespace MagentoAccess.Misc
 			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
 
 			return res;
+		}
+
+		public static string ToJson( this object source )
+		{
+			try
+			{
+				if( source == null )
+					return PredefinedValues.EmptyJsonObject;
+				else
+				{
+					var sourceConverted = source as IManualSerializable;
+					if( sourceConverted != null )
+						return sourceConverted.SerializeToJson();
+					else
+					{
+						var serialized = JsonConvert.SerializeObject( source, new IsoDateTimeConverter() );
+						return serialized;
+					}
+				}
+			}
+			catch( Exception )
+			{
+				return PredefinedValues.EmptyJsonObject;
+			}
 		}
 
 		public static IEnumerable< IEnumerable< T > > Batch< T >(

@@ -163,7 +163,7 @@ namespace MagentoAccess.Services
 			return customBinding;
 		}
 
-		public virtual async Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			try
 			{
@@ -206,7 +206,7 @@ namespace MagentoAccess.Services
 				//crutch for magento 1.7 
 				res.result = res.result.Where( x => x.updated_at.ToDateTimeOrDefault() >= modifiedFrom && x.updated_at.ToDateTimeOrDefault() <= modifiedTo ).ToArray();
 
-				return res;
+				return new GetOrdersResponse( res );
 			}
 			catch( Exception exc )
 			{
@@ -255,7 +255,7 @@ namespace MagentoAccess.Services
 						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return  new GetOrdersResponse(res);
+				return new GetOrdersResponse( res );
 			}
 			catch( Exception exc )
 			{
@@ -483,9 +483,7 @@ namespace MagentoAccess.Services
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-					{
 						res = await privateClient.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
-					}
 				} ).ConfigureAwait( false );
 
 				return res;

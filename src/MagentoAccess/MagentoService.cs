@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,7 +134,7 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var ordersBriefInfo = ordersBriefInfos.Where( x => x != null && x.result != null ).SelectMany( x => x.result ).ToList();
+				var ordersBriefInfo = ordersBriefInfos.Where( x => x != null && x.Orders != null ).SelectMany( x => x.Orders ).ToList();
 
 				ordersBriefInfo = ordersBriefInfo.Distinct( new SalesOrderByOrderIdComparer() ).ToList();
 
@@ -145,9 +144,9 @@ namespace MagentoAccess
 
 				var salesOrderInfoResponses = await ordersBriefInfo.ProcessInBatchAsync( 16, async x =>
 				{
-					MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
-					var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.increment_id ).ConfigureAwait( false );
-					MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.increment_id, mark ) );
+					MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.incrementId, mark ) );
+					var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.incrementId ).ConfigureAwait( false );
+					MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.incrementId, mark ) );
 					return res;
 				} ).ConfigureAwait( false );
 
@@ -706,16 +705,16 @@ namespace MagentoAccess
 		}
 	}
 
-	internal class SalesOrderByOrderIdComparer : IEqualityComparer< salesOrderListEntity >
+	internal class SalesOrderByOrderIdComparer : IEqualityComparer< Models.Services.SOAP.GetOrders.Order >
 	{
-		public bool Equals( salesOrderListEntity x, salesOrderListEntity y )
+		public bool Equals( Models.Services.SOAP.GetOrders.Order x, Models.Services.SOAP.GetOrders.Order y )
 		{
-			return x.increment_id == y.increment_id && x.order_id == y.order_id;
+			return x.incrementId == y.incrementId && x.OrderId == y.OrderId;
 		}
 
-		public int GetHashCode( salesOrderListEntity obj )
+		public int GetHashCode( Models.Services.SOAP.GetOrders.Order obj )
 		{
-			return obj.order_id.GetHashCode() ^ obj.increment_id.GetHashCode();
+			return obj.OrderId.GetHashCode() ^ obj.incrementId.GetHashCode();
 		}
 	}
 }

@@ -29,11 +29,11 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Assert
 			var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.incrementId ).ToList();
-			var thatWasReturned = getOrdersTask.Result.result.ToList().Select( x => x.increment_id ).ToList();
+			var thatWasReturned = getOrdersTask.Result.Orders.ToList().Select( x => x.incrementId ).ToList();
 
 			thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
 
-			getOrdersTask.Result.result.ShouldBeEquivalentTo( this._orders.Take( this._orders.Count() - 1 ).Skip( 1 ) );
+			getOrdersTask.Result.Orders.ShouldBeEquivalentTo( this._orders.Take( this._orders.Count() - 1 ).Skip( 1 ) );
 		}
 
 		[ Test ]

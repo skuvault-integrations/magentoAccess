@@ -23,7 +23,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		public override Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			throw new Exception();
 		}

@@ -11,7 +11,7 @@ namespace MagentoAccess.Services
 		string ApiUser { get; }
 		string ApiKey { get; }
 		string Store { get; }
-		Task< salesOrderListResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
+		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
 		Task< catalogProductListResponse > GetProductsAsync();
 		Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
