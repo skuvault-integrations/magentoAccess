@@ -110,6 +110,7 @@
     <Compile Include="Models\Services\PutStockItems\ResponseStockItem.cs" />
     <Compile Include="Models\Services\PutStockItems\StockItem.cs" />
     <Compile Include="Models\Services\SOAP\GetOrders\GetOrdersResponse.cs" />
+    <Compile Include="Models\Services\SOAP\GetOrders\OrderInfoResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\MagentoSoapServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>

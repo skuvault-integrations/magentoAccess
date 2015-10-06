@@ -459,7 +459,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< salesOrderInfoResponse > GetOrderAsync( string incrementId )
+		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
 		{
 			try
 			{
@@ -486,7 +486,7 @@ namespace MagentoAccess.Services
 						res = await privateClient.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return res;
+				return new OrderInfoResponse( res );
 			}
 			catch( Exception exc )
 			{

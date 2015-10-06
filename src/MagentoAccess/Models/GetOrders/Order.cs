@@ -4,6 +4,7 @@ using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.GetOrders;
+using MagentoAccess.Models.Services.SOAP.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
 {
@@ -87,6 +88,77 @@ namespace MagentoAccess.Models.GetOrders
 			OrderStateEnum tempstate;
 			this.Status = Enum.TryParse( order.status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.state, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
+		}
+
+		internal Order( OrderInfoResponse order )
+		{
+			this.Addresses = new List< Address >
+			{
+				new Address
+				{
+					AddressType = order.BillingAddress.AddressType,
+					City = order.BillingAddress.City,
+					Company = order.BillingAddress.Company,
+					CountryId = order.BillingAddress.CountryId,
+					Firstname = order.BillingAddress.Firstname,
+					Lastname = order.BillingAddress.Lastname,
+					Postcode = order.BillingAddress.Postcode,
+					Region = order.BillingAddress.Region,
+					Street = order.BillingAddress.Street,
+					Telephone = order.BillingAddress.Telephone,
+				}
+			};
+
+			this.BaseCurrencyCode = order.BaseCurrencyCode;
+			this.BaseDiscount = order.BaseDiscountAmount.ToDoubleOrDefault();
+			this.BaseGrandTotal = order.BaseGrandTotal.ToDecimalOrDefault();
+			this.BaseShippingAmount = order.BaseShippingAmount.ToDecimalOrDefault();
+			this.BaseSubtotal = order.BaseSubtotal.ToDecimalOrDefault();
+			this.BaseTaxAmount = order.BaseTaxAmount.ToDecimalOrDefault();
+			this.BaseTotalPaid = order.BaseTotalPaid.ToDecimalOrDefault();
+			this.BaseTotalRefunded = order.BaseTotalRefunded.ToDecimalOrDefault();
+			this.CreatedAt = order.CreatedAt.ToDateTimeOrDefault();
+			this.Customer = order.CustomerId;
+			this.DiscountAmount = order.DiscountAmount.ToDoubleOrDefault();
+			this.GrandTotal = order.GrandTotal.ToDecimalOrDefault();
+			this.OrderIncrementalId = order.IncrementId;
+			this.OrderId = order.OrderId;
+			this.Items = order.Items.Select( x => new Item
+			{
+				BaseDiscountAmount = x.BaseDiscountAmount.ToDecimalOrDefault(),
+				BaseOriginalPrice = x.BaseOriginalPrice.ToDecimalOrDefault(),
+				Sku = x.Sku,
+				Name = x.Name,
+				BaseTaxAmount = x.BaseTaxAmount.ToDecimalOrDefault(),
+				ItemId = x.ItemId,
+				BasePrice = x.BasePrice.ToDecimalOrDefault(),
+				BaseRowTotal = x.BaseRowTotal.ToDecimalOrDefault(),
+				DscountAmount = x.DiscountAmount.ToDecimalOrDefault(),
+				OriginalPrice = x.OriginalPrice.ToDecimalOrDefault(),
+				Price = x.Price.ToDecimalOrDefault(),
+				ProductType = x.ProductType,
+				QtyCanceled = x.QtyCanceled.ToDecimalOrDefault(),
+				QtyInvoiced = x.QtyInvoiced.ToDecimalOrDefault(),
+				QtyOrdered = x.QtyOrdered.ToDecimalOrDefault(),
+				QtyShipped = x.QtyShipped.ToDecimalOrDefault(),
+				QtyRefunded = x.QtyRefunded.ToDecimalOrDefault(),
+				RowTotal = x.RowTotal.ToDecimalOrDefault(),
+				TaxAmount = x.TaxAmount.ToDecimalOrDefault(),
+				TaxPercent = x.TaxPercent.ToDecimalOrDefault(),
+			}
+				).ToList();
+			this.PaymentMethod = order.Payment.Method;
+			this.ShippingAmount = order.ShippingAmount.ToDecimalOrDefault();
+			this.StoreName = order.StoreName;
+			this.Subtotal = order.Subtotal.ToDecimalOrDefault();
+			this.TaxAmount = order.TaxAmount.ToDecimalOrDefault();
+			this.TotalPaid = order.TotalPaid.ToDecimalOrDefault();
+			this.TotalRefunded = order.TotalRefunded.ToDecimalOrDefault();
+
+			OrderStatusesEnum tempstatus;
+			OrderStateEnum tempstate;
+			this.Status = Enum.TryParse( order.Status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
+			this.State = Enum.TryParse( order.State, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
 		}
 	}
 
