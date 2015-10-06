@@ -164,6 +164,164 @@ namespace MagentoAccess.Models.Services.SOAP.GetOrders
 			Weight = res.result.weight;
 		}
 
+		public OrderInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderInfoResponse res )
+		{
+			AppliedRuleIds = res.result.applied_rule_ids;
+			BaseCurrencyCode = res.result.base_currency_code;
+			BaseDiscountAmount = res.result.base_discount_amount;
+			BaseGrandTotal = res.result.base_grand_total;
+			BaseShippingAmount = res.result.base_shipping_amount;
+			BaseSubtotal = res.result.base_subtotal;
+			BaseTaxAmount = res.result.base_tax_amount;
+			BaseToGlobalRate = res.result.base_to_global_rate;
+			BaseToOrderRate = res.result.base_to_order_rate;
+			BaseTotalCanceled = res.result.base_total_canceled;
+			BaseTotalInvoiced = res.result.base_total_invoiced;
+			BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
+			BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
+			BaseTotalPaid = res.result.base_total_paid;
+			BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
+			BaseTotalRefunded = res.result.base_total_refunded;
+			if( res.result.billing_address != null )
+			{
+				var billingAddress = new BillingAddress
+				{
+					AddressId = res.result.billing_address.address_id,
+					AddressType = res.result.billing_address.address_type,
+					City = res.result.billing_address.city,
+					Company = res.result.billing_address.company,
+					CountryId = res.result.billing_address.country_id,
+					CreatedAt = res.result.billing_address.created_at,
+					Fax = res.result.billing_address.fax,
+					Firstname = res.result.billing_address.firstname,
+					IncrementId = res.result.billing_address.increment_id,
+					IsActive = res.result.billing_address.is_active,
+					Lastname = res.result.billing_address.lastname,
+					ParentId = res.result.billing_address.parent_id,
+					Postcode = res.result.billing_address.postcode,
+					Region = res.result.billing_address.region,
+					RegionId = res.result.billing_address.region_id,
+					Street = res.result.billing_address.street,
+					Telephone = res.result.billing_address.telephone,
+					UpdatedAt = res.result.billing_address.updated_at,
+				};
+				this.BillingAddress = billingAddress;
+			}
+			BillingAddressId = res.result.billing_address_id;
+			BillingFirstname = res.result.billing_firstname;
+			BillingLastname = res.result.billing_lastname;
+			BillingName = res.result.billing_name;
+			CreatedAt = res.result.created_at;
+			CustomerEmail = res.result.customer_email;
+			CustomerFirstname = res.result.customer_firstname;
+			CustomerGroupId = res.result.customer_group_id;
+			CustomerId = res.result.customer_id;
+			CustomerIsGuest = res.result.customer_is_guest;
+			CustomerLastname = res.result.customer_lastname;
+			CustomerNoteNotify = res.result.customer_note_notify;
+			DiscountAmount = res.result.discount_amount;
+			EmailSent = res.result.email_sent;
+			GiftMessage = res.result.gift_message;
+			GiftMessageId = res.result.gift_message_id;
+			GlobalCurrencyCode = res.result.global_currency_code;
+			GrandTotal = res.result.grand_total;
+			IncrementId = res.result.increment_id;
+			IsActive = res.result.is_active;
+			IsVirtual = res.result.is_virtual;
+
+			if( res.result.items != null )
+				Items = res.result.items.Select( x => new OrderItemEntity( x ) );
+
+			OrderCurrencyCode = res.result.order_currency_code;
+			OrderId = res.result.order_id;
+			ParentId = res.result.parent_id;
+
+			if( res.result.payment != null )
+			{
+				var payment = new Payment()
+				{
+					AmountOrdered = res.result.payment.amount_ordered,
+					BaseAmountOrdered = res.result.payment.base_amount_ordered,
+					BaseShippingAmount = res.result.payment.base_shipping_amount,
+					CcExpMonth = res.result.payment.cc_exp_month,
+					CcExpYear = res.result.payment.cc_exp_year,
+					CcLast4 = res.result.payment.cc_last4,
+					CcNumberEnc = res.result.payment.cc_number_enc,
+					CcOwner = res.result.payment.cc_owner,
+					CcSsStartMonth = res.result.payment.cc_ss_start_month,
+					CcSsStartYear = res.result.payment.cc_ss_start_year,
+					CcType = res.result.payment.cc_type,
+					CreatedAt = res.result.payment.created_at,
+					IncrementId = res.result.payment.increment_id,
+					IsActive = res.result.payment.is_active,
+					Method = res.result.payment.method,
+					ParentId = res.result.payment.parent_id,
+					PaymentId = res.result.payment.payment_id,
+					PoNumber = res.result.payment.po_number,
+					ShippingAmount = res.result.payment.shipping_amount,
+					UpdatedAt = res.result.payment.updated_at,
+				};
+				Payment = payment;
+			}
+			QuoteId = res.result.quote_id;
+			RemoteIp = res.result.remote_ip;
+			if( res.result.shipping_address != null )
+			{
+				ShippingAddress = new ShippingAddress()
+				{
+					AddressId = res.result.shipping_address.address_id,
+					AddressType = res.result.shipping_address.address_type,
+					City = res.result.shipping_address.city,
+					Company = res.result.shipping_address.company,
+					CountryId = res.result.shipping_address.country_id,
+					CreatedAt = res.result.shipping_address.created_at,
+					Fax = res.result.shipping_address.fax,
+					Firstname = res.result.shipping_address.firstname,
+					IncrementId = res.result.shipping_address.increment_id,
+					IsActive = res.result.shipping_address.is_active,
+					Lastname = res.result.shipping_address.lastname,
+					ParentId = res.result.shipping_address.parent_id,
+					Postcode = res.result.shipping_address.postcode,
+					Region = res.result.shipping_address.region,
+					RegionId = res.result.shipping_address.region_id,
+					Street = res.result.shipping_address.street,
+					Telephone = res.result.shipping_address.telephone,
+					UpdatedAt = res.result.shipping_address.updated_at,
+				};
+			}
+			ShippingAddressId = res.result.shipping_address_id;
+			ShippingAmount = res.result.shipping_amount;
+			ShippingDescription = res.result.shipping_description;
+			ShippingFirstname = res.result.shipping_firstname;
+			ShippingLastname = res.result.shipping_lastname;
+			ShippingMethod = res.result.shipping_method;
+			ShippingName = res.result.shipping_name;
+			State = res.result.state;
+			Status = res.result.status;
+
+			if( res.result.status_history != null )
+			{
+				StatusHistory = new List< StatusHistoryRecord >(
+					res.result.status_history.Select( x => new StatusHistoryRecord( x ) ) );
+			}
+			StoreCurrencyCode = res.result.store_currency_code;
+			StoreId = res.result.store_id;
+			StoreName = res.result.store_name;
+			StoreToBaseRate = res.result.store_to_base_rate;
+			StoreToOrderRate = res.result.store_to_order_rate;
+			Subtotal = res.result.subtotal;
+			TaxAmount = res.result.tax_amount;
+			TotalCanceled = res.result.total_canceled;
+			TotalInvoiced = res.result.total_invoiced;
+			TotalOfflineRefunded = res.result.total_offline_refunded;
+			TotalOnlineRefunded = res.result.total_online_refunded;
+			TotalPaid = res.result.total_paid;
+			TotalQtyOrdered = res.result.total_qty_ordered;
+			TotalRefunded = res.result.total_refunded;
+			UpdatedAT = res.result.updated_at;
+			Weight = res.result.weight;
+		}
+
 		public string AppliedRuleIds { get; private set; }
 		public string BaseCurrencyCode { get; private set; }
 		public string BaseDiscountAmount { get; private set; }
@@ -241,6 +399,67 @@ namespace MagentoAccess.Models.Services.SOAP.GetOrders
 	internal class OrderItemEntity
 	{
 		public OrderItemEntity( salesOrderItemEntity salesOrderItemEntity )
+		{
+			AmountRefunded = salesOrderItemEntity.amount_refunded;
+			AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
+			BaseAmountRefunded = salesOrderItemEntity.base_amount_refunded;
+			BaseDiscountAmount = salesOrderItemEntity.base_discount_amount;
+			BaseDiscountInvoiced = salesOrderItemEntity.base_discount_invoiced;
+			BaseOriginalPrice = salesOrderItemEntity.base_original_price;
+			BasePrice = salesOrderItemEntity.base_price;
+			BaseRowInvoiced = salesOrderItemEntity.base_row_invoiced;
+			BaseRowTotal = salesOrderItemEntity.base_row_total;
+			BaseTaxAmount = salesOrderItemEntity.base_tax_amount;
+			BaseTaxBeforeDiscount = salesOrderItemEntity.base_tax_before_discount;
+			BaseTaxInvoiced = salesOrderItemEntity.base_tax_invoiced;
+			BaseWeeeTaxAppliedAmount = salesOrderItemEntity.base_weee_tax_applied_amount;
+			BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.base_weee_tax_applied_row_amount;
+			BaseWeeeTaxDisposition = salesOrderItemEntity.base_weee_tax_disposition;
+			BaseWeeeTaxRowDisposition = salesOrderItemEntity.base_weee_tax_row_disposition;
+			Cost = salesOrderItemEntity.cost;
+			CreatedAt = salesOrderItemEntity.created_at;
+			DiscountAmount = salesOrderItemEntity.discount_amount;
+			DiscountInvoiced = salesOrderItemEntity.discount_invoiced;
+			DiscountPercent = salesOrderItemEntity.discount_percent;
+			FreeShipping = salesOrderItemEntity.free_shipping;
+			GiftMessage = salesOrderItemEntity.gift_message;
+			GiftMessageAvailable = salesOrderItemEntity.gift_message_available;
+			GiftMessageId = salesOrderItemEntity.gift_message_id;
+			IsQtyDecimal = salesOrderItemEntity.is_qty_decimal;
+			IsVirtual = salesOrderItemEntity.is_virtual;
+			ItemId = salesOrderItemEntity.item_id;
+			Name = salesOrderItemEntity.name;
+			NoDiscount = salesOrderItemEntity.no_discount;
+			this.OrderId = salesOrderItemEntity.order_id;
+			OriginalPrice = salesOrderItemEntity.original_price;
+			Price = salesOrderItemEntity.price;
+			ProductId = salesOrderItemEntity.product_id;
+			ProductOptions = salesOrderItemEntity.product_options;
+			ProductType = salesOrderItemEntity.product_type;
+			QtyCanceled = salesOrderItemEntity.qty_canceled;
+			QtyInvoiced = salesOrderItemEntity.qty_invoiced;
+			QtyOrdered = salesOrderItemEntity.qty_ordered;
+			QtyRefunded = salesOrderItemEntity.qty_refunded;
+			QtyShipped = salesOrderItemEntity.qty_shipped;
+			QuoteItemId = salesOrderItemEntity.quote_item_id;
+			RowInvoiced = salesOrderItemEntity.row_invoiced;
+			RowTotal = salesOrderItemEntity.row_total;
+			RowWeight = salesOrderItemEntity.row_weight;
+			Sku = salesOrderItemEntity.sku;
+			TaxAmount = salesOrderItemEntity.tax_amount;
+			TaxBeforeDiscount = salesOrderItemEntity.tax_before_discount;
+			TaxInvoiced = salesOrderItemEntity.tax_invoiced;
+			TaxPercent = salesOrderItemEntity.tax_percent;
+			UpdatedAt = salesOrderItemEntity.updated_at;
+			WeeeTaxApplied = salesOrderItemEntity.weee_tax_applied;
+			WeeeTaxAppliedAmount = salesOrderItemEntity.weee_tax_applied_amount;
+			WeeeTaxAppliedRowAmount = salesOrderItemEntity.weee_tax_applied_row_amount;
+			WeeeTaxDisposition = salesOrderItemEntity.weee_tax_disposition;
+			WeeeTaxRowDisposition = salesOrderItemEntity.weee_tax_row_disposition;
+			Weight = salesOrderItemEntity.weight;
+		}
+
+		public OrderItemEntity( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderItemEntity salesOrderItemEntity )
 		{
 			AmountRefunded = salesOrderItemEntity.amount_refunded;
 			AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
@@ -428,6 +647,18 @@ namespace MagentoAccess.Models.Services.SOAP.GetOrders
 		public string UpdatedAT { get; set; }
 
 		public StatusHistoryRecord( salesOrderStatusHistoryEntity salesOrderStatusHistoryEntity )
+		{
+			Comment = salesOrderStatusHistoryEntity.comment;
+			CreatedAt = salesOrderStatusHistoryEntity.created_at;
+			IncrementId = salesOrderStatusHistoryEntity.increment_id;
+			IsActive = salesOrderStatusHistoryEntity.is_active;
+			IsCustomerNotified = salesOrderStatusHistoryEntity.is_customer_notified;
+			ParentId = salesOrderStatusHistoryEntity.parent_id;
+			Status = salesOrderStatusHistoryEntity.status;
+			UpdatedAT = salesOrderStatusHistoryEntity.updated_at;
+		}
+
+		public StatusHistoryRecord( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderStatusHistoryEntity salesOrderStatusHistoryEntity )
 		{
 			Comment = salesOrderStatusHistoryEntity.comment;
 			CreatedAt = salesOrderStatusHistoryEntity.created_at;
