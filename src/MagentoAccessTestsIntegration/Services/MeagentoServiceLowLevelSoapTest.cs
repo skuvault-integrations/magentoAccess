@@ -62,7 +62,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.result.Should().NotBeEmpty();
+			getProductsTask.Result.Products.Should().NotBeEmpty();
 		}
 
 		[ Test ]

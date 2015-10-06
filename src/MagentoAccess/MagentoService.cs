@@ -278,10 +278,10 @@ namespace MagentoAccess
 			IEnumerable< Product > resultProducts = new List< Product >();
 			var catalogProductListResponse = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
-			if( catalogProductListResponse == null || catalogProductListResponse.result == null )
+			if( catalogProductListResponse == null || catalogProductListResponse.Products == null )
 				return resultProducts;
 
-			var products = catalogProductListResponse.result.ToList();
+			var products = catalogProductListResponse.Products.ToList();
 
 			var productsDevidedByChunks = products.Batch( stockItemsListMaxChunkSize );
 
@@ -296,12 +296,12 @@ namespace MagentoAccess
 			var getStockItemsAsync = new List< catalogInventoryStockItemEntity >();
 			foreach( var productsDevidedByChunk in productsDevidedByChunks )
 			{
-				var catalogInventoryStockItemListResponse = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.sku ).ToList() ).ConfigureAwait( false );
+				var catalogInventoryStockItemListResponse = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
 				getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.result.ToList() );
 			}
 			var stockItems = getStockItemsAsync.ToList();
 
-			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.product_id equals productEntity.product_id select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.product_id, Name = productEntity.name, Sku = productEntity.sku, Qty = stockItemEntity.qty } ).ToList();
+			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.product_id equals productEntity.ProductId select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.ProductId, Name = productEntity.Name, Sku = productEntity.Sku, Qty = stockItemEntity.qty } ).ToList();
 			return resultProducts;
 		}
 

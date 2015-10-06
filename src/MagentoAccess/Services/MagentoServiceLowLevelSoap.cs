@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
+using MagentoAccess.Models.Services.SOAP.GetProducts;
 
 namespace MagentoAccess.Services
 {
@@ -263,7 +264,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< catalogProductListResponse > GetProductsAsync()
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync()
 		{
 			try
 			{
@@ -293,7 +294,7 @@ namespace MagentoAccess.Services
 						res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return res;
+				return new SoapGetProductsResponse( res );
 			}
 			catch( Exception exc )
 			{

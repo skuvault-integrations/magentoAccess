@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
+using MagentoAccess.Models.Services.SOAP.GetProducts;
 using MagentoAccess.Services;
 
 namespace MagentoAccessTests.TestEnvironment
@@ -33,7 +34,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< catalogProductListResponse > GetProductsAsync()
+		public override Task< SoapGetProductsResponse > GetProductsAsync()
 		{
 			throw new Exception();
 		}
