@@ -260,8 +260,8 @@ namespace MagentoAccess.Misc
 		{
 			var stockItems = source as IList< PutStockItem > ?? source.ToList();
 			var items = string.Join( ",", stockItems.Select( x => string.Format( "{{Id:{0},qty:{1}",
-				string.IsNullOrWhiteSpace( x.Id ) ? PredefinedValues.NotAvailable : x.Id,
-				( x.UpdateEntity == null || string.IsNullOrWhiteSpace( x.UpdateEntity.qty ) ) ? PredefinedValues.NotAvailable : x.UpdateEntity.qty ) ) );
+				string.IsNullOrWhiteSpace( x.ProductId ) ? PredefinedValues.NotAvailable : x.ProductId,
+				( x == null ) ? PredefinedValues.NotAvailable : x.Qty.ToString() ) ) );
 			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
 			return res;
 		}

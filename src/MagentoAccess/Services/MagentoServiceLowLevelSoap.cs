@@ -350,18 +350,20 @@ namespace MagentoAccess.Services
 				var jsonSoapInfo = this.ToJsonSoapInfo();
 				var productsBriefInfo = stockItems.ToJson();
 
-				stockItems.ForEach( x =>
+				var stockItemsProcessed = stockItems.Select( x =>
 				{
-					if( x.Qty.ToDecimalOrDefault() > 0 )
+					var catalogInventoryStockItemUpdateEntity = new catalogInventoryStockItemUpdateEntity();
+					if( x.Qty > 0 )
 					{
-						x.IsInStock = 1;
-						x.IsInStockSpecified = true;
+						catalogInventoryStockItemUpdateEntity.is_in_stock = 1;
+						catalogInventoryStockItemUpdateEntity.is_in_stockSpecified = true;
 					}
 					else
 					{
-						x.IsInStock = 0;
-						x.IsInStockSpecified = false;
+						catalogInventoryStockItemUpdateEntity.is_in_stock = 0;
+						catalogInventoryStockItemUpdateEntity.is_in_stockSpecified = false;
 					}
+					return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
 				} );
 
 				const int maxCheckCount = 2;
@@ -386,7 +388,7 @@ namespace MagentoAccess.Services
 					{
 						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
-						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItems.Select( x => x.Id ).ToArray(), stockItems.Select( x => x.UpdateEntity ).ToArray() ).ConfigureAwait( false );
+						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
 
 						res = temp.result;
 
@@ -447,7 +449,7 @@ namespace MagentoAccess.Services
 					{
 						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
-						var temp = await privateClient.catalogInventoryStockItemUpdateAsync(sessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity).ConfigureAwait(false);
+						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false );
 
 						res = temp.result > 0;
 

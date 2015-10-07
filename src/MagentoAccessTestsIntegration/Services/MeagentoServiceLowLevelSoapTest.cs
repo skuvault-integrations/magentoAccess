@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -128,7 +129,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync.Wait();
 
-			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = "123" } ) ).ToList();
+			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 123, ProductId = x.ProductId } ) ).ToList();
 
 			var getProductsTask = this._magentoLowLevelSoapService.PutStockItemsAsync( itemsToUpdate );
 			getProductsTask.Wait();
@@ -138,7 +139,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync2 = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync2.Wait();
 
-			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = "100500" } ) ).ToList();
+			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 100500, ProductId = x.ProductId } ) ).ToList();
 
 			var getProductsTask2 = this._magentoLowLevelSoapService.PutStockItemsAsync( itemsToUpdate2 );
 			getProductsTask2.Wait();
