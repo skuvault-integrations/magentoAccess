@@ -24,6 +24,7 @@ namespace MagentoAccess
 		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
+		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_14_1_EE { get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
 
@@ -42,6 +43,13 @@ namespace MagentoAccess
 				);
 
 			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
+				magentoAuthenticatedUserCredentials.SoapApiUser,
+				magentoAuthenticatedUserCredentials.SoapApiKey,
+				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
+				null
+				);
+
+			this.MagentoServiceLowLevelSoap_1_14_1_EE = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE(
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				magentoAuthenticatedUserCredentials.SoapApiKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
@@ -253,6 +261,9 @@ namespace MagentoAccess
 					case MagentoVersions.M1901:
 						resultProducts = await this.GetProductsBySoap().ConfigureAwait( false );
 						break;
+					case MagentoVersions.M11410E:
+						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_14_1_EE ).ConfigureAwait( false );
+						break;
 					default:
 						resultProducts = await this.GetProductsBySoap().ConfigureAwait( false );
 						break;
@@ -272,11 +283,11 @@ namespace MagentoAccess
 			}
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsBySoap()
+		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap = null )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
 			IEnumerable< Product > resultProducts = new List< Product >();
-			var catalogProductListResponse = await this.MagentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
+			var catalogProductListResponse = await ( magentoServiceLowLevelSoap ?? this.MagentoServiceLowLevelSoap ).GetProductsAsync().ConfigureAwait( false );
 
 			if( catalogProductListResponse == null || catalogProductListResponse.Products == null )
 				return resultProducts;
@@ -296,7 +307,7 @@ namespace MagentoAccess
 			var getStockItemsAsync = new List< catalogInventoryStockItemEntity >();
 			foreach( var productsDevidedByChunk in productsDevidedByChunks )
 			{
-				var catalogInventoryStockItemListResponse = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
+				var catalogInventoryStockItemListResponse = await ( magentoServiceLowLevelSoap ?? this.MagentoServiceLowLevelSoap ).GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
 				getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.result.ToList() );
 			}
 			var stockItems = getStockItemsAsync.ToList();
