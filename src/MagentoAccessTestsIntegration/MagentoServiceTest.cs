@@ -39,6 +39,7 @@ namespace MagentoAccessTestsIntegration
 				var thatWasReturned = getOrdersTask.Result.Select( x => x.OrderIncrementalId ).ToList();
 
 				thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
+				thatWasReturned.Should().NotBeNullOrEmpty();
 			}
 			catch( Exception )
 			{
@@ -56,7 +57,7 @@ namespace MagentoAccessTestsIntegration
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.Should().NotBeNull().And.NotBeEmpty();
+			getProductsTask.Result.Should().NotBeNullOrEmpty();
 		}
 
 		[ Test ]
@@ -78,6 +79,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Assert
 			var onlyProductsCreatedForThisTests3 = GetOnlyProductsCreatedForThisTests();
 
+			onlyProductsCreatedForThisTests2.Should().NotBeNullOrEmpty();
 			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
 			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
 		}
@@ -300,6 +302,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[Ignore("Since rest is a vestigie")]
 		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow()
 		{
 			//------------ Arrange
