@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -117,38 +118,38 @@ namespace MagentoAccessTestsIntegration.Services
 			act.ShouldNotThrow();
 		}
 
-		//[ Test ]
-		//public void UpdateInventory_StoreWithItems_ItemsUpdated()
-		//{
-		//	//------------ Arrange
+		[ Test ]
+		public void UpdateInventory_StoreWithItems_ItemsUpdated()
+		{
+			//------------ Arrange
 
-		//	//------------ Act
+			//------------ Act
 
-		//	var productsAsync = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
-		//	productsAsync.Wait();
+			var productsAsync = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			productsAsync.Wait();
 
-		//	var itemsToUpdate = productsAsync.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "123" } ) ).ToList();
+			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 123, ProductId = x.ProductId } ) ).ToList();
 
-		//	var getProductsTask = this._magentoServiceLowLevelSoapV11410Ee.PutStockItemsAsync( itemsToUpdate );
-		//	getProductsTask.Wait();
+			var getProductsTask = this._magentoServiceLowLevelSoapV11410Ee.PutStockItemsAsync( itemsToUpdate );
+			getProductsTask.Wait();
 
-		//	////
+			////
 
-		//	var productsAsync2 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
-		//	productsAsync2.Wait();
+			var productsAsync2 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			productsAsync2.Wait();
 
-		//	var itemsToUpdate2 = productsAsync2.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "100500" } ) ).ToList();
+			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 100500, ProductId = x.ProductId } ) ).ToList();
 
-		//	var getProductsTask2 = this._magentoServiceLowLevelSoapV11410Ee.PutStockItemsAsync( itemsToUpdate2 );
-		//	getProductsTask2.Wait();
+			var getProductsTask2 = this._magentoServiceLowLevelSoapV11410Ee.PutStockItemsAsync( itemsToUpdate2 );
+			getProductsTask2.Wait();
 
-		//	//------------ Assert
-		//	var productsAsync3 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
-		//	productsAsync3.Wait();
+			//------------ Assert
+			var productsAsync3 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			productsAsync3.Wait();
 
-		//	productsAsync2.Result.result.Should().OnlyContain( x => x.qty.ToDecimalOrDefault() == 123 );
-		//	productsAsync3.Result.result.Should().OnlyContain( x => x.qty.ToDecimalOrDefault() == 100500 );
-		//}
+			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty == "123" );
+			productsAsync3.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty == "100500" );
+		}
 
 		[ Test ]
 		public void GetMagentoInfoAsync_StoreExist_StoreVersionRecived()
