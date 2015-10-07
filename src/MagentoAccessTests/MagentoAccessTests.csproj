@@ -86,7 +86,7 @@
     <Compile Include="Models\Services\Credentials\MagentoNonAuthenticatedUserCredentialsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestEnvironment\MagentoServiceLowLevelSoapThrowExcetpionStub.cs" />
-    <Compile Include="TestEnvironment\MagentoServiceLowLevelRestStubThrowExceptionStub.cs" />
+    <Compile Include="TestEnvironment\MagentoServiceLowLevelRestRestStubThrowExceptionStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

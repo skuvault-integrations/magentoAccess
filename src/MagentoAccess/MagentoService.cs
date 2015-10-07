@@ -21,7 +21,7 @@ namespace MagentoAccess
 	{
 		public bool UseSoapOnly { get; set; }
 
-		internal virtual IMagentoServiceLowLevel MagentoServiceLowLevel { get; set; }
+		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest { get; set; }
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_14_1_EE { get; set; }
@@ -35,7 +35,7 @@ namespace MagentoAccess
 		#region constructor
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{
-			this.MagentoServiceLowLevel = new MagentoServiceLowLevelRest(
+			this.MagentoServiceLowLevelRest = new MagentoServiceLowLevelRestRest(
 				magentoAuthenticatedUserCredentials.ConsumerKey,
 				magentoAuthenticatedUserCredentials.ConsumerSckretKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
@@ -60,7 +60,7 @@ namespace MagentoAccess
 
 		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials )
 		{
-			this.MagentoServiceLowLevel = new MagentoServiceLowLevelRest(
+			this.MagentoServiceLowLevelRest = new MagentoServiceLowLevelRestRest(
 				magentoUserCredentials.ConsumerKey,
 				magentoUserCredentials.ConsumerSckretKey,
 				magentoUserCredentials.BaseMagentoUrl,
@@ -97,13 +97,13 @@ namespace MagentoAccess
 
 		public async Task< PingRestInfo > PingRestAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			const string currentMenthodName = "PingRestAsync";
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
 
-				var magentoOrders = await this.MagentoServiceLowLevel.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
+				var magentoOrders = await this.MagentoServiceLowLevelRest.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
 				var restWorks = magentoOrders.Products != null;
 				var magentoCoreInfo = new PingRestInfo( restWorks );
 
@@ -190,12 +190,12 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			const string currentMenthodName = "GetOrdersAsync";
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
-				var res = await this.MagentoServiceLowLevel.GetOrdersAsync().ConfigureAwait( false );
+				var res = await this.MagentoServiceLowLevelRest.GetOrdersAsync().ConfigureAwait( false );
 				var resHandled = res.Orders.Select( x => new Order( x ) );
 				var orderBriefInfo = resHandled.ToJson();
 				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, orderBriefInfo ) );
@@ -213,7 +213,7 @@ namespace MagentoAccess
 		#region getProducts
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			const string currentMenthodName = "GetProductsSimpleAsync";
 			try
 			{
@@ -235,7 +235,7 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "GetProductsAsync";
 			var mark = Guid.NewGuid().ToString();
@@ -279,7 +279,7 @@ namespace MagentoAccess
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
 			var productsBriefInfo = products.ToJson();
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "UpdateInventoryAsync";
 			var mark = Guid.NewGuid().ToString();
@@ -323,7 +323,7 @@ namespace MagentoAccess
 		public async Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory )
 		{
 			var productsBriefInfo = inventory.ToJson();
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "UpdateInventoryBySkuAsync";
 			try
@@ -365,12 +365,12 @@ namespace MagentoAccess
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
-				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
-				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
+				this.MagentoServiceLowLevelRest.TransmitVerificationCode = this.TransmitVerificationCode;
+				var authorizeTask = this.MagentoServiceLowLevelRest.InitiateDescktopAuthenticationProcess();
 				authorizeTask.Wait();
 
 				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
 
 				MagentoLogger.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
 			}
@@ -387,7 +387,7 @@ namespace MagentoAccess
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
-				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
+				var res = this.MagentoServiceLowLevelRest.RequestVerificationUri();
 				MagentoLogger.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
 
 				return res;
@@ -405,10 +405,10 @@ namespace MagentoAccess
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
-				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
+				this.MagentoServiceLowLevelRest.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
 
 				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
+					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
 
 				MagentoLogger.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
 			}
@@ -520,7 +520,7 @@ namespace MagentoAccess
 			var page = 1;
 			const int itemsPerPage = 100;
 
-			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
+			var getProductsResponse = await this.MagentoServiceLowLevelRest.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
@@ -536,7 +536,7 @@ namespace MagentoAccess
 			{
 				receivedProducts.AddRange( productsChunk );
 
-				var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync( ++page, itemsPerPage );
+				var getProductsTask = this.MagentoServiceLowLevelRest.GetProductsAsync( ++page, itemsPerPage );
 				getProductsTask.Wait();
 				productsChunk = getProductsTask.Result.Products;
 
@@ -563,7 +563,7 @@ namespace MagentoAccess
 			var page = 1;
 			const int itemsPerPage = 100;
 
-			var getProductsResponse = await this.MagentoServiceLowLevel.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
+			var getProductsResponse = await this.MagentoServiceLowLevelRest.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
@@ -600,7 +600,7 @@ namespace MagentoAccess
 			{
 				Interlocked.Increment( ref page );
 
-				var getProductsTask = this.MagentoServiceLowLevel.GetProductsAsync( page, itemsPerPage );
+				var getProductsTask = this.MagentoServiceLowLevelRest.GetProductsAsync( page, itemsPerPage );
 				getProductsTask.Wait();
 				var localProductsChunk = getProductsTask.Result.Products;
 
@@ -628,7 +628,7 @@ namespace MagentoAccess
 			var page = 1;
 			const int itemsPerPage = 100;
 
-			var getProductsResponse = await this.MagentoServiceLowLevel.GetStockItemsAsync( page, itemsPerPage ).ConfigureAwait( false );
+			var getProductsResponse = await this.MagentoServiceLowLevelRest.GetStockItemsAsync( page, itemsPerPage ).ConfigureAwait( false );
 
 			var productsChunk = getProductsResponse.Items;
 			if( productsChunk.Count() < itemsPerPage )
@@ -644,7 +644,7 @@ namespace MagentoAccess
 			{
 				receivedProducts.AddRange( productsChunk );
 
-				var getProductsTask = this.MagentoServiceLowLevel.GetStockItemsAsync( ++page, itemsPerPage );
+				var getProductsTask = this.MagentoServiceLowLevelRest.GetStockItemsAsync( ++page, itemsPerPage );
 				getProductsTask.Wait();
 
 				productsChunk = getProductsTask.Result.Items;
@@ -681,7 +681,7 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevel.PutStockItemsAsync( x, markForLog ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevelRest.PutStockItemsAsync( x, markForLog ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var updateResult = batchResponses.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
 

@@ -20,7 +20,7 @@ using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {
-	internal class MagentoServiceLowLevelRest : IMagentoServiceLowLevel
+	internal class MagentoServiceLowLevelRestRest : IMagentoServiceLowLevelRest
 	{
 		private readonly string _requestTokenUrl;
 		private readonly HttpDeliveryMethods _requestTokenHttpDeliveryMethod;
@@ -101,7 +101,7 @@ namespace MagentoAccess.Services
 				this.saveVerifierCodeAct.Invoke( verifierCode );
 		}
 
-		public MagentoServiceLowLevelRest(
+		public MagentoServiceLowLevelRestRest(
 			string consumerKey,
 			string consumerSecretKey,
 			string baseMagentoUrl,
@@ -128,7 +128,7 @@ namespace MagentoAccess.Services
 			this.webRequestServices = new WebRequestServices();
 		}
 
-		public MagentoServiceLowLevelRest(
+		public MagentoServiceLowLevelRestRest(
 			string consumerKey,
 			string consumerSecretKey,
 			string baseMagentoUrl,

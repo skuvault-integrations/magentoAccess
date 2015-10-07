@@ -352,8 +352,8 @@ namespace MagentoAccessTestsIntegration
 			this._magentoServiceNotAuth.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
 
 			//------------ Assert
-			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
-			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevelRest.AccessToken.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevelRest.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 
 		[ Test ]
@@ -367,8 +367,8 @@ namespace MagentoAccessTestsIntegration
 			this._magentoServiceNotAuth.TransmitVerificationCode = this.transmitVerificationCode;
 			this._magentoServiceNotAuth.InitiateDesktopAuthentication();
 			//------------ Assert
-			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessToken.Should().NotBeNullOrWhiteSpace();
-			this._magentoServiceNotAuth.MagentoServiceLowLevel.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevelRest.AccessToken.Should().NotBeNullOrWhiteSpace();
+			this._magentoServiceNotAuth.MagentoServiceLowLevelRest.AccessTokenSecret.Should().NotBeNullOrWhiteSpace();
 		}
 
 		[ Test ]

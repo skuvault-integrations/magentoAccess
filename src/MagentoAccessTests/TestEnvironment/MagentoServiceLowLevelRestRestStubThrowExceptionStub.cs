@@ -11,13 +11,13 @@ using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccessTests.TestEnvironment
 {
-	internal class MagentoServiceLowLevelRestStubThrowExceptionStub : MagentoServiceLowLevelRest
+	internal class MagentoServiceLowLevelRestRestStubThrowExceptionStub : MagentoServiceLowLevelRestRest
 	{
-		public MagentoServiceLowLevelRestStubThrowExceptionStub( string consumerKey, string consumerSecretKey, string baseMagentoUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl ) : base( consumerKey, consumerSecretKey, baseMagentoUrl, requestTokenUrl, authorizeUrl, accessTokenUrl )
+		public MagentoServiceLowLevelRestRestStubThrowExceptionStub( string consumerKey, string consumerSecretKey, string baseMagentoUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl ) : base( consumerKey, consumerSecretKey, baseMagentoUrl, requestTokenUrl, authorizeUrl, accessTokenUrl )
 		{
 		}
 
-		public MagentoServiceLowLevelRestStubThrowExceptionStub( string consumerKey, string consumerSecretKey, string baseMagentoUrl, string accessToken, string accessTokenSecret ) : base( consumerKey, consumerSecretKey, baseMagentoUrl, accessToken, accessTokenSecret )
+		public MagentoServiceLowLevelRestRestStubThrowExceptionStub( string consumerKey, string consumerSecretKey, string baseMagentoUrl, string accessToken, string accessTokenSecret ) : base( consumerKey, consumerSecretKey, baseMagentoUrl, accessToken, accessTokenSecret )
 		{
 		}
 

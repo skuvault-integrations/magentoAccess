@@ -10,7 +10,7 @@ using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services
 {
-	internal interface IMagentoServiceLowLevel
+	internal interface IMagentoServiceLowLevelRest
 	{
 		string AccessToken { get; }
 

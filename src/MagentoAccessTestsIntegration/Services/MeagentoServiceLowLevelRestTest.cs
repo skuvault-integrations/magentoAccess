@@ -17,7 +17,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getOrdersTask = this._magentoServiceLowLevelRestRest.GetOrdersAsync();
+			var getOrdersTask = this._magentoServiceLowLevelRestRestRestRest.GetOrdersAsync();
 			getOrdersTask.Wait();
 
 			//------------ Assert
@@ -31,7 +31,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var inventoryItems = new List< StockItem > { new StockItem { ItemId = this._productsIds.First().Key.ToString(), MinQty = 1, ProductId = this._productsIds.First().Key.ToString(), Qty = 277, StockId = "1" } };
 
 			//------------ Act
-			var putInventoryTask = this._magentoServiceLowLevelRestRest.PutStockItemsAsync( inventoryItems );
+			var putInventoryTask = this._magentoServiceLowLevelRestRestRestRest.PutStockItemsAsync( inventoryItems );
 			putInventoryTask.Wait();
 
 			//------------ Assert
@@ -45,7 +45,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._magentoServiceLowLevelRestRest.GetProductsAsync( 1, 2 );
+			var getProductsTask = this._magentoServiceLowLevelRestRestRestRest.GetProductsAsync( 1, 2 );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -57,7 +57,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var getInventoryTask = this._magentoServiceLowLevelRestRest.GetStockItemsAsync( 1, 100 );
+			var getInventoryTask = this._magentoServiceLowLevelRestRestRestRest.GetStockItemsAsync( 1, 100 );
 			getInventoryTask.Wait();
 
 			//------------ Assert
@@ -69,7 +69,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._magentoServiceLowLevelRestRest.GetProductAsync( this._productsIds.First().Key.ToString() );
+			var res = this._magentoServiceLowLevelRestRestRestRest.GetProductAsync( this._productsIds.First().Key.ToString() );
 
 			//------------ Assert
 			res.Result.Should().NotBeNull();

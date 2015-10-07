@@ -28,8 +28,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoServiceLowLevelSoap_v_1_14_1_0_EE _magentoServiceLowLevelSoapV11410Ee;
 		protected List< MagentoAccess.Models.Services.SOAP.GetOrders.Order > _orders;
 		protected Dictionary< int, string > _productsIds;
-		protected MagentoServiceLowLevelRest _magentoServiceLowLevelRestRest;
-		protected MagentoServiceLowLevelRest _magentoServiceLowLevelRestRestNotAuth;
+		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
+		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
 
 		[ SetUp ]
 		public void Setup()
@@ -80,9 +80,9 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			this._magentoServiceLowLevelSoapV11410Ee = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
-			this._magentoServiceLowLevelRestRestNotAuth = new MagentoServiceLowLevelRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
+			this._magentoServiceLowLevelRestRestRestRestNotAuth = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
 
-			this._magentoServiceLowLevelRestRest = new MagentoServiceLowLevelRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
+			this._magentoServiceLowLevelRestRestRestRest = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
 
 			//this.CreateProductstems();
 			//this.CreateOrders();

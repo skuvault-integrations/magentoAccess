@@ -125,14 +125,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Services\IMagentoServiceLowLevel.cs" />
+    <Compile Include="Services\IMagentoServiceLowLevelRest.cs" />
     <Compile Include="Services\IMagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoap_v_1_14_1_0_EE.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelRest.cs" />
+    <Compile Include="Services\MagentoServiceLowLevelRestRest.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />

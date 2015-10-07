@@ -23,7 +23,7 @@ namespace MagentoAccessTests
 			);
 
 		private IMagentoServiceLowLevelSoap _magentoServiceLowLevelSoapThrowExceptionsStub;
-		private IMagentoServiceLowLevel _magentoServiceLowLevelThrowExceptionStub;
+		private IMagentoServiceLowLevelRest _magentoServiceLowLevelRestThrowExceptionStub;
 
 		private const string AccessToken = "accessToken";
 		private const string AccessTokenSecret = "accessTokenSecret";
@@ -37,14 +37,14 @@ namespace MagentoAccessTests
 		public void Setup()
 		{
 			this._magentoServiceLowLevelSoapThrowExceptionsStub = new MagentoServiceLowLevelSoapThrowExcetpionStub( SoapApiUser, SoapApiKey, BaseMagentoUrl, "0" );
-			this._magentoServiceLowLevelThrowExceptionStub = new MagentoServiceLowLevelRestStubThrowExceptionStub( AccessToken, ConsumerSckretKey, BaseMagentoUrl, AccessToken, AccessTokenSecret );
+			this._magentoServiceLowLevelRestThrowExceptionStub = new MagentoServiceLowLevelRestRestStubThrowExceptionStub( AccessToken, ConsumerSckretKey, BaseMagentoUrl, AccessToken, AccessTokenSecret );
 		}
 
 		[ Test ]
 		public void InitiateDesktopAuthentication_ExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -55,7 +55,7 @@ namespace MagentoAccessTests
 		public void PopulateAccessTokenAndAccessTokenSecret_ExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -68,7 +68,7 @@ namespace MagentoAccessTests
 			//------------ Arrange
 			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials )
 			{
-				MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub,
+				MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub,
 				MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub
 			};
 
@@ -79,7 +79,7 @@ namespace MagentoAccessTests
 		public void GetOrdersAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -90,7 +90,7 @@ namespace MagentoAccessTests
 		public void GetProductsAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -101,7 +101,7 @@ namespace MagentoAccessTests
 		public void GetProductsSimpleAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -112,7 +112,7 @@ namespace MagentoAccessTests
 		public void PingRestAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -123,7 +123,7 @@ namespace MagentoAccessTests
 		public void PingSoapAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -134,7 +134,7 @@ namespace MagentoAccessTests
 		public void RequestVerificationUri_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
@@ -145,7 +145,7 @@ namespace MagentoAccessTests
 		public void UpdateInventoryAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevel = this._magentoServiceLowLevelThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials ) { MagentoServiceLowLevelRest = this._magentoServiceLowLevelRestThrowExceptionStub, MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
