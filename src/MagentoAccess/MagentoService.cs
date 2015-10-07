@@ -184,22 +184,6 @@ namespace MagentoAccess
 			}
 		}
 
-		private static List< Tuple< DateTime, DateTime > > SplitToDates( DateTime dateFromUtc, DateTime dateToUtc, TimeSpan interval, TimeSpan intervalOverlapping )
-		{
-			var dates = new List< Tuple< DateTime, DateTime > >();
-			var dateFromUtcCopy = dateFromUtc;
-			var dateToUtcCopy = dateToUtc;
-			while( dateFromUtcCopy < dateToUtcCopy )
-			{
-				dates.Add( Tuple.Create( dateFromUtcCopy, dateFromUtcCopy.Add( interval ).Add( intervalOverlapping ) ) );
-				dateFromUtcCopy = dateFromUtcCopy.Add( interval );
-			}
-			var lastInterval = dates.Last();
-			dates.Remove( lastInterval );
-			dates.Add( Tuple.Create( lastInterval.Item1, dateToUtc ) );
-			return dates;
-		}
-
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
@@ -284,6 +268,161 @@ namespace MagentoAccess
 			}
 		}
 
+		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
+		{
+			var productsBriefInfo = products.ToJson();
+			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
+			const string currentMenthodName = "UpdateInventoryAsync";
+			var mark = Guid.NewGuid().ToString();
+			try
+			{
+				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MathodParameters:{4}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ) );
+
+				var inventories = products as IList< Inventory > ?? products.ToList();
+				var updateBriefInfo = PredefinedValues.NotAvailable;
+				if( inventories.Any() )
+				{
+					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+
+					switch( pingres.Version )
+					{
+						case MagentoVersions.M1901:
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
+							break;
+						case MagentoVersions.M1702:
+							updateBriefInfo = await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false );
+							break;
+						default:
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
+							break;
+					}
+				}
+
+				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2},Mark:{3}, MathodParameters:{4}, MethodResult:{5}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo, updateBriefInfo ) );
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MethodParameters:{4}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public async Task UpdateInventoryBySkuAsync(IEnumerable<InventoryBySku> inventory)
+		{
+			var productsBriefInfo = inventory.ToJson();
+			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
+			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
+			const string currentMenthodName = "UpdateInventoryBySkuAsync";
+			try
+			{
+				MagentoLogger.LogTraceStarted(string.Format("{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo));
+
+				var inventories = inventory as IList<InventoryBySku> ?? inventory.ToList();
+				var updateBriefInfo = PredefinedValues.NotAvailable;
+				if (inventories.Any())
+				{
+					if (this.UseSoapOnly)
+					{
+						var stockitems = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync(inventory.Select(x => x.Sku).ToList()).ConfigureAwait(false);
+						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
+						await this.UpdateInventoryAsync(productsWithSkuQtyId).ConfigureAwait(false);
+					}
+					else
+					{
+						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync().ConfigureAwait(false);
+						var resultProducts = productsWithSkuUpdatedQtyId.Select(x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() });
+						await this.UpdateInventoryAsync(resultProducts).ConfigureAwait(false);
+					}
+				}
+
+				MagentoLogger.LogTraceEnded(string.Format("{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo));
+			}
+			catch (Exception exception)
+			{
+				var mexc = new MagentoCommonException(string.Format("MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo), exception);
+				MagentoLogger.LogTraceException(mexc);
+				throw mexc;
+			}
+		}
+
+		public void InitiateDesktopAuthentication()
+		{
+			try
+			{
+				MagentoLogger.LogTraceStarted(string.Format("InitiateDesktopAuthentication()"));
+				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
+				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
+				authorizeTask.Wait();
+
+				if (this.AfterGettingToken != null)
+					this.AfterGettingToken.Invoke(this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret);
+
+				MagentoLogger.LogTraceEnded(string.Format("InitiateDesktopAuthentication()"));
+			}
+			catch (Exception exception)
+			{
+				var mexc = new MagentoCommonException("Error.", exception);
+				MagentoLogger.LogTraceException(mexc);
+				throw mexc;
+			}
+		}
+
+		public VerificationData RequestVerificationUri()
+		{
+			try
+			{
+				MagentoLogger.LogTraceStarted(string.Format("RequestVerificationUri()"));
+				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
+				MagentoLogger.LogTraceEnded(string.Format("RequestVerificationUri()"));
+
+				return res;
+			}
+			catch (Exception exception)
+			{
+				var mexc = new MagentoCommonException("Error.", exception);
+				MagentoLogger.LogTraceException(mexc);
+				throw mexc;
+			}
+		}
+
+		public void PopulateAccessTokenAndAccessTokenSecret(string verificationCode, string requestToken, string requestTokenSecret)
+		{
+			try
+			{
+				MagentoLogger.LogTraceStarted(string.Format("PopulateAccessTokenAndAccessTokenSecret(...)"));
+				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret(verificationCode, requestToken, requestTokenSecret);
+
+				if (this.AfterGettingToken != null)
+					this.AfterGettingToken.Invoke(this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret);
+
+				MagentoLogger.LogTraceEnded(string.Format("PopulateAccessTokenAndAccessTokenSecret(...)"));
+			}
+			catch (Exception exception)
+			{
+				var mexc = new MagentoCommonException("Error.", exception);
+				MagentoLogger.LogTraceException(mexc);
+				throw mexc;
+			}
+		}
+
+		private static List< Tuple< DateTime, DateTime > > SplitToDates( DateTime dateFromUtc, DateTime dateToUtc, TimeSpan interval, TimeSpan intervalOverlapping )
+		{
+			var dates = new List< Tuple< DateTime, DateTime > >();
+			var dateFromUtcCopy = dateFromUtc;
+			var dateToUtcCopy = dateToUtc;
+			while( dateFromUtcCopy < dateToUtcCopy )
+			{
+				dates.Add( Tuple.Create( dateFromUtcCopy, dateFromUtcCopy.Add( interval ).Add( intervalOverlapping ) ) );
+				dateFromUtcCopy = dateFromUtcCopy.Add( interval );
+			}
+			var lastInterval = dates.Last();
+			dates.Remove( lastInterval );
+			dates.Add( Tuple.Create( lastInterval.Item1, dateToUtc ) );
+			return dates;
+		}
+
 		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap = null )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
@@ -343,47 +482,6 @@ namespace MagentoAccess
 			return resultProducts;
 		}
 
-		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
-		{
-			var productsBriefInfo = products.ToJson();
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "UpdateInventoryAsync";
-			var mark = Guid.NewGuid().ToString();
-			try
-			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MathodParameters:{4}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ) );
-
-				var inventories = products as IList< Inventory > ?? products.ToList();
-				var updateBriefInfo = PredefinedValues.NotAvailable;
-				if( inventories.Any() )
-				{
-					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-
-					switch( pingres.Version )
-					{
-						case MagentoVersions.M1901:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
-							break;
-						case MagentoVersions.M1702:
-							updateBriefInfo = await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false );
-							break;
-						default:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, mark ).ConfigureAwait( false );
-							break;
-					}
-				}
-
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2},Mark:{3}, MathodParameters:{4}, MethodResult:{5}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo, updateBriefInfo ) );
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MethodParameters:{4}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ), exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
 		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, string mark )
 		{
 			var productToUpdate = inventories.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity { qty = x.Qty.ToString() } ) ).ToList();
@@ -400,104 +498,6 @@ namespace MagentoAccess
 				throw new Exception( string.Format( "Not updated {0}", notUpdatedBriefInfo ) );
 
 			return updateBriefInfo;
-		}
-
-		public async Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory )
-		{
-			var productsBriefInfo = inventory.ToJson();
-			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "UpdateInventoryBySkuAsync";
-			try
-			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
-
-				var inventories = inventory as IList< InventoryBySku > ?? inventory.ToList();
-				var updateBriefInfo = PredefinedValues.NotAvailable;
-				if( inventories.Any() )
-				{
-					if( this.UseSoapOnly )
-					{
-						var stockitems = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
-						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
-						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
-					}
-					else
-					{
-						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync().ConfigureAwait( false );
-						var resultProducts = productsWithSkuUpdatedQtyId.Select( x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() } );
-						await this.UpdateInventoryAsync( resultProducts ).ConfigureAwait( false );
-					}
-				}
-
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ), exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public void InitiateDesktopAuthentication()
-		{
-			try
-			{
-				MagentoLogger.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
-				this.MagentoServiceLowLevel.TransmitVerificationCode = this.TransmitVerificationCode;
-				var authorizeTask = this.MagentoServiceLowLevel.InitiateDescktopAuthenticationProcess();
-				authorizeTask.Wait();
-
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-
-				MagentoLogger.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( "Error.", exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public VerificationData RequestVerificationUri()
-		{
-			try
-			{
-				MagentoLogger.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
-				var res = this.MagentoServiceLowLevel.RequestVerificationUri();
-				MagentoLogger.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
-
-				return res;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( "Error.", exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
-		{
-			try
-			{
-				MagentoLogger.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
-				this.MagentoServiceLowLevel.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
-
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevel.AccessToken, this.MagentoServiceLowLevel.AccessTokenSecret );
-
-				MagentoLogger.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( "Error.", exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
 		}
 
 		private async Task< IEnumerable< Product > > GetRestProductsAsync()
