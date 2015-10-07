@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services
 {
 	[ TestFixture ]
-	internal class MeagentoServiceLowLevelSoapTest : BaseTest
+	internal class MeagentoServiceLowLevelSoap1_7_to_1_9_CE_Test : BaseTest
 	{
 		[ Test ]
 		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders()
