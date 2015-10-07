@@ -77,7 +77,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.result.Select( x => x.product_id ).ShouldBeEquivalentTo( this._productsIds.Select( x => x.Key ) );
+			getProductsTask.Result.InventoryStockItems.Select( x => x.ProductId ).ShouldBeEquivalentTo( this._productsIds.Select( x => x.Key ) );
 		}
 
 		[ Test ]

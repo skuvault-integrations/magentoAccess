@@ -12,6 +12,7 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Models.Services.GetStockItems;
+using MagentoAccess.Models.Services.SOAP.GetInventory;
 using MagentoAccess.Services;
 using Netco.Extensions;
 
@@ -304,15 +305,15 @@ namespace MagentoAccess
 			//var stockItems = stockItemsResponses.Where(x => x != null && x.result != null).SelectMany(x => x.result).ToList();
 
 			// this code works faster on 1 core machine 
-			var getStockItemsAsync = new List< catalogInventoryStockItemEntity >();
+			var getStockItemsAsync = new List< InventoryStockItem >();
 			foreach( var productsDevidedByChunk in productsDevidedByChunks )
 			{
 				var catalogInventoryStockItemListResponse = await ( magentoServiceLowLevelSoap ?? this.MagentoServiceLowLevelSoap ).GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
-				getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.result.ToList() );
+				getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.InventoryStockItems.ToList() );
 			}
 			var stockItems = getStockItemsAsync.ToList();
 
-			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.product_id equals productEntity.ProductId select new Product { ProductId = stockItemEntity.product_id, EntityId = productEntity.ProductId, Name = productEntity.Name, Sku = productEntity.Sku, Qty = stockItemEntity.qty } ).ToList();
+			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product { ProductId = stockItemEntity.ProductId, EntityId = productEntity.ProductId, Name = productEntity.Name, Sku = productEntity.Sku, Qty = stockItemEntity.Qty } ).ToList();
 			return resultProducts;
 		}
 
@@ -418,7 +419,7 @@ namespace MagentoAccess
 					if( this.UseSoapOnly )
 					{
 						var stockitems = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
-						var productsWithSkuQtyId = from i in inventory join s in stockitems.result on i.Sku equals s.sku select new Inventory() { ItemId = s.product_id, ProductId = s.product_id, Qty = i.Qty };
+						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
 						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
 					}
 					else

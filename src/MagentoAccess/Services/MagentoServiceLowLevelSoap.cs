@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.SOAP.GetInventory;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 
@@ -302,7 +303,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
 			try
 			{
@@ -330,7 +331,7 @@ namespace MagentoAccess.Services
 						res = await privateClient.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return res;
+				return new InventoryStockItemListResponse( res );
 			}
 			catch( Exception exc )
 			{

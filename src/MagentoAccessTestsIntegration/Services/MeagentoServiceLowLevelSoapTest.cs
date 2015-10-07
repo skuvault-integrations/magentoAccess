@@ -78,7 +78,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.result.Select( x => x.product_id ).ShouldBeEquivalentTo( this._productsIds.Select( x => x.Key ) );
+			getProductsTask.Result.InventoryStockItems.Select( x => x.ProductId ).ShouldBeEquivalentTo( this._productsIds.Select( x => x.Key ) );
 		}
 
 		[ Test ]
@@ -128,7 +128,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync.Wait();
 
-			var itemsToUpdate = productsAsync.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "123" } ) ).ToList();
+			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = "123" } ) ).ToList();
 
 			var getProductsTask = this._magentoLowLevelSoapService.PutStockItemsAsync( itemsToUpdate );
 			getProductsTask.Wait();
@@ -138,7 +138,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync2 = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync2.Wait();
 
-			var itemsToUpdate2 = productsAsync2.Result.result.Select( x => new PutStockItem( x.product_id, new catalogInventoryStockItemUpdateEntity() { qty = "100500" } ) ).ToList();
+			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( x.ProductId, new catalogInventoryStockItemUpdateEntity() { qty = "100500" } ) ).ToList();
 
 			var getProductsTask2 = this._magentoLowLevelSoapService.PutStockItemsAsync( itemsToUpdate2 );
 			getProductsTask2.Wait();
@@ -147,8 +147,8 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync3 = this._magentoLowLevelSoapService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync3.Wait();
 
-			productsAsync2.Result.result.Should().OnlyContain( x => x.qty.ToDecimalOrDefault() == 123 );
-			productsAsync3.Result.result.Should().OnlyContain( x => x.qty.ToDecimalOrDefault() == 100500 );
+			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
+			productsAsync3.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
 		}
 
 		[ Test ]

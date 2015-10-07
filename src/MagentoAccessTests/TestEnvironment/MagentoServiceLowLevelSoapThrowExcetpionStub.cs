@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Models.Services.SOAP.GetInventory;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 using MagentoAccess.Services;
@@ -39,7 +40,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< catalogInventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public override Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
 			throw new Exception();
 		}
