@@ -162,7 +162,7 @@ namespace MagentoAccessTestsIntegration.Services
 			productsAsync.Wait();
 
 			//------------ Assert
-			productsAsync.Result.result.magento_version.Should().NotBeNullOrWhiteSpace();
+			productsAsync.Result.MagentoVersion.Should().NotBeNullOrWhiteSpace();
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.Services.SOAP.GetInventory;
+using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 
@@ -19,7 +20,7 @@ namespace MagentoAccess.Services
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, string markForLog );
-		Task< magentoInfoResponse > GetMagentoInfoAsync();
+		Task< GetMagentoInfoResponse > GetMagentoInfoAsync();
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog );
 	}

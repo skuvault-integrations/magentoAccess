@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.SOAP.GetInventory;
+using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
-using magentoInfoResponse = MagentoAccess.MagentoSoapServiceReference.magentoInfoResponse;
 
 namespace MagentoAccess.Services
 {
@@ -511,40 +511,38 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< magentoInfoResponse > GetMagentoInfoAsync()
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
 		{
-			//todo replace
-			throw new NotImplementedException();
-			//try
-			//{
-			//	const int maxCheckCount = 2;
-			//	const int delayBeforeCheck = 1800000;
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
 
-			//	var res = new magentoInfoResponse();
-			//	var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var res = new MagentoSoapServiceReference_v_1_14_1_EE.magentoInfoResponse();
+				var privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
 
-			//	await ActionPolicies.GetAsync.Do( async () =>
-			//	{
-			//		var statusChecker = new StatusChecker( maxCheckCount );
-			//		TimerCallback tcb = statusChecker.CheckStatus;
+				await ActionPolicies.GetAsync.Do(async () =>
+				{
+					var statusChecker = new StatusChecker(maxCheckCount);
+					TimerCallback tcb = statusChecker.CheckStatus;
 
-			//		if( privateClient.State != CommunicationState.Opened
-			//			&& privateClient.State != CommunicationState.Created
-			//			&& privateClient.State != CommunicationState.Opening )
-			//			privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					if (privateClient.State != CommunicationState.Opened
+						&& privateClient.State != CommunicationState.Created
+						&& privateClient.State != CommunicationState.Opening)
+						privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
 
-			//		var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId().ConfigureAwait(false);
 
-			//		using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-			//			res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
-			//	} ).ConfigureAwait( false );
+					using (var stateTimer = new Timer(tcb, privateClient, 1000, delayBeforeCheck))
+						res = await privateClient.magentoInfoAsync(sessionId).ConfigureAwait(false);
+				}).ConfigureAwait(false);
 
-			//	return res;
-			//}
-			//catch( Exception exc )
-			//{
-			//	throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
-			//}
+				return new GetMagentoInfoResponse(res);
+			}
+			catch (Exception exc)
+			{
+				throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
+			}
 		}
 
 		public string ToJsonSoapInfo()

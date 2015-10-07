@@ -78,9 +78,9 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}}}", currentMenthodName, soapInfo ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
-				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.result.magento_version ) || !string.IsNullOrWhiteSpace( magentoInfo.result.magento_edition );
+				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
-				var magentoCoreInfo = new PingSoapInfo( magentoInfo.result.magento_version, magentoInfo.result.magento_edition, soapWorks );
+				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
 				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodResult:{2}}}", currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;

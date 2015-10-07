@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.Services.SOAP.GetInventory;
+using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 using MagentoAccess.Services;
@@ -15,7 +15,7 @@ namespace MagentoAccessTests.TestEnvironment
 		{
 		}
 
-		public override Task< magentoInfoResponse > GetMagentoInfoAsync()
+		public override Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
 		{
 			throw new Exception();
 		}

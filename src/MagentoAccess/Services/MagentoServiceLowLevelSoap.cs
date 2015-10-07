@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.SOAP.GetInventory;
+using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 
@@ -496,7 +497,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public virtual async Task< magentoInfoResponse > GetMagentoInfoAsync()
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
 		{
 			try
 			{
@@ -522,7 +523,7 @@ namespace MagentoAccess.Services
 						res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return res;
+				return new GetMagentoInfoResponse( res );
 			}
 			catch( Exception exc )
 			{
