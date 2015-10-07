@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 
-namespace MagentoAccess.Models.Services.SOAP.GetInventory
+namespace MagentoAccess.Models.Services.Soap.GetInventory
 {
 	internal class InventoryStockItemListResponse
 	{

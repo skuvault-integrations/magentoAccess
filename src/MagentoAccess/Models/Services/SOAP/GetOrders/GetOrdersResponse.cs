@@ -2,7 +2,7 @@
 using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 
-namespace MagentoAccess.Models.Services.SOAP.GetOrders
+namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
 	internal class GetOrdersResponse
 	{

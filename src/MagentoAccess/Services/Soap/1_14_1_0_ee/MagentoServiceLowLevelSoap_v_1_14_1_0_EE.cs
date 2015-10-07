@@ -9,10 +9,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.SOAP.GetInventory;
-using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
-using MagentoAccess.Models.Services.SOAP.GetOrders;
-using MagentoAccess.Models.Services.SOAP.GetProducts;
+using MagentoAccess.Models.Services.Soap.GetInventory;
+using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
+using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee

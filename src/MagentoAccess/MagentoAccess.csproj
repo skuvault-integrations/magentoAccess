@@ -109,11 +109,11 @@
     <Compile Include="Models\Services\PutStockItems\PutStockItemsResponse.cs" />
     <Compile Include="Models\Services\PutStockItems\ResponseStockItem.cs" />
     <Compile Include="Models\Services\PutStockItems\StockItem.cs" />
-    <Compile Include="Models\Services\SOAP\GetInventory\InventoryStockItemListResponse.cs" />
-    <Compile Include="Models\Services\SOAP\GetMagentoInfo\GetMagentoInfoResponse.cs" />
-    <Compile Include="Models\Services\SOAP\GetOrders\GetOrdersResponse.cs" />
-    <Compile Include="Models\Services\SOAP\GetOrders\OrderInfoResponse.cs" />
-    <Compile Include="Models\Services\SOAP\GetProducts\SoapGetProductsResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetInventory\InventoryStockItemListResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetMagentoInfo\GetMagentoInfoResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetOrders\GetOrdersResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetOrders\OrderInfoResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetProducts\SoapGetProductsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\MagentoSoapServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>

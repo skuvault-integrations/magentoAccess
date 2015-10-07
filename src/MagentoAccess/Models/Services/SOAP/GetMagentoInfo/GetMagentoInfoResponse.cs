@@ -1,6 +1,6 @@
 using MagentoAccess.MagentoSoapServiceReference;
 
-namespace MagentoAccess.Models.Services.SOAP.GetMagentoInfo
+namespace MagentoAccess.Models.Services.Soap.GetMagentoInfo
 {
 	internal class GetMagentoInfoResponse
 	{

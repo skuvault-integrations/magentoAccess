@@ -11,7 +11,7 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Models.Services.GetStockItems;
-using MagentoAccess.Models.Services.SOAP.GetInventory;
+using MagentoAccess.Models.Services.Soap.GetInventory;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;
@@ -737,14 +737,14 @@ namespace MagentoAccess
 		}
 	}
 
-	internal class SalesOrderByOrderIdComparer : IEqualityComparer< Models.Services.SOAP.GetOrders.Order >
+	internal class SalesOrderByOrderIdComparer : IEqualityComparer< Models.Services.Soap.GetOrders.Order >
 	{
-		public bool Equals( Models.Services.SOAP.GetOrders.Order x, Models.Services.SOAP.GetOrders.Order y )
+		public bool Equals( Models.Services.Soap.GetOrders.Order x, Models.Services.Soap.GetOrders.Order y )
 		{
 			return x.incrementId == y.incrementId && x.OrderId == y.OrderId;
 		}
 
-		public int GetHashCode( Models.Services.SOAP.GetOrders.Order obj )
+		public int GetHashCode( Models.Services.Soap.GetOrders.Order obj )
 		{
 			return obj.OrderId.GetHashCode() ^ obj.incrementId.GetHashCode();
 		}

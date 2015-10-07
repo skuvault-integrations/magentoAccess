@@ -4,7 +4,7 @@ using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.GetOrders;
-using MagentoAccess.Models.Services.SOAP.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
 {

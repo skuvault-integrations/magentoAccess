@@ -29,7 +29,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoSoapCredentials _soapUserCredentials;
 		protected MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE _magentoLowLevelSoapVFrom17To19CeService;
 		protected MagentoServiceLowLevelSoap_v_1_14_1_0_EE _magentoServiceLowLevelSoapV11410Ee;
-		protected List< MagentoAccess.Models.Services.SOAP.GetOrders.Order > _orders;
+		protected List< MagentoAccess.Models.Services.Soap.GetOrders.Order > _orders;
 		protected Dictionary< int, string > _productsIds;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
