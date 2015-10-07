@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
@@ -33,6 +32,7 @@ namespace MagentoAccess
 
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
+		#region constructor
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{
 			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
@@ -69,7 +69,9 @@ namespace MagentoAccess
 				magentoUserCredentials.AccessTokenUrl
 				);
 		}
+		#endregion
 
+		#region ping
 		public async Task< PingSoapInfo > PingSoapAsync()
 		{
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
@@ -116,7 +118,9 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
+		#endregion
 
+		#region getOrders
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
@@ -204,7 +208,9 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
+		#endregion
 
+		#region getProducts
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
 			var restInfo = this.MagentoServiceLowLevel.ToJsonRestInfo();
@@ -267,7 +273,9 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
+		#endregion
 
+		#region updateInventory
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
 			var productsBriefInfo = products.ToJson();
@@ -349,7 +357,9 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
+		#endregion
 
+		#region auth
 		public void InitiateDesktopAuthentication()
 		{
 			try
@@ -409,6 +419,7 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
+		#endregion
 
 		#region MethodsImplementations
 		private static List< Tuple< DateTime, DateTime > > SplitToDates( DateTime dateFromUtc, DateTime dateToUtc, TimeSpan interval, TimeSpan intervalOverlapping )
