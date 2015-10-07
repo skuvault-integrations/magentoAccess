@@ -35,7 +35,7 @@ namespace MagentoAccess
 		#region constructor
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{
-			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
+			this.MagentoServiceLowLevel = new MagentoServiceLowLevelRest(
 				magentoAuthenticatedUserCredentials.ConsumerKey,
 				magentoAuthenticatedUserCredentials.ConsumerSckretKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
@@ -60,7 +60,7 @@ namespace MagentoAccess
 
 		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials )
 		{
-			this.MagentoServiceLowLevel = new MagentoServiceLowLevel(
+			this.MagentoServiceLowLevel = new MagentoServiceLowLevelRest(
 				magentoUserCredentials.ConsumerKey,
 				magentoUserCredentials.ConsumerSckretKey,
 				magentoUserCredentials.BaseMagentoUrl,

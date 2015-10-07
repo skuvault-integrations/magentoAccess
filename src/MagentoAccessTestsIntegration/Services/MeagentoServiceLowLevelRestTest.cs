@@ -8,7 +8,8 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services
 {
 	[ TestFixture ]
-	internal class MeagentoServiceLowLevelTest : BaseTest
+	[ Ignore( "Since REST has no goo implementation yet" ) ]
+	internal class MeagentoServiceLowLevelRestTest : BaseTest
 	{
 		[ Test ]
 		public void GetOrders_StoreContainsOrders_ReceiveOrders()
@@ -16,7 +17,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getOrdersTask = this._magentoServiceLowLevelRest.GetOrdersAsync();
+			var getOrdersTask = this._magentoServiceLowLevelRestRest.GetOrdersAsync();
 			getOrdersTask.Wait();
 
 			//------------ Assert
@@ -30,7 +31,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var inventoryItems = new List< StockItem > { new StockItem { ItemId = this._productsIds.First().Key.ToString(), MinQty = 1, ProductId = this._productsIds.First().Key.ToString(), Qty = 277, StockId = "1" } };
 
 			//------------ Act
-			var putInventoryTask = this._magentoServiceLowLevelRest.PutStockItemsAsync( inventoryItems );
+			var putInventoryTask = this._magentoServiceLowLevelRestRest.PutStockItemsAsync( inventoryItems );
 			putInventoryTask.Wait();
 
 			//------------ Assert
@@ -44,7 +45,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._magentoServiceLowLevelRest.GetProductsAsync( 1, 2 );
+			var getProductsTask = this._magentoServiceLowLevelRestRest.GetProductsAsync( 1, 2 );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -56,7 +57,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var getInventoryTask = this._magentoServiceLowLevelRest.GetStockItemsAsync( 1, 100 );
+			var getInventoryTask = this._magentoServiceLowLevelRestRest.GetStockItemsAsync( 1, 100 );
 			getInventoryTask.Wait();
 
 			//------------ Assert
@@ -68,7 +69,7 @@ namespace MagentoAccessTestsIntegration.Services
 		{
 			//------------ Arrange
 			//------------ Act
-			var res = this._magentoServiceLowLevelRest.GetProductAsync( this._productsIds.First().Key.ToString() );
+			var res = this._magentoServiceLowLevelRestRest.GetProductAsync( this._productsIds.First().Key.ToString() );
 
 			//------------ Assert
 			res.Result.Should().NotBeNull();

@@ -132,7 +132,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
-    <Compile Include="Services\MagentoServiceLowLevel.cs" />
+    <Compile Include="Services\MagentoServiceLowLevelRest.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
