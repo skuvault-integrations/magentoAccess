@@ -109,7 +109,7 @@
     <Compile Include="Models\Services\PutStockItems\PutStockItemsResponse.cs" />
     <Compile Include="Models\Services\PutStockItems\ResponseStockItem.cs" />
     <Compile Include="Models\Services\PutStockItems\StockItem.cs" />
-    <Compile Include="Models\Services\Soap\GetInventory\InventoryStockItemListResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetStockItems\InventoryStockItemListResponse.cs" />
     <Compile Include="Models\Services\Soap\GetMagentoInfo\GetMagentoInfoResponse.cs" />
     <Compile Include="Models\Services\Soap\GetOrders\GetOrdersResponse.cs" />
     <Compile Include="Models\Services\Soap\GetOrders\OrderInfoResponse.cs" />

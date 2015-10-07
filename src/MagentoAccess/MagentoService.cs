@@ -11,7 +11,7 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Models.Services.GetStockItems;
-using MagentoAccess.Models.Services.Soap.GetInventory;
+using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;

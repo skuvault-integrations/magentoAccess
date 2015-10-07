@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MagentoAccess.Models.Services.Soap.GetInventory;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
+using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
 namespace MagentoAccess.Services.Soap
