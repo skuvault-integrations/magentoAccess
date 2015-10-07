@@ -352,17 +352,9 @@ namespace MagentoAccess.Services
 
 				var stockItemsProcessed = stockItems.Select( x =>
 				{
-					var catalogInventoryStockItemUpdateEntity = new catalogInventoryStockItemUpdateEntity();
-					if( x.Qty > 0 )
-					{
-						catalogInventoryStockItemUpdateEntity.is_in_stock = 1;
-						catalogInventoryStockItemUpdateEntity.is_in_stockSpecified = true;
-					}
-					else
-					{
-						catalogInventoryStockItemUpdateEntity.is_in_stock = 0;
-						catalogInventoryStockItemUpdateEntity.is_in_stockSpecified = false;
-					}
+					var catalogInventoryStockItemUpdateEntity = ( x.Qty > 0 ) ?
+						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = x.Qty.ToString() } :
+						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = x.Qty.ToString() };
 					return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
 				} );
 
@@ -414,18 +406,9 @@ namespace MagentoAccess.Services
 				var jsonSoapInfo = this.ToJsonSoapInfo();
 				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
 
-				var catalogInventoryStockItemUpdateEntity = new catalogInventoryStockItemUpdateEntity();
-
-				if( putStockItem.Qty > 0 )
-				{
-					catalogInventoryStockItemUpdateEntity.is_in_stock = 1;
-					catalogInventoryStockItemUpdateEntity.is_in_stockSpecified = true;
-				}
-				else
-				{
-					catalogInventoryStockItemUpdateEntity.is_in_stock = 0;
-					catalogInventoryStockItemUpdateEntity.is_in_stockSpecified = false;
-				}
+				var catalogInventoryStockItemUpdateEntity = ( putStockItem.Qty > 0 ) ?
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, } :
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, };
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
