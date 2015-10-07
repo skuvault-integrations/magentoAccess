@@ -358,114 +358,105 @@ namespace MagentoAccess.Services
 				var jsonSoapInfo = this.ToJsonSoapInfo();
 				var productsBriefInfo = stockItems.ToJson();
 
-				var stockItemsProcessed = stockItems.Select(x =>
+				var stockItemsProcessed = stockItems.Select( x =>
 				{
-					var catalogInventoryStockItemUpdateEntity = (x.Qty > 0) ?
+					var catalogInventoryStockItemUpdateEntity = ( x.Qty > 0 ) ?
 						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = x.Qty.ToString() } :
 						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = x.Qty.ToString() };
-					return Tuple.Create(x, catalogInventoryStockItemUpdateEntity);
-				});
+					return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
+				} );
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
 				var res = false;
-				var privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-				await ActionPolicies.GetAsync.Do(async () =>
+				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if (privateClient.State != CommunicationState.Opened
-						&& privateClient.State != CommunicationState.Created
-						&& privateClient.State != CommunicationState.Opening)
-						privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait(false);
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-					using (var stateTimer = new Timer(tcb, privateClient, 1000, delayBeforeCheck))
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						MagentoLogger.LogTraceStarted(string.Format("{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
+						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
 						var catalogInventoryStockItemUpdateEntities = stockItemsProcessed.Select( x => x.Item2 ).ToArray();
 						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), catalogInventoryStockItemUpdateEntities ).ConfigureAwait( false );
 
 						res = temp.result;
 
-						var updateBriefInfo = string.Format("{{Success:{0}}}", res);
-						MagentoLogger.LogTraceEnded(string.Format("{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo));
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
 					}
-				}).ConfigureAwait(false);
+				} ).ConfigureAwait( false );
 
 				return res;
 			}
-			catch (Exception exc)
+			catch( Exception exc )
 			{
 				var productsBriefInfo = stockItems.ToJson();
-				throw new MagentoSoapException(string.Format("An error occured during PutStockItemsAsync({0})", productsBriefInfo), exc);
+				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
 			}
 		}
 
 		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog )
 		{
-			//todo replace
-			throw new NotImplementedException();
-			//try
-			//{
-			//	const string currentMenthodName = "PutStockItemAsync";
-			//	var jsonSoapInfo = this.ToJsonSoapInfo();
-			//	var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
+			try
+			{
+				const string currentMenthodName = "PutStockItemAsync";
+				var jsonSoapInfo = this.ToJsonSoapInfo();
+				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
 
-			//	if( putStockItem.UpdateEntity.qty.ToDecimalOrDefault() > 0 )
-			//	{
-			//		putStockItem.UpdateEntity.is_in_stock = 1;
-			//		putStockItem.UpdateEntity.is_in_stockSpecified = true;
-			//	}
-			//	else
-			//	{
-			//		putStockItem.UpdateEntity.is_in_stock = 0;
-			//		putStockItem.UpdateEntity.is_in_stockSpecified = false;
-			//	}
+				var catalogInventoryStockItemUpdateEntity = ( putStockItem.Qty > 0 ) ?
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = putStockItem.Qty.ToString() } :
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = putStockItem.Qty.ToString() };
 
-			//	const int maxCheckCount = 2;
-			//	const int delayBeforeCheck = 120000;
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 120000;
 
-			//	var res = false;
-			//	var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var res = false;
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-			//	await ActionPolicies.GetAsync.Do( async () =>
-			//	{
-			//		var statusChecker = new StatusChecker( maxCheckCount );
-			//		TimerCallback tcb = statusChecker.CheckStatus;
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
 
-			//		if( privateClient.State != CommunicationState.Opened
-			//			&& privateClient.State != CommunicationState.Created
-			//			&& privateClient.State != CommunicationState.Opening )
-			//			privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-			//		var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-			//		using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-			//		{
-			//			MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					{
+						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
 
-			//			var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.Id, putStockItem.UpdateEntity ).ConfigureAwait( false );
+						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false );
 
-			//			res = temp.result > 0;
+						res = temp.result > 0;
 
-			//			var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
-			//			MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
-			//		}
-			//	} ).ConfigureAwait( false );
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
+					}
+				} ).ConfigureAwait( false );
 
-			//	return res;
-			//}
-			//catch( Exception exc )
-			//{
-			//	var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
-			//	throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
-			//}
+				return res;
+			}
+			catch( Exception exc )
+			{
+				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
+				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
+			}
 		}
 
 		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
@@ -510,30 +501,30 @@ namespace MagentoAccess.Services
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var res = new MagentoSoapServiceReference_v_1_14_1_EE.magentoInfoResponse();
-				var privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
+				var res = new magentoInfoResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-				await ActionPolicies.GetAsync.Do(async () =>
+				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if (privateClient.State != CommunicationState.Opened
-						&& privateClient.State != CommunicationState.Created
-						&& privateClient.State != CommunicationState.Opening)
-						privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait(false);
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-					using (var stateTimer = new Timer(tcb, privateClient, 1000, delayBeforeCheck))
-						res = await privateClient.magentoInfoAsync(sessionId).ConfigureAwait(false);
-				}).ConfigureAwait(false);
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
 
-				return new GetMagentoInfoResponse(res);
+				return new GetMagentoInfoResponse( res );
 			}
-			catch (Exception exc)
+			catch( Exception exc )
 			{
-				throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
 			}
 		}
 
