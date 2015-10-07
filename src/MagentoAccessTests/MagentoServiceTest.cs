@@ -36,7 +36,7 @@ namespace MagentoAccessTests
 		[ TestFixtureSetUp ]
 		public void Setup()
 		{
-			this._magentoServiceLowLevelSoapThrowExceptionsStub = new MagentoServiceLowLevelSoapThrowExcetpionStub( SoapApiUser, SoapApiKey, BaseMagentoUrl, "0" );
+			this._magentoServiceLowLevelSoapThrowExceptionsStub = new MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub( SoapApiUser, SoapApiKey, BaseMagentoUrl, "0" );
 			this._magentoServiceLowLevelRestThrowExceptionStub = new MagentoServiceLowLevelRestRestStubThrowExceptionStub( AccessToken, ConsumerSckretKey, BaseMagentoUrl, AccessToken, AccessTokenSecret );
 		}
 

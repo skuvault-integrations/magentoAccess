@@ -1,0 +1,968 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
+using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.Services.SOAP.GetInventory;
+using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
+using MagentoAccess.Models.Services.SOAP.GetOrders;
+using MagentoAccess.Models.Services.SOAP.GetProducts;
+
+namespace MagentoAccess.Services
+{
+	internal class MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE : IMagentoServiceLowLevelSoap
+	{
+		public string ApiUser { get; private set; }
+
+		public string ApiKey { get; private set; }
+
+		public string Store { get; private set; }
+
+		public string BaseMagentoUrl { get; set; }
+
+		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
+
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
+
+		protected string _sessionId;
+
+		protected DateTime _sessionIdCreatedAt;
+		private readonly CustomBinding _customBinding;
+
+		protected const int SessionIdLifeTime = 3590;
+
+		private void LogTraceGetResponseException( Exception exception )
+		{
+			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
+		}
+
+		internal async Task< string > GetSessionId( bool throwException = true )
+		{
+			try
+			{
+				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
+					return this._sessionId;
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 120000;
+
+				var res = string.Empty;
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				//await ActionPolicies.GetAsync.Do( async () =>
+				//{
+				//	var statusChecker = new StatusChecker(maxCheckCount);
+				//	TimerCallback tcb = statusChecker.CheckStatus;
+
+				if( privateClient.State != CommunicationState.Opened
+				    && privateClient.State != CommunicationState.Created
+				    && privateClient.State != CommunicationState.Opening )
+					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+				{
+					var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+					this._sessionIdCreatedAt = DateTime.UtcNow;
+					this._sessionId = loginResponse.result;
+					res = this._sessionId;
+				}
+				//} ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( Exception exc )
+			{
+				if( throwException )
+					throw new MagentoSoapException( string.Format( "An error occured during GetSessionId()" ), exc );
+				else
+				{
+					this.LogTraceGetResponseException( exc );
+					return null;
+				}
+			}
+		}
+
+		public MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl, string store )
+		{
+			this.ApiUser = apiUser;
+			this.ApiKey = apiKey;
+			this.Store = store;
+			this.BaseMagentoUrl = baseMagentoUrl;
+
+			_customBinding = CustomBinding( baseMagentoUrl );
+			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+		}
+
+		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
+		{
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
+
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+
+			return magentoSoapService;
+		}
+
+		private async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
+		{
+			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl ) );
+			await Task.WhenAll( task ).ConfigureAwait( false );
+			return task.Result;
+		}
+
+		private static CustomBinding CustomBinding( string baseMagentoUrl )
+		{
+			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
+			{
+				MessageVersion = MessageVersion.Soap11,
+				WriteEncoding = new UTF8Encoding()
+			};
+
+			BindingElement httpTransportBindingElement;
+			if( baseMagentoUrl.StartsWith( "https" ) )
+			{
+				httpTransportBindingElement = new HttpsTransportBindingElement
+				{
+					DecompressionEnabled = false,
+					MaxReceivedMessageSize = 999999999,
+					MaxBufferSize = 999999999,
+					MaxBufferPoolSize = 999999999,
+					KeepAliveEnabled = true,
+					AllowCookies = false,
+				};
+			}
+			else
+			{
+				httpTransportBindingElement = new HttpTransportBindingElement
+				{
+					DecompressionEnabled = false,
+					MaxReceivedMessageSize = 999999999,
+					MaxBufferSize = 999999999,
+					MaxBufferPoolSize = 999999999,
+					KeepAliveEnabled = true,
+					AllowCookies = false,
+				};
+			}
+
+			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
+			{
+				MessageVersion = MessageVersion.Soap11,
+			};
+
+			ICollection< BindingElement > bindingElements = new List< BindingElement >();
+			var httpBindingElement = httpTransportBindingElement;
+			var textBindingElement = myTextMessageEncodingBindingElement;
+			bindingElements.Add( textBindingElement );
+			bindingElements.Add( httpBindingElement );
+
+			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
+			return customBinding;
+		}
+
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		{
+			try
+			{
+				filters filters;
+
+				if( string.IsNullOrWhiteSpace( this.Store ) )
+					filters = new filters { complex_filter = new complexFilter[ 2 ] };
+				else
+				{
+					filters = new filters { complex_filter = new complexFilter[ 3 ] };
+					filters.complex_filter[ 2 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
+				}
+
+				filters.complex_filter[ 1 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "from", value = modifiedFrom.ToSoapParameterString() } };
+				filters.complex_filter[ 0 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "to", value = modifiedTo.ToSoapParameterString() } };
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new salesOrderListResponse();
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				//crutch for magento 1.7 
+				res.result = res.result.Where( x => x.updated_at.ToDateTimeOrDefault() >= modifiedFrom && x.updated_at.ToDateTimeOrDefault() <= modifiedTo ).ToArray();
+
+				return new GetOrdersResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync(modifiedFrom:{0},modifiedTo{1})", modifiedFrom, modifiedTo ), exc );
+			}
+		}
+
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		{
+			var ordersIdsAgregated = string.Empty;
+			try
+			{
+				ordersIdsAgregated = string.Join( ",", ordersIds );
+
+				filters filters;
+				if( string.IsNullOrWhiteSpace( this.Store ) )
+					filters = new filters { complex_filter = new complexFilter[ 1 ] };
+				else
+				{
+					filters = new filters { complex_filter = new complexFilter[ 2 ] };
+					filters.complex_filter[ 1 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
+				}
+
+				filters.complex_filter[ 0 ] = new complexFilter { key = "increment_id", value = new associativeEntity { key = "in", value = ordersIdsAgregated } };
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new salesOrderListResponse();
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new GetOrdersResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync({0})", ordersIdsAgregated ), exc );
+			}
+		}
+
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync()
+		{
+			try
+			{
+				var filters = new filters { filter = new associativeEntity[ 0 ] };
+
+				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new catalogProductListResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new SoapGetProductsResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
+			}
+		}
+
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		{
+			try
+			{
+				var skusArray = skusOrIds.ToArray();
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new catalogInventoryStockItemListResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new InventoryStockItemListResponse( res );
+			}
+			catch( Exception exc )
+			{
+				var productsBriefInfo = string.Join( "|", skusOrIds );
+				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", productsBriefInfo ), exc );
+			}
+		}
+
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, string markForLog = "" )
+		{
+			try
+			{
+				const string currentMenthodName = "PutStockItemsAsync";
+				var jsonSoapInfo = this.ToJsonSoapInfo();
+				var productsBriefInfo = stockItems.ToJson();
+
+				var stockItemsProcessed = stockItems.Select( x =>
+				{
+					var catalogInventoryStockItemUpdateEntity = ( x.Qty > 0 ) ?
+						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = x.Qty.ToString() } :
+						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = x.Qty.ToString() };
+					return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
+				} );
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = false;
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					{
+						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
+
+						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
+
+						res = temp.result;
+
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
+					}
+				} ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( Exception exc )
+			{
+				var productsBriefInfo = stockItems.ToJson();
+				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
+			}
+		}
+
+		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog )
+		{
+			try
+			{
+				const string currentMenthodName = "PutStockItemAsync";
+				var jsonSoapInfo = this.ToJsonSoapInfo();
+				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
+
+				var catalogInventoryStockItemUpdateEntity = ( putStockItem.Qty > 0 ) ?
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, } :
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, };
+
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 120000;
+
+				var res = false;
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					{
+						MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo ) );
+
+						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false );
+
+						res = temp.result > 0;
+
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, Called From:{1}, SoapInfo:{2}, MethodParameters:{3}, MethodResult:{4}}}", currentMenthodName, markForLog, jsonSoapInfo, productsBriefInfo, updateBriefInfo ) );
+					}
+				} ).ConfigureAwait( false );
+
+				return res;
+			}
+			catch( Exception exc )
+			{
+				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
+				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
+			}
+		}
+
+		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 300000;
+
+				var res = new salesOrderInfoResponse();
+
+				var privateClient = await this.CreateMagentoServiceClientAsync( this.BaseMagentoUrl ).ConfigureAwait( false );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new OrderInfoResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetOrderAsync(incrementId:{0})", incrementId ), exc );
+			}
+		}
+
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new magentoInfoResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new GetMagentoInfoResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public string ToJsonSoapInfo()
+		{
+			return string.Format( "{{BaseMagentoUrl:{0}, ApiUser:{1},ApiKey:{2},Store:{3}}}",
+				string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl,
+				string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser,
+				string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey,
+				string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store
+				);
+		}
+
+		#region JustForTesting
+		public async Task< int > CreateCart( string storeid )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.shoppingCartCreateAsync( sessionId, storeid ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync({0})", storeid ), exc );
+			}
+		}
+
+		public async Task< string > CreateOrder( int shoppingcartid, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.shoppingCartOrderAsync( sessionId, shoppingcartid, store, null ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< int > CreateCustomer(
+			string email = "na@na.com",
+			string firstname = "firstname",
+			string lastname = "lastname",
+			string password = "password",
+			int websiteId = 0,
+			int storeId = 0,
+			int groupId = 0
+			)
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var customerCustomerEntityToCreate = new customerCustomerEntityToCreate
+				{
+					email = email,
+					firstname = firstname,
+					lastname = lastname,
+					password = password,
+					website_id = websiteId,
+					store_id = storeId,
+					group_id = groupId
+				};
+				var res = await this._magentoSoapService.customerCustomerCreateAsync( sessionId, customerCustomerEntityToCreate ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var cutomers = await this._magentoSoapService.customerCustomerListAsync( sessionId, new filters() ).ConfigureAwait( false );
+
+				var customer = cutomers.result.First( x => x.customer_id == customerId );
+
+				var customerShoppingCart = new shoppingCartCustomerEntity
+				{
+					confirmation = ( customer.confirmation ? 1 : 0 ).ToString( CultureInfo.InvariantCulture ),
+					customer_id = customer.customer_id,
+					customer_idSpecified = customer.customer_idSpecified,
+					email = customer.email,
+					firstname = customer.firstname,
+					group_id = customer.group_id,
+					group_idSpecified = customer.group_idSpecified,
+					lastname = customer.lastname,
+					mode = "customer",
+					password = customerPass,
+					store_id = customer.store_id,
+					store_idSpecified = customer.store_idSpecified,
+					website_id = customer.website_id,
+					website_idSpecified = customer.website_idSpecified
+				};
+				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId, shoppingCart, customerShoppingCart, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var customer = new shoppingCartCustomerEntity
+				{
+					email = customerMail,
+					firstname = customerfirstname,
+					lastname = customerlastname,
+					website_id = 0,
+					store_id = 0,
+					mode = "guest",
+				};
+
+				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId, shoppingCart, customer, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var customerAddressEntities = new shoppingCartCustomerAddressEntity[ 2 ];
+
+				customerAddressEntities[ 0 ] = new shoppingCartCustomerAddressEntity
+				{
+					mode = "shipping",
+					firstname = "testFirstname",
+					lastname = "testLastname",
+					company = "testCompany",
+					street = "testStreet",
+					city = "testCity",
+					region = "testRegion",
+					postcode = "testPostcode",
+					country_id = "1",
+					telephone = "0123456789",
+					fax = "0123456789",
+					is_default_shipping = 0,
+					is_default_billing = 0
+				};
+				customerAddressEntities[ 1 ] = new shoppingCartCustomerAddressEntity
+				{
+					mode = "billing",
+					firstname = "testFirstname",
+					lastname = "testLastname",
+					company = "testCompany",
+					street = "testStreet",
+					city = "testCity",
+					region = "testRegion",
+					postcode = "testPostcode",
+					country_id = "1",
+					telephone = "0123456789",
+					fax = "0123456789",
+					is_default_shipping = 0,
+					is_default_billing = 0
+				};
+
+				var res = await this._magentoSoapService.shoppingCartCustomerAddressesAsync( sessionId, shoppingCart, customerAddressEntities, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+			}
+		}
+
+		public async Task< bool > DeleteCustomer( int customerId )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.customerCustomerDeleteAsync( sessionId, customerId ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during DeleteCustomer()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var shoppingCartProductEntities = new shoppingCartProductEntity[ 1 ];
+
+				shoppingCartProductEntities[ 0 ] = new shoppingCartProductEntity { product_id = productId, qty = 3 };
+
+				var res = await this._magentoSoapService.shoppingCartProductAddAsync( sessionId, shoppingCartId, shoppingCartProductEntities, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var cartPaymentMethodEntity = new shoppingCartPaymentMethodEntity
+				{
+					po_number = null,
+					//method = "checkmo",
+					method = "checkmo",
+					//method = "'cashondelivery'",
+					cc_cid = null,
+					cc_owner = null,
+					cc_number = null,
+					cc_type = null,
+					cc_exp_year = null,
+					cc_exp_month = null
+				};
+
+				var res = await this._magentoSoapService.shoppingCartPaymentMethodAsync( sessionId, shoppingCartId, cartPaymentMethodEntity, store ).ConfigureAwait( false );
+
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
+			}
+		}
+
+		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var res = await this._magentoSoapService.shoppingCartShippingListAsync( sessionId, shoppingCartId, store ).ConfigureAwait( false );
+
+				var shippings = res.result;
+				var shipping = shippings.First();
+
+				var shippingMethodResponse = await this._magentoSoapService.shoppingCartShippingMethodAsync( sessionId, shoppingCartId, shipping.code, store ).ConfigureAwait( false );
+
+				return shippingMethodResponse.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during ShoppingCartAddProduct()" ), exc );
+			}
+		}
+
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId, storeId ).ConfigureAwait( false );
+
+				var catalogProductCreateEntity = new catalogProductCreateEntity
+				{
+					name = name,
+					description = "Product description",
+					short_description = "Product short description",
+					weight = "10",
+					status = "1",
+					visibility = "4",
+					price = "100",
+					tax_class_id = "1",
+					categories = new[] { res0.result.ToString() },
+					category_ids = new[] { res0.result.ToString() },
+					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
+				};
+
+				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+
+				//product id
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during CreateProduct({0})", storeId ), exc );
+			}
+		}
+
+		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
+		{
+			try
+			{
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var res = await this._magentoSoapService.catalogCategoryRemoveProductAsync( sessionId, categoryId, productId, identiferType ).ConfigureAwait( false );
+
+				//product id
+				return res.result;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during DeleteProduct({0})", storeId ), exc );
+			}
+		}
+		#endregion
+	}
+
+	internal class StatusChecker
+	{
+		private int invokeCount;
+		private readonly int maxCount;
+
+		public StatusChecker( int count )
+		{
+			this.invokeCount = 0;
+			this.maxCount = count;
+		}
+
+		public void CheckStatus( Object stateInfo )
+		{
+			dynamic serviceClient = null;
+
+			if( stateInfo is MagentoSoapServiceReference_v_1_14_1_EE.Mage_Api_Model_Server_Wsi_HandlerPortTypeClient )
+				serviceClient = stateInfo as MagentoSoapServiceReference_v_1_14_1_EE.Mage_Api_Model_Server_Wsi_HandlerPortTypeClient;
+			else if( stateInfo is Mage_Api_Model_Server_Wsi_HandlerPortTypeClient )
+				serviceClient = stateInfo as Mage_Api_Model_Server_Wsi_HandlerPortTypeClient;
+
+			Interlocked.Increment( ref this.invokeCount );
+			if( this.invokeCount == this.maxCount )
+			{
+				Interlocked.Exchange( ref this.invokeCount, 0 );
+				if( serviceClient != null )
+					serviceClient.Abort();
+			}
+		}
+	}
+
+	internal class PutStockItem
+	{
+		//public PutStockItem( string id, catalogInventoryStockItemUpdateEntity updateEntity )
+		//{
+		//	this.Id = id;
+		//	this.Backorders = updateEntity.backorders;
+		//	this.IsInStock = updateEntity.is_in_stock;
+		//	this.IsQtyDecimal = updateEntity.is_qty_decimal;
+		//	this.ManageStock = updateEntity.manage_stock;
+		//	this.MaxSaleQty = updateEntity.max_sale_qty;
+		//	this.MinQty = updateEntity.min_qty;
+		//	this.MinSaleQty = updateEntity.min_sale_qty;
+		//	this.NotifyStockQty = updateEntity.notify_stock_qty;
+		//	this.UseConfigBackorders = updateEntity.use_config_backorders;
+		//	this.UseConfigManageStock = updateEntity.use_config_manage_stock;
+		//	this.UseConfigMaxSaleQty = updateEntity.use_config_max_sale_qty;
+		//	this.UseConfigMinQty = updateEntity.use_config_min_qty;
+		//	this.UseConfigMinSaleQty = updateEntity.use_config_min_sale_qty;
+		//	this.UseConfigNotifyStockQty = updateEntity.use_config_notify_stock_qty;
+		//	this.BackordersSpecified = updateEntity.backordersSpecified;
+		//	this.IsInStockSpecified = updateEntity.is_in_stockSpecified;
+		//	this.IsQtyDecimalSpecified = updateEntity.is_qty_decimalSpecified;
+		//	this.ManageStockSpecified = updateEntity.manage_stockSpecified;
+		//	this.MaxSaleQtySpecified = updateEntity.max_sale_qtySpecified;
+		//	this.MinQtySpecified = updateEntity.min_qtySpecified;
+		//	this.MinSaleQtySpecified = updateEntity.min_sale_qtySpecified;
+		//	this.NotifyStockQtySpecified = updateEntity.notify_stock_qtySpecified;
+		//	this.Qty = updateEntity.qty;
+		//	this.UseConfigBackordersSpecified = updateEntity.use_config_backordersSpecified;
+		//	this.UseConfigManageStockSpecified = updateEntity.use_config_manage_stockSpecified;
+		//	this.UseConfigMaxSaleQtySpecified = updateEntity.use_config_max_sale_qtySpecified;
+		//	this.UseConfigMinQtySpecified = updateEntity.use_config_min_qtySpecified;
+		//	this.UseConfigMinSaleQtySpecified = updateEntity.use_config_min_sale_qtySpecified;
+		//	this.UseConfigNotifyStockQtySpecified = updateEntity.use_config_notify_stock_qtySpecified;
+		//}
+
+		//public int Backorders { get; set; }
+		//public int IsInStock { get; set; }
+		//public int IsQtyDecimal { get; set; }
+		//public int ManageStock { get; set; }
+		//public int MaxSaleQty { get; set; }
+		//public int MinQty { get; set; }
+		//public int MinSaleQty { get; set; }
+		//public int NotifyStockQty { get; set; }
+		//public int UseConfigBackorders { get; set; }
+		//public int UseConfigManageStock { get; set; }
+		//public int UseConfigMaxSaleQty { get; set; }
+		//public int UseConfigMinQty { get; set; }
+		//public int UseConfigMinSaleQty { get; set; }
+		//public int UseConfigNotifyStockQty { get; set; }
+		//public bool BackordersSpecified { get; set; }
+		//public bool IsInStockSpecified { get; set; }
+		//public bool IsQtyDecimalSpecified { get; set; }
+		//public bool ManageStockSpecified { get; set; }
+		//public bool MaxSaleQtySpecified { get; set; }
+		//public bool MinQtySpecified { get; set; }
+		//public bool MinSaleQtySpecified { get; set; }
+		//public bool NotifyStockQtySpecified { get; set; }
+		//public string Qty { get; set; }
+		//public bool UseConfigBackordersSpecified { get; set; }
+		//public bool UseConfigManageStockSpecified { get; set; }
+		//public bool UseConfigMaxSaleQtySpecified { get; set; }
+		//public bool UseConfigMinQtySpecified { get; set; }
+		//public bool UseConfigMinSaleQtySpecified { get; set; }
+		//public bool UseConfigNotifyStockQtySpecified { get; set; }
+
+		//public string Id { get; set; }
+
+		public PutStockItem( Inventory updateEntity )
+		{
+			this.ItemId = updateEntity.ItemId;
+			this.ProductId = updateEntity.ProductId;
+			this.MinQty = updateEntity.MinQty;
+			this.Qty = updateEntity.Qty;
+			this.StockId = updateEntity.StockId;
+		}
+
+		public string StockId { get; set; }
+
+		public long Qty { get; set; }
+
+		public long MinQty { get; set; }
+
+		public string ProductId { get; set; }
+
+		public string ItemId { get; set; }
+	}
+}

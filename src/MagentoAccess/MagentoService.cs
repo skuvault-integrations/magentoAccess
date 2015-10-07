@@ -43,7 +43,7 @@ namespace MagentoAccess
 				magentoAuthenticatedUserCredentials.AccessTokenSecret
 				);
 
-			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap(
+			this.MagentoServiceLowLevelSoap = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE(
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				magentoAuthenticatedUserCredentials.SoapApiKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,

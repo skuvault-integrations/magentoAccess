@@ -133,7 +133,7 @@
     </Compile>
     <Compile Include="Services\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
     <Compile Include="Services\MagentoServiceLowLevelRestRest.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelSoap.cs" />
+    <Compile Include="Services\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
     <Compile Include="Services\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\MegentoInventoryResponseParser.cs" />
