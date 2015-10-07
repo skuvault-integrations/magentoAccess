@@ -13,6 +13,10 @@ using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Models.Services.SOAP.GetInventory;
 using MagentoAccess.Services;
+using MagentoAccess.Services.Rest;
+using MagentoAccess.Services.Soap;
+using MagentoAccess.Services.Soap._1_14_1_0_ee;
+using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using Netco.Extensions;
 
 namespace MagentoAccess

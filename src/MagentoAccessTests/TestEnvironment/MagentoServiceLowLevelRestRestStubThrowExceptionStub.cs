@@ -7,6 +7,7 @@ using MagentoAccess.Models.Services.GetProducts;
 using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
+using MagentoAccess.Services.Rest;
 using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
 namespace MagentoAccessTests.TestEnvironment

@@ -11,6 +11,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.PutStockItems;
 using MagentoAccess.Services;
+using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

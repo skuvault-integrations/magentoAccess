@@ -4,7 +4,7 @@ using System.IO;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Configuration;
 
-namespace MagentoAccess.Services
+namespace MagentoAccess.Services.Soap
 {
 	public class CustomMessageEncoder : MessageEncoder
 	{

@@ -8,7 +8,7 @@ using MagentoAccess.Models.Services.GetStockItems;
 using MagentoAccess.Models.Services.PutStockItems;
 using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
 
-namespace MagentoAccess.Services
+namespace MagentoAccess.Services.Rest
 {
 	internal interface IMagentoServiceLowLevelRest
 	{

@@ -6,6 +6,7 @@ using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 using MagentoAccess.Services;
+using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
 namespace MagentoAccessTests.TestEnvironment
 {

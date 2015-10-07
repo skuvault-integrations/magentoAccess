@@ -7,6 +7,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services;
+using MagentoAccess.Services.Rest;
 
 namespace MagentoAccess
 {

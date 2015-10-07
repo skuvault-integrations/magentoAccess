@@ -125,16 +125,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Services\IMagentoServiceLowLevelRest.cs" />
-    <Compile Include="Services\IMagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\IWebRequestServices.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelSoap_v_1_14_1_0_EE.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelRestRest.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
-    <Compile Include="Services\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\MegentoInventoryResponseParser.cs" />
     <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
@@ -142,6 +133,13 @@
     <Compile Include="Services\Parsers\MagentoProductResponseParser.cs" />
     <Compile Include="Services\Parsers\MagentoProductsResponseParser.cs" />
     <Compile Include="Services\Parsers\MegentoOrdersResponseParser.cs" />
+    <Compile Include="Services\Rest\IMagentoServiceLowLevelRest.cs" />
+    <Compile Include="Services\Rest\MagentoServiceLowLevelRestRest.cs" />
+    <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
+    <Compile Include="Services\Soap\IMagentoServiceLowLevelSoap.cs" />
+    <Compile Include="Services\Soap\MagentoServiceLowLevelSoapAdditions.cs" />
+    <Compile Include="Services\Soap\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
     <Compile Include="Services\WebRequestServices.cs" />
   </ItemGroup>
   <ItemGroup>

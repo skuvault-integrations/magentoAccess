@@ -15,7 +15,7 @@ using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
 
-namespace MagentoAccess.Services
+namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 {
 	internal class MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE : IMagentoServiceLowLevelSoap
 	{
@@ -208,7 +208,7 @@ namespace MagentoAccess.Services
 				} ).ConfigureAwait( false );
 
 				//crutch for magento 1.7 
-				res.result = res.result.Where( x => x.updated_at.ToDateTimeOrDefault() >= modifiedFrom && x.updated_at.ToDateTimeOrDefault() <= modifiedTo ).ToArray();
+				res.result = res.result.Where( x => Extensions.ToDateTimeOrDefault( x.updated_at ) >= modifiedFrom && Extensions.ToDateTimeOrDefault( x.updated_at ) <= modifiedTo ).ToArray();
 
 				return new GetOrdersResponse( res );
 			}

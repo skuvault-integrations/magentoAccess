@@ -4,6 +4,8 @@ using FluentAssertions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services;
+using MagentoAccess.Services.Soap._1_14_1_0_ee;
+using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 

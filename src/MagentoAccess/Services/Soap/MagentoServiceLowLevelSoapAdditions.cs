@@ -5,7 +5,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace MagentoAccess.Services
+namespace MagentoAccess.Services.Soap
 {
 	internal class ClientMessageInspector : IClientMessageInspector
 	{

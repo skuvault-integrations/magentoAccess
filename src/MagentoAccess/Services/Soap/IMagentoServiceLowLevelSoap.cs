@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.Services.SOAP.GetInventory;
 using MagentoAccess.Models.Services.SOAP.GetMagentoInfo;
 using MagentoAccess.Models.Services.SOAP.GetOrders;
 using MagentoAccess.Models.Services.SOAP.GetProducts;
+using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
-namespace MagentoAccess.Services
+namespace MagentoAccess.Services.Soap
 {
 	internal interface IMagentoServiceLowLevelSoap
 	{
