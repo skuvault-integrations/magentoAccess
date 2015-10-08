@@ -156,18 +156,25 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected void DeleteProducts()
 		{
-			var productsToRemove = GetOnlyProductsCreatedForThisTests();
-
-			var deleteProuctsTasks = new List< Task >();
-			foreach( var p in productsToRemove )
+			try
 			{
-				var tiks = DateTime.UtcNow.Ticks.ToString();
-				var productTask = this._magentoLowLevelSoapVFrom17To19CeService.DeleteProduct( "0", 0, p.ProductId, "" );
-				deleteProuctsTasks.Add( productTask );
-			}
+				var productsToRemove = GetOnlyProductsCreatedForThisTests();
 
-			var commonTask = Task.WhenAll( deleteProuctsTasks );
-			commonTask.Wait();
+				var deleteProuctsTasks = new List< Task >();
+				foreach( var p in productsToRemove )
+				{
+					var tiks = DateTime.UtcNow.Ticks.ToString();
+					var productTask = this._magentoLowLevelSoapVFrom17To19CeService.DeleteProduct( "0", 0, p.ProductId, "" );
+					deleteProuctsTasks.Add( productTask );
+				}
+
+				var commonTask = Task.WhenAll( deleteProuctsTasks );
+				commonTask.Wait();
+			}
+			catch( Exception exception )
+			{
+				Console.WriteLine( "Can't delete products {0}", exception );
+			}
 		}
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
