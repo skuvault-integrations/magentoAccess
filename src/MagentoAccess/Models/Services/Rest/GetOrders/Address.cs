@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MagentoAccess.Models.Services.GetOrders
+namespace MagentoAccess.Models.Services.Rest.GetOrders
 {
 	[ Serializable ]
 	public sealed class Address

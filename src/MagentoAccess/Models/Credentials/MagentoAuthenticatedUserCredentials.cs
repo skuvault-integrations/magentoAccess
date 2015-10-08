@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess.Models.Services.Credentials
+﻿namespace MagentoAccess.Models.Credentials
 {
 	public class MagentoAuthenticatedUserCredentials
 	{

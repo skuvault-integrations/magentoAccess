@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using MagentoAccess;
+using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Models.Services.Credentials;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;

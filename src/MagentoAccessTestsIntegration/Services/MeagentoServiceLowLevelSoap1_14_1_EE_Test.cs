@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;

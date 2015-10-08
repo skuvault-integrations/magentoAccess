@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using MagentoAccess.Models.Services.PutStockItems;
+using MagentoAccess.Models.Services.Rest.PutStockItems;
 
 namespace MagentoAccess.Services.Parsers
 {

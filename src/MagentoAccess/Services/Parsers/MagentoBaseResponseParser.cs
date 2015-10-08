@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
-using MagentoAccess.Models.Services.BaseResponse;
+using MagentoAccess.Models.Services.Rest.BaseResponse;
 
 namespace MagentoAccess.Services.Parsers
 {

@@ -1,4 +1,4 @@
-﻿using MagentoAccess.Models.Services.Credentials;
+﻿using MagentoAccess.Models.Credentials;
 
 namespace MagentoAccess
 {

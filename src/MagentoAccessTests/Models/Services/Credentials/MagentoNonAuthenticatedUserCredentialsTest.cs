@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using MagentoAccess.Models.Services.Credentials;
+using MagentoAccess.Models.Credentials;
 using NUnit.Framework;
 
 namespace MagentoAccessTests.Models.Services.Credentials

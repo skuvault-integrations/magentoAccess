@@ -10,13 +10,13 @@ using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
 using DotNetOpenAuth.OAuth.Messages;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.GetOrders;
-using MagentoAccess.Models.Services.GetProduct;
-using MagentoAccess.Models.Services.GetProducts;
-using MagentoAccess.Models.Services.GetStockItems;
-using MagentoAccess.Models.Services.PutStockItems;
+using MagentoAccess.Models.Services.Rest.GetOrders;
+using MagentoAccess.Models.Services.Rest.GetProduct;
+using MagentoAccess.Models.Services.Rest.GetProducts;
+using MagentoAccess.Models.Services.Rest.GetStockItems;
+using MagentoAccess.Models.Services.Rest.PutStockItems;
 using MagentoAccess.Services.Parsers;
-using StockItem = MagentoAccess.Models.Services.PutStockItems.StockItem;
+using StockItem = MagentoAccess.Models.Services.Rest.PutStockItems.StockItem;
 
 namespace MagentoAccess.Services.Rest
 {

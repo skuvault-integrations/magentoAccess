@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.GetOrders;
+using MagentoAccess.Models.Services.Rest.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
 {
-	public class Order : Services.GetOrders.Order
+	public class Order : Services.Rest.GetOrders.Order
 	{
-		public Order( Services.GetOrders.Order order )
+		public Order( Services.Rest.GetOrders.Order order )
 			: base( order )
 		{
 		}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MagentoAccess.Misc;
 
-namespace MagentoAccess.Models.Services.GetOrders
+namespace MagentoAccess.Models.Services.Rest.GetOrders
 {
 	[ Serializable ]
 	public class Order

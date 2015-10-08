@@ -5,8 +5,8 @@ using FluentAssertions;
 using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models;
+using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Models.Services.Credentials;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 

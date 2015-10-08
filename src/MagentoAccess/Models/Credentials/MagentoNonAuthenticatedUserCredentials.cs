@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MagentoAccess.Misc;
 
-namespace MagentoAccess.Models.Services.Credentials
+namespace MagentoAccess.Models.Credentials
 {
 	public class MagentoNonAuthenticatedUserCredentials
 	{

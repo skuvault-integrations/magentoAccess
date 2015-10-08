@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Models.Services.Credentials;
-using MagentoAccess.Models.Services.GetStockItems;
+using MagentoAccess.Models.Services.Rest.GetStockItems;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
+using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;
@@ -530,7 +531,7 @@ namespace MagentoAccess
 			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 
-			var receivedProducts = new List< Models.Services.GetProducts.Product >();
+			var receivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
 
 			var lastReceiveProducts = productsChunk;
 
@@ -573,13 +574,13 @@ namespace MagentoAccess
 			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 
-			var receivedProducts = new List< Models.Services.GetProducts.Product >();
+			var receivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
 
 			var lastReceiveProducts = productsChunk;
 
 			receivedProducts.AddRange( productsChunk );
 
-			var getProductsTasks = new List< Task< List< Models.Services.GetProducts.Product > > >();
+			var getProductsTasks = new List< Task< List< Models.Services.Rest.GetProducts.Product > > >();
 
 			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
 			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
@@ -595,11 +596,11 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
 		}
 
-		private List< Models.Services.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
+		private List< Models.Services.Rest.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.Rest.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
 		{
 			var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
 			var localLastReceivedProducts = lastReceiveProducts;
-			var localReceivedProducts = new List< Models.Services.GetProducts.Product >();
+			var localReceivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
 			do
 			{
 				Interlocked.Increment( ref page );
@@ -674,7 +675,7 @@ namespace MagentoAccess
 		{
 			string updateBriefInfo;
 			const int productsUpdateMaxChunkSize = 50;
-			var inventoryItems = inventories.Select( x => new Models.Services.PutStockItems.StockItem
+			var inventoryItems = inventories.Select( x => new Models.Services.Rest.PutStockItems.StockItem
 			{
 				ItemId = x.ItemId,
 				MinQty = x.MinQty,
@@ -724,14 +725,14 @@ namespace MagentoAccess
 		#endregion
 	}
 
-	internal class ProductComparer : IEqualityComparer< Models.Services.GetProducts.Product >
+	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.GetProducts.Product >
 	{
-		public bool Equals( Models.Services.GetProducts.Product x, Models.Services.GetProducts.Product y )
+		public bool Equals( Models.Services.Rest.GetProducts.Product x, Models.Services.Rest.GetProducts.Product y )
 		{
 			return x.EntityId == y.EntityId;
 		}
 
-		public int GetHashCode( Models.Services.GetProducts.Product obj )
+		public int GetHashCode( Models.Services.Rest.GetProducts.Product obj )
 		{
 			return obj.EntityId.GetHashCode();
 		}
