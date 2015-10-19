@@ -32,6 +32,7 @@ namespace MagentoAccess
 		public delegate void SaveAccessToken( string token, string secret );
 		public SaveAccessToken AfterGettingToken { get; set; }
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+		public Func< string > AdditionalLogInfo { get; set; }
 
 		#region constructor
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
@@ -77,22 +78,23 @@ namespace MagentoAccess
 		{
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "PingSoapAsync";
+			var additionalInfo = AdditionalLogInfo != null ? AdditionalLogInfo() : PredefinedValues.EmptyJsonObject;
 			if( mark.IsBlank() )
 				mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{Mark:{0}, MethodName:{1}, SoapInfo{2}}}", mark, currentMenthodName, soapInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{Mark:{0}, MethodName:{1}, AdditionalInfo:{2}, SoapInfo:{3}}}", mark, currentMenthodName, additionalInfo, soapInfo ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
-				MagentoLogger.LogTraceEnded( string.Format( "{{Mark:{0}, MethodName:{1}, SoapInfo{2}, MethodResult:{3}}}", mark, currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{Mark:{0}, MethodName:{1}, AdditionalInfo:{2}, SoapInfo{3}, MethodResult:{4}}}", mark, currentMenthodName, additionalInfo, soapInfo, magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "Mark:{0}, MethodName:{1}, SoapInfo:{2}", mark, currentMenthodName, soapInfo ), exception );
+				var mexc = new MagentoCommonException( string.Format( "Mark:{0}, MethodName:{1}, AdditionalInfo:{2}, SoapInfo:{3}", mark, currentMenthodName, additionalInfo, soapInfo ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
