@@ -73,24 +73,26 @@ namespace MagentoAccess
 		#endregion
 
 		#region ping
-		public async Task< PingSoapInfo > PingSoapAsync()
+		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
 		{
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "PingSoapAsync";
+			if( mark.IsBlank() )
+				mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo{1}}}", currentMenthodName, soapInfo ) );
+				MagentoLogger.LogTraceStarted( string.Format( "{{Mark:{0}, MethodName:{1}, SoapInfo{2}}}", mark, currentMenthodName, soapInfo ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo{1}, MethodResult:{2}}}", currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( string.Format( "{{Mark:{0}, MethodName:{1}, SoapInfo{2}, MethodResult:{3}}}", mark, currentMenthodName, soapInfo, magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}", currentMenthodName, soapInfo ), exception );
+				var mexc = new MagentoCommonException( string.Format( "Mark:{0}, MethodName:{1}, SoapInfo:{2}", mark, currentMenthodName, soapInfo ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -498,7 +500,7 @@ namespace MagentoAccess
 			return resultProducts;
 		}
 
-		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, string mark )
+		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, Mark mark )
 		{
 			var productToUpdate = inventories.Select( x => new PutStockItem( x ) ).ToList();
 
@@ -698,7 +700,7 @@ namespace MagentoAccess
 			return updateBriefInfo;
 		}
 
-		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories, IMagentoServiceLowLevelSoap magentoService, string markForLog = "" )
+		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories, IMagentoServiceLowLevelSoap magentoService, Mark markForLog = null )
 		{
 			const int productsUpdateMaxChunkSize = 50;
 			var productToUpdate = inventories.Select( x => new PutStockItem( x ) ).ToList();

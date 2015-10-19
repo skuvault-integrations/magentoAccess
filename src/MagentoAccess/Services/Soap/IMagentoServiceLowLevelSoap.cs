@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
 namespace MagentoAccess.Services.Soap
 {
@@ -20,9 +20,9 @@ namespace MagentoAccess.Services.Soap
 		Task< SoapGetProductsResponse > GetProductsAsync();
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
-		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, string markForLog );
+		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync();
 		string ToJsonSoapInfo();
-		Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog );
+		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );
 	}
 }

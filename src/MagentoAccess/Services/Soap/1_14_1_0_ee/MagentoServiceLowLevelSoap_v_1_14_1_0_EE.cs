@@ -352,7 +352,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, string markForLog = "" )
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			try
 			{
@@ -409,7 +409,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, string markForLog )
+		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
 		{
 			try
 			{

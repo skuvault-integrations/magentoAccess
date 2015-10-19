@@ -13,7 +13,7 @@ namespace MagentoAccess.Misc
 
 		public static Mark CreateNew()
 		{
-			return new Mark( Mark.CreateNew() );
+			return new Mark( Guid.NewGuid().ToString() );
 		}
 
 		public Mark( string markValue )
