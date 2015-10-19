@@ -25,16 +25,12 @@ namespace MagentoAccess
 	public class MagentoService : IMagentoService
 	{
 		public bool UseSoapOnly { get; set; }
-
 		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest { get; set; }
-
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_14_1_EE { get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
-
 		public SaveAccessToken AfterGettingToken { get; set; }
-
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
 		#region constructor
@@ -133,7 +129,7 @@ namespace MagentoAccess
 			var methodParameters = string.Format( "{{dateFrom:{0},dateTo:{1}}}", dateFromUtc, dateToUtc );
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "GetOrdersAsync";
-			var mark = Guid.NewGuid().ToString();
+			var mark = Mark.CreateNew();
 
 			try
 			{
@@ -243,7 +239,7 @@ namespace MagentoAccess
 			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "GetProductsAsync";
-			var mark = Guid.NewGuid().ToString();
+			var mark = Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, Mark:{3}}}", currentMenthodName, soapInfo, restInfo, mark ) );
@@ -287,7 +283,7 @@ namespace MagentoAccess
 			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "UpdateInventoryAsync";
-			var mark = Guid.NewGuid().ToString();
+			var mark = Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MathodParameters:{4}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ) );

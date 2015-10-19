@@ -85,6 +85,7 @@
     <Compile Include="Misc\IManualSerializable.cs" />
     <Compile Include="Misc\MagentoLogger.cs" />
     <Compile Include="Misc\MagentoVersions.cs" />
+    <Compile Include="Misc\Mark.cs" />
     <Compile Include="Misc\PredefinedValues.cs" />
     <Compile Include="Models\Credentials\MagentoAuthenticatedUserCredentials.cs" />
     <Compile Include="Models\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
