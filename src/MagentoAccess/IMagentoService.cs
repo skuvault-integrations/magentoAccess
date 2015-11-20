@@ -30,6 +30,7 @@ namespace MagentoAccess
 		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
 
 		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+		Func< string > AdditionalLogInfo { get; set; }
 
 		Task< PingSoapInfo > PingSoapAsync( Mark mark = null );
 
