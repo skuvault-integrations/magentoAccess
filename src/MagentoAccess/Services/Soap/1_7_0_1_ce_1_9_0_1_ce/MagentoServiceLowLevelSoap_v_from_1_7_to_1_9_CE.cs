@@ -407,8 +407,8 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
 
 				var catalogInventoryStockItemUpdateEntity = ( putStockItem.Qty > 0 ) ?
-					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, } :
-					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, };
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = putStockItem.Qty.ToString() } :
+					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = putStockItem.Qty.ToString() };
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
