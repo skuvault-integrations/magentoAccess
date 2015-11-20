@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
@@ -133,11 +134,12 @@ namespace MagentoAccess
 			var methodParameters = string.Format( "{{dateFrom:{0},dateTo:{1}}}", dateFromUtc, dateToUtc );
 			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
 			const string currentMenthodName = "GetOrdersAsync";
+
 			var mark = Mark.CreateNew();
 
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\"}}", currentMenthodName, soapInfo, methodParameters, mark ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
 
 				var interval = new TimeSpan( 7, 0, 0, 0 );
 				var intervalOverlapping = new TimeSpan( 0, 0, 0, 1 );
@@ -246,7 +248,7 @@ namespace MagentoAccess
 			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, Mark:{3}}}", currentMenthodName, soapInfo, restInfo, mark ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
 
 				IEnumerable< Product > resultProducts;
 
@@ -427,6 +429,25 @@ namespace MagentoAccess
 		#endregion
 
 		#region MethodsImplementations
+		private string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
+		{
+			additionalInfo = ( string.IsNullOrWhiteSpace( additionalInfo ) && this.AdditionalLogInfo != null ) ? AdditionalLogInfo() : PredefinedValues.EmptyJsonObject;
+			mark = mark ?? Mark.Blank();
+			var restInfo = this.MagentoServiceLowLevelSoap.ToJson();
+			var str = string.Format(
+				"{{MethodName:{0}, ConnectionInfo:{1}, MethodParameters:{2}, Mark:\"{3}\"{4}{5}{6}{7}}}",
+				memberName,
+				restInfo,
+				methodParameters,
+				mark,
+				string.IsNullOrWhiteSpace( errors ) ? string.Empty : ", Errors:" + errors,
+				string.IsNullOrWhiteSpace( methodResult ) ? string.Empty : ", Result:" + methodResult,
+				string.IsNullOrWhiteSpace( notes ) ? string.Empty : ", Notes:" + notes,
+				string.IsNullOrWhiteSpace( additionalInfo ) ? string.Empty : ", " + additionalInfo
+				);
+			return str;
+		}
+
 		private static List< Tuple< DateTime, DateTime > > SplitToDates( DateTime dateFromUtc, DateTime dateToUtc, TimeSpan interval, TimeSpan intervalOverlapping )
 		{
 			var dates = new List< Tuple< DateTime, DateTime > >();
