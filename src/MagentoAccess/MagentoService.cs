@@ -14,7 +14,6 @@ using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
@@ -31,6 +30,7 @@ namespace MagentoAccess
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_14_1_EE { get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
+
 		public SaveAccessToken AfterGettingToken { get; set; }
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 		public Func< string > AdditionalLogInfo { get; set; }
@@ -77,25 +77,22 @@ namespace MagentoAccess
 		#region ping
 		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
 		{
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "PingSoapAsync";
-			var additionalInfo = AdditionalLogInfo != null ? AdditionalLogInfo() : PredefinedValues.EmptyJsonObject;
 			if( mark.IsBlank() )
 				mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{Mark:{0}, MethodName:{1}, AdditionalInfo:{2}, SoapInfo:{3}}}", mark, currentMenthodName, additionalInfo, soapInfo ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
-				MagentoLogger.LogTraceEnded( string.Format( "{{Mark:{0}, MethodName:{1}, AdditionalInfo:{2}, SoapInfo{3}, MethodResult:{4}}}", mark, currentMenthodName, additionalInfo, soapInfo, magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "Mark:{0}, MethodName:{1}, AdditionalInfo:{2}, SoapInfo:{3}", mark, currentMenthodName, additionalInfo, soapInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -103,23 +100,23 @@ namespace MagentoAccess
 
 		public async Task< PingRestInfo > PingRestAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
+			var mark = Mark.CreateNew();
 			const string currentMenthodName = "PingRestAsync";
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
 
 				var magentoOrders = await this.MagentoServiceLowLevelRest.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
 				var restWorks = magentoOrders.Products != null;
 				var magentoCoreInfo = new PingRestInfo( restWorks );
 
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, RestInfo:{1}", currentMenthodName, restInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -132,8 +129,6 @@ namespace MagentoAccess
 			var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
 			var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
 			var methodParameters = string.Format( "{{dateFrom:{0},dateTo:{1}}}", dateFromUtc, dateToUtc );
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "GetOrdersAsync";
 
 			var mark = Mark.CreateNew();
 
@@ -148,9 +143,9 @@ namespace MagentoAccess
 
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
-					MagentoLogger.LogTrace( string.Format( "OrdersRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, String.Format( "{0},{1}", x.Item1, x.Item2 ), mark ) );
+					MagentoLogger.LogTrace( string.Format( "OrdersRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : String.Format( "{0},{1}", x.Item1, x.Item2 ) ) ) );
 					var res = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2 ).ConfigureAwait( false );
-					MagentoLogger.LogTrace( string.Format( "OrdersReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, String.Format( "{0},{1}", x.Item1, x.Item2 ), mark ) );
+					MagentoLogger.LogTrace( string.Format( "OrdersReceived: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : String.Format( "{0},{1}", x.Item1, x.Item2 ) ) ) );
 					return res;
 				} ).ConfigureAwait( false );
 
@@ -160,13 +155,13 @@ namespace MagentoAccess
 
 				var ordersBriefInfoString = ordersBriefInfo.ToJson();
 
-				MagentoLogger.LogTrace( string.Format( "{{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", BriefOrdersReceived:\"{4}\"}}", currentMenthodName, soapInfo, methodParameters, mark, ordersBriefInfoString ) );
+				MagentoLogger.LogTrace( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ) );
 
 				var salesOrderInfoResponses = await ordersBriefInfo.ProcessInBatchAsync( 16, async x =>
 				{
-					MagentoLogger.LogTrace( string.Format( "OrderRequested: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.incrementId, mark ) );
+					MagentoLogger.LogTrace( string.Format( "OrderRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x.incrementId ) ) );
 					var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.incrementId ).ConfigureAwait( false );
-					MagentoLogger.LogTrace( string.Format( "OrderReceived: {{MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", called from:\"{3}\"}}", "GetOrderAsync", soapInfo, x.incrementId, mark ) );
+					MagentoLogger.LogTrace( string.Format( "OrderReceived: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.incrementId ) ) );
 					return res;
 				} ).ConfigureAwait( false );
 
@@ -182,14 +177,14 @@ namespace MagentoAccess
 					resultOrders.AddRange( resultOrderPart );
 					var resultOrdersBriefInfo = resultOrderPart.ToJsonAsParallel( 0, batchSize );
 					var partDescription = "From: " + i.ToString() + "," + ( ( i + batchSize < salesOrderInfoResponsesList.Count ) ? batchSize : salesOrderInfoResponsesList.Count % batchSize ).ToString() + " items(or few)";
-					MagentoLogger.LogTraceEnded( string.Format( "MethodName:\"{0}\",LogPart:\"{5}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\", MethodResult:\"{4}\"", currentMenthodName, soapInfo, methodParameters, mark, resultOrdersBriefInfo, partDescription ) );
+					MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : resultOrdersBriefInfo, methodParameters : methodParameters, notes : "LogPart:\"{0}\"".FormatWith( partDescription ) ) );
 				}
 
 				return resultOrders;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:\"{0}\", SoapInfo:\"{1}\", MethodParameters:\"{2}\", Mark:\"{3}\"", currentMenthodName, soapInfo, methodParameters, mark ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -197,20 +192,19 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Order > > GetOrdersAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
-			const string currentMenthodName = "GetOrdersAsync";
+			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
 				var res = await this.MagentoServiceLowLevelRest.GetOrdersAsync().ConfigureAwait( false );
 				var resHandled = res.Orders.Select( x => new Order( x ) );
 				var orderBriefInfo = resHandled.ToJson();
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, orderBriefInfo ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : orderBriefInfo ) );
 				return resHandled;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, RestInfo:{1}", currentMenthodName, restInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -220,21 +214,20 @@ namespace MagentoAccess
 		#region getProducts
 		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
-			const string currentMenthodName = "GetProductsSimpleAsync";
+			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, RestInfo:{1}}}", currentMenthodName, restInfo ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
 				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
 
 				var productBriefInfo = res.ToJson();
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, RestInfo:{1}, MethodResult:{2}}}", currentMenthodName, restInfo, productBriefInfo ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
 
 				return res;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, RestInfo:{1}", currentMenthodName, restInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -242,9 +235,6 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync()
 		{
-			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "GetProductsAsync";
 			var mark = Mark.CreateNew();
 			try
 			{
@@ -269,13 +259,13 @@ namespace MagentoAccess
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1}, RestInfo:{2}, Mark:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, mark, resultProductsBriefInfo ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : resultProductsBriefInfo ) );
 
 				return resultProducts;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1}, RestInfo:{2}", currentMenthodName, soapInfo, restInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -286,13 +276,10 @@ namespace MagentoAccess
 		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
 		{
 			var productsBriefInfo = products.ToJson();
-			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "UpdateInventoryAsync";
 			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MathodParameters:{4}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo ) );
 
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -317,11 +304,11 @@ namespace MagentoAccess
 					}
 				}
 
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2},Mark:{3}, MathodParameters:{4}, MethodResult:{5}}}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo, updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, Mark:{3}, MethodParameters:{4}", currentMenthodName, soapInfo, restInfo, mark, productsBriefInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -329,13 +316,11 @@ namespace MagentoAccess
 
 		public async Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory )
 		{
+			var mark = Mark.CreateNew();
 			var productsBriefInfo = inventory.ToJson();
-			var restInfo = this.MagentoServiceLowLevelRest.ToJsonRestInfo();
-			var soapInfo = this.MagentoServiceLowLevelSoap.ToJsonSoapInfo();
-			const string currentMenthodName = "UpdateInventoryBySkuAsync";
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo ) );
 
 				var inventories = inventory as IList< InventoryBySku > ?? inventory.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -355,11 +340,11 @@ namespace MagentoAccess
 					}
 				}
 
-				MagentoLogger.LogTraceEnded( string.Format( "{{MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MathodParameters:{3}, MethodResult:{4}}}", currentMenthodName, soapInfo, restInfo, productsBriefInfo, updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( string.Format( "MethodName:{0}, SoapInfo:{1},RestInfo:{2}, MethodParameters:{3}", currentMenthodName, soapInfo, restInfo, productsBriefInfo ), exception );
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
