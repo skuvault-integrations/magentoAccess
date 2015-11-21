@@ -22,22 +22,22 @@ namespace MagentoAccess.Misc
 
 		public static void LogTraceException( Exception exception )
 		{
-			Log().Trace( exception, "[magento] An exception occured. {0}.", _fvi );
+			Log().Trace( exception, "[magento] An exception occured. {0}.", _fvi.FileVersion );
 		}
 
 		public static void LogTraceStarted( string info )
 		{
-			Log().Trace( "[magento] Start call:{0}. {1}.", info, _fvi );
+			Log().Trace( "[magento] Start call:{0}. {1}.", info, _fvi.FileVersion );
 		}
 
 		public static void LogTraceEnded( string info )
 		{
-			Log().Trace( "[magento] End call:{0}. {1}.", info, _fvi );
+			Log().Trace( "[magento] End call:{0}. {1}.", info, _fvi.FileVersion );
 		}
 
 		public static void LogTrace( string info )
 		{
-			Log().Trace( "[magento] Trace info:{0}. {1}", info, _fvi );
+			Log().Trace( "[magento] Trace info:{0}. {1}", info, _fvi.FileVersion );
 		}
 	}
 }
