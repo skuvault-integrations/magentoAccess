@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using CuttingEdge.Conditions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetMagentoCoreInfo;
@@ -436,6 +437,8 @@ namespace MagentoAccess
 		private static List< Tuple< DateTime, DateTime > > SplitToDates( DateTime dateFromUtc, DateTime dateToUtc, TimeSpan interval, TimeSpan intervalOverlapping )
 		{
 			var dates = new List< Tuple< DateTime, DateTime > >();
+			if( dateFromUtc > dateToUtc )
+				return dates;
 			var dateFromUtcCopy = dateFromUtc;
 			var dateToUtcCopy = dateToUtc;
 			while( dateFromUtcCopy < dateToUtcCopy )
