@@ -257,7 +257,7 @@ namespace MagentoAccess
 				switch( pingres.Version )
 				{
 					case MagentoVersions.M1901:
-						resultProducts = await this.GetProductsBySoap().ConfigureAwait( false );
+						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap ).ConfigureAwait( false );
 						break;
 					case MagentoVersions.M11410E:
 						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_14_1_EE ).ConfigureAwait( false );
@@ -266,7 +266,7 @@ namespace MagentoAccess
 						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_9_2_1_CE ).ConfigureAwait( false );
 						break;
 					default:
-						resultProducts = await this.GetProductsBySoap().ConfigureAwait( false );
+						resultProducts = await this.GetProductsBySoap( MagentoServiceLowLevelSoap ).ConfigureAwait( false );
 						break;
 				}
 
@@ -467,7 +467,7 @@ namespace MagentoAccess
 			return dates;
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap = null )
+		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
 			IEnumerable< Product > resultProducts = new List< Product >();
