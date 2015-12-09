@@ -29,8 +29,7 @@ namespace MagentoAccess
 		public bool UseSoapOnly { get; set; }
 		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest { get; set; }
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
-		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_14_1_EE { get; set; }
-		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_9_2_1_CE { get; set; }
+		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory { get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
 
@@ -56,18 +55,33 @@ namespace MagentoAccess
 				null
 				);
 
-			this.MagentoServiceLowLevelSoap_1_14_1_EE = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE(
+			var MagentoServiceLowLevelSoap_1_14_1_EE = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE(
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				magentoAuthenticatedUserCredentials.SoapApiKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
 				null
 				);
 
-			this.MagentoServiceLowLevelSoap_1_9_2_1_CE = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(
+			var MagentoServiceLowLevelSoap_1_9_2_1_CE = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				magentoAuthenticatedUserCredentials.SoapApiKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
 				null
+				);
+
+			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
+			MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null,
+				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
+				magentoAuthenticatedUserCredentials.SoapApiKey,
+				magentoAuthenticatedUserCredentials.SoapApiUser,
+				new Dictionary< string, IMagentoServiceLowLevelSoap >
+				{
+					{ MagentoVersions.M1921Ce, MagentoServiceLowLevelSoap_1_9_2_1_CE },
+					{ MagentoVersions.M1901, this.MagentoServiceLowLevelSoap },
+					{ MagentoVersions.M1810, this.MagentoServiceLowLevelSoap },
+					{ MagentoVersions.M1702, this.MagentoServiceLowLevelSoap },
+					{ MagentoVersions.M11410E,  MagentoServiceLowLevelSoap_1_14_1_EE },
+				}
 				);
 		}
 
@@ -253,22 +267,8 @@ namespace MagentoAccess
 				IEnumerable< Product > resultProducts;
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-
-				switch( pingres.Version )
-				{
-					case MagentoVersions.M1901:
-						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap ).ConfigureAwait( false );
-						break;
-					case MagentoVersions.M11410E:
-						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_14_1_EE ).ConfigureAwait( false );
-						break;
-					case MagentoVersions.M1921Ce:
-						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_9_2_1_CE ).ConfigureAwait( false );
-						break;
-					default:
-						resultProducts = await this.GetProductsBySoap( MagentoServiceLowLevelSoap ).ConfigureAwait( false );
-						break;
-				}
+				var magentoServiceLowLevel = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+				resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel ).ConfigureAwait( false );
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
@@ -299,25 +299,8 @@ namespace MagentoAccess
 				if( inventories.Any() )
 				{
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-
-					switch( pingres.Version )
-					{
-						case MagentoVersions.M1901:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap, mark ).ConfigureAwait( false );
-							break;
-						case MagentoVersions.M1702:
-							updateBriefInfo = await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false );
-							break;
-						case MagentoVersions.M11410E:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap_1_14_1_EE, mark ).ConfigureAwait( false );
-							break;
-						case MagentoVersions.M1921Ce:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap_1_9_2_1_CE, mark ).ConfigureAwait( false );
-							break;
-						default:
-							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap, mark ).ConfigureAwait( false );
-							break;
-					}
+					//crunch for 1702
+					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M1702, StringComparison.CurrentCultureIgnoreCase ) ? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) : await this.UpdateStockItemsBySoap( inventories, MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true ), mark ).ConfigureAwait( false );
 				}
 
 				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
