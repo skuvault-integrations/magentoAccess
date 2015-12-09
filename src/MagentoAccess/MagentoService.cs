@@ -19,6 +19,7 @@ using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
+using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using Netco.Extensions;
 
 namespace MagentoAccess
@@ -29,6 +30,7 @@ namespace MagentoAccess
 		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest { get; set; }
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_14_1_EE { get; set; }
+		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap_1_9_2_1_CE { get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
 
@@ -55,6 +57,13 @@ namespace MagentoAccess
 				);
 
 			this.MagentoServiceLowLevelSoap_1_14_1_EE = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE(
+				magentoAuthenticatedUserCredentials.SoapApiUser,
+				magentoAuthenticatedUserCredentials.SoapApiKey,
+				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
+				null
+				);
+
+			this.MagentoServiceLowLevelSoap_1_9_2_1_CE = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				magentoAuthenticatedUserCredentials.SoapApiKey,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
@@ -253,6 +262,9 @@ namespace MagentoAccess
 					case MagentoVersions.M11410E:
 						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_14_1_EE ).ConfigureAwait( false );
 						break;
+					case MagentoVersions.M1921Ce:
+						resultProducts = await this.GetProductsBySoap( this.MagentoServiceLowLevelSoap_1_9_2_1_CE ).ConfigureAwait( false );
+						break;
 					default:
 						resultProducts = await this.GetProductsBySoap().ConfigureAwait( false );
 						break;
@@ -298,6 +310,9 @@ namespace MagentoAccess
 							break;
 						case MagentoVersions.M11410E:
 							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap_1_14_1_EE, mark ).ConfigureAwait( false );
+							break;
+						case MagentoVersions.M1921Ce:
+							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap_1_9_2_1_CE, mark ).ConfigureAwait( false );
 							break;
 						default:
 							updateBriefInfo = await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoap, mark ).ConfigureAwait( false );
