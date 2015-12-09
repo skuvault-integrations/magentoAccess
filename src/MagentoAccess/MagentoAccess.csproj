@@ -141,8 +141,10 @@
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE.cs" />
     <Compile Include="Services\Soap\IMagentoServiceLowLevelSoap.cs" />
+    <Compile Include="Services\Soap\IMagentoServiceLowLevelSoapFactory.cs" />
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
+    <Compile Include="Services\Soap\MagentoServiceLowLevelSoapParametrisedFactory.cs" />
     <Compile Include="Services\WebRequestServices.cs" />
   </ItemGroup>
   <ItemGroup>
