@@ -67,21 +67,23 @@ namespace MagentoAccessTestsIntegration
 
 			//------------ Act
 			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests();
-			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => 123 ).ToList() );
+			var updateFirstTimeQty = 123;
+			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => updateFirstTimeQty ).ToList() );
 			updateInventoryTask.Wait();
 
 			/////
 			var onlyProductsCreatedForThisTests2 = GetOnlyProductsCreatedForThisTests();
 
-			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => 100500 ).ToList() );
+			var updateSecondTimeQty = 100500;
+			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => updateSecondTimeQty ).ToList() );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
 			var onlyProductsCreatedForThisTests3 = GetOnlyProductsCreatedForThisTests();
 
 			onlyProductsCreatedForThisTests2.Should().NotBeNullOrEmpty();
-			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
-			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
+			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateFirstTimeQty );
+			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateSecondTimeQty );
 		}
 
 		[ Ignore ]

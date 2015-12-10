@@ -131,7 +131,8 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync.Wait();
 
-			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 123, ProductId = x.ProductId } ) ).ToList();
+			var updateFirsttimeQty = 123;
+			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = updateFirsttimeQty, ProductId = x.ProductId } ) ).ToList();
 
 			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.PutStockItemsAsync( itemsToUpdate );
 			getProductsTask.Wait();
@@ -141,7 +142,8 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync2 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync2.Wait();
 
-			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 100500, ProductId = x.ProductId } ) ).ToList();
+			var updateSecondTimeQty = 100500;
+			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = updateSecondTimeQty, ProductId = x.ProductId } ) ).ToList();
 
 			var getProductsTask2 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.PutStockItemsAsync( itemsToUpdate2 );
 			getProductsTask2.Wait();
@@ -150,8 +152,8 @@ namespace MagentoAccessTestsIntegration.Services
 			var productsAsync3 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync3.Wait();
 
-			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty == "123" );
-			productsAsync3.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty == "100500" );
+			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateFirsttimeQty );
+			productsAsync3.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateSecondTimeQty );
 		}
 
 		[ Test ]
