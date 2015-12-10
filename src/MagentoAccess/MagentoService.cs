@@ -76,11 +76,11 @@ namespace MagentoAccess
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				new Dictionary< string, IMagentoServiceLowLevelSoap >
 				{
-					{ MagentoVersions.M1921Ce, MagentoServiceLowLevelSoap_1_9_2_1_CE },
-					{ MagentoVersions.M1901, this.MagentoServiceLowLevelSoap },
-					{ MagentoVersions.M1810, this.MagentoServiceLowLevelSoap },
-					{ MagentoVersions.M1702, this.MagentoServiceLowLevelSoap },
-					{ MagentoVersions.M11410E,  MagentoServiceLowLevelSoap_1_14_1_EE },
+					{ MagentoVersions.M_1_9_2_1, MagentoServiceLowLevelSoap_1_9_2_1_CE },
+					{ MagentoVersions.M_1_9_0_1, this.MagentoServiceLowLevelSoap },
+					{ MagentoVersions.M_1_8_1_0, this.MagentoServiceLowLevelSoap },
+					{ MagentoVersions.M_1_7_0_2, this.MagentoServiceLowLevelSoap },
+					{ MagentoVersions.M_1_14_1_0,  MagentoServiceLowLevelSoap_1_14_1_EE },
 				}
 				);
 		}
@@ -168,10 +168,10 @@ namespace MagentoAccess
 				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
 				var pingres = await this.PingSoapAsync().ConfigureAwait(false);
 				//crunch for old versions
-				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M1702, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M1810, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M1901, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M11410E, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
 					MagentoLogger.LogTrace( string.Format( "OrdersRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : String.Format( "{0},{1}", x.Item1, x.Item2 ) ) ) );
@@ -309,7 +309,7 @@ namespace MagentoAccess
 				{
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 					//crunch for 1702
-					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M1702, StringComparison.CurrentCultureIgnoreCase ) ? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) : await this.UpdateStockItemsBySoap( inventories, MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true ), mark ).ConfigureAwait( false );
+					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) ? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) : await this.UpdateStockItemsBySoap( inventories, MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true ), mark ).ConfigureAwait( false );
 				}
 
 				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
@@ -337,10 +337,10 @@ namespace MagentoAccess
 					if( this.UseSoapOnly )
 					{
 						var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-						var magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M1702, StringComparison.CurrentCultureIgnoreCase )
-						                                 || String.Equals( pingres.Edition, MagentoVersions.M1810, StringComparison.CurrentCultureIgnoreCase )
-						                                 || String.Equals( pingres.Edition, MagentoVersions.M1901, StringComparison.CurrentCultureIgnoreCase )
-						                                 || String.Equals( pingres.Edition, MagentoVersions.M11410E, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+						var magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+						                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+						                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+						                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
 
 						var stockitems = await magentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
 						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
