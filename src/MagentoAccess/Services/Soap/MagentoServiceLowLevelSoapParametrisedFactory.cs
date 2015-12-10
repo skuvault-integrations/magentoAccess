@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
 namespace MagentoAccess.Services.Soap
@@ -26,6 +27,12 @@ namespace MagentoAccess.Services.Soap
 				_factories.Add( pingSoapInfo, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( _apiUser, _apiKey, _baseMagentoUrl, _store ) );
 
 			return _factories[ pingSoapInfo ];
+		}
+
+		public string GetSubVersion( int deep, string magentoVer )
+		{
+
+			return magentoVer.Split('.')[deep];
 		}
 	}
 }
