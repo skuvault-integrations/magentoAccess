@@ -76,7 +76,9 @@ namespace MagentoAccess
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				new Dictionary< string, IMagentoServiceLowLevelSoap >
 				{
+					{ MagentoVersions.M_1_9_2_0, MagentoServiceLowLevelSoap_1_9_2_1_CE },
 					{ MagentoVersions.M_1_9_2_1, MagentoServiceLowLevelSoap_1_9_2_1_CE },
+					{ MagentoVersions.M_1_9_2_2, MagentoServiceLowLevelSoap_1_9_2_1_CE },
 					{ MagentoVersions.M_1_9_0_1, this.MagentoServiceLowLevelSoap },
 					{ MagentoVersions.M_1_8_1_0, this.MagentoServiceLowLevelSoap },
 					{ MagentoVersions.M_1_7_0_2, this.MagentoServiceLowLevelSoap },
