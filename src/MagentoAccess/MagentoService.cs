@@ -165,7 +165,13 @@ namespace MagentoAccess
 
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
-				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoap;
+				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
+				var pingres = await this.PingSoapAsync().ConfigureAwait(false);
+				//crunch for old versions
+				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M1702, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M1810, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M1901, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M11410E, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
 					MagentoLogger.LogTrace( string.Format( "OrdersRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : String.Format( "{0},{1}", x.Item1, x.Item2 ) ) ) );
