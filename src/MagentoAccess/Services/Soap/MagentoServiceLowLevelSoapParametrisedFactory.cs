@@ -24,15 +24,27 @@ namespace MagentoAccess.Services.Soap
 		public IMagentoServiceLowLevelSoap GetMagentoServiceLowLevelSoap( string pingSoapInfo, bool returnDefaultInsteadOfexception )
 		{
 			if( returnDefaultInsteadOfexception && !_factories.ContainsKey( pingSoapInfo ) )
+			{
+				for( var j = 0; j < pingSoapInfo.Length; j++ )
+				{
+					var versions = _factories.Keys.Where( x => x.Substring( 0, x.Length - j ) == pingSoapInfo.Substring( 0, pingSoapInfo.Length - j ) );
+					var versionList = versions as IList< string > ?? versions.ToList();
+					if( versionList.Any() )
+					{
+						_factories.Add( pingSoapInfo, _factories[ versionList.First() ] );
+						return _factories[ pingSoapInfo ];
+					}
+				}
+
 				_factories.Add( pingSoapInfo, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( _apiUser, _apiKey, _baseMagentoUrl, _store ) );
+			}
 
 			return _factories[ pingSoapInfo ];
 		}
 
 		public string GetSubVersion( int deep, string magentoVer )
 		{
-
-			return magentoVer.Split('.')[deep];
+			return magentoVer.Split( '.' )[ deep ];
 		}
 	}
 }
