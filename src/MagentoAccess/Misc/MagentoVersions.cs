@@ -8,4 +8,9 @@
 		public const string M1901 = "1.9.0.1";
 		public const string M11410E = "1.14.1.0";
 	}
+
+	public static class MagentoEdition
+	{
+		public const string Community = "Community";
+	}
 }
