@@ -336,7 +336,13 @@ namespace MagentoAccess
 				{
 					if( this.UseSoapOnly )
 					{
-						var stockitems = await this.MagentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
+						var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+						var magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M1702, StringComparison.CurrentCultureIgnoreCase )
+						                                 || String.Equals( pingres.Edition, MagentoVersions.M1810, StringComparison.CurrentCultureIgnoreCase )
+						                                 || String.Equals( pingres.Edition, MagentoVersions.M1901, StringComparison.CurrentCultureIgnoreCase )
+						                                 || String.Equals( pingres.Edition, MagentoVersions.M11410E, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+
+						var stockitems = await magentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
 						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
 						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
 					}
