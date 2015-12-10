@@ -35,6 +35,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
 		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoServiceLowLevelSoapV_1_9_2_2_ce;
+		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoLowLevelSoapForCreatingTestEnvironment;
 
 		[ SetUp ]
 		public void Setup()
@@ -93,6 +94,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			//this.CreateProductstems();
 			//this.CreateOrders();
+			this._magentoLowLevelSoapForCreatingTestEnvironment = _magentoServiceLowLevelSoapV_1_9_2_2_ce;
 		}
 		[TestFixtureTearDown]
 		public void TestFixtureTearDown()
@@ -106,33 +108,33 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			for( var i = 0; i < 5; i++ )
 			{
-				var shoppingCartIdTask = this._magentoLowLevelSoapVFrom17To19CeService.CreateCart( "0" );
+				var shoppingCartIdTask = this._magentoLowLevelSoapForCreatingTestEnvironment.CreateCart( "0" );
 				shoppingCartIdTask.Wait();
 				var _shoppingCartId = shoppingCartIdTask.Result;
 
-				var shoppingCartCustomerSetTask = this._magentoLowLevelSoapVFrom17To19CeService.ShoppingCartGuestCustomerSet( _shoppingCartId, "max", "qwe@qwe.com", "kits", "0" );
+				var shoppingCartCustomerSetTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartGuestCustomerSet(_shoppingCartId, "max", "qwe@qwe.com", "kits", "0");
 				shoppingCartCustomerSetTask.Wait();
 
-				var shoppingCartAddressSet = this._magentoLowLevelSoapVFrom17To19CeService.ShoppingCartAddressSet( _shoppingCartId, "0" );
+				var shoppingCartAddressSet = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartAddressSet(_shoppingCartId, "0");
 				shoppingCartAddressSet.Wait();
 
-				var productTask = this._magentoLowLevelSoapVFrom17To19CeService.ShoppingCartAddProduct( _shoppingCartId, this._productsIds.First().Key.ToString(), "0" );
+				var productTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartAddProduct(_shoppingCartId, this._productsIds.First().Key.ToString(), "0");
 				productTask.Wait();
 
-				var shippingMenthodTask = this._magentoLowLevelSoapVFrom17To19CeService.ShoppingCartSetShippingMethod( _shoppingCartId, "0" );
+				var shippingMenthodTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartSetShippingMethod(_shoppingCartId, "0");
 				shippingMenthodTask.Wait();
 
-				var paymentMenthodTask = this._magentoLowLevelSoapVFrom17To19CeService.ShoppingCartSetPaymentMethod( _shoppingCartId, "0" );
+				var paymentMenthodTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartSetPaymentMethod(_shoppingCartId, "0");
 				paymentMenthodTask.Wait();
 
-				var orderIdTask = this._magentoLowLevelSoapVFrom17To19CeService.CreateOrder( _shoppingCartId, "0" );
+				var orderIdTask = this._magentoLowLevelSoapForCreatingTestEnvironment.CreateOrder(_shoppingCartId, "0");
 				orderIdTask.Wait();
 				var orderId = orderIdTask.Result;
 				ordersIds.Add( orderId );
 				Task.Delay( 1000 );
 			}
 
-			var ordersTask = this._magentoLowLevelSoapVFrom17To19CeService.GetOrdersAsync( ordersIds );
+			var ordersTask = this._magentoLowLevelSoapForCreatingTestEnvironment.GetOrdersAsync(ordersIds);
 			ordersTask.Wait();
 			this._orders = ordersTask.Result.Orders.ToList().OrderBy( x => x.UpdatedAt ).ToList();
 		}
@@ -148,7 +150,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				var tiks = DateTime.UtcNow.Ticks.ToString();
 				var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
 				var name = string.Format( "TddTestName{0}_{1}", i, tiks );
-				var productTask = this._magentoLowLevelSoapVFrom17To19CeService.CreateProduct( "0", name, sku, 1 );
+				var productTask = this._magentoLowLevelSoapForCreatingTestEnvironment.CreateProduct("0", name, sku, 1);
 				createProuctsTasks.Add( productTask );
 				//shoppingCartIdTask.Wait();
 				this._productsIds.Add( productTask.Result, sku );
@@ -168,7 +170,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				foreach( var p in productsToRemove )
 				{
 					var tiks = DateTime.UtcNow.Ticks.ToString();
-					var productTask = this._magentoLowLevelSoapVFrom17To19CeService.DeleteProduct( "0", 0, p.ProductId, "" );
+					var productTask = this._magentoLowLevelSoapForCreatingTestEnvironment.DeleteProduct("0", 0, p.ProductId, "");
 					deleteProuctsTasks.Add( productTask );
 				}
 
