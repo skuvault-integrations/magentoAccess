@@ -165,10 +165,13 @@ namespace MagentoAccess
 
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
+				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoap;
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
 					MagentoLogger.LogTrace( string.Format( "OrdersRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : String.Format( "{0},{1}", x.Item1, x.Item2 ) ) ) );
-					var res = await this.MagentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2 ).ConfigureAwait( false );
+
+					var res = await magentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2 ).ConfigureAwait( false );
+
 					MagentoLogger.LogTrace( string.Format( "OrdersReceived: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : String.Format( "{0},{1}", x.Item1, x.Item2 ) ) ) );
 					return res;
 				} ).ConfigureAwait( false );
@@ -184,7 +187,7 @@ namespace MagentoAccess
 				var salesOrderInfoResponses = await ordersBriefInfo.ProcessInBatchAsync( 16, async x =>
 				{
 					MagentoLogger.LogTrace( string.Format( "OrderRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x.incrementId ) ) );
-					var res = await this.MagentoServiceLowLevelSoap.GetOrderAsync( x.incrementId ).ConfigureAwait( false );
+					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x.incrementId ).ConfigureAwait( false );
 					MagentoLogger.LogTrace( string.Format( "OrderReceived: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.incrementId ) ) );
 					return res;
 				} ).ConfigureAwait( false );
