@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services
 {
 	[ TestFixture ]
-	internal class MeagentoServiceLowLevelSoap_1_9_2_2_ce : BaseTest
+	internal class MeagentoServiceLowLevelSoap_1_9_2_1_ce : BaseTest
 	{
 		[ Test ]
 		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders()
@@ -27,7 +27,7 @@ namespace MagentoAccessTestsIntegration.Services
 			var modifiedFrom = DateTime.Parse( firstCreatedItem.UpdatedAt ).AddSeconds( 1 );
 			var modifiedTo = DateTime.Parse( lastCreatedItem.UpdatedAt ).AddSeconds( -1 );
 
-			var getOrdersTask = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetOrdersAsync( modifiedFrom, modifiedTo );
+			var getOrdersTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
@@ -48,7 +48,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//var ordersIds = new List< string >() { "100000001", "100000002" };
 			var ordersIds = this._orders.Select( x => x.incrementId ).ToList();
 
-			var getOrdersTask = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetOrdersAsync( ordersIds );
+			var getOrdersTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetOrdersAsync( ordersIds );
 			getOrdersTask.Wait();
 
 			//------------ Assert
@@ -61,7 +61,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetProductsAsync();
+			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetProductsAsync();
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -77,7 +77,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//var skusorids = new List< string >() { "501shirt", "311" };
 			var skusorids = this._productsIds.Select( ( kv, i ) => i % 2 == 0 ? kv.Key.ToString() : kv.Value ).ToList();
 
-			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetStockItemsAsync( skusorids );
+			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( skusorids );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -90,7 +90,7 @@ namespace MagentoAccessTestsIntegration.Services
 			//------------ Arrange
 
 			//------------ Act
-			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetSessionId( false );
+			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetSessionId( false );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -128,26 +128,26 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 
-			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync.Wait();
 
 			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 123, ProductId = x.ProductId } ) ).ToList();
 
-			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.PutStockItemsAsync( itemsToUpdate );
+			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.PutStockItemsAsync( itemsToUpdate );
 			getProductsTask.Wait();
 
 			////
 
-			var productsAsync2 = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync2 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync2.Wait();
 
 			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 100500, ProductId = x.ProductId } ) ).ToList();
 
-			var getProductsTask2 = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.PutStockItemsAsync( itemsToUpdate2 );
+			var getProductsTask2 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.PutStockItemsAsync( itemsToUpdate2 );
 			getProductsTask2.Wait();
 
 			//------------ Assert
-			var productsAsync3 = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync3 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
 			productsAsync3.Wait();
 
 			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty == "123" );
@@ -161,7 +161,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 
-			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_2_ce.GetMagentoInfoAsync();
+			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetMagentoInfoAsync();
 			productsAsync.Wait();
 
 			//------------ Assert
