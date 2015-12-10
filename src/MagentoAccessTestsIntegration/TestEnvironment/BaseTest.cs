@@ -10,6 +10,7 @@ using MagentoAccess.Services;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
+using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using Netco.Logging;
 using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
@@ -33,6 +34,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected Dictionary< int, string > _productsIds;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
+		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoServiceLowLevelSoapV_1_9_2_2_ce;
 
 		[ SetUp ]
 		public void Setup()
@@ -82,6 +84,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			this._magentoLowLevelSoapVFrom17To19CeService = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
 			this._magentoServiceLowLevelSoapV11410Ee = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
+
+			this._magentoServiceLowLevelSoapV_1_9_2_2_ce = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null);
 
 			this._magentoServiceLowLevelRestRestRestRestNotAuth = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
 
