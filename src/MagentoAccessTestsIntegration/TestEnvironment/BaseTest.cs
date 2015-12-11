@@ -176,14 +176,36 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			}
 		}
 
-		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
+		//protected Dictionary< string, IEnumerable< Product > > GetOnlyProductsCreatedForThisTests()
+		protected  IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
 		{
-			var getProductsTask = this._magentoService.GetProductsAsync();
-			getProductsTask.Wait();
+			var testStoresCredentials = GetTestStoresCredentials();
+			var res = new Dictionary< string, IEnumerable< Product > >();
+			foreach( var credentials in testStoresCredentials )
+			{
+				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+				var getProductsTask = magentoService.GetProductsAsync();
+				getProductsTask.Wait();
 
-			var allProductsinMagent = getProductsTask.Result.ToList();
-			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
-			return onlyProductsCreatedForThisTests;
+				var allProductsinMagent = getProductsTask.Result.ToList();
+				var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+				res[ credentials.StoreUrl ] = onlyProductsCreatedForThisTests;
+			}
+			//return res;
+			return Enumerable.Empty<Product>();
+		}
+		internal class MagentoServiceSoapCredentials
+		{
+			public string SoapApiUser { get; set; }
+			public string SoapApiKey { get; set; }
+			public string StoreUrl { get; set; }
+		}
+
+		internal IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
+		{
+			if( _testData == null )
+				_testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
+			return _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
 		}
 	}
 }
