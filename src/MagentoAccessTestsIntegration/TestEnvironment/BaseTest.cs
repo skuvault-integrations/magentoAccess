@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetOpenAuth.Messaging;
 using MagentoAccess;
-using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Models.CreateOrders;
+using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
+using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Services;
+using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
@@ -29,7 +32,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoSoapCredentials _soapUserCredentials;
 		protected MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE _magentoLowLevelSoapVFrom17To19CeService;
 		protected MagentoServiceLowLevelSoap_v_1_14_1_0_EE _magentoServiceLowLevelSoapV11410Ee;
-		protected List< MagentoAccess.Models.Services.Soap.GetOrders.Order > _orders;
+		protected List< Order > _orders;
 		protected Dictionary< int, string > _productsIds;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
@@ -86,7 +89,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			this._magentoServiceLowLevelSoapV11410Ee = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
-			this._magentoServiceLowLevelSoapV_1_9_2_1_ce = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null);
+			this._magentoServiceLowLevelSoapV_1_9_2_1_ce = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
 
 			this._magentoServiceLowLevelRestRestRestRestNotAuth = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
 
