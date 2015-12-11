@@ -25,7 +25,6 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private MagentoAccessToken _accessToken;
 
 		protected TransmitVerificationCodeDelegate transmitVerificationCode;
-		protected MagentoService _magentoService;
 		protected MagentoService _magentoServiceNotAuth;
 		protected MagentoSoapCredentials _soapUserCredentials;
 		protected MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE _magentoLowLevelSoapVFrom17To19CeService;
@@ -37,29 +36,31 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoServiceLowLevelSoapV_1_9_2_1_ce;
 		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoLowLevelSoapForCreatingTestEnvironment;
 
-		[ SetUp ]
-		public void Setup()
+		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl )
 		{
-			this._magentoService = ( this._accessToken == null || string.IsNullOrWhiteSpace( this._accessToken.AccessToken ) || string.IsNullOrWhiteSpace( this._accessToken.AccessTokenSecret ) ) ?
+			return ( string.IsNullOrWhiteSpace( accessToken ) || string.IsNullOrWhiteSpace( accessTokenSecret ) ) ?
 				new MagentoService( new MagentoNonAuthenticatedUserCredentials(
-					this._consumer.Key,
-					this._consumer.Secret,
-					this._authorityUrls.MagentoBaseUrl,
-					this._authorityUrls.RequestTokenUrl,
-					this._authorityUrls.AuthorizeUrl,
-					this._authorityUrls.AccessTokenUrl
+					consumerKey,
+					consumerSecret,
+					magentoBaseUrl,
+					requestTokenUrl,
+					authorizeUrl,
+					accessTokenUrl
 					)
 					) :
 				new MagentoService( new MagentoAuthenticatedUserCredentials(
-					this._accessToken.AccessToken,
-					this._accessToken.AccessTokenSecret,
-					this._authorityUrls.MagentoBaseUrl,
-					this._consumer.Secret,
-					this._consumer.Key,
-					this._soapUserCredentials.ApiUser,
-					this._soapUserCredentials.ApiKey
+					accessToken,
+					accessTokenSecret,
+					magentoBaseUrl,
+					consumerSecret,
+					consumerKey,
+					apiUser, apiKey
 					) );
+		}
 
+		[ SetUp ]
+		public void Setup()
+		{
 			this._magentoServiceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
 				this._consumer.Key,
 				this._consumer.Secret,
@@ -68,7 +69,6 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 
-			this._magentoService.AfterGettingToken += this._testData.CreateAccessTokenFile;
 			this._magentoServiceNotAuth.AfterGettingToken += this._testData.CreateAccessTokenFile;
 		}
 
