@@ -75,7 +75,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 			//var skusorids = new List< string >() { "501shirt", "311" };
-			var skusorids = this._productsIds.Select( ( kv, i ) => i % 2 == 0 ? kv.Key.ToString() : kv.Value ).ToList();
+			var skusorids = this._productsIds[_magentoLowLevelSoapVFrom17To19CeService.BaseMagentoUrl].Select((kv, i) => i % 2 == 0 ? kv.Key.ToString() : kv.Value).ToList();
 
 			var getProductsTask = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync( skusorids );
 			getProductsTask.Wait();
@@ -128,7 +128,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 
-			var productsAsync = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync(this._productsIds[_magentoLowLevelSoapVFrom17To19CeService.BaseMagentoUrl].Select(x => x.Value).ToList());
 			productsAsync.Wait();
 
 			var itemsToUpdate = productsAsync.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 123, ProductId = x.ProductId } ) ).ToList();
@@ -138,7 +138,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			////
 
-			var productsAsync2 = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync2 = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync(this._productsIds[_magentoLowLevelSoapVFrom17To19CeService.BaseMagentoUrl].Select(x => x.Value).ToList());
 			productsAsync2.Wait();
 
 			var itemsToUpdate2 = productsAsync2.Result.InventoryStockItems.Select( x => new PutStockItem( new Inventory() { Qty = 100500, ProductId = x.ProductId } ) ).ToList();
@@ -147,7 +147,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask2.Wait();
 
 			//------------ Assert
-			var productsAsync3 = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync3 = this._magentoLowLevelSoapVFrom17To19CeService.GetStockItemsAsync(this._productsIds[_magentoLowLevelSoapVFrom17To19CeService.BaseMagentoUrl].Select(x => x.Value).ToList());
 			productsAsync3.Wait();
 
 			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );

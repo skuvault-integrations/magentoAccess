@@ -75,7 +75,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 			//var skusorids = new List< string >() { "501shirt", "311" };
-			var skusorids = this._productsIds.Select( ( kv, i ) => i % 2 == 0 ? kv.Key.ToString() : kv.Value ).ToList();
+			var skusorids = this._productsIds[_magentoServiceLowLevelSoapV11410Ee.BaseMagentoUrl].Select((kv, i) => i % 2 == 0 ? kv.Key.ToString() : kv.Value).ToList();
 
 			var getProductsTask = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( skusorids );
 			getProductsTask.Wait();
@@ -128,7 +128,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 
-			var productsAsync = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync(this._productsIds[_magentoServiceLowLevelSoapV11410Ee.BaseMagentoUrl].Select(x => x.Value).ToList());
 			productsAsync.Wait();
 
 			var qtyUpdateFirsttime = 123;
@@ -139,7 +139,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			////
 
-			var productsAsync2 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync2 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync(this._productsIds[_magentoServiceLowLevelSoapV11410Ee.BaseMagentoUrl].Select(x => x.Value).ToList());
 			productsAsync2.Wait();
 
 			var qtyUpdateSecondTime = 100500;
@@ -149,7 +149,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask2.Wait();
 
 			//------------ Assert
-			var productsAsync3 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync( this._productsIds.Select( x => x.Value ).ToList() );
+			var productsAsync3 = this._magentoServiceLowLevelSoapV11410Ee.GetStockItemsAsync(this._productsIds[_magentoServiceLowLevelSoapV11410Ee.BaseMagentoUrl].Select(x => x.Value).ToList());
 			productsAsync3.Wait();
 
 			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == qtyUpdateFirsttime );

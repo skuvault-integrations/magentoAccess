@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
@@ -16,18 +15,6 @@ namespace MagentoAccessTestsIntegration
 	[ TestFixture ]
 	internal class MagentoServiceTest : BaseTest
 	{
-		internal class MagentoServiceSoapCredentials
-		{
-			public string SoapApiUser { get; set; }
-			public string SoapApiKey { get; set; }
-			public string StoreUrl { get; set; }
-		}
-
-		internal IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
-		{
-			return _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
-		}
-
 		[ Test ]
 		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
@@ -84,20 +71,20 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 
 			//------------ Act
-			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests();
+			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests( credentials );
 			var updateFirstTimeQty = 123;
 			var updateInventoryTask = magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => updateFirstTimeQty ).ToList() );
 			updateInventoryTask.Wait();
 
 			/////
-			var onlyProductsCreatedForThisTests2 = GetOnlyProductsCreatedForThisTests();
+			var onlyProductsCreatedForThisTests2 = GetOnlyProductsCreatedForThisTests( credentials );
 
 			var updateSecondTimeQty = 100500;
 			var updateInventoryTask2 = magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => updateSecondTimeQty ).ToList() );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
-			var onlyProductsCreatedForThisTests3 = GetOnlyProductsCreatedForThisTests();
+			var onlyProductsCreatedForThisTests3 = GetOnlyProductsCreatedForThisTests( credentials );
 
 			onlyProductsCreatedForThisTests2.Should().NotBeNullOrEmpty();
 			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateFirstTimeQty );
@@ -117,7 +104,7 @@ namespace MagentoAccessTestsIntegration
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
-			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds[ credentials.StoreUrl ].ContainsKey( int.Parse( x.ProductId ) ) );
 
 			var itemsToUpdate = onlyProductsCreatedForThisTests.Select( x => new InventoryBySku() { Sku = x.Sku, Qty = 123 } );
 
@@ -130,7 +117,7 @@ namespace MagentoAccessTestsIntegration
 			getProductsTask2.Wait();
 
 			var allProductsinMagent2 = getProductsTask2.Result.ToList();
-			var onlyProductsCreatedForThisTests2 = allProductsinMagent2.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+			var onlyProductsCreatedForThisTests2 = allProductsinMagent2.Where( x => this._productsIds[ credentials.StoreUrl ].ContainsKey( int.Parse( x.ProductId ) ) );
 
 			var itemsToUpdate2 = onlyProductsCreatedForThisTests2.Select( x => new InventoryBySku() { Sku = x.Sku, Qty = 100500 } );
 
@@ -142,7 +129,7 @@ namespace MagentoAccessTestsIntegration
 			getProductsTask3.Wait();
 
 			var allProductsinMagent3 = getProductsTask3.Result.ToList();
-			var onlyProductsCreatedForThisTests3 = allProductsinMagent3.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
+			var onlyProductsCreatedForThisTests3 = allProductsinMagent3.Where( x => this._productsIds[ credentials.StoreUrl ].ContainsKey( int.Parse( x.ProductId ) ) );
 
 			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
 			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
