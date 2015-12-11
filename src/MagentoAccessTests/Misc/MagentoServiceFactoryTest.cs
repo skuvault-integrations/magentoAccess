@@ -137,6 +137,11 @@ namespace MagentoAccessTests.Misc
 			{
 				return null;
 			}
+
+			public Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
+			{
+				return null;
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@ using CuttingEdge.Conditions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
+using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
@@ -65,6 +66,44 @@ namespace MagentoAccess
 				var productsCreationInfoString = productsCreationInfo.ToJson();
 
 				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "ProductsCerated:\"{0}\"".FormatWith( productsCreationInfoString ) ) );
+
+				return productsCreationInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public async Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models )
+		{
+			var methodParameters = models.ToJson();
+			var mark = Mark.CreateNew();
+
+			try
+			{
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
+
+				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				//crunch for old versions
+				var magentoServiceLowLevelSoap = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+
+				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
+				{
+					MagentoLogger.LogTrace( string.Format( "DeleteProduct: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x.ToJson() ) ) );
+
+					var res = new DeleteProductModelResult( x );
+					res.Result = await magentoServiceLowLevelSoap.DeleteProduct( x.StoreId, x.CategoryId, x.ProductId, x.IdentiferType ).ConfigureAwait( false );
+
+					MagentoLogger.LogTrace( string.Format( "ProductDeleted: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() ) ) );
+					return res;
+				} ).ConfigureAwait( false );
+
+				var productsCreationInfoString = productsCreationInfo.ToJson();
+
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "ProductsDeleted:\"{0}\"".FormatWith( productsCreationInfoString ) ) );
 
 				return productsCreationInfo;
 			}
@@ -787,7 +826,6 @@ namespace MagentoAccess
 		}
 		#endregion
 	}
-
 
 	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.GetProducts.Product >
 	{

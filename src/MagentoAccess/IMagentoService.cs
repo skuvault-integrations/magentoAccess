@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateProducts;
+using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
@@ -37,5 +38,6 @@ namespace MagentoAccess
 
 		Task< PingRestInfo > PingRestAsync();
 		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
+		Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models );
 	}
 }
