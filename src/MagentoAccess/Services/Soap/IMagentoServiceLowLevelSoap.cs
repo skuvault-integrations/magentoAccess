@@ -24,5 +24,6 @@ namespace MagentoAccess.Services.Soap
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync();
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );
+		Task< int > CreateProduct( string storeId, string name, string sku, int isInStock );
 	}
 }

@@ -87,6 +87,8 @@
     <Compile Include="Misc\MagentoVersions.cs" />
     <Compile Include="Misc\Mark.cs" />
     <Compile Include="Misc\PredefinedValues.cs" />
+    <Compile Include="Models\CreateProducts\CreateProductModel.cs" />
+    <Compile Include="Models\CreateProducts\CreateProductResponseModel.cs" />
     <Compile Include="Models\Credentials\MagentoAuthenticatedUserCredentials.cs" />
     <Compile Include="Models\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
     <Compile Include="Models\GetMagentoCoreInfo\PingSoapInfo.cs" />

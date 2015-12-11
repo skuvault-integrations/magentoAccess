@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
@@ -35,5 +36,6 @@ namespace MagentoAccess
 		Task< PingSoapInfo > PingSoapAsync( Mark mark = null );
 
 		Task< PingRestInfo > PingRestAsync();
+		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
 	}
 }

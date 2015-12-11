@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
@@ -36,6 +37,47 @@ namespace MagentoAccess
 		public SaveAccessToken AfterGettingToken { get; set; }
 		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 		public Func< string > AdditionalLogInfo { get; set; }
+
+		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models )
+		{
+			var methodParameters = models.ToJson();
+			var mark = Mark.CreateNew();
+
+			try
+			{
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
+
+				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				//crunch for old versions
+				var magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+
+				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
+				{
+					MagentoLogger.LogTrace( string.Format( "CreatingProduct: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x.ToJson() ) ) );
+
+					var res = new CreateProductModelResult( x );
+					res.Result = await magentoServiceLowLevelSoap.CreateProduct( x.StoreId, x.Name, x.Sku, x.IsInStock ).ConfigureAwait( false );
+
+					MagentoLogger.LogTrace( string.Format( "ProductCreated: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() ) ) );
+					return res;
+				} ).ConfigureAwait( false );
+
+				var productsCreationInfoString = productsCreationInfo.ToJson();
+
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "ProductsCerated:\"{0}\"".FormatWith( productsCreationInfoString ) ) );
+
+				return productsCreationInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
 
 		#region constructor
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
@@ -748,6 +790,7 @@ namespace MagentoAccess
 		}
 		#endregion
 	}
+
 
 	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.GetProducts.Product >
 	{
