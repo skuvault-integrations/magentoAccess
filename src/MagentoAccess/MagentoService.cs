@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CuttingEdge.Conditions;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.DeleteProducts;
@@ -66,6 +67,67 @@ namespace MagentoAccess
 				var productsCreationInfoString = productsCreationInfo.ToJson();
 
 				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "ProductsCerated:\"{0}\"".FormatWith( productsCreationInfoString ) ) );
+
+				return productsCreationInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
+		public async Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models )
+		{
+			var methodParameters = models.ToJson();
+			var mark = Mark.CreateNew();
+
+			try
+			{
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
+
+				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				//crunch for old versions
+				var magentoServiceLowLevelSoap = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+
+				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
+				{
+					MagentoLogger.LogTrace( string.Format( "CreatingOrder: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x.ToJson() ) ) );
+
+					var res = new CreateOrderModelResult( x );
+
+					var shoppingCartIdTask = magentoServiceLowLevelSoap.CreateCart( x.StoreId );
+					shoppingCartIdTask.Wait();
+					var _shoppingCartId = shoppingCartIdTask.Result;
+
+					var shoppingCartCustomerSetTask = magentoServiceLowLevelSoap.ShoppingCartGuestCustomerSet( _shoppingCartId, x.CustomerFirstName, x.CustomerMail, x.CustomerLastName, x.StoreId );
+					shoppingCartCustomerSetTask.Wait();
+
+					var shoppingCartAddressSet = magentoServiceLowLevelSoap.ShoppingCartAddressSet( _shoppingCartId, x.StoreId );
+					shoppingCartAddressSet.Wait();
+
+					var productTask = magentoServiceLowLevelSoap.ShoppingCartAddProduct( _shoppingCartId, x.ProductIds.First(), x.StoreId );
+					productTask.Wait();
+
+					var shippingMenthodTask = magentoServiceLowLevelSoap.ShoppingCartSetShippingMethod( _shoppingCartId, x.StoreId );
+					shippingMenthodTask.Wait();
+
+					var paymentMenthodTask = magentoServiceLowLevelSoap.ShoppingCartSetPaymentMethod( _shoppingCartId, x.StoreId );
+					paymentMenthodTask.Wait();
+
+					var orderIdTask = magentoServiceLowLevelSoap.CreateOrder( _shoppingCartId, x.StoreId );
+					orderIdTask.Wait();
+					res.OrderId = orderIdTask.Result;
+					Task.Delay( 1000 );
+
+					MagentoLogger.LogTrace( string.Format( "OrderCreated: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() ) ) );
+					return res;
+				} ).ConfigureAwait( false );
+
+				var productsCreationInfoString = productsCreationInfo.ToJson();
+
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "OrdersCerated:\"{0}\"".FormatWith( productsCreationInfoString ) ) );
 
 				return productsCreationInfo;
 			}

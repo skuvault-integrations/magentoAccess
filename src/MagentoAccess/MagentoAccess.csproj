@@ -75,6 +75,8 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Models\CreateOrders\CreateOrderModel.cs" />
+    <Compile Include="Models\CreateOrders\CreateOrderModelResult.cs" />
     <Compile Include="Models\DeleteProducts\DeleteProductModel.cs" />
     <Compile Include="Models\DeleteProducts\DeleteProductModelResult.cs" />
     <Compile Include="IMagentoFactory.cs" />

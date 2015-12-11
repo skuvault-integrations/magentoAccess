@@ -142,6 +142,41 @@ namespace MagentoAccessTests.Misc
 			{
 				return null;
 			}
+
+			public Task< int > CreateCart( string storeid )
+			{
+				return null;
+			}
+
+			public Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
+			{
+				return null;
+			}
+
+			public Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
+			{
+				return null;
+			}
+
+			public Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
+			{
+				return null;
+			}
+
+			public Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
+			{
+				return null;
+			}
+
+			public Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
+			{
+				return null;
+			}
+
+			public Task< string > CreateOrder( int shoppingcartid, string store )
+			{
+				return null;
+			}
 		}
 	}
 }

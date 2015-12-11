@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
@@ -40,5 +41,6 @@ namespace MagentoAccess
 		Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory );
 		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
 		Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models );
+		Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models );
 	}
 }
