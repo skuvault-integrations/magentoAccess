@@ -23,23 +23,24 @@ namespace MagentoAccess.Services.Soap
 
 		public IMagentoServiceLowLevelSoap GetMagentoServiceLowLevelSoap( string magentoVersion, bool returnDefaultInsteadOfexception )
 		{
-			if( returnDefaultInsteadOfexception && !_factories.ContainsKey( magentoVersion ) )
+			var factories = _factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
+			if( returnDefaultInsteadOfexception && !factories.ContainsKey( magentoVersion ) )
 			{
 				for( var j = 0; j < magentoVersion.Length; j++ )
 				{
-					var versions = _factories.Keys.Where( x => x.Substring( 0, x.Length - j ) == magentoVersion.Substring( 0, magentoVersion.Length - j ) );
+					var versions = factories.Keys.Where( x => x.Substring( 0, x.Length - j ) == magentoVersion.Substring( 0, magentoVersion.Length - j ) );
 					var versionList = versions as IList< string > ?? versions.ToList();
 					if( versionList.Any() )
 					{
-						_factories.Add( magentoVersion, _factories[ versionList.First() ] );
-						return _factories[ magentoVersion ];
+						factories.Add( magentoVersion, factories[ versionList.First() ] );
+						return factories[ magentoVersion ];
 					}
 				}
 
 				_factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( _apiUser, _apiKey, _baseMagentoUrl, _store ) );
 			}
 
-			return _factories[ magentoVersion ];
+			return factories[ magentoVersion ];
 		}
 
 		public string GetSubVersion( int deep, string magentoVer )

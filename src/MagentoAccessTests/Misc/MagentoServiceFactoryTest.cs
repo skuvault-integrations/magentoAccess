@@ -31,23 +31,24 @@ namespace MagentoAccessTests.Misc
 			return version;
 		}
 
-		[ TestCase( "1.2.3.4", Result = "1.2.3.4" ) ]
-		[ TestCase( "1.2.3.5", Result = "1.2.3.4" ) ]
-		[ TestCase( "1.3.3.5", Result = "1.2.3.4" ) ]
-		[ TestCase( "2.2.3.4", Result = "2.2.3.4" ) ]
-		[ TestCase( "2.2.4.4", Result = "2.2.3.4" ) ]
-		[ TestCase( "3.2.3.4", Result = "3.2.3.4" ) ]
-		[ TestCase( "3.2.5.4", Result = "3.2.3.4" ) ]
-		[ TestCase( "3.9.9.9", Result = "3.2.3.4" ) ]
+		[TestCase("1.7.0.2", Result = "1.7.0.2")]
+		[TestCase("1.7.1.2", Result = "1.7.0.2")]
+		[TestCase("1.8.1.2", Result = "1.8.1.0")]
+		[TestCase("1.8.0.2", Result = "1.8.0.1")]
+		[TestCase("1.9.1.3", Result = "1.9.1.0")]
+		[TestCase("1.9.2.3", Result = "1.9.2.0")]
 		[ Test ]
 		public string GetMagentoServiceLowLevel_InputIsCorrectVersion_SimilarOrEvenExectlyTheSameVersionOfServiceFound( string magentoVer )
 		{
 			//------------ Arrange
-			var s1 = new MagentoServiceLowLevelStub( "1.2.3.4" );
-			var s2 = new MagentoServiceLowLevelStub( "2.2.3.4" );
-			var s3 = new MagentoServiceLowLevelStub( "2.2.3.5" );
-			var s4 = new MagentoServiceLowLevelStub( "3.2.3.4" );
-			var s5 = new MagentoServiceLowLevelStub( "3.2.4.4" );
+			var s1 = new MagentoServiceLowLevelStub( "1.7.0.2" );
+			var s2 = new MagentoServiceLowLevelStub( "1.8.0.1" );
+			var s3 = new MagentoServiceLowLevelStub( "1.8.1.0" );
+			var s4 = new MagentoServiceLowLevelStub( "1.9.0.1" );
+			var s5 = new MagentoServiceLowLevelStub( "1.9.1.0" );
+			var s6 = new MagentoServiceLowLevelStub( "1.9.2.0" );
+			var s7 = new MagentoServiceLowLevelStub( "1.9.2.1" );
+			var s8= new MagentoServiceLowLevelStub( "1.9.2.2" );
 
 			Dictionary< string, IMagentoServiceLowLevelSoap > factories = new Dictionary< string, IMagentoServiceLowLevelSoap >
 			{
@@ -56,6 +57,9 @@ namespace MagentoAccessTests.Misc
 				{ s3.Store, s3 },
 				{ s4.Store, s4 },
 				{ s5.Store, s5 },
+				{ s6.Store, s6 },
+				{ s7.Store, s7 },
+				{ s8.Store, s8 },
 			};
 			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null, null, factories );
 
