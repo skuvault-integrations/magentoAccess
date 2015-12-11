@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [ assembly : ComVisible( false ) ]
@@ -10,6 +11,8 @@ using System.Runtime.InteropServices;
 [ assembly : AssemblyTrademark( "" ) ]
 [ assembly : AssemblyCulture( "" ) ]
 [ assembly : CLSCompliant( false ) ]
+[ assembly : InternalsVisibleTo( "MagentoAccessTests" ) ]
+[ assembly : InternalsVisibleTo( "MagentoAccessTestsIntegration" ) ]
 
 // Version information for an assembly consists of the following four values:
 //
