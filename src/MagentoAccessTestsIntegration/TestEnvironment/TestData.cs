@@ -12,15 +12,40 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		private FlatCsvLineVerification _flatCsvLinesVerification;
 		private readonly string _accessTokenFilePath;
 		private readonly string _verificationFilePath;
+		internal readonly IEnumerable< FlatCsvLineConsumer > _customersCredentialsFromFile;
+		internal readonly IEnumerable< FlatCsvLineUrls > _storesUrlsFromFile;
+		internal readonly IEnumerable< FlatCsvLineAccessToken > _accessTokensFromFile;
 
 		public TestData( string consumerKeyFilePath, string urlsFilePath, string accessTokenFilePath, string verificationPath )
 		{
 			var cc = new CsvContext();
 			this._accessTokenFilePath = accessTokenFilePath;
 			this._verificationFilePath = verificationPath;
-			this._flatCsvLineConsumer = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineConsumer >( consumerKeyFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
-			this._flatCsvLineUrls = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineUrls >( urlsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
-			this._flatCsvLinesAccessToken = Enumerable.FirstOrDefault( cc.Read< FlatCsvLineAccessToken >( accessTokenFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } ) );
+			_customersCredentialsFromFile = GetCustomersCredentialsFromFile( consumerKeyFilePath );
+			_storesUrlsFromFile = GetUrlsFromFile( urlsFilePath );
+			_accessTokensFromFile = GetAccessTokensFromFile( accessTokenFilePath );
+
+			this._flatCsvLineConsumer = Enumerable.FirstOrDefault( _customersCredentialsFromFile );
+			this._flatCsvLineUrls = Enumerable.FirstOrDefault( _storesUrlsFromFile );
+			this._flatCsvLinesAccessToken = Enumerable.FirstOrDefault( _accessTokensFromFile );
+		}
+
+		internal static IEnumerable< FlatCsvLineAccessToken > GetAccessTokensFromFile( string accessTokenFilePath )
+		{
+			var cc = new CsvContext();
+			return cc.Read< FlatCsvLineAccessToken >( accessTokenFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } );
+		}
+
+		internal static IEnumerable< FlatCsvLineUrls > GetUrlsFromFile( string urlsFilePath )
+		{
+			var cc = new CsvContext();
+			return cc.Read< FlatCsvLineUrls >( urlsFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } );
+		}
+
+		internal static IEnumerable< FlatCsvLineConsumer > GetCustomersCredentialsFromFile( string consumerKeyFilePath )
+		{
+			var cc = new CsvContext();
+			return cc.Read< FlatCsvLineConsumer >( consumerKeyFilePath, new CsvFileDescription { FirstLineHasColumnNames = true } );
 		}
 
 		public void CreateAccessTokenFile( string accessToken, string accessTokenSecret )
