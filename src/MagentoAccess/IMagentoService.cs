@@ -37,6 +37,7 @@ namespace MagentoAccess
 		Task< PingSoapInfo > PingSoapAsync( Mark mark = null );
 
 		Task< PingRestInfo > PingRestAsync();
+		Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory );
 		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
 		Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models );
 	}
