@@ -58,7 +58,7 @@ namespace MagentoAccess
 					MagentoLogger.LogTrace( string.Format( "CreatingProduct: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x.ToJson() ) ) );
 
 					var res = new CreateProductModelResult( x );
-					res.Result = await magentoServiceLowLevelSoap.CreateProduct( x.StoreId, x.Name, x.Sku, x.IsInStock ).ConfigureAwait( false );
+					await ActionPolicies.GetAsync.Get( async () => res.Result = await magentoServiceLowLevelSoap.CreateProduct( x.StoreId, x.Name, x.Sku, x.IsInStock ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 					MagentoLogger.LogTrace( string.Format( "ProductCreated: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() ) ) );
 					return res;
