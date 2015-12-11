@@ -102,7 +102,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			//this.CreateOrders();
 		}
 
-		[ TestFixtureTearDown ]
+		[TestFixtureTearDown]
 		public void TestFixtureTearDown()
 		{
 			//this.DeleteProducts();
@@ -220,6 +220,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			public string SoapApiUser { get; set; }
 			public string SoapApiKey { get; set; }
 			public string StoreUrl { get; set; }
+
+			public override string ToString()
+			{
+				return StoreUrl.ToString();
+			}
 		}
 
 		internal IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
@@ -227,7 +232,9 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			if( _testData == null )
 				_testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
 			var magentoServiceSoapCredentialses = _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
-			return magentoServiceSoapCredentialses;
+
+			
+			return magentoServiceSoapCredentialses.ToList();
 		}
 	}
 }

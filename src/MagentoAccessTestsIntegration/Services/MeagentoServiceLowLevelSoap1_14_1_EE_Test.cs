@@ -12,7 +12,8 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services
 {
-	[ TestFixture ]
+	[TestFixture]
+	[Ignore("Since Test cases used for MagentoService")]
 	internal class MeagentoServiceLowLevelSoap1_14_1_EE_Test : BaseTest
 	{
 		[ Test ]
