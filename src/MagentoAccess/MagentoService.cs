@@ -49,7 +49,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+				var magentoServiceLowLevelSoap = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
 
 				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
 				{
