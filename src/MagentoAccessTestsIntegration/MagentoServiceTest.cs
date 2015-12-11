@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
@@ -15,13 +16,26 @@ namespace MagentoAccessTestsIntegration
 	[ TestFixture ]
 	internal class MagentoServiceTest : BaseTest
 	{
+		internal class MagentoServiceSoapCredentials
+		{
+			public string SoapApiUser { get; set; }
+			public string SoapApiKey { get; set; }
+			public string StoreUrl { get; set; }
+		}
+
+		internal IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
+		{
+			return _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
+		}
+
 		[ Test ]
-		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			try
 			{
 				//------------ Arrange
-
+				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 				//------------ Act
 				var firstCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).First();
 				var lastCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).Last();
@@ -31,7 +45,7 @@ namespace MagentoAccessTestsIntegration
 				//var modifiedFrom = new DateTime(2015,2,10,23,23,59).AddSeconds(1);
 				//var modifiedTo = new DateTime(2015,3,10,23,30,39).AddSeconds(-1);
 
-				var getOrdersTask = this._magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
+				var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
 				getOrdersTask.Wait();
 
 				//------------ Assert
@@ -48,12 +62,14 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
+			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 
 			//------------ Act
-			var getProductsTask = this._magentoService.GetProductsAsync();
+			var getProductsTask = magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -61,21 +77,23 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
+			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 
 			//------------ Act
 			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests();
 			var updateFirstTimeQty = 123;
-			var updateInventoryTask = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => updateFirstTimeQty ).ToList() );
+			var updateInventoryTask = magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => updateFirstTimeQty ).ToList() );
 			updateInventoryTask.Wait();
 
 			/////
 			var onlyProductsCreatedForThisTests2 = GetOnlyProductsCreatedForThisTests();
 
 			var updateSecondTimeQty = 100500;
-			var updateInventoryTask2 = this._magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => updateSecondTimeQty ).ToList() );
+			var updateInventoryTask2 = magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => updateSecondTimeQty ).ToList() );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
@@ -88,12 +106,14 @@ namespace MagentoAccessTestsIntegration
 
 		[ Ignore ]
 		[ Test ]
-		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
+			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 
 			//------------ Act
-			var getProductsTask = this._magentoService.GetProductsAsync();
+			var getProductsTask = magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -101,12 +121,12 @@ namespace MagentoAccessTestsIntegration
 
 			var itemsToUpdate = onlyProductsCreatedForThisTests.Select( x => new InventoryBySku() { Sku = x.Sku, Qty = 123 } );
 
-			var updateInventoryTask = this._magentoService.UpdateInventoryBySkuAsync( itemsToUpdate );
+			var updateInventoryTask = magentoService.UpdateInventoryBySkuAsync( itemsToUpdate );
 			updateInventoryTask.Wait();
 
 			/////
 
-			var getProductsTask2 = this._magentoService.GetProductsAsync();
+			var getProductsTask2 = magentoService.GetProductsAsync();
 			getProductsTask2.Wait();
 
 			var allProductsinMagent2 = getProductsTask2.Result.ToList();
@@ -114,11 +134,11 @@ namespace MagentoAccessTestsIntegration
 
 			var itemsToUpdate2 = onlyProductsCreatedForThisTests2.Select( x => new InventoryBySku() { Sku = x.Sku, Qty = 100500 } );
 
-			var updateInventoryTask2 = this._magentoService.UpdateInventoryBySkuAsync( itemsToUpdate2 );
+			var updateInventoryTask2 = magentoService.UpdateInventoryBySkuAsync( itemsToUpdate2 );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
-			var getProductsTask3 = this._magentoService.GetProductsAsync();
+			var getProductsTask3 = magentoService.GetProductsAsync();
 			getProductsTask3.Wait();
 
 			var allProductsinMagent3 = getProductsTask3.Result.ToList();
@@ -129,6 +149,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiKey_ThrowException()
 		{
 			//------------ Arrange
@@ -154,6 +175,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiUser_ThrowException()
 		{
 			//------------ Arrange
@@ -179,6 +201,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingRestAsync_IncorrectAccessToken_ThrowException()
 		{
 			//------------ Arrange
@@ -204,6 +227,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingRestAsync_IncorrectAccessTokenSecret_ThrowException()
 		{
 			//------------ Arrange
@@ -229,6 +253,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingRestAsync_IncorrectBaseUrl_ThrowException()
 		{
 			//------------ Arrange
@@ -254,6 +279,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingRestAsync_IncorrectConsumerSecret_ThrowException()
 		{
 			//------------ Arrange
@@ -279,6 +305,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingRestAsync_IncorrectConsumerKey_ThrowException()
 		{
 			//------------ Arrange
@@ -304,15 +331,17 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[Ignore("Since rest is a vestigie")]
-		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ Ignore( "Since rest is a vestigie" ) ]
+		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
+			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 
 			//------------ Act
 			Action act = () =>
 			{
-				var magentoInfoAsyncTask = this._magentoService.PingRestAsync();
+				var magentoInfoAsyncTask = magentoService.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -321,14 +350,15 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-
+			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
 			//------------ Act
 			Action act = () =>
 			{
-				var magentoInfoAsyncTask = this._magentoService.PingSoapAsync();
+				var magentoInfoAsyncTask = magentoService.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 
@@ -337,6 +367,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		[ Ignore ]
 		public void GetProducts_UserHasNotGotAccessTokens_AuthCalled()
 		{
@@ -359,6 +390,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		[ Ignore ]
 		//this test is not completed to use it - manually fill verificatio code in file
 		public void InitiateDesktopAuthentication_UserHasNotGotAccessTokens_AuthCalled()
@@ -374,6 +406,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		[ Ignore ]
 		public void RequestVerificationUri_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
 		{
