@@ -107,54 +107,46 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		{
 			var ordersIds = new List< string >();
 
-			for( var i = 0; i < 5; i++ )
+			var testStoresCredentials = GetTestStoresCredentials();
+			foreach( var credentials in testStoresCredentials )
 			{
-				var shoppingCartIdTask = this._magentoLowLevelSoapForCreatingTestEnvironment.CreateCart( "0" );
-				shoppingCartIdTask.Wait();
-				var _shoppingCartId = shoppingCartIdTask.Result;
+				var ordersModels = new List< CreateOrderModel >();
+				for( var i = 0; i < 5; i++ )
+				{
+					ordersModels.Add( new CreateOrderModel() { StoreId = "0", CustomerFirstName = "max", CustomerMail = "qwe@qwe.com", CustomerLastName = "kits", ProductIds = this._productsIds.Values } );
+				}
 
-				var shoppingCartCustomerSetTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartGuestCustomerSet(_shoppingCartId, "max", "qwe@qwe.com", "kits", "0");
-				shoppingCartCustomerSetTask.Wait();
+				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+				var creationResult = magentoService.CreateOrderAsync( ordersModels );
+				creationResult.Wait();
 
-				var shoppingCartAddressSet = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartAddressSet(_shoppingCartId, "0");
-				shoppingCartAddressSet.Wait();
-
-				var productTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartAddProduct(_shoppingCartId, this._productsIds.First().Key.ToString(), "0");
-				productTask.Wait();
-
-				var shippingMenthodTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartSetShippingMethod(_shoppingCartId, "0");
-				shippingMenthodTask.Wait();
-
-				var paymentMenthodTask = this._magentoLowLevelSoapForCreatingTestEnvironment.ShoppingCartSetPaymentMethod(_shoppingCartId, "0");
-				paymentMenthodTask.Wait();
-
-				var orderIdTask = this._magentoLowLevelSoapForCreatingTestEnvironment.CreateOrder(_shoppingCartId, "0");
-				orderIdTask.Wait();
-				var orderId = orderIdTask.Result;
-				ordersIds.Add( orderId );
-				Task.Delay( 1000 );
+				var ordersTask = this._magentoLowLevelSoapForCreatingTestEnvironment.GetOrdersAsync( ordersIds );
+				ordersTask.Wait();
+				this._orders = ordersTask.Result.Orders.ToList().OrderBy( x => x.UpdatedAt ).ToList();
 			}
-
-			var ordersTask = this._magentoLowLevelSoapForCreatingTestEnvironment.GetOrdersAsync(ordersIds);
-			ordersTask.Wait();
-			this._orders = ordersTask.Result.Orders.ToList().OrderBy( x => x.UpdatedAt ).ToList();
 		}
 
-		protected void CreateProductstems()
+		protected void CreateProducts()
 		{
 			this._productsIds = new Dictionary< int, string >();
 
 			var createProuctsTasks = new List< Task >();
 
-			for( var i = 0; i < 5; i++ )
+			var testStoresCredentials = GetTestStoresCredentials();
+			foreach( var credentials in testStoresCredentials )
 			{
-				var tiks = DateTime.UtcNow.Ticks.ToString();
-				var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
-				var name = string.Format( "TddTestName{0}_{1}", i, tiks );
-				var productTask = this._magentoLowLevelSoapForCreatingTestEnvironment.CreateProduct("0", name, sku, 1);
-				createProuctsTasks.Add( productTask );
-				//shoppingCartIdTask.Wait();
-				this._productsIds.Add( productTask.Result, sku );
+				var source = new List< CreateProductModel >();
+				for( var i = 0; i < 5; i++ )
+				{
+					var tiks = DateTime.UtcNow.Ticks.ToString();
+					var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
+					var name = string.Format( "TddTestName{0}_{1}", i, tiks );
+					source.Add( new CreateProductModel( "0", sku, name, 1 ) );
+				}
+				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+				var creationResult = magentoService.CreateProductAsync( source );
+				creationResult.Wait();
+				this._productsIds.AddRange( creationResult.Result.ToDictionary( x => x.Result, y => y.Sku ) );
 			}
 
 			var commonTask = Task.WhenAll( createProuctsTasks );
@@ -165,18 +157,18 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		{
 			try
 			{
-				var productsToRemove = GetOnlyProductsCreatedForThisTests();
+				var testStoresCredentials = GetTestStoresCredentials();
 
-				var deleteProuctsTasks = new List< Task >();
-				foreach( var p in productsToRemove )
+				foreach( var credentials in testStoresCredentials )
 				{
-					var tiks = DateTime.UtcNow.Ticks.ToString();
-					var productTask = this._magentoLowLevelSoapForCreatingTestEnvironment.DeleteProduct("0", 0, p.ProductId, "");
-					deleteProuctsTasks.Add( productTask );
-				}
+					var productsToRemove = GetOnlyProductsCreatedForThisTests();
+					var productsToRemoveDeleteProductModels = productsToRemove.Select( p => new DeleteProductModel( "0", 0, p.ProductId, "" ) ).ToList();
 
-				var commonTask = Task.WhenAll( deleteProuctsTasks );
-				commonTask.Wait();
+					var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+					var deleteres = magentoService.DeleteProductAsync( productsToRemoveDeleteProductModels );
+
+					deleteres.Wait();
+				}
 			}
 			catch( Exception exception )
 			{
