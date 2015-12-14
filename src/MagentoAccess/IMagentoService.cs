@@ -42,5 +42,6 @@ namespace MagentoAccess
 		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
 		Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models );
 		Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models );
+		Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds );
 	}
 }

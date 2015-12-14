@@ -102,12 +102,14 @@ namespace MagentoAccess.Models.GetOrders
 			this.ShippingLastname = order.ShippingLastname;
 			this.ShippingMethod = order.ShippingMethod;
 			this.ShippingName = order.ShippingName;
-
+			this.UpdatedAt = order.UpdatedAT.ToDateTimeOrDefault();
 			OrderStatusesEnum tempstatus;
 			OrderStateEnum tempstate;
 			this.Status = Enum.TryParse( order.Status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.State, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
 		}
+
+		public DateTime UpdatedAt { get; set; }
 
 		public string ShippingName { get; set; }
 

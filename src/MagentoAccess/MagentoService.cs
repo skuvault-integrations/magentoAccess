@@ -290,6 +290,57 @@ namespace MagentoAccess
 		#endregion
 
 		#region getOrders
+		public async Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds )
+		{
+			var methodParameters = orderIds.ToJson();
+
+			var mark = Mark.CreateNew();
+
+			try
+			{
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
+
+				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
+				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				//crunch for old versions
+				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+
+				var salesOrderInfoResponses = await orderIds.ProcessInBatchAsync( 16, async x =>
+				{
+					MagentoLogger.LogTrace( string.Format( "OrderRequested: {0}", CreateMethodCallInfo( mark : mark, methodParameters : x ) ) );
+					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
+					MagentoLogger.LogTrace( string.Format( "OrderReceived: {0}", CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x ) ) );
+					return res;
+				} ).ConfigureAwait( false );
+
+				var salesOrderInfoResponsesList = salesOrderInfoResponses.ToList();
+
+				var resultOrders = new List< Order >();
+
+				const int batchSize = 500;
+				for( var i = 0; i < salesOrderInfoResponsesList.Count; i += batchSize )
+				{
+					var orderInfoResponses = salesOrderInfoResponsesList.Skip( i ).Take( batchSize );
+					var resultOrderPart = orderInfoResponses.AsParallel().Select( x => new Order( x ) ).ToList();
+					resultOrders.AddRange( resultOrderPart );
+					var resultOrdersBriefInfo = resultOrderPart.ToJsonAsParallel( 0, batchSize );
+					var partDescription = "From: " + i.ToString() + "," + ( ( i + batchSize < salesOrderInfoResponsesList.Count ) ? batchSize : salesOrderInfoResponsesList.Count % batchSize ).ToString() + " items(or few)";
+					MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : resultOrdersBriefInfo, methodParameters : methodParameters, notes : "LogPart:\"{0}\"".FormatWith( partDescription ) ) );
+				}
+
+				return resultOrders;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark, methodParameters : methodParameters ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
 		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
 		{
 			var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
