@@ -4,60 +4,61 @@ using FluentAssertions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
-using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services
 {
-	[TestFixture]
-	[Ignore("Since Test cases used for MagentoService")]
+	[ TestFixture ]
+	[ Ignore( "Since Test cases used for MagentoService" ) ]
 	internal class MeagentoServiceLowLevelSoap_1_9_2_1_ce : BaseTest
 	{
 		[ Test ]
-		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
 			//------------ Act
-			var firstCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).First();
-			var lastCreatedItem = this._orders.OrderBy( x => x.UpdatedAt.ToDateTimeOrDefault() ).Last();
+			var firstCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).First();
+			var lastCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).Last();
 
-			var modifiedFrom = DateTime.Parse( firstCreatedItem.UpdatedAt ).AddSeconds( 1 );
-			var modifiedTo = DateTime.Parse( lastCreatedItem.UpdatedAt ).AddSeconds( -1 );
+			var modifiedFrom = firstCreatedItem.UpdatedAt.AddSeconds( 1 );
+			var modifiedTo = lastCreatedItem.UpdatedAt.AddSeconds( -1 );
 
 			var getOrdersTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			var thatMustBeReturned = this._orders.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.incrementId ).ToList();
+			var thatMustBeReturned = this._orders[ credentials.StoreUrl ].Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.OrderIncrementalId ).ToList();
 			var thatWasReturned = getOrdersTask.Result.Orders.ToList().Select( x => x.incrementId ).ToList();
 
 			thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
 
-			getOrdersTask.Result.Orders.ShouldBeEquivalentTo( this._orders.Take( this._orders.Count() - 1 ).Skip( 1 ) );
+			getOrdersTask.Result.Orders.ShouldBeEquivalentTo( this._orders[ credentials.StoreUrl ].Take( this._orders[ credentials.StoreUrl ].Count() - 1 ).Skip( 1 ) );
 		}
 
 		[ Test ]
-		public void GetOrders_ByIdsStoreContainsOrders_ReceiveOrders()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetOrders_ByIdsStoreContainsOrders_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
 			//------------ Act
 			//var ordersIds = new List< string >() { "100000001", "100000002" };
-			var ordersIds = this._orders.Select( x => x.incrementId ).ToList();
+			var ordersIds = this._orders[ credentials.StoreUrl ].Select( x => x.OrderIncrementalId ).ToList();
 
 			var getOrdersTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetOrdersAsync( ordersIds );
 			getOrdersTask.Wait();
 
 			//------------ Assert
-			getOrdersTask.Result.Orders.ShouldBeEquivalentTo( this._orders );
+			getOrdersTask.Result.Orders.ShouldBeEquivalentTo( this._orders[ credentials.StoreUrl ] );
 		}
 
 		[ Test ]
-		public void GetProducts_StoreContainsProducts_ReceiveProducts()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetProducts_StoreContainsProducts_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
@@ -70,23 +71,25 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetStockItems_StoreContainsStockItems_ReceiveStockItems()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetStockItems_StoreContainsStockItems_ReceiveStockItems( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
 			//------------ Act
 			//var skusorids = new List< string >() { "501shirt", "311" };
-			var skusorids = this._productsIds[_magentoServiceLowLevelSoapV_1_9_2_1_ce.BaseMagentoUrl].Select((kv, i) => i % 2 == 0 ? kv.Key.ToString() : kv.Value).ToList();
+			var skusorids = this._productsIds[ credentials.StoreUrl ].Select( ( kv, i ) => i % 2 == 0 ? kv.Key.ToString() : kv.Value ).ToList();
 
 			var getProductsTask = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( skusorids );
 			getProductsTask.Wait();
 
 			//------------ Assert
-			getProductsTask.Result.InventoryStockItems.Select( x => x.ProductId ).ShouldBeEquivalentTo( this._productsIds.Select( x => x.Key ) );
+			getProductsTask.Result.InventoryStockItems.Select( x => x.ProductId ).ShouldBeEquivalentTo( this._productsIds[ credentials.StoreUrl ].Select( x => x.Key ) );
 		}
 
 		[ Test ]
-		public void GetSessionId_StoreContainsUser_ReceiveSessionId()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetSessionId_StoreContainsUser_ReceiveSessionId( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
@@ -99,7 +102,8 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetSessionId_IncorrectApiUser_NoExceptionThrowns()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetSessionId_IncorrectApiUser_NoExceptionThrowns( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
@@ -109,8 +113,8 @@ namespace MagentoAccessTestsIntegration.Services
 			{
 				var service = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE(
 					"incorrect api user",
-					this._testData.GetMagentoSoapUser().ApiKey,
-					this._testData.GetMagentoUrls().MagentoBaseUrl,
+					credentials.SoapApiKey,
+					credentials.StoreUrl,
 					null );
 
 				var getProductsTask = service.GetSessionId( false );
@@ -123,13 +127,14 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void UpdateInventory_StoreWithItems_ItemsUpdated()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void UpdateInventory_StoreWithItems_ItemsUpdated( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
 			//------------ Act
 
-			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync(this._productsIds[_magentoServiceLowLevelSoapV_1_9_2_1_ce.BaseMagentoUrl].Select(x => x.Value).ToList());
+			var productsAsync = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds[ credentials.StoreUrl ].Select( x => x.Value ).ToList() );
 			productsAsync.Wait();
 
 			var updateFirsttimeQty = 123;
@@ -140,7 +145,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			////
 
-			var productsAsync2 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync(this._productsIds[_magentoServiceLowLevelSoapV_1_9_2_1_ce.BaseMagentoUrl].Select(x => x.Value).ToList());
+			var productsAsync2 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds[ credentials.StoreUrl ].Select( x => x.Value ).ToList() );
 			productsAsync2.Wait();
 
 			var updateSecondTimeQty = 100500;
@@ -150,7 +155,7 @@ namespace MagentoAccessTestsIntegration.Services
 			getProductsTask2.Wait();
 
 			//------------ Assert
-			var productsAsync3 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync(this._productsIds[_magentoServiceLowLevelSoapV_1_9_2_1_ce.BaseMagentoUrl].Select(x => x.Value).ToList());
+			var productsAsync3 = this._magentoServiceLowLevelSoapV_1_9_2_1_ce.GetStockItemsAsync( this._productsIds[ credentials.StoreUrl ].Select( x => x.Value ).ToList() );
 			productsAsync3.Wait();
 
 			productsAsync2.Result.InventoryStockItems.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateFirsttimeQty );
@@ -158,7 +163,8 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		public void GetMagentoInfoAsync_StoreExist_StoreVersionRecived()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void GetMagentoInfoAsync_StoreExist_StoreVersionRecived( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
