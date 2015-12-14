@@ -33,5 +33,6 @@ namespace MagentoAccess.Services.Soap
 		Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store );
 		Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store );
 		Task< string > CreateOrder( int shoppingcartid, string store );
+		Task< string > GetSessionId( bool throwException = true );
 	}
 }

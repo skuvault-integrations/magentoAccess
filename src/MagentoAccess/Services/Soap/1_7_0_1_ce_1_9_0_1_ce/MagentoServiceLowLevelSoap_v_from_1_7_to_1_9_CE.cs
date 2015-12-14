@@ -43,7 +43,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		internal async Task< string > GetSessionId( bool throwException = true )
+		public async Task< string > GetSessionId( bool throwException = true )
 		{
 			try
 			{

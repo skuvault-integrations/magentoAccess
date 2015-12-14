@@ -177,6 +177,11 @@ namespace MagentoAccessTests.Misc
 			{
 				return null;
 			}
+
+			public Task< string > GetSessionId( bool throwException = true )
+			{
+				return null;
+			}
 		}
 	}
 }

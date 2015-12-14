@@ -191,9 +191,9 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[TestCaseSource("GetTestStoresCredentials")]
-		[Ignore]
-		public void PopulateAccessTokenAndAccessTokenSecret_UserHasNotGotAccessTokens_AuthCalled()
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ Ignore ]
+		public void PopulateAccessTokenAndAccessTokenSecret_UserHasNotGotAccessTokens_AuthCalled( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 
