@@ -33,7 +33,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoSoapCredentials _soapUserCredentials;
 		protected MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE _magentoLowLevelSoapVFrom17To19CeService;
 		protected MagentoServiceLowLevelSoap_v_1_14_1_0_EE _magentoServiceLowLevelSoapV11410Ee;
-		protected List< Order > _orders;
+		protected ConcurrentDictionary< string,List< MagentoAccess.Models.GetOrders.Order >> _orders;
 		protected ConcurrentDictionary< string, Dictionary< int, string > > _productsIds;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
@@ -111,55 +111,72 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected void CreateOrders()
 		{
 			var ordersIds = new List< string >();
-
 			var testStoresCredentials = GetTestStoresCredentials();
-			foreach( var credentials in testStoresCredentials )
+			Parallel.ForEach( testStoresCredentials, credentials =>
 			{
-				var ordersModels = new List< CreateOrderModel >();
-				for( var i = 0; i < 5; i++ )
+				try
 				{
-					ordersModels.Add( new CreateOrderModel() { StoreId = "0", CustomerFirstName = "max", CustomerMail = "qwe@qwe.com", CustomerLastName = "kits", ProductIds = this._productsIds[ credentials.StoreUrl ].Values } );
+					var ordersModels = new List< CreateOrderModel >();
+					for( var i = 0; i < 5; i++ )
+					{
+						ordersModels.Add( new CreateOrderModel() { StoreId = "0", CustomerFirstName = "max", CustomerMail = "qwe@qwe.com", CustomerLastName = "kits", ProductIds = this._productsIds[ credentials.StoreUrl ].Keys.Select( x => x.ToString() ) } );
+					}
+
+					var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+					var creationResult = magentoService.CreateOrderAsync( ordersModels );
+					creationResult.Wait();
+					ordersIds = creationResult.Result.Select(x => x.OrderId).ToList();
+					var ordersTask = magentoService.GetOrdersAsync(ordersIds);
+					ordersTask.Wait();
+
+					if( this._orders == null )
+						this._orders = new ConcurrentDictionary<string, List<MagentoAccess.Models.GetOrders.Order>>();
+
+					this._orders[credentials.StoreUrl] = new List<MagentoAccess.Models.GetOrders.Order>();
+					var ordersToAdd = ordersTask.Result.ToList().OrderBy( x => x.UpdatedAt );
+					this._orders[ credentials.StoreUrl ].AddRange( ordersToAdd );
 				}
-
-				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
-				var creationResult = magentoService.CreateOrderAsync( ordersModels );
-				creationResult.Wait();
-
-				var ordersTask = this._magentoLowLevelSoapForCreatingTestEnvironment.GetOrdersAsync( ordersIds );
-				ordersTask.Wait();
-				this._orders = ordersTask.Result.Orders.ToList().OrderBy( x => x.UpdatedAt ).ToList();
-			}
+				catch( Exception exception )
+				{
+				}
+			} );
 		}
 
 		protected void CreateProducts()
 		{
-			this._productsIds = new ConcurrentDictionary< string, Dictionary< int, string > >(); // new Dictionary< int, string >();
-			
-			var testStoresCredentials = GetTestStoresCredentials();
-
-			Parallel.ForEach( testStoresCredentials, credentials =>
+			try
 			{
-				var source = new List< CreateProductModel >();
-				for( var i = 0; i < 5; i++ )
-				{
-					var tiks = DateTime.UtcNow.Ticks.ToString();
-					var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
-					var name = string.Format( "TddTestName{0}_{1}", i, tiks );
-					source.Add( new CreateProductModel( "0", sku, name, 1 ) );
-				}
-				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
-				var creationResult = magentoService.CreateProductAsync( source );
-				try
-				{
-					creationResult.Wait();
-					this._productsIds[ credentials.StoreUrl ] = new Dictionary< int, string >();
-					this._productsIds[ credentials.StoreUrl ].AddRange( creationResult.Result.ToDictionary( x => x.Result, y => y.Sku ) );
-				}
-				catch
-				{
-				}
-			} );
+				this._productsIds = new ConcurrentDictionary< string, Dictionary< int, string > >(); // new Dictionary< int, string >();
 
+				var testStoresCredentials = GetTestStoresCredentials();
+
+				Parallel.ForEach( testStoresCredentials, credentials =>
+				{
+					try
+					{
+						var source = new List< CreateProductModel >();
+						for( var i = 0; i < 5; i++ )
+						{
+							var tiks = DateTime.UtcNow.Ticks.ToString();
+							var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
+							var name = string.Format( "TddTestName{0}_{1}", i, tiks );
+							source.Add( new CreateProductModel( "0", sku, name, 1 ) );
+						}
+						var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+						var creationResult = magentoService.CreateProductAsync( source );
+
+						creationResult.Wait();
+						this._productsIds[ credentials.StoreUrl ] = new Dictionary< int, string >();
+						this._productsIds[ credentials.StoreUrl ].AddRange( creationResult.Result.ToDictionary( x => x.Result, y => y.Sku ) );
+					}
+					catch( Exception exception )
+					{
+					}
+				} );
+			}
+			catch
+			{
+			}
 		}
 
 		protected void DeleteProducts()
@@ -185,24 +202,6 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			}
 		}
 
-		//protected Dictionary< string, IEnumerable< Product > > GetOnlyProductsCreatedForThisTests()
-		//protected  IEnumerable< Product > GetOnlyProductsCreatedForThisTests()
-		//{
-		//	var testStoresCredentials = GetTestStoresCredentials();
-		//	var res = new Dictionary< string, IEnumerable< Product > >();
-		//	foreach( var credentials in testStoresCredentials )
-		//	{
-		//		var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
-		//		var getProductsTask = magentoService.GetProductsAsync();
-		//		getProductsTask.Wait();
-
-		//		var allProductsinMagent = getProductsTask.Result.ToList();
-		//		var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds.ContainsKey( int.Parse( x.ProductId ) ) );
-		//		res[ credentials.StoreUrl ] = onlyProductsCreatedForThisTests;
-		//	}
-		//	//return res;
-		//	return Enumerable.Empty<Product>();
-		//}
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceSoapCredentials magentoServiceSoapCredentials )
 		{
