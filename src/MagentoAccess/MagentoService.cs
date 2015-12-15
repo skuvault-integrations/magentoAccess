@@ -625,11 +625,11 @@ namespace MagentoAccess
 		{
 			additionalInfo = ( string.IsNullOrWhiteSpace( additionalInfo ) && this.AdditionalLogInfo != null ) ? AdditionalLogInfo() : PredefinedValues.EmptyJsonObject;
 			mark = mark ?? Mark.Blank();
-			var restInfo = this.MagentoServiceLowLevelSoap.ToJson();
+			var connectionInfo = this.MagentoServiceLowLevelSoap.ToJson();
 			var str = string.Format(
 				"{{MethodName:{0}, ConnectionInfo:{1}, MethodParameters:{2}, Mark:\"{3}\"{4}{5}{6}{7}}}",
 				memberName,
-				restInfo,
+				connectionInfo,
 				methodParameters,
 				mark,
 				string.IsNullOrWhiteSpace( errors ) ? string.Empty : ", Errors:" + errors,
