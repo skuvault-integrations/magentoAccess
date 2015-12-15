@@ -183,102 +183,12 @@ namespace MagentoAccess.Misc
 			return chunks;
 		}
 
-		public static string ToJson( this IEnumerable< Inventory > source )
-		{
-			var inventories = source as IList< Inventory > ?? source.ToList();
-			var items = string.Join( ",", inventories.Select( x => string.Format( "{{ItemId:{0},ProductId:{1},Qty:{2},StockId:{3}}}",
-				string.IsNullOrWhiteSpace( x.ItemId ) ? PredefinedValues.NotAvailable : x.ItemId,
-				string.IsNullOrWhiteSpace( x.ProductId ) ? PredefinedValues.NotAvailable : x.ProductId,
-				x.Qty,
-				string.IsNullOrWhiteSpace( x.StockId ) ? PredefinedValues.NotAvailable : x.StockId
-				) ) );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", inventories.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< InventoryBySku > source )
-		{
-			var inventories = source as IList< InventoryBySku > ?? source.ToList();
-			var items = string.Join( ",", inventories.Select( x => string.Format( "{{Sku:{0},StockId:{1},Qty:{2},MinQty:{3}}}",
-				string.IsNullOrWhiteSpace( x.Sku ) ? PredefinedValues.NotAvailable : x.Sku,
-				string.IsNullOrWhiteSpace( x.StockId ) ? PredefinedValues.NotAvailable : x.StockId,
-				x.Qty,
-				x.MinQty
-				) ) );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", inventories.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< Product > source )
-		{
-			var products = source as IList< Product > ?? source.ToList();
-			var items = string.Join( ",", products.Select( x => string.Format( "{{Sku:{0},ProductId:{1},Qty:{2},EntityId:{3}}}",
-				string.IsNullOrWhiteSpace( x.Sku ) ? PredefinedValues.NotAvailable : x.Sku,
-				string.IsNullOrWhiteSpace( x.ProductId ) ? PredefinedValues.NotAvailable : x.ProductId,
-				string.IsNullOrWhiteSpace( x.Qty ) ? PredefinedValues.NotAvailable : x.Qty,
-				string.IsNullOrWhiteSpace( x.EntityId ) ? PredefinedValues.NotAvailable : x.EntityId ) ) );
-
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", products.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< Order > source )
-		{
-			var orders = source as IList< Order > ?? source.ToList();
-			var items = string.Join( ",", orders.Select( x => string.Format( "{{id:{0},createdAt:{1}}}", string.IsNullOrWhiteSpace( x.OrderIncrementalId ) ? PredefinedValues.NotAvailable : x.OrderIncrementalId, x.CreatedAt ) ) );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", orders.Count(), items );
-			return res;
-		}
-
 		public static string ToJsonAsParallel( this IEnumerable< Order > source, int from, int take )
 		{
 			var orders = source as IList< Order > ?? source.ToList();
 			var objects = orders.Skip( from ).Take( take ).AsParallel().Select( x => string.Format( "{{id:{0},createdAt:{1}}}", string.IsNullOrWhiteSpace( x.OrderIncrementalId ) ? PredefinedValues.NotAvailable : x.OrderIncrementalId, x.CreatedAt ) );
 			var items = string.Join( ",", objects );
 			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", objects.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< salesOrderListEntity > source )
-		{
-			var orders = source as IList< salesOrderListEntity > ?? source.ToList();
-			var items = string.Join( ",", orders.Select( x => string.Format( "{{id:{0}, updatedAt:{1}}}", string.IsNullOrWhiteSpace( x.increment_id ) ? PredefinedValues.NotAvailable : x.increment_id, x.updated_at ) ) );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", orders.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< ResponseStockItem > source )
-		{
-			var stockItems = source as IList< ResponseStockItem > ?? source.ToList();
-			var items = string.Join( ",", stockItems.Select( x => string.Format( "{{Code:{0},ItemId:{1},Message:{2}}}",
-				string.IsNullOrWhiteSpace( x.Code ) ? PredefinedValues.NotAvailable : x.Code,
-				string.IsNullOrWhiteSpace( x.ItemId ) ? PredefinedValues.NotAvailable : x.ItemId,
-				string.IsNullOrWhiteSpace( x.Message ) ? PredefinedValues.NotAvailable : x.Message ) ) );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< PutStockItem > source )
-		{
-			var stockItems = source as IList< PutStockItem > ?? source.ToList();
-			var items = string.Join( ",", stockItems.Select( x => string.Format( "{{Id:{0},qty:{1}",
-				string.IsNullOrWhiteSpace( x.ProductId ) ? PredefinedValues.NotAvailable : x.ProductId,
-				( x == null ) ? PredefinedValues.NotAvailable : x.Qty.ToString() ) ) );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
-			return res;
-		}
-
-		public static string ToJson( this IEnumerable< StockItem > source )
-		{
-			var stockItems = source as IList< StockItem > ?? source.ToList();
-			var items = string.Join( ",", stockItems.Select( x => string.Format( "{{ItemId:{0}, ProductId:{1}, Qty:{2}, StockId:{3}}}",
-				string.IsNullOrWhiteSpace( x.ItemId ) ? PredefinedValues.NotAvailable : x.ItemId,
-				string.IsNullOrWhiteSpace( x.ProductId ) ? PredefinedValues.NotAvailable : x.ProductId,
-				x.Qty,
-				string.IsNullOrWhiteSpace( x.StockId ) ? PredefinedValues.NotAvailable : x.StockId ) ) );
-
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", stockItems.Count(), items );
-
 			return res;
 		}
 
