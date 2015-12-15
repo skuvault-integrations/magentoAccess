@@ -345,9 +345,9 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
+			var methodParameters = stockItems.ToJson();
 			try
 			{
-				var methodParameters = stockItems.ToJson();
 				var stockItemsProcessed = stockItems.Select( x =>
 				{
 					var catalogInventoryStockItemUpdateEntity = ( x.Qty > 0 ) ?
