@@ -4,12 +4,20 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 {
 	internal class CatalogProductInfoResponse
 	{
-		public CatalogProductInfoResponse( catalogProductInfoResponse res )
+		public CatalogProductInfoResponse( catalogProductInfoResponse catalogProductInfoResponse )
 		{
-			Description = res.result.description;
-			ShortDescription = res.result.short_description;
-			Price = res.result.price;
-			Weight = res.result.weight;
+			Description = catalogProductInfoResponse.result.description;
+			ShortDescription = catalogProductInfoResponse.result.short_description;
+			Price = catalogProductInfoResponse.result.price;
+			Weight = catalogProductInfoResponse.result.weight;
+		}
+
+		public CatalogProductInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductInfoResponse catalogProductInfoResponse )
+		{
+			Description = catalogProductInfoResponse.result.description;
+			ShortDescription = catalogProductInfoResponse.result.short_description;
+			Price = catalogProductInfoResponse.result.price;
+			Weight = catalogProductInfoResponse.result.weight;
 		}
 
 		public string Weight { get; set; }

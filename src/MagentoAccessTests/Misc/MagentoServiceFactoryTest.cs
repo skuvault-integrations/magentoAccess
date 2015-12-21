@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
@@ -179,6 +180,11 @@ namespace MagentoAccessTests.Misc
 			}
 
 			public Task< string > GetSessionId( bool throwException = true )
+			{
+				return null;
+			}
+
+			public Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false )
 			{
 				return null;
 			}

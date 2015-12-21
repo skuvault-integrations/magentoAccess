@@ -12,6 +12,7 @@ using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
@@ -340,6 +341,40 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var productsBriefInfo = string.Join( "|", skusOrIds );
 				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", productsBriefInfo ), exc );
+			}
+		}
+
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false )
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new catalogProductInfoResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogProductInfoAsync( sessionId, skusOrId, "0", null, idPassed ? "1" : "0" ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new CatalogProductInfoResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductInfoAsync({0})", skusOrId ), exc );
 			}
 		}
 
