@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -36,5 +37,6 @@ namespace MagentoAccess.Services.Soap
 		Task< string > CreateOrder( int shoppingcartid, string store );
 		Task< string > GetSessionId( bool throwException = true );
 		Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false );
+		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId );
 	}
 }

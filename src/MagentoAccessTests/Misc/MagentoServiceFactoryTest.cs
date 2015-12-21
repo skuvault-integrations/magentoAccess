@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -185,6 +186,11 @@ namespace MagentoAccessTests.Misc
 			}
 
 			public Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false )
+			{
+				return null;
+			}
+
+			public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
 			{
 				return null;
 			}

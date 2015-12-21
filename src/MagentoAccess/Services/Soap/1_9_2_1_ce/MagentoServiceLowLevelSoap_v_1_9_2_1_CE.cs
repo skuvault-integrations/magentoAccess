@@ -12,6 +12,7 @@ using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -341,6 +342,40 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var productsBriefInfo = string.Join( "|", skusOrIds );
 				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", productsBriefInfo ), exc );
+			}
+		}
+
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				var res = new catalogProductAttributeMediaListResponse();
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, productId, "0", "1" ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new ProductAttributeMediaListResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productId ), exc );
 			}
 		}
 
