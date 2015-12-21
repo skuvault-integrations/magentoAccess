@@ -470,7 +470,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
-				resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel ).ConfigureAwait( false );
+				resultProducts = await this.GetProductsBySoap(magentoServiceLowLevel, includeDetails).ConfigureAwait(false);
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
@@ -658,11 +658,11 @@ namespace MagentoAccess
 			return dates;
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap )
+		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
 			IEnumerable< Product > resultProducts = new List< Product >();
-			var catalogProductListResponse = await ( magentoServiceLowLevelSoap ?? this.MagentoServiceLowLevelSoap ).GetProductsAsync().ConfigureAwait( false );
+			var catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync().ConfigureAwait( false );
 
 			if( catalogProductListResponse == null || catalogProductListResponse.Products == null )
 				return resultProducts;
@@ -682,12 +682,12 @@ namespace MagentoAccess
 			var getStockItemsAsync = new List< InventoryStockItem >();
 			foreach( var productsDevidedByChunk in productsDevidedByChunks )
 			{
-				var catalogInventoryStockItemListResponse = await ( magentoServiceLowLevelSoap ?? this.MagentoServiceLowLevelSoap ).GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
+				var catalogInventoryStockItemListResponse = await magentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
 				getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.InventoryStockItems.ToList() );
 			}
 			var stockItems = getStockItemsAsync.ToList();
 
-			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product { ProductId = stockItemEntity.ProductId, EntityId = productEntity.ProductId, Name = productEntity.Name, Sku = productEntity.Sku, Qty = stockItemEntity.Qty } ).ToList();
+			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null ) ).ToList();
 			return resultProducts;
 		}
 
@@ -713,7 +713,7 @@ namespace MagentoAccess
 			//			var productsStr = string.Join( "\n", tempp );
 			//#endif
 
-			resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product { ProductId = stockItem.ProductId, EntityId = stockItem.EntityId, Description = product.Description, Name = product.Name, Sku = product.Sku, Price = product.Price, Qty = stockItem.Qty } ).ToList();
+			resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product( stockItem.ProductId, stockItem.EntityId, product.Name, product.Sku, stockItem.Qty, product.Price, product.Description ) ).ToList();
 			return resultProducts;
 		}
 
@@ -744,7 +744,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
+				return productsChunk.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description ) );
 
 			var receivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
 
@@ -775,7 +775,7 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
+			return receivedProducts.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description ) );
 		}
 
 		private async Task< IEnumerable< Product > > GetRestProductsAsyncPparallel()
@@ -787,7 +787,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Products;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
+				return productsChunk.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description ) );
 
 			var receivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
 
@@ -808,7 +808,7 @@ namespace MagentoAccess
 			receivedProducts.AddRange( results );
 			receivedProducts = receivedProducts.Distinct( new ProductComparer() ).ToList();
 
-			return receivedProducts.Select( x => new Product { Sku = x.Sku, Description = x.Description, EntityId = x.EntityId, Name = x.Name, Price = x.Price } );
+			return receivedProducts.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description ) );
 		}
 
 		private List< Models.Services.Rest.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.Rest.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
@@ -852,7 +852,7 @@ namespace MagentoAccess
 
 			var productsChunk = getProductsResponse.Items;
 			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product { EntityId = x.ItemId } );
+				return productsChunk.Select( x => new Product( null, x.ItemId, null, null, null, 0, null ) );
 
 			var receivedProducts = new List< StockItem >();
 
@@ -883,7 +883,7 @@ namespace MagentoAccess
 				}
 			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
 
-			return receivedProducts.Select( x => new Product { EntityId = x.ItemId, Qty = x.Qty, ProductId = x.ProductId } );
+			return receivedProducts.Select( x => new Product( x.ProductId, x.ItemId, null, null, x.Qty, 0, "" ) );
 		}
 
 		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories, string markForLog = "" )

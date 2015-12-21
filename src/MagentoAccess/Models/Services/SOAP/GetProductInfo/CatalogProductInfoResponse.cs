@@ -10,6 +10,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			ShortDescription = catalogProductInfoResponse.result.short_description;
 			Price = catalogProductInfoResponse.result.price;
 			Weight = catalogProductInfoResponse.result.weight;
+			ProductId = catalogProductInfoResponse.result.product_id;
 		}
 
 		public CatalogProductInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductInfoResponse catalogProductInfoResponse )
@@ -18,7 +19,10 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			ShortDescription = catalogProductInfoResponse.result.short_description;
 			Price = catalogProductInfoResponse.result.price;
 			Weight = catalogProductInfoResponse.result.weight;
+			ProductId = catalogProductInfoResponse.result.product_id;
 		}
+
+		public string ProductId { get; set; }
 
 		public string Weight { get; set; }
 
