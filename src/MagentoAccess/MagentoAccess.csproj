@@ -152,6 +152,7 @@
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapParametrisedFactory.cs" />
+    <Compile Include="Services\Soap\StatusChecker.cs" />
     <Compile Include="Services\WebRequestServices.cs" />
   </ItemGroup>
   <ItemGroup>
