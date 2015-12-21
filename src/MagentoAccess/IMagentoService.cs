@@ -24,7 +24,7 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
-		Task< IEnumerable< Product > > GetProductsAsync();
+		Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false );
 
 		VerificationData RequestVerificationUri();
 

@@ -459,7 +459,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync()
+		public async Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false )
 		{
 			var mark = Mark.CreateNew();
 			try
@@ -688,6 +688,15 @@ namespace MagentoAccess
 			var stockItems = getStockItemsAsync.ToList();
 
 			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null ) ).ToList();
+
+			if( includeDetails )
+			{
+				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ) );
+				resultProducts = ( from rp in resultProducts
+					join pi in productsInfo on rp.ProductId equals pi.ProductId into pairs
+					from pair in pairs.DefaultIfEmpty()
+					select pair == null ? rp : new Product( rp, pair.Weight, pair.ShortDescription, pair.Description, pair.Price ) ).ToList();
+			}
 			return resultProducts;
 		}
 
