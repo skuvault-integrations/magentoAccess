@@ -16,6 +16,8 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
+using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Rest;
@@ -692,10 +694,22 @@ namespace MagentoAccess
 			if( includeDetails )
 			{
 				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ) );
-				resultProducts = ( from rp in resultProducts
-					join pi in productsInfo on rp.ProductId equals pi.ProductId into pairs
-					from pair in pairs.DefaultIfEmpty()
-					select pair == null ? rp : new Product( rp, pair.Weight, pair.ShortDescription, pair.Description, pair.Price ) ).ToList();
+				var mediaListResponses = await productsInfo.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ) );
+
+				Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
+					( from rp in prods
+						join pi in mediaLists on rp.ProductId equals pi.ProductId into pairs
+						from pair in pairs.DefaultIfEmpty()
+						select pair == null ? rp : new Product( rp, pair.MagentoImages.Select( x => new MagentoUrl( x ) ) ) );
+
+				Func< IEnumerable< Product >, IEnumerable< CatalogProductInfoResponse >, IEnumerable< Product > > FillWeightDescriptionShortDescriptionPricev =
+					( prods, prodInfos ) => ( from rp in prods
+						join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
+						from pair in pairs.DefaultIfEmpty()
+						select pair == null ? rp : new Product( rp, weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price ) );
+
+				resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProducts, productsInfo ).ToList();
+				resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
 			}
 			return resultProducts;
 		}

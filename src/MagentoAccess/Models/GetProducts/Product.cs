@@ -1,8 +1,10 @@
-﻿namespace MagentoAccess.Models.GetProducts
+﻿using System.Collections.Generic;
+
+namespace MagentoAccess.Models.GetProducts
 {
 	public class Product
 	{
-		public Product( Product rp, string weight = null, string shortDescription = null, string description = null, string price = null )
+		public Product( Product rp, IEnumerable< MagentoUrl > images = null, string weight = null, string shortDescription = null, string description = null, string price = null )
 		{
 			EntityId = rp.EntityId;
 			Sku = rp.Sku;
@@ -10,6 +12,7 @@
 			Qty = rp.Qty;
 
 			decimal temp;
+			Images = images ?? rp.Images;
 			Price = decimal.TryParse( price, out temp ) ? temp : rp.Price;
 			Description = description ?? rp.Description;
 			ProductId = rp.ProductId;
@@ -27,6 +30,8 @@
 			Price = price;
 			Description = description;
 		}
+
+		public IEnumerable< MagentoUrl > Images { get; set; }
 
 		public string ShortDescription { get; set; }
 

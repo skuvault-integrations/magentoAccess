@@ -334,7 +334,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, productId, "0", "1" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new ProductAttributeMediaListResponse( res );
+				return new ProductAttributeMediaListResponse( res, productId );
 			}
 			catch( Exception exc )
 			{
