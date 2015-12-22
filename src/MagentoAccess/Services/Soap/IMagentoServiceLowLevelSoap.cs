@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
@@ -38,5 +39,6 @@ namespace MagentoAccess.Services.Soap
 		Task< string > GetSessionId( bool throwException = true );
 		Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false );
 		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId );
+		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 	}
 }

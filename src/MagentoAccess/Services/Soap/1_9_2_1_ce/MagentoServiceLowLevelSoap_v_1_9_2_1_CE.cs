@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
@@ -376,6 +377,40 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			catch( Exception exc )
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productId ), exc );
+			}
+		}
+
+		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				var res = new catalogCategoryTreeResponse();
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogCategoryTreeAsync( sessionId, rootCategory, "0" ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new GetCategoryTreeResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetCategoriesTree({0})", rootCategory ), exc );
 			}
 		}
 
