@@ -697,7 +697,7 @@ namespace MagentoAccess
 				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var mediaListResponses = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var categoriesTreeResponse = await magentoServiceLowLevelSoap.GetCategoriesTreeAsync().ConfigureAwait( false );
-				var magentoCategoriesList = categoriesTreeResponse.RootCategory.Flatten().Values.ToList();
+				var magentoCategoriesList = categoriesTreeResponse.RootCategory.Flatten();
 
 				Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
 					( from rp in prods

@@ -86,22 +86,22 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			Childrens = category.children != null ? category.children.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 
-		public Dictionary< int, CategoryNode > Flatten()
+		public List< CategoryNode > Flatten()
 		{
-			var res = new Dictionary< int, CategoryNode >();
+			var res = new List< CategoryNode >();
 
 			if( this.Childrens == null || !this.Childrens.Any() )
-				return new Dictionary< int, CategoryNode >() { { this.Id, this } };
+				return new List< CategoryNode >() { this };
 
 			foreach( var children in this.Childrens )
 			{
 				var dictionary = children.Flatten();
 				foreach( var subChildren in dictionary )
 				{
-					res.Add( subChildren.Key, subChildren.Value );
+					res.Add( subChildren );
 				}
 			}
-			res.Add( this.Id, this );
+			res.Add( this );
 			return res;
 		}
 
