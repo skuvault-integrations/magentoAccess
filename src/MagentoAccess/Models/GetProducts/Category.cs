@@ -18,6 +18,12 @@ namespace MagentoAccess.Models.GetProducts
 				Childrens = value.Childrens.Select( x => new Category( x ) ).ToList();
 		}
 
+		public Category( string id )
+		{
+			int temp;
+			Id = int.TryParse( id, out temp ) ? temp : 0;
+		}
+
 		public int Id { get; set; }
 		public int ParentId { get; set; }
 		public int Level { get; set; }

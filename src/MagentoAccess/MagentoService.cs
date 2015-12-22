@@ -712,17 +712,18 @@ namespace MagentoAccess
 					( prods, prodInfos ) => ( from rp in prods
 						join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 						from pair in pairs.DefaultIfEmpty()
-						select pair == null ? rp : new Product( rp, weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price ) );
+						select pair == null ? rp : new Product( rp, weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
 
-				Func< IEnumerable< Product >, IEnumerable< CategoryNode >, IEnumerable< Product > > FillProductsDeepestCategory =
+				Func< IEnumerable< Product >, IEnumerable< Category >, IEnumerable< Product > > FillProductsDeepestCategory =
 					( prods, categories ) => ( from prod in prods
-						select new Product( prod, categories : ( from category in ( prod.Categories ?? Enumerable.Empty< Category >() )
-							join category2 in categories.Select( y => new Category( y ) ) on category.Id equals category2.Id
-							select category2 ) ) );
+						let prodCategories = ( from category in ( prod.Categories ?? Enumerable.Empty< Category >() )
+							join category2 in categories on category.Id equals category2.Id
+							select category2 )
+						select new Product( prod, categories : prodCategories ) );
 
 				resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProducts, productsInfo ).ToList();
 				resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
-				resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList ).ToList();
+				resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();
 			}
 			return resultProducts;
 		}

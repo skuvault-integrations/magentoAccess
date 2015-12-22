@@ -6,7 +6,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 	{
 		public GetCategoryTreeResponse( catalogCategoryTreeResponse catalogCategoryTreeResponse )
 		{
-			if( catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.result != null )
+			if( catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.result == null )
 				return;
 			var rootCategory = new CategoryNode( catalogCategoryTreeResponse.result );
 			RootCategory = rootCategory;
@@ -14,7 +14,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 
 		public GetCategoryTreeResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogCategoryTreeResponse catalogCategoryTreeResponse )
 		{
-			if( catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.result != null )
+			if( catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.result == null )
 				return;
 			var rootCategory = new CategoryNode( catalogCategoryTreeResponse.result );
 			RootCategory = rootCategory;
