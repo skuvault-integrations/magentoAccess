@@ -98,6 +98,7 @@
     <Compile Include="Models\GetMagentoCoreInfo\PingSoapInfo.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
     <Compile Include="Models\ConvertToExtensions.cs" />
+    <Compile Include="Models\GetProducts\Category.cs" />
     <Compile Include="Models\GetProducts\MagentoUrl.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\PingRest\MagentoCoreInfo.cs" />
