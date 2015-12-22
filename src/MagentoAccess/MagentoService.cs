@@ -694,10 +694,13 @@ namespace MagentoAccess
 
 			if( includeDetails )
 			{
-				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) ).ConfigureAwait( false );
-				var mediaListResponses = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) ).ConfigureAwait( false );
-				var categoriesTreeResponse = await magentoServiceLowLevelSoap.GetCategoriesTreeAsync().ConfigureAwait( false );
-				var magentoCategoriesList = categoriesTreeResponse.RootCategory.Flatten();
+				var productsInfoTask = resultProducts.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) );
+				var mediaListResponsesTask = resultProducts.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
+				var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
+				await Task.WhenAll( productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
+				var productsInfo = productsInfoTask.Result;
+				var mediaListResponses = mediaListResponsesTask.Result;
+				var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
 
 				Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
 					( from rp in prods
@@ -713,7 +716,7 @@ namespace MagentoAccess
 
 				Func< IEnumerable< Product >, IEnumerable< CategoryNode >, IEnumerable< Product > > FillProductsDeepestCategory =
 					( prods, categories ) => ( from prod in prods
-						select new Product( prod, categories : ( from category in prod.Categories
+						select new Product( prod, categories : ( from category in ( prod.Categories ?? Enumerable.Empty< Category >() )
 							join category2 in categories.Select( y => new Category( y ) ) on category.Id equals category2.Id
 							select category2 ) ) );
 

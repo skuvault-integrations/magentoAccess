@@ -11,7 +11,7 @@ namespace MagentoAccess.Models.GetProducts
 			Sku = rp.Sku;
 			Name = rp.Name;
 			Qty = rp.Qty;
-			Categories = rp.Categories ?? categories.ToArray();
+			Categories = categories == null ? rp.Categories : categories.ToArray();
 
 			decimal temp;
 			Images = images ?? rp.Images;
