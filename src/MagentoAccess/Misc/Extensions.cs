@@ -93,6 +93,32 @@ namespace MagentoAccess.Misc
 			return parsedNumber;
 		}
 
+		public static bool ToDecimalOrDefault( this string srcString, out decimal parsedNumber )
+		{
+			parsedNumber = default( decimal );
+			if( string.IsNullOrWhiteSpace( srcString ) )
+				return false;
+
+			try
+			{
+				parsedNumber = decimal.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
+				return true;
+			}
+			catch
+			{
+				try
+				{
+					parsedNumber = decimal.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
+					return true;
+				}
+				catch
+				{
+				}
+			}
+
+			return false;
+		}
+
 		public static double ToDoubleOrDefault( this string srcString )
 		{
 			if( string.IsNullOrWhiteSpace( srcString ) )

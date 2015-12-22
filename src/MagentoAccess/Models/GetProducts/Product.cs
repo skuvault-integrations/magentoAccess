@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Models.GetProducts
 {
@@ -13,9 +14,9 @@ namespace MagentoAccess.Models.GetProducts
 			Qty = rp.Qty;
 			Categories = categories == null ? rp.Categories : categories.ToArray();
 
-			decimal temp;
 			Images = images ?? rp.Images;
-			Price = decimal.TryParse( price, out temp ) ? temp : rp.Price;
+			decimal temp;
+			Price = price.ToDecimalOrDefault( out temp ) ? temp : rp.Price;
 			Description = description ?? rp.Description;
 			ProductId = rp.ProductId;
 			Weight = weight ?? rp.Weight;
