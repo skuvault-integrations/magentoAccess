@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
@@ -191,6 +192,11 @@ namespace MagentoAccessTests.Misc
 			}
 
 			public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
+			{
+				return null;
+			}
+
+			public Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
 			{
 				return null;
 			}

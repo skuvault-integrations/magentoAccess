@@ -16,6 +16,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
+using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -693,8 +694,10 @@ namespace MagentoAccess
 
 			if( includeDetails )
 			{
-				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ) );
-				var mediaListResponses = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ) );
+				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var mediaListResponses = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var categoriesTreeResponse = await magentoServiceLowLevelSoap.GetCategoriesTreeAsync().ConfigureAwait( false );
+				var magentoCategoriesList = categoriesTreeResponse.RootCategory.Flatten().Values.ToList();
 
 				Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
 					( from rp in prods
@@ -708,8 +711,15 @@ namespace MagentoAccess
 						from pair in pairs.DefaultIfEmpty()
 						select pair == null ? rp : new Product( rp, weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price ) );
 
+				Func< IEnumerable< Product >, IEnumerable< CategoryNode >, IEnumerable< Product > > FillProductsDeepestCategory =
+					( prods, categories ) => ( from prod in prods
+						select new Product( prod, categories : ( from category in prod.Categories
+							join category2 in categories.Select( y => new Category( y ) ) on category.Id equals category2.Id
+							select category2 ) ) );
+
 				resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProducts, productsInfo ).ToList();
 				resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
+				resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList ).ToList();
 			}
 			return resultProducts;
 		}
@@ -718,7 +728,7 @@ namespace MagentoAccess
 		{
 			IEnumerable< Product > resultProducts;
 
-			// this code not works for magento 1.8.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
+			// this code doesn't work for magento 1.8.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
 			// this code works for magento 1.9.0.1
 			var stockItemsAsync = this.GetRestStockItemsAsync();
 
