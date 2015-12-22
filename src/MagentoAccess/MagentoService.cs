@@ -694,7 +694,7 @@ namespace MagentoAccess
 			if( includeDetails )
 			{
 				var productsInfo = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ) );
-				var mediaListResponses = await productsInfo.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ) );
+				var mediaListResponses = await resultProducts.ProcessInBatchAsync( 16, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ) );
 
 				Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
 					( from rp in prods
