@@ -398,7 +398,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-					var attributes = new catalogProductRequestAttributes { additional_attributes = new[] { "manufacturer", "cost" } };
+					var attributes = new catalogProductRequestAttributes { additional_attributes = new[] { ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Cost } };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.catalogProductInfoAsync( sessionId, skusOrId, "0", attributes, idPassed ? "1" : "0" ).ConfigureAwait( false );
@@ -964,6 +964,12 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				string.IsNullOrWhiteSpace( additionalInfo ) ? string.Empty : ", AdditionalInfo: " + additionalInfo
 				);
 			return str;
+		}
+
+		private class ProductAttributeCodes
+		{
+			public const string Cost = "cost";
+			public const string Manufacturer = "manufacturer";
 		}
 	}
 }
