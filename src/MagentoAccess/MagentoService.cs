@@ -17,6 +17,7 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -694,6 +695,7 @@ namespace MagentoAccess
 
 			if( includeDetails )
 			{
+				var productAttributes = await magentoServiceLowLevelSoap.GetManufacturersInfoAsync().ConfigureAwait( false );
 				var productsInfoTask = resultProducts.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) );
 				var mediaListResponsesTask = resultProducts.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
 				var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
@@ -712,7 +714,7 @@ namespace MagentoAccess
 					( prods, prodInfos ) => ( from rp in prods
 						join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 						from pair in pairs.DefaultIfEmpty()
-						select pair == null ? rp : new Product( rp, weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
+						select pair == null ? rp : new Product( rp, manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
 
 				Func< IEnumerable< Product >, IEnumerable< Category >, IEnumerable< Product > > FillProductsDeepestCategory =
 					( prods, categories ) => ( from prod in prods

@@ -34,6 +34,27 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
 		}
 
+		private string GetAttributeValue( string sttributeName )
+		{
+			if( Attributes != null )
+			{
+				var attributeValue = Attributes.FirstOrDefault( x => x.Key == sttributeName );
+				return attributeValue != null ? attributeValue.Value : null;
+			}
+			else
+				return null;
+		}
+
+		public string GetManufacturerAttributeValue()
+		{
+			return GetAttributeValue( ProductAttributeCodes.Manufacturer );
+		}
+
+		public string GetCostAttributeValue()
+		{
+			return GetAttributeValue( ProductAttributeCodes.Cost );
+		}
+
 		public string[] CategoryIds { set; get; }
 
 		public string ProductId { get; set; }
@@ -45,5 +66,11 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 		public string ShortDescription { get; set; }
 
 		public string Description { get; set; }
+
+		private class ProductAttributeCodes
+		{
+			public const string Cost = "cost";
+			public const string Manufacturer = "manufacturer";
+		}
 	}
 }

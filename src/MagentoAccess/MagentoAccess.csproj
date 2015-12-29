@@ -120,9 +120,12 @@
     <Compile Include="Models\Services\Rest\PutStockItems\StockItem.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\CategoryNode.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\GetCategoryTreeResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetProductAttributeInfo\CatalogProductAttributeInfoResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetProductAttributeInfo\ProductAttributeInfo.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\MagentoImage.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\ProductAttributeMediaList.cs" />
     <Compile Include="Models\Services\Soap\GetProductInfo\CatalogProductInfoResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetProductInfo\ProductAttribute.cs" />
     <Compile Include="Models\Services\Soap\GetStockItems\InventoryStockItemListResponse.cs" />
     <Compile Include="Models\Services\Soap\GetMagentoInfo\GetMagentoInfoResponse.cs" />
     <Compile Include="Models\Services\Soap\GetOrders\GetOrdersResponse.cs" />

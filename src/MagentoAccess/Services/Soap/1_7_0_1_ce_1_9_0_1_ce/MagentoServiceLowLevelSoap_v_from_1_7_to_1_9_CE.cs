@@ -13,6 +13,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
@@ -376,6 +377,41 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productId ), exc );
 			}
 		}
+
+		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync()
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				var res = new catalogProductAttributeInfoResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						res = await privateClient.catalogProductAttributeInfoAsync( sessionId, ProductAttributeCodes.Manufacturer ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				return new CatalogProductAttributeInfoResponse( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetManufacturerAsync({0})", skusOrId ), exc );
+			}
+		}
+
 		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false )
 		{
 			try
