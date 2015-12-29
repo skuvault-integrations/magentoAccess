@@ -72,23 +72,12 @@ namespace MagentoAccess.Misc
 			if( string.IsNullOrWhiteSpace( srcString ) )
 				return default( decimal );
 
-			decimal parsedNumber;
+			var parsedNumber = default( decimal );
 
-			try
-			{
-				parsedNumber = decimal.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
-			}
-			catch
-			{
-				try
-				{
-					parsedNumber = decimal.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
-				}
-				catch
-				{
-					parsedNumber = default( decimal );
-				}
-			}
+			if( decimal.TryParse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
+				return parsedNumber;
+			else if( decimal.TryParse( srcString.Replace( ",", "." ), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
+				return parsedNumber;
 
 			return parsedNumber;
 		}
@@ -99,22 +88,10 @@ namespace MagentoAccess.Misc
 			if( string.IsNullOrWhiteSpace( srcString ) )
 				return false;
 
-			try
-			{
-				parsedNumber = decimal.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
+			if( decimal.TryParse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
 				return true;
-			}
-			catch
-			{
-				try
-				{
-					parsedNumber = decimal.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
-					return true;
-				}
-				catch
-				{
-				}
-			}
+			else if( decimal.TryParse( srcString.Replace( ",", "." ), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
+				return true;
 
 			return false;
 		}
@@ -126,21 +103,10 @@ namespace MagentoAccess.Misc
 
 			double parsedNumber;
 
-			try
-			{
-				parsedNumber = double.Parse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture );
-			}
-			catch
-			{
-				try
-				{
-					parsedNumber = double.Parse( srcString, new NumberFormatInfo { NumberDecimalSeparator = "," } );
-				}
-				catch
-				{
-					parsedNumber = default( double );
-				}
-			}
+			if( double.TryParse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
+				return parsedNumber;
+			else if( double.TryParse( srcString.Replace( ",", "." ), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
+				return parsedNumber;
 
 			return parsedNumber;
 		}
