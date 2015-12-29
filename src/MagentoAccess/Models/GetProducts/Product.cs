@@ -6,7 +6,7 @@ namespace MagentoAccess.Models.GetProducts
 {
 	public class Product
 	{
-		public Product( Product rp, IEnumerable< MagentoUrl > images = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, IEnumerable< Category > categories = null )
+		public Product( Product rp, IEnumerable< MagentoUrl > images = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null )
 		{
 			EntityId = rp.EntityId;
 			Sku = rp.Sku;
@@ -17,6 +17,7 @@ namespace MagentoAccess.Models.GetProducts
 			Images = images ?? rp.Images;
 			decimal temp;
 			Price = price.ToDecimalOrDefault( out temp ) ? temp : rp.Price;
+			SpecialPrice = specialPrice.ToDecimalOrDefault( out temp ) ? temp : rp.SpecialPrice;
 			Description = description ?? rp.Description;
 			ProductId = rp.ProductId;
 			Weight = weight ?? rp.Weight;
@@ -25,6 +26,8 @@ namespace MagentoAccess.Models.GetProducts
 			Manufacturer = manufacturer ?? rp.Manufacturer;
 			Cost = cost ?? rp.Cost;
 		}
+
+		public decimal SpecialPrice { get; set; }
 
 		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description )
 		{

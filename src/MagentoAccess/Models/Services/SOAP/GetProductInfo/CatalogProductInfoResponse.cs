@@ -11,6 +11,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			Description = catalogProductInfoResponse.result.description;
 			ShortDescription = catalogProductInfoResponse.result.short_description;
 			Price = catalogProductInfoResponse.result.price;
+			SpecialPrice = catalogProductInfoResponse.result.special_price;
 			Weight = catalogProductInfoResponse.result.weight;
 			ProductId = catalogProductInfoResponse.result.product_id;
 			CategoryIds = catalogProductInfoResponse.result.category_ids;
@@ -19,6 +20,8 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
 		}
 
+		public string SpecialPrice { get; set; }
+
 		public List< ProductAttribute > Attributes { get; set; }
 
 		public CatalogProductInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductInfoResponse catalogProductInfoResponse )
@@ -26,6 +29,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			Description = catalogProductInfoResponse.result.description;
 			ShortDescription = catalogProductInfoResponse.result.short_description;
 			Price = catalogProductInfoResponse.result.price;
+			SpecialPrice = catalogProductInfoResponse.result.special_price;
 			Weight = catalogProductInfoResponse.result.weight;
 			ProductId = catalogProductInfoResponse.result.product_id;
 			CategoryIds = catalogProductInfoResponse.result.category_ids;
