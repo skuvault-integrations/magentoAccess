@@ -5,6 +5,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
@@ -197,6 +198,11 @@ namespace MagentoAccessTests.Misc
 			}
 
 			public Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
+			{
+				return null;
+			}
+
+			public Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync()
 			{
 				return null;
 			}

@@ -714,7 +714,7 @@ namespace MagentoAccess
 					( prods, prodInfos ) => ( from rp in prods
 						join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 						from pair in pairs.DefaultIfEmpty()
-						select pair == null ? rp : new Product( rp, manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
+						select pair == null ? rp : new Product( rp, manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
 
 				Func< IEnumerable< Product >, IEnumerable< Category >, IEnumerable< Product > > FillProductsDeepestCategory =
 					( prods, categories ) => ( from prod in prods

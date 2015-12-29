@@ -455,7 +455,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetManufacturerAsync({0})", skusOrId ), exc );
+				throw new MagentoSoapException( string.Format( "An error occured during GetManufacturerAsync()" ), exc );
 			}
 		}
 
