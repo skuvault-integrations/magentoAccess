@@ -1000,7 +1000,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		}
 		#endregion
 
-
 		private class ProductAttributeCodes
 		{
 			public const string Cost = "cost";

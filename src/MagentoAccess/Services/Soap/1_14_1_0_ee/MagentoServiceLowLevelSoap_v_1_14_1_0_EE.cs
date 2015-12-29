@@ -19,7 +19,6 @@ using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 {
@@ -408,8 +407,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
