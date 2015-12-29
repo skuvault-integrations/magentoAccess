@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using CuttingEdge.Conditions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
@@ -17,7 +16,6 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
-using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -226,7 +224,7 @@ namespace MagentoAccess
 					{ MagentoVersions.M_1_9_0_1, this.MagentoServiceLowLevelSoap },
 					{ MagentoVersions.M_1_8_1_0, this.MagentoServiceLowLevelSoap },
 					{ MagentoVersions.M_1_7_0_2, this.MagentoServiceLowLevelSoap },
-					{ MagentoVersions.M_1_14_1_0,  MagentoServiceLowLevelSoap_1_14_1_EE },
+					{ MagentoVersions.M_1_14_1_0, MagentoServiceLowLevelSoap_1_14_1_EE },
 				}
 				);
 		}
@@ -363,7 +361,7 @@ namespace MagentoAccess
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
 				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
-				var pingres = await this.PingSoapAsync().ConfigureAwait(false);
+				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
 				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
 				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
@@ -474,7 +472,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
-				resultProducts = await this.GetProductsBySoap(magentoServiceLowLevel, includeDetails).ConfigureAwait(false);
+				resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails ).ConfigureAwait( false );
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
