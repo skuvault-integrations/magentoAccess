@@ -435,9 +435,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var attributes = new catalogProductRequestAttributes { additional_attributes = new[] { "manufacturer", "cost" } };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductInfoAsync( sessionId, skusOrId, "0", null, idPassed ? "1" : "0" ).ConfigureAwait( false );
+						res = await privateClient.catalogProductInfoAsync( sessionId, skusOrId, "0", attributes, idPassed ? "1" : "0" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductInfoResponse( res );
