@@ -693,47 +693,51 @@ namespace MagentoAccess
 			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null ) ).ToList();
 
 			if( includeDetails )
-			{
-				var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync();
-				var productsInfoTask = resultProducts.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) );
-				var mediaListResponsesTask = resultProducts.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
-				var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
-				await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
-				var productsInfo = productsInfoTask.Result;
-				var mediaListResponses = mediaListResponsesTask.Result;
-				var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
+				resultProducts = await FillProductDetails( magentoServiceLowLevelSoap, resultProducts );
+			return resultProducts;
+		}
 
-				Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
-					( from rp in prods
-						join pi in mediaLists on rp.ProductId equals pi.ProductId into pairs
-						from pair in pairs.DefaultIfEmpty()
-						select pair == null ? rp : new Product( rp, pair.MagentoImages.Select( x => new MagentoUrl( x ) ) ) );
+		private static async Task< IEnumerable< Product > > FillProductDetails( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< Product > resultProducts )
+		{
+			var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync();
+			var resultProductslist = resultProducts as IList< Product > ?? resultProducts.ToList();
+			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, true ).ConfigureAwait( false ) );
+			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
+			var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
+			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
+			var productsInfo = productsInfoTask.Result;
+			var mediaListResponses = mediaListResponsesTask.Result;
+			var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
 
-				Func< IEnumerable< Product >, IEnumerable< CatalogProductInfoResponse >, IEnumerable< Product > > FillWeightDescriptionShortDescriptionPricev =
-					( prods, prodInfos ) => ( from rp in prods
-						join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
-						from pair in pairs.DefaultIfEmpty()
-						select pair == null ? rp : new Product( rp, manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
+			Func< IEnumerable< Product >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< Product > > FillImageUrls = ( prods, mediaLists ) =>
+				( from rp in prods
+					join pi in mediaLists on rp.ProductId equals pi.ProductId into pairs
+					from pair in pairs.DefaultIfEmpty()
+					select pair == null ? rp : new Product( rp, pair.MagentoImages.Select( x => new MagentoUrl( x ) ) ) );
 
-				Func< IEnumerable< Product >, CatalogProductAttributeInfoResponse, IEnumerable< Product > > FillManufactures =
-					( prods, prodInfos ) => ( from rp in prods
-						join pi in prodInfos != null ? prodInfos.Attributes : new List< ProductAttributeInfo >() on rp.Manufacturer equals pi.Value into pairs
-						from pair in pairs.DefaultIfEmpty()
-						select pair == null ? rp : new Product( rp, manufacturer : pair.Label ) );
+			Func< IEnumerable< Product >, IEnumerable< CatalogProductInfoResponse >, IEnumerable< Product > > FillWeightDescriptionShortDescriptionPricev =
+				( prods, prodInfos ) => ( from rp in prods
+					join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
+					from pair in pairs.DefaultIfEmpty()
+					select pair == null ? rp : new Product( rp, manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
 
+			Func< IEnumerable< Product >, CatalogProductAttributeInfoResponse, IEnumerable< Product > > FillManufactures =
+				( prods, prodInfos ) => ( from rp in prods
+					join pi in prodInfos != null ? prodInfos.Attributes : new List< ProductAttributeInfo >() on rp.Manufacturer equals pi.Value into pairs
+					from pair in pairs.DefaultIfEmpty()
+					select pair == null ? rp : new Product( rp, manufacturer : pair.Label ) );
 
-				Func< IEnumerable< Product >, IEnumerable< Category >, IEnumerable< Product > > FillProductsDeepestCategory =
-					( prods, categories ) => ( from prod in prods
-						let prodCategories = ( from category in ( prod.Categories ?? Enumerable.Empty< Category >() )
-							join category2 in categories on category.Id equals category2.Id
-							select category2 )
-						select new Product( prod, categories : prodCategories ) );
+			Func< IEnumerable< Product >, IEnumerable< Category >, IEnumerable< Product > > FillProductsDeepestCategory =
+				( prods, categories ) => ( from prod in prods
+					let prodCategories = ( from category in ( prod.Categories ?? Enumerable.Empty< Category >() )
+						join category2 in categories on category.Id equals category2.Id
+						select category2 )
+					select new Product( prod, categories : prodCategories ) );
 
-				resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProducts, productsInfo ).ToList();
-				resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
-				resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();
-				resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();
-			}
+			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();
+			resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
+			resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();
+			resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();
 			return resultProducts;
 		}
 
