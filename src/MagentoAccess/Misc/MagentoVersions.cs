@@ -14,5 +14,6 @@
 	public static class MagentoEdition
 	{
 		public const string Community = "Community";
+		public const string Enterprise = "Enterprise";
 	}
 }
