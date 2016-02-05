@@ -697,12 +697,6 @@ namespace MagentoAccess
 			return resultProducts;
 		}
 
-		private class ProductAttributeCodes
-		{
-			public const string Cost = "cost";
-			public const string Manufacturer = "manufacturer";
-		}
-
 		private static async Task< IEnumerable< Product > > FillProductDetails( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< Product > resultProducts )
 		{
 			var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
@@ -995,6 +989,12 @@ namespace MagentoAccess
 			return updateBriefInfo;
 		}
 		#endregion
+
+		private class ProductAttributeCodes
+		{
+			public const string Cost = "cost";
+			public const string Manufacturer = "manufacturer";
+		}
 	}
 
 	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.GetProducts.Product >
