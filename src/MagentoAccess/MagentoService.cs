@@ -701,7 +701,7 @@ namespace MagentoAccess
 		{
 			var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var resultProductslist = resultProducts as IList< Product > ?? resultProducts.ToList();
-			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer };
+			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, attributes, true ).ConfigureAwait( false ) );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
 			var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
@@ -990,11 +990,13 @@ namespace MagentoAccess
 		}
 		#endregion
 
-		private class ProductAttributeCodes
-		{
-			public const string Cost = "cost";
-			public const string Manufacturer = "manufacturer";
-		}
+	}
+
+	public class ProductAttributeCodes
+	{
+		public const string Upc = "upc";
+		public const string Cost = "cost";
+		public const string Manufacturer = "manufacturer";
 	}
 
 	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.GetProducts.Product >
