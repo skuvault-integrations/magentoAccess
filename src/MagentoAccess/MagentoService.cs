@@ -697,7 +697,7 @@ namespace MagentoAccess
 			return resultProducts;
 		}
 
-		private class ProductAttributeCodes2
+		private class ProductAttributeCodes
 		{
 			public const string Cost = "cost";
 			public const string Manufacturer = "manufacturer";
@@ -705,9 +705,9 @@ namespace MagentoAccess
 
 		private static async Task< IEnumerable< Product > > FillProductDetails( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< Product > resultProducts )
 		{
-			var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes2.Manufacturer );
+			var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var resultProductslist = resultProducts as IList< Product > ?? resultProducts.ToList();
-			var attributes = new string[] { ProductAttributeCodes2.Cost, ProductAttributeCodes2.Manufacturer };
+			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer };
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, attributes, true ).ConfigureAwait( false ) );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
 			var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
