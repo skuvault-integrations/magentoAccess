@@ -54,6 +54,11 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			return GetAttributeValue( ProductAttributeCodes.Manufacturer );
 		}
 
+		public string GetUpcAttributeValue()
+		{
+			return GetAttributeValue( ProductAttributeCodes.Upc );
+		}
+
 		public string GetCostAttributeValue()
 		{
 			return GetAttributeValue( ProductAttributeCodes.Cost );
@@ -70,11 +75,5 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 		public string ShortDescription { get; set; }
 
 		public string Description { get; set; }
-
-		private class ProductAttributeCodes
-		{
-			public const string Cost = "cost";
-			public const string Manufacturer = "manufacturer";
-		}
 	}
 }

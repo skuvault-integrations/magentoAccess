@@ -720,7 +720,7 @@ namespace MagentoAccess
 				( prods, prodInfos ) => ( from rp in prods
 					join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 					from pair in pairs.DefaultIfEmpty()
-					select pair == null ? rp : new Product( rp, manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
+					select pair == null ? rp : new Product( rp, upc : pair.GetUpcAttributeValue(), manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
 
 			Func< IEnumerable< Product >, CatalogProductAttributeInfoResponse, IEnumerable< Product > > FillManufactures =
 				( prods, prodInfos ) => ( from rp in prods
@@ -989,7 +989,6 @@ namespace MagentoAccess
 			return updateBriefInfo;
 		}
 		#endregion
-
 	}
 
 	public class ProductAttributeCodes
