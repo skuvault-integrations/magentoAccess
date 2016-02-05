@@ -488,6 +488,31 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
+
+		public async Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products )
+		{
+			var mark = Mark.CreateNew();
+			try
+			{
+				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
+
+				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var magentoServiceLowLevel = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+				var resultProducts = await FillProductDetails( magentoServiceLowLevel, products ).ConfigureAwait( false );
+
+				var resultProductsBriefInfo = resultProducts.ToJson();
+
+				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : resultProductsBriefInfo ) );
+
+				return resultProducts;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
 		#endregion
 
 		#region updateInventory
