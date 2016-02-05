@@ -415,7 +415,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, string[] custAttributes, bool idPassed = false )
 		{
 			try
 			{
@@ -436,7 +436,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-					var attributes = new catalogProductRequestAttributes { additional_attributes = new[] { ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Cost } };
+					var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.catalogProductInfoAsync( sessionId, skusOrId, "0", attributes, idPassed ? "1" : "0" ).ConfigureAwait( false );
@@ -450,7 +450,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync()
+		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
 		{
 			try
 			{
@@ -473,7 +473,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeInfoAsync( sessionId, ProductAttributeCodes.Manufacturer ).ConfigureAwait( false );
+						res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductAttributeInfoResponse( res );
@@ -999,11 +999,5 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 		#endregion
-
-		private class ProductAttributeCodes
-		{
-			public const string Cost = "cost";
-			public const string Manufacturer = "manufacturer";
-		}
 	}
 }

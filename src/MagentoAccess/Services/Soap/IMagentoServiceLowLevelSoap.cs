@@ -38,9 +38,9 @@ namespace MagentoAccess.Services.Soap
 		Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store );
 		Task< string > CreateOrder( int shoppingcartid, string store );
 		Task< string > GetSessionId( bool throwException = true );
-		Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false );
+		Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, string[] custAttributes, bool idPassed = false );
 		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId );
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
-		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync();
+		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 	}
 }

@@ -187,7 +187,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, bool idPassed = false )
+			public Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, string[] custAttributes, bool idPassed = false )
 			{
 				return null;
 			}
@@ -202,7 +202,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync()
+			public Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
 			{
 				return null;
 			}
