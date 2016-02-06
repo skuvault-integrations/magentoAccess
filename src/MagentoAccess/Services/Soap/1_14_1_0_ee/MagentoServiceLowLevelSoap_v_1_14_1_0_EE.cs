@@ -106,9 +106,13 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 		}
 
-		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
+		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl, bool keepAlive = true )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+
+			// for cpecific clients, where servers can close connection
+			_customBinding.Elements.Find< HttpsTransportBindingElement >().KeepAliveEnabled = keepAlive;
+
 			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
@@ -116,9 +120,9 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			return magentoSoapService;
 		}
 
-		private async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
+		private async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl, bool keepAlive = true )
 		{
-			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl ) );
+			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl, keepAlive ) );
 			await Task.WhenAll( task ).ConfigureAwait( false );
 			return task.Result;
 		}
@@ -356,28 +360,48 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
 		{
-			try
-			{
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
-
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				var res = new catalogProductAttributeMediaListResponse();
-				await ActionPolicies.GetAsync.Do( async () =>
+			Func< int, Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, int, bool, Task< catalogProductAttributeMediaListResponse > > call =
+				async ( maxCheckCount, privateClient, delayBeforeCheck, keepAlive ) =>
 				{
+					if( privateClient == null )
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+
+					var res = new catalogProductAttributeMediaListResponse();
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, productId, "0", "1" ).ConfigureAwait( false );
+					return res;
+				};
+
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+				var keepAlive = true;
+
+				var res = new catalogProductAttributeMediaListResponse();
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					try
+					{
+						res = await call( maxCheckCount, null, delayBeforeCheck, keepAlive ).ConfigureAwait( false );
+						return;
+					}
+					catch( CommunicationException )
+					{
+						keepAlive = !keepAlive;
+					}
+
+					res = await call( maxCheckCount, null, delayBeforeCheck, keepAlive ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new ProductAttributeMediaListResponse( res, productId );
