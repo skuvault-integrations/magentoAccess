@@ -111,7 +111,9 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 
 			// for cpecific clients, where servers can close connection
-			_customBinding.Elements.Find< HttpsTransportBindingElement >().KeepAliveEnabled = keepAlive;
+			dynamic httpsTransportBindingElement = _customBinding.Elements.Find< HttpsTransportBindingElement >();
+			httpsTransportBindingElement = httpsTransportBindingElement ?? _customBinding.Elements.Find< HttpTransportBindingElement >();
+			httpsTransportBindingElement.KeepAliveEnabled = keepAlive;
 
 			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
 
@@ -146,6 +148,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					MaxBufferPoolSize = 999999999,
 					KeepAliveEnabled = true,
 					AllowCookies = false,
+					RequestInitializationTimeout = new TimeSpan( 0, 30, 0 )
 				};
 			}
 			else
@@ -158,6 +161,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					MaxBufferPoolSize = 999999999,
 					KeepAliveEnabled = true,
 					AllowCookies = false,
+					RequestInitializationTimeout = new TimeSpan( 0, 30, 0 ),
 				};
 			}
 
@@ -278,7 +282,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync()
 		{
-			try
+			Func< bool, Task< catalogProductListResponse > > call = async ( keepAlive ) =>
 			{
 				var associativeEntity = new associativeEntity() { key = "product_id", value = "46647" };
 
@@ -286,33 +290,46 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				//v1.complex_filter[1] = new MagentoSoapServiceReference_v_1_14_1_EE.complexFilter { key = "updated_at", value = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity { key = "from", value = DateTime.Now.AddYears(-1).ToSoapParameterString() } };
 				//v1.complex_filter[0] = new MagentoSoapServiceReference_v_1_14_1_EE.complexFilter { key = "updated_at", value = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity { key = "to", value = DateTime.Now.ToSoapParameterString() } };
 				v1.complex_filter[ 0 ] = new complexFilter { key = "type", value = new associativeEntity { key = "in", value = "simple,configurable" } };
-
 				var filters = v1;
-
 				//var filters = new MagentoSoapServiceReference_v_1_14_1_EE.filters { filter = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity[1]{associativeEntity} };
-
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
+				var res = new catalogProductListResponse();
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
 
+				if( privateClient.State != CommunicationState.Opened
+				    && privateClient.State != CommunicationState.Created
+				    && privateClient.State != CommunicationState.Opening )
+					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+
+				return res;
+			};
+
+			try
+			{
+				var keepAilve = true;
 				var res = new catalogProductListResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+					try
+					{
+						res = await call( keepAilve );
+						return;
+					}
+					catch( CommunicationException )
+					{
+						keepAilve = !keepAilve;
+					}
+					res = await call( keepAilve );
 				} ).ConfigureAwait( false );
 
 				return new SoapGetProductsResponse( res );
