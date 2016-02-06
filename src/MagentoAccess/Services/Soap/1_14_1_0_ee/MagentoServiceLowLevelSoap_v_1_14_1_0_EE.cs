@@ -316,7 +316,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			try
 			{
-				var keepAilve = true;
+				var keepAilve = false;
 				var res = new catalogProductListResponse();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -402,7 +402,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			try
 			{
-				var keepAlive = true;
+				var keepAlive = false;
 
 				var res = new catalogProductAttributeMediaListResponse();
 				await ActionPolicies.GetAsync.Do( async () =>
