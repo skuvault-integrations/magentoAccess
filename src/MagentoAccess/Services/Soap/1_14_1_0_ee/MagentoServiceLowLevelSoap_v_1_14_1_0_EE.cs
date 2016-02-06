@@ -360,9 +360,11 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
 		{
-			Func< int, Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, int, bool, Task< catalogProductAttributeMediaListResponse > > call =
-				async ( maxCheckCount, privateClient, delayBeforeCheck, keepAlive ) =>
+			Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, bool, Task< catalogProductAttributeMediaListResponse > > call =
+				async ( privateClient, keepAlive ) =>
 				{
+					const int maxCheckCount = 2;
+					const int delayBeforeCheck = 1800000;
 					if( privateClient == null )
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
 
@@ -384,8 +386,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			try
 			{
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
 				var keepAlive = true;
 
 				var res = new catalogProductAttributeMediaListResponse();
@@ -393,7 +393,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				{
 					try
 					{
-						res = await call( maxCheckCount, null, delayBeforeCheck, keepAlive ).ConfigureAwait( false );
+						res = await call( null, keepAlive ).ConfigureAwait( false );
 						return;
 					}
 					catch( CommunicationException )
@@ -401,7 +401,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 						keepAlive = !keepAlive;
 					}
 
-					res = await call( maxCheckCount, null, delayBeforeCheck, keepAlive ).ConfigureAwait( false );
+					res = await call( null, keepAlive ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new ProductAttributeMediaListResponse( res, productId );
