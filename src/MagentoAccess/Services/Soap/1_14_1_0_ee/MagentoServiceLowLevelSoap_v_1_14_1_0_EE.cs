@@ -316,20 +316,21 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			try
 			{
-				var keepAilve = false;
+				// keep alive is a crunch for 1 client, which has server that sloses connection after few minutes.
+				var keepAlive = false;
 				var res = new catalogProductListResponse();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					try
 					{
-						res = await call( keepAilve );
+						res = await call( keepAlive ).ConfigureAwait( false );
 						return;
 					}
 					catch( CommunicationException )
 					{
-						keepAilve = !keepAilve;
+						keepAlive = !keepAlive;
 					}
-					res = await call( keepAilve );
+					res = await call( keepAlive ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new SoapGetProductsResponse( res );
@@ -403,7 +404,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			try
 			{
 				var keepAlive = false;
-
 				var res = new catalogProductAttributeMediaListResponse();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
