@@ -21,10 +21,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://staging.atbatt.com/api/v2_soap/?wsdl=1" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://192.168.0.777/api/v2_soap/?wsdl=1" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Magento.wsdl" MetadataType="Wsdl" ID="c4ca14e4-61a4-41ea-98ee-9bf2356a20c5" SourceId="1" SourceUrl="https://staging.atbatt.com/api/v2_soap/?wsdl=1" />
+    <MetadataFile FileName="Magento.wsdl" MetadataType="Wsdl" ID="c4ca14e4-61a4-41ea-98ee-9bf2356a20c5" SourceId="1" SourceUrl="https://192.168.0.777/api/v2_soap/?wsdl=1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

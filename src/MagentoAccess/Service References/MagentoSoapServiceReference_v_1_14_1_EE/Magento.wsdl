@@ -9241,7 +9241,7 @@
   </wsdl:binding>
   <wsdl:service name="MagentoService">
     <wsdl:port name="Mage_Api_Model_Server_Wsi_HandlerPort" binding="typens:Mage_Api_Model_Server_Wsi_HandlerBinding">
-      <soap:address location="https://staging.atbatt.com/index.php/api/v2_soap/index/" />
+      <soap:address location="https://192.168.0.777/index.php/api/v2_soap/index/" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
