@@ -221,10 +221,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="Mage_Api_Model_Server_Wsi_HandlerPort1" contract="MagentoSoapServiceReference_v_1_14_1_EE.Mage_Api_Model_Server_Wsi_HandlerPortType" bindingType="basicHttpBinding" address="https://staging.atbatt.com/index.php/api/v2_soap/index/" bindingConfiguration="Mage_Api_Model_Server_Wsi_HandlerBinding1">
+    <endpoint name="Mage_Api_Model_Server_Wsi_HandlerPort1" contract="MagentoSoapServiceReference_v_1_14_1_EE.Mage_Api_Model_Server_Wsi_HandlerPortType" bindingType="basicHttpBinding" address="https://192.168.0.777/index.php/api/v2_soap/index/" bindingConfiguration="Mage_Api_Model_Server_Wsi_HandlerBinding1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>https://staging.atbatt.com/index.php/api/v2_soap/index/</serializedValue>
+          <serializedValue>https://192.168.0.777/index.php/api/v2_soap/index/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
