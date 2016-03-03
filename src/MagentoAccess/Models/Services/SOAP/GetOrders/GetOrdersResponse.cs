@@ -11,19 +11,19 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public GetOrdersResponse( salesOrderListResponse res )
 		{
 			var orders = res.result.Select( x => new Order( x ) );
-			Orders = orders;
+			this.Orders = orders;
 		}
 
 		public GetOrdersResponse( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderListResponse res )
 		{
 			var orders = res.result.Select( x => new Order( x ) );
-			Orders = orders;
+			this.Orders = orders;
 		}
 
 		public GetOrdersResponse( salesOrderRepositoryV1GetListResponse1 res )
 		{
 			var orders = res.salesOrderRepositoryV1GetListResponse.result.items.Select( x => new Order( x ) );
-			Orders = orders;
+			this.Orders = orders;
 		}
 
 		public IEnumerable< Order > Orders{ get; set; }
