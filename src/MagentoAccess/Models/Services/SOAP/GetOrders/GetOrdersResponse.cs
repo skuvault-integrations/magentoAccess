@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 
 namespace MagentoAccess.Models.Services.Soap.GetOrders
@@ -15,6 +17,12 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public GetOrdersResponse( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderListResponse res )
 		{
 			var orders = res.result.Select( x => new Order( x ) );
+			Orders = orders;
+		}
+
+		public GetOrdersResponse( salesOrderRepositoryV1GetListResponse1 res )
+		{
+			var orders = res.salesOrderRepositoryV1GetListResponse.result.items.Select(x => new Order(x));
 			Orders = orders;
 		}
 
@@ -371,6 +379,181 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.UpdatedAt = salesOrderListEntity.updated_at;
 			this.Weight = salesOrderListEntity.weight;
 			this.XForwardedFOR = salesOrderListEntity.x_forwarded_for;
+		}
+
+		public Order( SalesDataOrderInterface salesOrderListEntity )
+		{
+			var cultureToString = CultureInfo.InvariantCulture;
+			this.AdjustmentNegative = salesOrderListEntity.adjustmentNegative.ToString( cultureToString );
+			this.AdjustmentPositive = salesOrderListEntity.adjustmentPositive.ToString( cultureToString );
+			this.AppliedRuleIds = salesOrderListEntity.appliedRuleIds;
+			this.BaseAdjustmentNegative = salesOrderListEntity.baseAdjustmentNegative.ToString( cultureToString );
+			this.BaseAdjustmentPositive = salesOrderListEntity.baseAdjustmentPositive.ToString( cultureToString );
+			this.BaseCurrencyCode = salesOrderListEntity.baseCurrencyCode;
+			//this.BaseCustomerBalanceAmount = salesOrderListEntity.baseCustomerBalanceAmount;
+			//this.BaseCustomerBalanceInvoiced = salesOrderListEntity.baseCustomerBalanceInvoiced;
+			//this.BaseCustomerBalanceRefunded = salesOrderListEntity.baseCustomerBalanceRefunded;
+			//this.BaseCustomerBalanceTotalRefunded = salesOrderListEntity.baseCustomerBalanceTotalRefunded;
+			this.BaseDiscountAmount = salesOrderListEntity.baseDiscountAmount.ToString(cultureToString);
+			this.BaseDiscountCanceled = salesOrderListEntity.baseDiscountCanceled.ToString(cultureToString);
+			this.BaseDiscountInvoiced = salesOrderListEntity.baseDiscountInvoiced.ToString(cultureToString);
+			this.BaseDiscountRefunded = salesOrderListEntity.baseDiscountRefunded.ToString(cultureToString);
+			//this.BaseGiftCardsAmount = salesOrderListEntity.baseGiftCardsAmount;
+			//this.BaseGiftCardsInvoiced = salesOrderListEntity.baseGiftCardsInvoiced;
+			//this.BaseGiftCardsRefunded = salesOrderListEntity.baseGiftCardsRefunded;
+			this.BaseGrandTotal = salesOrderListEntity.baseGrandTotal.ToString(cultureToString);
+			//this.BaseHiddenTaxAmount = salesOrderListEntity.baseHiddenTaxAmount;
+			//this.BaseHiddenTaxInvoiced = salesOrderListEntity.baseHiddenTaxInvoiced;
+			//this.BaseHiddenTaxRefunded = salesOrderListEntity.baseHiddenTaxRefunded;
+			//this.BaseRewardCurrencyAmount = salesOrderListEntity.baseRewardCurrencyAmount;
+			//this.BaseRewardCurrencyAmountInvoiced = salesOrderListEntity.baseRewardCurrencyAmountInvoiced;
+			//this.BaseRewardCurrencyAmountRefunded = salesOrderListEntity.baseRewardCurrencyAmountRefunded;
+			this.BaseShippingAmount = salesOrderListEntity.baseShippingAmount.ToString(cultureToString);
+			this.BaseShippingCanceled = salesOrderListEntity.baseShippingCanceled.ToString(cultureToString);
+			this.BaseShippingDiscountAmount = salesOrderListEntity.baseShippingDiscountAmount.ToString(cultureToString);
+			//this.BaseShippingHiddenTaxAmount = salesOrderListEntity.baseShippingHiddenTaxAmount;
+			this.BaseShippingInclTax = salesOrderListEntity.baseShippingInclTax.ToString(cultureToString);
+			this.BaseShippingInvoiced = salesOrderListEntity.baseShippingInvoiced.ToString(cultureToString);
+			this.BaseShippingRefunded = salesOrderListEntity.baseShippingRefunded.ToString(cultureToString);
+			this.BaseShippingTaxAmount = salesOrderListEntity.baseShippingTaxAmount.ToString(cultureToString);
+			this.BaseShippingTaxRefunded = salesOrderListEntity.baseShippingTaxRefunded.ToString(cultureToString);
+			this.BaseSubtotal = salesOrderListEntity.baseSubtotal.ToString(cultureToString);
+			this.BaseSubtotalCanceled = salesOrderListEntity.baseSubtotalCanceled.ToString(cultureToString);
+			this.BaseSubtotalInclTax = salesOrderListEntity.baseSubtotalInclTax.ToString(cultureToString);
+			this.BaseSubtotalInvoiced = salesOrderListEntity.baseSubtotalInvoiced.ToString(cultureToString);
+			this.BaseSubtotalRefunded = salesOrderListEntity.baseSubtotalRefunded.ToString(cultureToString);
+			this.BaseTaxAmount = salesOrderListEntity.baseTaxAmount.ToString(cultureToString);
+			this.BaseTaxCanceled = salesOrderListEntity.baseTaxCanceled.ToString(cultureToString);
+			this.BaseTaxInvoiced = salesOrderListEntity.baseTaxInvoiced.ToString(cultureToString);
+			this.BaseTaxRefunded = salesOrderListEntity.baseTaxRefunded.ToString(cultureToString);
+			this.BaseToGlobalRate = salesOrderListEntity.baseToGlobalRate.ToString(cultureToString);
+			this.BaseToOrderRate = salesOrderListEntity.baseToOrderRate.ToString(cultureToString);
+			this.BaseTotalCanceled = salesOrderListEntity.baseTotalCanceled.ToString(cultureToString);
+			this.BaseTotalDue = salesOrderListEntity.baseTotalDue.ToString(cultureToString);
+			this.BaseTotalInvoiced = salesOrderListEntity.baseTotalInvoiced.ToString(cultureToString);
+			this.BaseTotalInvoicedCost = salesOrderListEntity.baseTotalInvoicedCost.ToString(cultureToString);
+			this.BaseTotalOfflineRefunded = salesOrderListEntity.baseTotalOfflineRefunded.ToString(cultureToString);
+			this.BaseTotalOnlineRefunded = salesOrderListEntity.baseTotalOnlineRefunded.ToString(cultureToString);
+			this.BaseTotalPaid = salesOrderListEntity.baseTotalPaid.ToString(cultureToString);
+			this.BaseTotalQtyOrdered = salesOrderListEntity.baseTotalQtyOrdered.ToString(cultureToString);
+			this.BaseTotalRefunded = salesOrderListEntity.baseTotalRefunded.ToString(cultureToString);
+			this.BillingAddressId = salesOrderListEntity.billingAddressId.ToString(cultureToString);
+			this.BillingFirstname = salesOrderListEntity.billingAddress.firstname;
+			this.BillingLastname = salesOrderListEntity.billingAddress.lastname;
+			//this.BillingName = salesOrderListEntity.billingName;
+			this.CanShipPartially = salesOrderListEntity.canShipPartially.ToString(cultureToString);
+			this.CanShipPartiallyItem = salesOrderListEntity.canShipPartiallyItem.ToString(cultureToString);
+			this.CouponCode = salesOrderListEntity.couponCode;
+			this.CreatedAt = salesOrderListEntity.createdAt;
+			//this.CustomerBalanceAmount = salesOrderListEntity.customerBalanceAmount;
+			//this.CustomerBalanceInvoiced = salesOrderListEntity.customerBalanceInvoiced;
+			//this.CustomerBalanceRefunded = salesOrderListEntity.customerBalanceRefunded;
+			//this.CustomerBalanceTotalRefunded = salesOrderListEntity.customerBalanceTotalRefunded;
+			this.CustomerDob = salesOrderListEntity.customerDob;
+			this.CustomerEmail = salesOrderListEntity.customerEmail;
+			this.CustomerFirstname = salesOrderListEntity.customerFirstname;
+			this.CustomerGender = salesOrderListEntity.customerGender.ToString(cultureToString);
+			this.CustomerGroupId = salesOrderListEntity.customerGroupId.ToString(cultureToString);
+			this.CustomerId = salesOrderListEntity.customerId.ToString(cultureToString);
+			this.CustomerIsGuest = salesOrderListEntity.customerIsGuest.ToString(cultureToString);
+			this.CustomerLastname = salesOrderListEntity.customerLastname;
+			this.CustomerMiddlename = salesOrderListEntity.customerMiddlename;
+			this.CustomerNote = salesOrderListEntity.customerNote;
+			this.CustomerNoteNotify = salesOrderListEntity.customerNoteNotify.ToString(cultureToString);
+			this.CustomerPrefix = salesOrderListEntity.customerPrefix;
+			this.CustomerSuffix = salesOrderListEntity.customerSuffix;
+			this.CustomerTaxvat = salesOrderListEntity.customerTaxvat;
+			this.DiscountAmount = salesOrderListEntity.discountAmount.ToString(cultureToString);
+			this.DiscountCanceled = salesOrderListEntity.discountCanceled.ToString(cultureToString);
+			this.DiscountDescription = salesOrderListEntity.discountDescription;
+			this.DiscountInvoiced = salesOrderListEntity.discountInvoiced.ToString(cultureToString);
+			this.DiscountRefunded = salesOrderListEntity.discountRefunded.ToString(cultureToString);
+			this.EditIncrement = salesOrderListEntity.editIncrement.ToString(cultureToString);
+			this.EmailSent = salesOrderListEntity.emailSent.ToString(cultureToString);
+			this.ExtCustomerId = salesOrderListEntity.extCustomerId;
+			this.ExtOrderId = salesOrderListEntity.extOrderId;
+			//this.Firstname = salesOrderListEntity.firstname;
+			//this.ForcedDoShipmentWithInvoice = salesOrderListEntity.forcedDoShipmentWithInvoice;
+			//this.GiftCardsAmount = salesOrderListEntity.giftCardsAmount;
+			//this.GiftCardsInvoiced = salesOrderListEntity.giftCardsInvoiced;
+			//this.GiftCardsRefunded = salesOrderListEntity.giftCardsRefunded;
+			//this.GiftMessageId = salesOrderListEntity.giftMessageId;
+			this.GlobalCurrencyCode = salesOrderListEntity.globalCurrencyCode;
+			this.GrandTotal = salesOrderListEntity.grandTotal.ToString(cultureToString);
+			//this.HiddenTaxAmount = salesOrderListEntity.hiddenTaxAmount;
+			//this.HiddenTaxInvoiced = salesOrderListEntity.hiddenTaxInvoiced;
+			//this.HiddenTaxRefunded = salesOrderListEntity.hiddenTaxRefunded;
+			this.HoldBeforeState = salesOrderListEntity.holdBeforeState;
+			this.HoldBeforeStatus = salesOrderListEntity.holdBeforeStatus;
+			this.incrementId = salesOrderListEntity.incrementId;
+			this.IsVirtual = salesOrderListEntity.isVirtual;
+			this.Lastname = salesOrderListEntity.lastname;
+			this.OrderCurrencyCode = salesOrderListEntity.orderCurrencyCode;
+			this.OrderId = salesOrderListEntity.orderId;
+			this.OriginalIncrementId = salesOrderListEntity.originalIncrementId;
+			this.PaymentAuthorizationAmount = salesOrderListEntity.paymentAuthorizationAmount;
+			this.PaymentAuthorizationExpiration = salesOrderListEntity.paymentAuthorizationExpiration;
+			this.PaypalIpnCustomerNotified = salesOrderListEntity.paypalIpnCustomerNotified;
+			this.Postcode = salesOrderListEntity.postcode;
+			this.ProtectCode = salesOrderListEntity.protectCode;
+			this.QuoteAddressId = salesOrderListEntity.quoteAddressId;
+			this.QuoteId = salesOrderListEntity.quoteId;
+			this.RelationChildId = salesOrderListEntity.relationChildId;
+			this.RelationChildRealId = salesOrderListEntity.relationChildRealId;
+			this.RelationParentId = salesOrderListEntity.relationParentId;
+			this.RelationParentRealId = salesOrderListEntity.relationParentRealId;
+			this.RemoteIp = salesOrderListEntity.remoteIp;
+			this.RewardCurrencyAmount = salesOrderListEntity.rewardCurrencyAmount;
+			this.RewardCurrencyAmountInvoiced = salesOrderListEntity.rewardCurrencyAmountInvoiced;
+			this.RewardCurrencyAmountRefunded = salesOrderListEntity.rewardCurrencyAmountRefunded;
+			this.RewardPointsBalance = salesOrderListEntity.rewardPointsBalance;
+			this.RewardPointsBalanceRefunded = salesOrderListEntity.rewardPointsBalanceRefunded;
+			this.RewardPointsBalanceToRefund = salesOrderListEntity.rewardPointsBalanceToRefund;
+			this.RewardSalesrulePoints = salesOrderListEntity.rewardSalesrulePoints;
+			this.ShippingAddressId = salesOrderListEntity.shippingAddressId;
+			this.ShippingAmount = salesOrderListEntity.shippingAmount;
+			this.ShippingCanceled = salesOrderListEntity.shippingCanceled;
+			this.ShippingDescription = salesOrderListEntity.shippingDescription;
+			this.ShippingDiscountAmount = salesOrderListEntity.shippingDiscountAmount;
+			this.ShippingFirstname = salesOrderListEntity.shippingFirstname;
+			this.ShippingHiddenTaxAmount = salesOrderListEntity.shippingHiddenTaxAmount;
+			this.ShippingInclTax = salesOrderListEntity.shippingInclTax;
+			this.ShippingInvoiced = salesOrderListEntity.shippingInvoiced;
+			this.ShippingLastname = salesOrderListEntity.shippingLastname;
+			this.ShippingMethod = salesOrderListEntity.shippingMethod;
+			this.ShippingName = salesOrderListEntity.shippingName;
+			this.ShippingRefunded = salesOrderListEntity.shippingRefunded;
+			this.ShippingTaxAmount = salesOrderListEntity.shippingTaxAmount;
+			this.ShippingTaxRefunded = salesOrderListEntity.shippingTaxRefunded;
+			this.State = salesOrderListEntity.state;
+			this.Status = salesOrderListEntity.status;
+			this.StoreCurrencyCode = salesOrderListEntity.storeCurrencyCode;
+			this.StoreId = salesOrderListEntity.storeId;
+			this.StoreName = salesOrderListEntity.storeName;
+			this.StoreToBaseRate = salesOrderListEntity.storeToBaseRate;
+			this.StoreToOrderRate = salesOrderListEntity.storeToOrderRate;
+			this.Subtotal = salesOrderListEntity.subtotal;
+			this.SubtotalCanceled = salesOrderListEntity.subtotalCanceled;
+			this.SubtotalInclTax = salesOrderListEntity.subtotalInclTax;
+			this.SubtotalInvoiced = salesOrderListEntity.subtotalInvoiced;
+			this.SubtotalRefunded = salesOrderListEntity.subtotalRefunded;
+			this.TaxAmount = salesOrderListEntity.taxAmount;
+			this.TaxCanceled = salesOrderListEntity.taxCanceled;
+			this.TaxInvoiced = salesOrderListEntity.taxInvoiced;
+			this.TaxRefunded = salesOrderListEntity.taxRefunded;
+			this.Telephone = salesOrderListEntity.telephone;
+			this.TotalCanceled = salesOrderListEntity.totalCanceled;
+			this.TotalDue = salesOrderListEntity.totalDue;
+			this.TotalInvoiced = salesOrderListEntity.totalInvoiced;
+			this.TotalItemCount = salesOrderListEntity.totalItemCount;
+			this.TotalOfflineRefunded = salesOrderListEntity.totalOfflineRefunded;
+			this.TotalOnlineRefunded = salesOrderListEntity.totalOnlineRefunded;
+			this.TotalPaid = salesOrderListEntity.totalPaid;
+			this.TotalQtyOrdered = salesOrderListEntity.totalQtyOrdered;
+			this.TotalRefunded = salesOrderListEntity.totalRefunded;
+			this.UpdatedAt = salesOrderListEntity.updatedAt;
+			this.Weight = salesOrderListEntity.weight;
+			this.XForwardedFOR = salesOrderListEntity.xForwardedFor;
 		}
 
 		public string AdjustmentNegative { get; private set; }
