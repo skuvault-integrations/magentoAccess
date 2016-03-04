@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
 	{
-		
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			try
