@@ -24,6 +24,7 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
+_doctCover*/
 [Tt]est[Rr]esult*
 *.ReSharper
 *.docstates
