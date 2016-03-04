@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 
 namespace MagentoAccess.Models.Services.Soap.GetOrders
@@ -322,78 +324,239 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			Weight = res.result.weight;
 		}
 
-		public string AppliedRuleIds { get; private set; }
-		public string BaseCurrencyCode { get; private set; }
-		public string BaseDiscountAmount { get; private set; }
-		public string BaseGrandTotal { get; private set; }
-		public string BaseShippingAmount { get; private set; }
-		public string BaseSubtotal { get; private set; }
-		public string BaseTaxAmount { get; private set; }
-		public string BaseToGlobalRate { get; private set; }
-		public string BaseToOrderRate { get; private set; }
-		public string BaseTotalCanceled { get; private set; }
-		public string BaseTotalInvoiced { get; private set; }
-		public string BaseTotalOfflineRefunded { get; private set; }
-		public string BaseTotalOnlineRefunded { get; private set; }
-		public string BaseTotalPaid { get; private set; }
-		public string BaseTotalQtyOrdered { get; private set; }
-		public string BaseTotalRefunded { get; private set; }
-		public BillingAddress BillingAddress { get; private set; }
-		public string BillingAddressId { get; private set; }
-		public string BillingFirstname { get; private set; }
-		public string BillingLastname { get; private set; }
-		public string BillingName { get; private set; }
-		public string CreatedAt { get; private set; }
-		public string CustomerEmail { get; private set; }
-		public string CustomerFirstname { get; private set; }
-		public string CustomerGroupId { get; private set; }
-		public string CustomerId { get; private set; }
-		public string CustomerIsGuest { get; private set; }
-		public string CustomerLastname { get; private set; }
-		public string CustomerNoteNotify { get; private set; }
-		public string DiscountAmount { get; private set; }
-		public string EmailSent { get; private set; }
-		public string GiftMessage { get; private set; }
-		public string GiftMessageId { get; private set; }
-		public string GlobalCurrencyCode { get; private set; }
-		public string GrandTotal { get; private set; }
-		public string IncrementId { get; private set; }
-		public string IsActive { get; private set; }
-		public string IsVirtual { get; private set; }
-		public IEnumerable< OrderItemEntity > Items { get; private set; }
-		public string OrderCurrencyCode { get; private set; }
-		public string OrderId { get; private set; }
-		public string ParentId { get; private set; }
-		public Payment Payment { get; private set; }
-		public string QuoteId { get; private set; }
-		public string RemoteIp { get; private set; }
-		public ShippingAddress ShippingAddress { get; private set; }
-		public string ShippingAddressId { get; private set; }
-		public string ShippingAmount { get; private set; }
-		public string ShippingDescription { get; private set; }
-		public string ShippingFirstname { get; private set; }
-		public string ShippingLastname { get; private set; }
-		public string ShippingMethod { get; private set; }
-		public string ShippingName { get; private set; }
-		public string State { get; private set; }
-		public string Status { get; private set; }
-		public List< StatusHistoryRecord > StatusHistory { get; private set; }
-		public string StoreCurrencyCode { get; private set; }
-		public string StoreId { get; private set; }
-		public string StoreName { get; private set; }
-		public string StoreToBaseRate { get; private set; }
-		public string StoreToOrderRate { get; private set; }
-		public string Subtotal { get; private set; }
-		public string TaxAmount { get; private set; }
-		public string TotalCanceled { get; private set; }
-		public string TotalInvoiced { get; private set; }
-		public string TotalOfflineRefunded { get; private set; }
-		public string TotalOnlineRefunded { get; private set; }
-		public string TotalPaid { get; private set; }
-		public string TotalQtyOrdered { get; private set; }
-		public string TotalRefunded { get; private set; }
-		public string UpdatedAT { get; private set; }
-		public string Weight { get; private set; }
+		public OrderInfoResponse( salesOrderRepositoryV1GetResponse1 response )
+		{
+			var res = response.salesOrderRepositoryV1GetResponse.result;
+			var invariantCulture = CultureInfo.InvariantCulture;
+
+			AppliedRuleIds = res.appliedRuleIds;
+			BaseCurrencyCode = res.baseCurrencyCode;
+			BaseDiscountAmount = res.baseDiscountAmount.ToString( invariantCulture );
+			BaseGrandTotal = res.baseGrandTotal.ToString( CultureInfo.InvariantCulture );
+			BaseShippingAmount = res.baseShippingAmount.ToString( CultureInfo.InvariantCulture );
+			BaseSubtotal = res.baseSubtotal.ToString( CultureInfo.InvariantCulture );
+			BaseTaxAmount = res.baseTaxAmount.ToString( CultureInfo.InvariantCulture );
+			BaseToGlobalRate = res.baseToGlobalRate.ToString( CultureInfo.InvariantCulture );
+			BaseToOrderRate = res.baseToOrderRate.ToString( CultureInfo.InvariantCulture );
+			BaseTotalCanceled = res.baseTotalCanceled.ToString( CultureInfo.InvariantCulture );
+			BaseTotalInvoiced = res.baseTotalInvoiced.ToString( CultureInfo.InvariantCulture );
+			BaseTotalOfflineRefunded = res.baseTotalOfflineRefunded.ToString( CultureInfo.InvariantCulture );
+			BaseTotalOnlineRefunded = res.baseTotalOnlineRefunded.ToString( CultureInfo.InvariantCulture );
+			BaseTotalPaid = res.baseTotalPaid.ToString( CultureInfo.InvariantCulture );
+			BaseTotalQtyOrdered = res.baseTotalQtyOrdered.ToString( CultureInfo.InvariantCulture );
+			BaseTotalRefunded = res.baseTotalRefunded.ToString( CultureInfo.InvariantCulture );
+			if( res.billingAddress != null )
+			{
+				var billingAddress = new BillingAddress
+				{
+					//AddressId = res.billingAddress.addressId,
+					AddressType = res.billingAddress.addressType,
+					City = res.billingAddress.city,
+					Company = res.billingAddress.company,
+					CountryId = res.billingAddress.countryId,
+					//CreatedAt = res.billingAddress.createdAt,
+					Fax = res.billingAddress.fax,
+					Firstname = res.billingAddress.firstname,
+					//IncrementId = res.billingAddress.incrementId,
+					//IsActive = res.billingAddress.isActive,
+					Lastname = res.billingAddress.lastname,
+					ParentId = res.billingAddress.parentId.ToString( CultureInfo.InvariantCulture ),
+					Postcode = res.billingAddress.postcode,
+					Region = res.billingAddress.region,
+					RegionId = res.billingAddress.regionId.ToString( CultureInfo.InvariantCulture ),
+					Street = string.Join( "", res.billingAddress.street.ToList() ).ToString( CultureInfo.InvariantCulture ),
+					Telephone = res.billingAddress.telephone,
+					//UpdatedAt = res.billingAddress.updatedAt,
+				};
+				this.BillingAddress = billingAddress;
+			}
+			BillingAddressId = res.billingAddressId.ToString( CultureInfo.InvariantCulture );
+			//BillingFirstname = res.billingFirstname;
+			//BillingLastname = res.billingLastname;
+			//BillingName = res.billingName;
+			CreatedAt = res.createdAt;
+			CustomerEmail = res.customerEmail;
+			CustomerFirstname = res.customerFirstname;
+			CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
+			CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
+			CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
+			CustomerLastname = res.customerLastname;
+			CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
+			DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
+			EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
+			//GiftMessage = res.giftMessage;
+			//GiftMessageId = res.giftMessageId;
+			GlobalCurrencyCode = res.globalCurrencyCode;
+			GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
+			IncrementId = res.incrementId;
+			//IsActive = res.isActive;
+			IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
+
+			if( res.items != null )
+				Items = res.items.Select( x => new OrderItemEntity( x ) );
+
+			OrderCurrencyCode = res.orderCurrencyCode;
+			OrderId = res.extOrderId.ToString( CultureInfo.InvariantCulture );
+			ParentId = res.relationParentId;
+
+			if( res.payment != null )
+			{
+				var payment = new Payment()
+				{
+					AmountOrdered = res.payment.amountOrdered.ToString( CultureInfo.InvariantCulture ),
+					BaseAmountOrdered = res.payment.baseAmountOrdered.ToString( CultureInfo.InvariantCulture ),
+					BaseShippingAmount = res.payment.baseShippingAmount.ToString( CultureInfo.InvariantCulture ),
+					CcExpMonth = res.payment.ccExpMonth,
+					CcExpYear = res.payment.ccExpYear,
+					CcLast4 = res.payment.ccLast4,
+					CcNumberEnc = res.payment.ccNumberEnc,
+					CcOwner = res.payment.ccOwner,
+					CcSsStartMonth = res.payment.ccSsStartMonth,
+					CcSsStartYear = res.payment.ccSsStartYear,
+					CcType = res.payment.ccType,
+					//CreatedAt = res.payment.createdAt,
+					IncrementId = res.payment.entityId.ToString( CultureInfo.InvariantCulture ),
+					//IsActive = res.payment.isActive,
+					Method = res.payment.method,
+					ParentId = res.payment.parentId.ToString( CultureInfo.InvariantCulture ),
+					PaymentId = res.payment.quotePaymentId.ToString( CultureInfo.InvariantCulture ),
+					PoNumber = res.payment.poNumber,
+					ShippingAmount = res.payment.shippingAmount.ToString( CultureInfo.InvariantCulture ),
+					//UpdatedAt = res.payment.updatedAt,
+				};
+				Payment = payment;
+			}
+			QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
+			RemoteIp = res.remoteIp;
+			//if (res.shippingAddress != null)
+			//{
+			//	ShippingAddress = new ShippingAddress()
+			//	{
+			//		//AddressId = res.shippingAddress.addressId,
+			//		//AddressType = res.shippingAddress.addressType,
+			//		//City = res.shippingAddress.city,
+			//		Company = res.shippingAddress.company,
+			//		CountryId = res.shippingAddress.countryId,
+			//		CreatedAt = res.shippingAddress.createdAt,
+			//		Fax = res.shippingAddress.fax,
+			//		Firstname = res.shippingAddress.firstname,
+			//		IncrementId = res.shippingAddress.incrementId,
+			//		IsActive = res.shippingAddress.isActive,
+			//		Lastname = res.shippingAddress.lastname,
+			//		ParentId = res.shippingAddress.parentId,
+			//		Postcode = res.shippingAddress.postcode,
+			//		Region = res.shippingAddress.region,
+			//		RegionId = res.shippingAddress.regionId,
+			//		Street = res.shippingAddress.street,
+			//		Telephone = res.shippingAddress.telephone,
+			//		UpdatedAt = res.shippingAddress.updatedAt,
+			//	};
+			//}
+			//ShippingAddressId = res.shippingAddressId;
+			ShippingAmount = res.shippingAmount.ToString( CultureInfo.InvariantCulture );
+			ShippingDescription = res.shippingDescription;
+			//ShippingFirstname = res.shippingFirstname;
+			//ShippingLastname = res.shippingLastname;
+			//ShippingMethod = res.shippingMethod;
+			//ShippingName = res.shippingName;
+			State = res.state;
+			Status = res.status;
+
+			if( res.statusHistories != null )
+			{
+				StatusHistory = new List< StatusHistoryRecord >(
+					res.statusHistories.Select( x => new StatusHistoryRecord( x ) ) );
+			}
+			StoreCurrencyCode = res.storeCurrencyCode;
+			StoreId = res.storeId.ToString( CultureInfo.InvariantCulture );
+			StoreName = res.storeName;
+			StoreToBaseRate = res.storeToBaseRate.ToString( CultureInfo.InvariantCulture );
+			StoreToOrderRate = res.storeToOrderRate.ToString( CultureInfo.InvariantCulture );
+			Subtotal = res.subtotal.ToString( CultureInfo.InvariantCulture );
+			TaxAmount = res.taxAmount.ToString( CultureInfo.InvariantCulture );
+			TotalCanceled = res.totalCanceled.ToString( CultureInfo.InvariantCulture );
+			TotalInvoiced = res.totalInvoiced.ToString( CultureInfo.InvariantCulture );
+			TotalOfflineRefunded = res.totalOfflineRefunded.ToString( CultureInfo.InvariantCulture );
+			TotalOnlineRefunded = res.totalOnlineRefunded.ToString( CultureInfo.InvariantCulture );
+			TotalPaid = res.totalPaid.ToString( CultureInfo.InvariantCulture );
+			TotalQtyOrdered = res.totalQtyOrdered.ToString( CultureInfo.InvariantCulture );
+			TotalRefunded = res.totalRefunded.ToString( CultureInfo.InvariantCulture );
+			UpdatedAT = res.updatedAt;
+			Weight = res.weight.ToString( CultureInfo.InvariantCulture );
+		}
+
+		public string AppliedRuleIds{ get; private set; }
+		public string BaseCurrencyCode{ get; private set; }
+		public string BaseDiscountAmount{ get; private set; }
+		public string BaseGrandTotal{ get; private set; }
+		public string BaseShippingAmount{ get; private set; }
+		public string BaseSubtotal{ get; private set; }
+		public string BaseTaxAmount{ get; private set; }
+		public string BaseToGlobalRate{ get; private set; }
+		public string BaseToOrderRate{ get; private set; }
+		public string BaseTotalCanceled{ get; private set; }
+		public string BaseTotalInvoiced{ get; private set; }
+		public string BaseTotalOfflineRefunded{ get; private set; }
+		public string BaseTotalOnlineRefunded{ get; private set; }
+		public string BaseTotalPaid{ get; private set; }
+		public string BaseTotalQtyOrdered{ get; private set; }
+		public string BaseTotalRefunded{ get; private set; }
+		public BillingAddress BillingAddress{ get; private set; }
+		public string BillingAddressId{ get; private set; }
+		public string BillingFirstname{ get; private set; }
+		public string BillingLastname{ get; private set; }
+		public string BillingName{ get; private set; }
+		public string CreatedAt{ get; private set; }
+		public string CustomerEmail{ get; private set; }
+		public string CustomerFirstname{ get; private set; }
+		public string CustomerGroupId{ get; private set; }
+		public string CustomerId{ get; private set; }
+		public string CustomerIsGuest{ get; private set; }
+		public string CustomerLastname{ get; private set; }
+		public string CustomerNoteNotify{ get; private set; }
+		public string DiscountAmount{ get; private set; }
+		public string EmailSent{ get; private set; }
+		public string GiftMessage{ get; private set; }
+		public string GiftMessageId{ get; private set; }
+		public string GlobalCurrencyCode{ get; private set; }
+		public string GrandTotal{ get; private set; }
+		public string IncrementId{ get; private set; }
+		public string IsActive{ get; private set; }
+		public string IsVirtual{ get; private set; }
+		public IEnumerable< OrderItemEntity > Items{ get; private set; }
+		public string OrderCurrencyCode{ get; private set; }
+		public string OrderId{ get; private set; }
+		public string ParentId{ get; private set; }
+		public Payment Payment{ get; private set; }
+		public string QuoteId{ get; private set; }
+		public string RemoteIp{ get; private set; }
+		public ShippingAddress ShippingAddress{ get; private set; }
+		public string ShippingAddressId{ get; private set; }
+		public string ShippingAmount{ get; private set; }
+		public string ShippingDescription{ get; private set; }
+		public string ShippingFirstname{ get; private set; }
+		public string ShippingLastname{ get; private set; }
+		public string ShippingMethod{ get; private set; }
+		public string ShippingName{ get; private set; }
+		public string State{ get; private set; }
+		public string Status{ get; private set; }
+		public List< StatusHistoryRecord > StatusHistory{ get; private set; }
+		public string StoreCurrencyCode{ get; private set; }
+		public string StoreId{ get; private set; }
+		public string StoreName{ get; private set; }
+		public string StoreToBaseRate{ get; private set; }
+		public string StoreToOrderRate{ get; private set; }
+		public string Subtotal{ get; private set; }
+		public string TaxAmount{ get; private set; }
+		public string TotalCanceled{ get; private set; }
+		public string TotalInvoiced{ get; private set; }
+		public string TotalOfflineRefunded{ get; private set; }
+		public string TotalOnlineRefunded{ get; private set; }
+		public string TotalPaid{ get; private set; }
+		public string TotalQtyOrdered{ get; private set; }
+		public string TotalRefunded{ get; private set; }
+		public string UpdatedAT{ get; private set; }
+		public string Weight{ get; private set; }
 	}
 
 	internal class OrderItemEntity
@@ -520,131 +683,192 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			Weight = salesOrderItemEntity.weight;
 		}
 
-		public string OrderId { get; set; }
+		public OrderItemEntity( SalesDataOrderItemInterface salesOrderItemEntity )
+		{
+			AmountRefunded = salesOrderItemEntity.amountRefunded.ToString( CultureInfo.InvariantCulture );
+			AppliedRuleIds = salesOrderItemEntity.appliedRuleIds;
+			BaseAmountRefunded = salesOrderItemEntity.baseAmountRefunded.ToString( CultureInfo.InvariantCulture );
+			BaseDiscountAmount = salesOrderItemEntity.baseDiscountAmount.ToString( CultureInfo.InvariantCulture );
+			BaseDiscountInvoiced = salesOrderItemEntity.baseDiscountInvoiced.ToString( CultureInfo.InvariantCulture );
+			BaseOriginalPrice = salesOrderItemEntity.baseOriginalPrice.ToString( CultureInfo.InvariantCulture );
+			BasePrice = salesOrderItemEntity.basePrice.ToString( CultureInfo.InvariantCulture );
+			BaseRowInvoiced = salesOrderItemEntity.baseRowInvoiced.ToString( CultureInfo.InvariantCulture );
+			BaseRowTotal = salesOrderItemEntity.baseRowTotal.ToString( CultureInfo.InvariantCulture );
+			BaseTaxAmount = salesOrderItemEntity.baseTaxAmount.ToString( CultureInfo.InvariantCulture );
+			BaseTaxBeforeDiscount = salesOrderItemEntity.baseTaxBeforeDiscount.ToString( CultureInfo.InvariantCulture );
+			BaseTaxInvoiced = salesOrderItemEntity.baseTaxInvoiced.ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxAppliedAmount = salesOrderItemEntity.baseWeeeTaxAppliedAmount.ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.weeeTaxAppliedRowAmount.ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxDisposition = salesOrderItemEntity.baseWeeeTaxDisposition.ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxRowDisposition = salesOrderItemEntity.baseWeeeTaxRowDisposition.ToString( CultureInfo.InvariantCulture );
+			Cost = salesOrderItemEntity.baseCost.ToString( CultureInfo.InvariantCulture );
+			CreatedAt = salesOrderItemEntity.createdAt;
+			DiscountAmount = salesOrderItemEntity.discountAmount.ToString( CultureInfo.InvariantCulture );
+			DiscountInvoiced = salesOrderItemEntity.discountInvoiced.ToString( CultureInfo.InvariantCulture );
+			DiscountPercent = salesOrderItemEntity.discountPercent.ToString( CultureInfo.InvariantCulture );
+			FreeShipping = salesOrderItemEntity.freeShipping.ToString( CultureInfo.InvariantCulture );
+			//GiftMessage = salesOrderItemEntity.giftMessage;
+			//GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
+			//GiftMessageId = salesOrderItemEntity.giftMessageId;
+			IsQtyDecimal = salesOrderItemEntity.isQtyDecimal.ToString( CultureInfo.InvariantCulture );
+			IsVirtual = salesOrderItemEntity.isVirtual.ToString( CultureInfo.InvariantCulture );
+			ItemId = salesOrderItemEntity.itemId.ToString( CultureInfo.InvariantCulture );
+			Name = salesOrderItemEntity.name;
+			NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
+			this.OrderId = salesOrderItemEntity.orderId.ToString( CultureInfo.InvariantCulture );
+			OriginalPrice = salesOrderItemEntity.originalPrice.ToString( CultureInfo.InvariantCulture );
+			Price = salesOrderItemEntity.price.ToString( CultureInfo.InvariantCulture );
+			ProductId = salesOrderItemEntity.productId.ToString( CultureInfo.InvariantCulture );
+			//ProductOptions = salesOrderItemEntity.productOptions;
+			ProductType = salesOrderItemEntity.productType;
+			QtyCanceled = salesOrderItemEntity.qtyCanceled.ToString( CultureInfo.InvariantCulture );
+			QtyInvoiced = salesOrderItemEntity.qtyInvoiced.ToString( CultureInfo.InvariantCulture );
+			QtyOrdered = salesOrderItemEntity.qtyOrdered.ToString( CultureInfo.InvariantCulture );
+			QtyRefunded = salesOrderItemEntity.qtyRefunded.ToString( CultureInfo.InvariantCulture );
+			QtyShipped = salesOrderItemEntity.qtyShipped.ToString( CultureInfo.InvariantCulture );
+			QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
+			RowInvoiced = salesOrderItemEntity.rowInvoiced.ToString( CultureInfo.InvariantCulture );
+			RowTotal = salesOrderItemEntity.rowTotal.ToString( CultureInfo.InvariantCulture );
+			RowWeight = salesOrderItemEntity.rowWeight.ToString( CultureInfo.InvariantCulture );
+			Sku = salesOrderItemEntity.sku;
+			TaxAmount = salesOrderItemEntity.taxAmount.ToString( CultureInfo.InvariantCulture );
+			TaxBeforeDiscount = salesOrderItemEntity.taxBeforeDiscount.ToString( CultureInfo.InvariantCulture );
+			TaxInvoiced = salesOrderItemEntity.taxInvoiced.ToString( CultureInfo.InvariantCulture );
+			TaxPercent = salesOrderItemEntity.taxPercent.ToString( CultureInfo.InvariantCulture );
+			UpdatedAt = salesOrderItemEntity.updatedAt;
+			WeeeTaxApplied = salesOrderItemEntity.weeeTaxApplied;
+			WeeeTaxAppliedAmount = salesOrderItemEntity.weeeTaxAppliedAmount.ToString( CultureInfo.InvariantCulture );
+			WeeeTaxAppliedRowAmount = salesOrderItemEntity.weeeTaxAppliedRowAmount.ToString( CultureInfo.InvariantCulture );
+			WeeeTaxDisposition = salesOrderItemEntity.weeeTaxDisposition.ToString( CultureInfo.InvariantCulture );
+			WeeeTaxRowDisposition = salesOrderItemEntity.weeeTaxRowDisposition.ToString( CultureInfo.InvariantCulture );
+			Weight = salesOrderItemEntity.weight.ToString( CultureInfo.InvariantCulture );
+		}
 
-		public string Weight { get; set; }
+		public string OrderId{ get; set; }
 
-		public string WeeeTaxRowDisposition { get; set; }
+		public string Weight{ get; set; }
 
-		public string WeeeTaxDisposition { get; set; }
+		public string WeeeTaxRowDisposition{ get; set; }
 
-		public string WeeeTaxAppliedRowAmount { get; set; }
+		public string WeeeTaxDisposition{ get; set; }
 
-		public string WeeeTaxAppliedAmount { get; set; }
+		public string WeeeTaxAppliedRowAmount{ get; set; }
 
-		public string WeeeTaxApplied { get; set; }
+		public string WeeeTaxAppliedAmount{ get; set; }
 
-		public string UpdatedAt { get; set; }
+		public string WeeeTaxApplied{ get; set; }
 
-		public string TaxPercent { get; set; }
+		public string UpdatedAt{ get; set; }
 
-		public string TaxInvoiced { get; set; }
+		public string TaxPercent{ get; set; }
 
-		public string TaxBeforeDiscount { get; set; }
+		public string TaxInvoiced{ get; set; }
 
-		public string TaxAmount { get; set; }
+		public string TaxBeforeDiscount{ get; set; }
 
-		public string Sku { get; set; }
+		public string TaxAmount{ get; set; }
 
-		public string RowWeight { get; set; }
+		public string Sku{ get; set; }
 
-		public string RowTotal { get; set; }
+		public string RowWeight{ get; set; }
 
-		public string RowInvoiced { get; set; }
+		public string RowTotal{ get; set; }
 
-		public string QuoteItemId { get; set; }
+		public string RowInvoiced{ get; set; }
 
-		public string QtyShipped { get; set; }
+		public string QuoteItemId{ get; set; }
 
-		public string QtyRefunded { get; set; }
+		public string QtyShipped{ get; set; }
 
-		public string QtyOrdered { get; set; }
+		public string QtyRefunded{ get; set; }
 
-		public string QtyInvoiced { get; set; }
+		public string QtyOrdered{ get; set; }
 
-		public string QtyCanceled { get; set; }
+		public string QtyInvoiced{ get; set; }
 
-		public string ProductType { get; set; }
+		public string QtyCanceled{ get; set; }
 
-		public string ProductOptions { get; set; }
+		public string ProductType{ get; set; }
 
-		public string ProductId { get; set; }
+		public string ProductOptions{ get; set; }
 
-		public string Price { get; set; }
+		public string ProductId{ get; set; }
 
-		public string OriginalPrice { get; set; }
+		public string Price{ get; set; }
 
-		public string NoDiscount { get; set; }
+		public string OriginalPrice{ get; set; }
 
-		public string Name { get; set; }
+		public string NoDiscount{ get; set; }
 
-		public string ItemId { get; set; }
+		public string Name{ get; set; }
 
-		public string IsVirtual { get; set; }
+		public string ItemId{ get; set; }
 
-		public string IsQtyDecimal { get; set; }
+		public string IsVirtual{ get; set; }
 
-		public string GiftMessageId { get; set; }
+		public string IsQtyDecimal{ get; set; }
 
-		public string GiftMessageAvailable { get; set; }
+		public string GiftMessageId{ get; set; }
 
-		public string GiftMessage { get; set; }
+		public string GiftMessageAvailable{ get; set; }
 
-		public string FreeShipping { get; set; }
+		public string GiftMessage{ get; set; }
 
-		public string DiscountPercent { get; set; }
+		public string FreeShipping{ get; set; }
 
-		public string DiscountInvoiced { get; set; }
+		public string DiscountPercent{ get; set; }
 
-		public string DiscountAmount { get; set; }
+		public string DiscountInvoiced{ get; set; }
 
-		public string CreatedAt { get; set; }
+		public string DiscountAmount{ get; set; }
 
-		public string Cost { get; set; }
+		public string CreatedAt{ get; set; }
 
-		public string BaseWeeeTaxRowDisposition { get; set; }
+		public string Cost{ get; set; }
 
-		public string BaseWeeeTaxDisposition { get; set; }
+		public string BaseWeeeTaxRowDisposition{ get; set; }
 
-		public string BaseWeeeTaxAppliedRowAmount { get; set; }
+		public string BaseWeeeTaxDisposition{ get; set; }
 
-		public string BaseWeeeTaxAppliedAmount { get; set; }
+		public string BaseWeeeTaxAppliedRowAmount{ get; set; }
 
-		public string BaseTaxInvoiced { get; set; }
+		public string BaseWeeeTaxAppliedAmount{ get; set; }
 
-		public string BaseTaxBeforeDiscount { get; set; }
+		public string BaseTaxInvoiced{ get; set; }
 
-		public string BaseTaxAmount { get; set; }
+		public string BaseTaxBeforeDiscount{ get; set; }
 
-		public string BaseRowTotal { get; set; }
+		public string BaseTaxAmount{ get; set; }
 
-		public string BaseRowInvoiced { get; set; }
+		public string BaseRowTotal{ get; set; }
 
-		public string BasePrice { get; set; }
+		public string BaseRowInvoiced{ get; set; }
 
-		public string BaseOriginalPrice { get; set; }
+		public string BasePrice{ get; set; }
 
-		public string BaseDiscountInvoiced { get; set; }
+		public string BaseOriginalPrice{ get; set; }
 
-		public string BaseDiscountAmount { get; set; }
+		public string BaseDiscountInvoiced{ get; set; }
 
-		public string BaseAmountRefunded { get; set; }
+		public string BaseDiscountAmount{ get; set; }
 
-		public string AppliedRuleIds { get; set; }
+		public string BaseAmountRefunded{ get; set; }
 
-		public string AmountRefunded { get; set; }
+		public string AppliedRuleIds{ get; set; }
+
+		public string AmountRefunded{ get; set; }
 	}
 
 	internal class StatusHistoryRecord
 	{
-		public string Comment { get; set; }
-		public string CreatedAt { get; set; }
-		public string IncrementId { get; set; }
-		public string IsActive { get; set; }
-		public string IsCustomerNotified { get; set; }
-		public string ParentId { get; set; }
-		public string Status { get; set; }
-		public string UpdatedAT { get; set; }
+		public string Comment{ get; set; }
+		public string CreatedAt{ get; set; }
+		public string IncrementId{ get; set; }
+		public string IsActive{ get; set; }
+		public string IsCustomerNotified{ get; set; }
+		public string ParentId{ get; set; }
+		public string Status{ get; set; }
+		public string UpdatedAT{ get; set; }
 
 		public StatusHistoryRecord( salesOrderStatusHistoryEntity salesOrderStatusHistoryEntity )
 		{
@@ -670,74 +894,86 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			UpdatedAT = salesOrderStatusHistoryEntity.updated_at;
 		}
 
-		public object qq { get; set; }
+		public StatusHistoryRecord( SalesDataOrderStatusHistoryInterface salesOrderStatusHistoryEntity )
+		{
+			Comment = salesOrderStatusHistoryEntity.comment;
+			CreatedAt = salesOrderStatusHistoryEntity.createdAt;
+			IncrementId = salesOrderStatusHistoryEntity.entityId.ToString( CultureInfo.InvariantCulture );
+			//IsActive = salesOrderStatusHistoryEntity.isActive;
+			IsCustomerNotified = salesOrderStatusHistoryEntity.isCustomerNotified.ToString( CultureInfo.InvariantCulture );
+			ParentId = salesOrderStatusHistoryEntity.parentId.ToString( CultureInfo.InvariantCulture );
+			Status = salesOrderStatusHistoryEntity.status;
+			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
+		}
+
+		public object qq{ get; set; }
 	}
 
 	internal class ShippingAddress
 	{
-		public string AddressId { get; set; }
-		public string AddressType { get; set; }
-		public string City { get; set; }
-		public string Company { get; set; }
-		public string CountryId { get; set; }
-		public string CreatedAt { get; set; }
-		public string Fax { get; set; }
-		public string Firstname { get; set; }
-		public string IncrementId { get; set; }
-		public string IsActive { get; set; }
-		public string Lastname { get; set; }
-		public string ParentId { get; set; }
-		public string Postcode { get; set; }
-		public string Region { get; set; }
-		public string RegionId { get; set; }
-		public string Street { get; set; }
-		public string Telephone { get; set; }
-		public string UpdatedAt { get; set; }
+		public string AddressId{ get; set; }
+		public string AddressType{ get; set; }
+		public string City{ get; set; }
+		public string Company{ get; set; }
+		public string CountryId{ get; set; }
+		public string CreatedAt{ get; set; }
+		public string Fax{ get; set; }
+		public string Firstname{ get; set; }
+		public string IncrementId{ get; set; }
+		public string IsActive{ get; set; }
+		public string Lastname{ get; set; }
+		public string ParentId{ get; set; }
+		public string Postcode{ get; set; }
+		public string Region{ get; set; }
+		public string RegionId{ get; set; }
+		public string Street{ get; set; }
+		public string Telephone{ get; set; }
+		public string UpdatedAt{ get; set; }
 	}
 
 	internal class Payment
 	{
-		public string AmountOrdered { get; set; }
-		public string BaseAmountOrdered { get; set; }
-		public string BaseShippingAmount { get; set; }
-		public string CcExpMonth { get; set; }
-		public string CcExpYear { get; set; }
-		public string CcLast4 { get; set; }
-		public string CcNumberEnc { get; set; }
-		public string CcOwner { get; set; }
-		public string CcSsStartMonth { get; set; }
-		public string CcSsStartYear { get; set; }
-		public string CcType { get; set; }
-		public string CreatedAt { get; set; }
-		public string IncrementId { get; set; }
-		public string IsActive { get; set; }
-		public string Method { get; set; }
-		public string ParentId { get; set; }
-		public string PaymentId { get; set; }
-		public string PoNumber { get; set; }
-		public string ShippingAmount { get; set; }
-		public string UpdatedAt { get; set; }
+		public string AmountOrdered{ get; set; }
+		public string BaseAmountOrdered{ get; set; }
+		public string BaseShippingAmount{ get; set; }
+		public string CcExpMonth{ get; set; }
+		public string CcExpYear{ get; set; }
+		public string CcLast4{ get; set; }
+		public string CcNumberEnc{ get; set; }
+		public string CcOwner{ get; set; }
+		public string CcSsStartMonth{ get; set; }
+		public string CcSsStartYear{ get; set; }
+		public string CcType{ get; set; }
+		public string CreatedAt{ get; set; }
+		public string IncrementId{ get; set; }
+		public string IsActive{ get; set; }
+		public string Method{ get; set; }
+		public string ParentId{ get; set; }
+		public string PaymentId{ get; set; }
+		public string PoNumber{ get; set; }
+		public string ShippingAmount{ get; set; }
+		public string UpdatedAt{ get; set; }
 	}
 
 	internal class BillingAddress
 	{
-		public string AddressId { get; set; }
-		public string AddressType { get; set; }
-		public string City { get; set; }
-		public string Company { get; set; }
-		public string CountryId { get; set; }
-		public string CreatedAt { get; set; }
-		public string Fax { get; set; }
-		public string Firstname { get; set; }
-		public string IncrementId { get; set; }
-		public string IsActive { get; set; }
-		public string Lastname { get; set; }
-		public string ParentId { get; set; }
-		public string Postcode { get; set; }
-		public string Region { get; set; }
-		public string RegionId { get; set; }
-		public string Street { get; set; }
-		public string Telephone { get; set; }
-		public string UpdatedAt { get; set; }
+		public string AddressId{ get; set; }
+		public string AddressType{ get; set; }
+		public string City{ get; set; }
+		public string Company{ get; set; }
+		public string CountryId{ get; set; }
+		public string CreatedAt{ get; set; }
+		public string Fax{ get; set; }
+		public string Firstname{ get; set; }
+		public string IncrementId{ get; set; }
+		public string IsActive{ get; set; }
+		public string Lastname{ get; set; }
+		public string ParentId{ get; set; }
+		public string Postcode{ get; set; }
+		public string Region{ get; set; }
+		public string RegionId{ get; set; }
+		public string Street{ get; set; }
+		public string Telephone{ get; set; }
+		public string UpdatedAt{ get; set; }
 	}
 }
