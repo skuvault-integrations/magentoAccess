@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -183,6 +184,8 @@ namespace MagentoAccess
 		#region constructor
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials )
 		{
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
 			this.MagentoServiceLowLevelRest = new MagentoServiceLowLevelRestRest(
 				magentoAuthenticatedUserCredentials.ConsumerKey,
 				magentoAuthenticatedUserCredentials.ConsumerSckretKey,
