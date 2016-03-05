@@ -4,14 +4,12 @@ using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
-using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
@@ -28,7 +26,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
 		protected salesOrderRepositoryV1PortTypeClient _magentoSoapService;
-		protected Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortTypeClient _magentoSoapService2;
+		protected integrationAdminTokenServiceV1PortTypeClient _magentoSoapService2;
 
 		protected string _sessionId;
 
@@ -101,10 +99,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 		}
 
-		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient(string baseMagentoUrl)
+		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
 		{
-			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient(this._customBinding, new EndpointAddress(endPoint));
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			//magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
 
@@ -181,29 +179,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			try
 			{
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
-
-				var res = new magentoInfoResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				return new GetMagentoInfoResponse( res );
+				// Magento doesn't provide method to receive magento vesrion, since Magento2.0
+				return new GetMagentoInfoResponse( new magentoInfoResponse() { result = new magentoInfoEntity() { magento_edition = "n/a", magento_version = "2.0.X.X" } } );
 			}
 			catch( Exception exc )
 			{
