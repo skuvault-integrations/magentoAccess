@@ -104,7 +104,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			//magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
 
 			return magentoSoapService;
 		}
@@ -114,7 +114,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			//magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
 
 			return magentoSoapService;
 		}

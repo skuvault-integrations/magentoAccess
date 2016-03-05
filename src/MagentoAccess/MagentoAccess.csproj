@@ -165,6 +165,7 @@
     <Compile Include="Services\Rest\MagentoServiceLowLevelRestRest.cs" />
     <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE.cs" />
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
+    <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoapAdditions.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Inventory.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Misc.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Orders.cs" />
