@@ -6,6 +6,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -27,6 +28,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
 		protected salesOrderRepositoryV1PortTypeClient _magentoSoapService;
+		protected Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortTypeClient _magentoSoapService2;
 
 		protected string _sessionId;
 
@@ -52,7 +54,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = string.Empty;
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
 
 				//await ActionPolicies.GetAsync.Do( async () =>
 				//{
@@ -62,13 +64,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				if( privateClient.State != CommunicationState.Opened
 				    && privateClient.State != CommunicationState.Created
 				    && privateClient.State != CommunicationState.Opening )
-					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
 
 				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 				{
-					var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+					var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
+					var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
 					this._sessionIdCreatedAt = DateTime.UtcNow;
-					this._sessionId = loginResponse.result;
+					this._sessionId = loginResponse.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse.result;
 					res = this._sessionId;
 				}
 				//} ).ConfigureAwait( false );
@@ -96,6 +99,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+		}
+
+		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient(string baseMagentoUrl)
+		{
+			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient(this._customBinding, new EndpointAddress(endPoint));
+
+			//magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+
+			return magentoSoapService;
 		}
 
 		private salesOrderRepositoryV1PortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
