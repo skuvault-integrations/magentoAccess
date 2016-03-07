@@ -23,7 +23,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public string BaseMagentoUrl{ get; set; }
 
-		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
+		protected const string SoapApiUrl = "soap/default?wsdl&services=";
 
 		protected salesOrderRepositoryV1PortTypeClient _magentoSoapService;
 		protected integrationAdminTokenServiceV1PortTypeClient _magentoSoapService2;
@@ -101,7 +101,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl();
 			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
