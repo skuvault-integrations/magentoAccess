@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
@@ -16,7 +18,12 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Products = res.result.Select( x => new SoapProduct( x ) );
 		}
 
-		public IEnumerable< SoapProduct > Products { get; set; }
+		public SoapGetProductsResponse( List< CatalogDataProductInterface > res )
+		{
+			this.Products = res.Select( x => new SoapProduct( x ) );
+		}
+
+		public IEnumerable< SoapProduct > Products{ get; set; }
 	}
 
 	internal class SoapProduct
@@ -43,18 +50,26 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			WebsiteIds = catalogProductEntity.website_ids.ToList();
 		}
 
-		public string Type { get; set; }
+		public SoapProduct( CatalogDataProductInterface catalogProductEntity )
+		{
+			Name = catalogProductEntity.name;
+			ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
+			Sku = catalogProductEntity.sku;
+			this.Type = catalogProductEntity.typeId;
+		}
 
-		public List< string > WebsiteIds { get; set; }
+		public string Type{ get; set; }
 
-		public string Sku { get; set; }
+		public List< string > WebsiteIds{ get; set; }
 
-		public string Set { get; set; }
+		public string Sku{ get; set; }
 
-		public string ProductId { get; set; }
+		public string Set{ get; set; }
 
-		public string Name { get; set; }
+		public string ProductId{ get; set; }
 
-		public List< string > CategoryIds { get; set; }
+		public string Name{ get; set; }
+
+		public List< string > CategoryIds{ get; set; }
 	}
 }

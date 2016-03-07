@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
@@ -125,31 +126,49 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			try
 			{
-				var filters = new filters { filter = new associativeEntity[ 0 ] };
-
-				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
-
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var res = new catalogProductListResponse();
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var res = new List< CatalogDataProductInterface >();
+				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+				catalogProductRepositoryV1GetListResponse1 catalogProductRepositoryV1GetListResponse = null;
+				var currentPage = 0;
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				do
 				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
+					await ActionPolicies.GetAsync.Do( async () =>
+					{
+						var statusChecker = new StatusChecker( maxCheckCount );
+						TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+						if( privateClient.State != CommunicationState.Opened
+						    && privateClient.State != CommunicationState.Created
+						    && privateClient.State != CommunicationState.Opening )
+							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						{
+							//var frameworkSearchFilterGroup1 = new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "gt", field = "created_at", value = "2000-01-01 01:01:01" } } };
+							//var frameworkSearchFilterGroup2 = new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "lt", field = "created_at", value = "2100-01-01 01:01:01" } } };
+							//var frameworkSearchFilterGroups = new[] { frameworkSearchFilterGroup1, frameworkSearchFilterGroup2 };
 
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
+							var frameworkSearchCriteriaInterface = new FrameworkSearchCriteriaInterface()
+							{
+								currentPage = currentPage++,
+								currentPageSpecified = true,
+								pageSize = 100,
+								pageSizeSpecified = true,
+								//filterGroups = frameworkSearchFilterGroups
+							};
+
+							var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
+							catalogProductRepositoryV1GetListResponse = await privateClient.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false );
+							var catalogDataProductInterfaces = catalogProductRepositoryV1GetListResponse == null ? new List< CatalogDataProductInterface >() : catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.items.ToList();
+
+							res.AddRange( catalogDataProductInterfaces );
+						}
+					} ).ConfigureAwait( false );
+				} while( catalogProductRepositoryV1GetListResponse != null && res.Count < catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.totalCount );
 
 				return new SoapGetProductsResponse( res );
 			}
