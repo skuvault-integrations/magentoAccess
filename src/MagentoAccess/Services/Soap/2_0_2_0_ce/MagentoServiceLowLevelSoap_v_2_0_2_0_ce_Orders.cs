@@ -41,7 +41,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = new salesOrderRepositoryV1GetListResponse1();
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -51,7 +51,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -98,7 +98,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = new salesOrderRepositoryV1GetListResponse1();
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -108,7 +108,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -145,7 +145,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = new salesOrderRepositoryV1GetResponse1();
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -155,7 +155,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 

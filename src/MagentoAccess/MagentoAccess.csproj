@@ -133,6 +133,11 @@
     <Compile Include="Models\Services\Soap\GetProducts\SoapGetProductsResponse.cs" />
     <Compile Include="Models\Services\Soap\PutStockItems\PutStockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -183,6 +188,31 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoWSDL.wsdl" />
     <None Include="Service References\Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE\MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1548,6 +1578,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2salesOrderRepositoryV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\MagentoSoapServiceReference\" />
@@ -1597,6 +1628,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

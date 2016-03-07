@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
@@ -96,7 +97,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
-			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+			this._magentoSoapService = this.CreateMagentoSalesOrderRepositoryServiceClient( baseMagentoUrl );
 		}
 
 		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
@@ -109,7 +110,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return magentoSoapService;
 		}
 
-		private salesOrderRepositoryV1PortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
+		private salesOrderRepositoryV1PortTypeClient CreateMagentoSalesOrderRepositoryServiceClient( string baseMagentoUrl )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
@@ -119,9 +120,19 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return magentoSoapService;
 		}
 
+		private catalogInventoryStockRegistryV1PortTypeClient CreateMagentoCatalogInventoryStockServiceClient(string baseMagentoUrl)
+		{
+			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new catalogInventoryStockRegistryV1PortTypeClient(this._customBinding, new EndpointAddress(endPoint));
+
+			magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
+
+			return magentoSoapService;
+		}
+
 		private async Task< salesOrderRepositoryV1PortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
 		{
-			var task = Task.Factory.StartNew( () => this.CreateMagentoServiceClient( baseMagentoUrl ) );
+			var task = Task.Factory.StartNew( () => this.CreateMagentoSalesOrderRepositoryServiceClient( baseMagentoUrl ) );
 			await Task.WhenAll( task ).ConfigureAwait( false );
 			return task.Result;
 		}
