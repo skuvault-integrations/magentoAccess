@@ -250,18 +250,18 @@ namespace MagentoAccess
 				mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
-				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : magentoCoreInfo.ToJson() ) );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -446,17 +446,17 @@ namespace MagentoAccess
 			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
 
 				var productBriefInfo = res.ToJson();
-				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
 
 				return res;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -467,23 +467,21 @@ namespace MagentoAccess
 			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );
-
-				IEnumerable< Product > resultProducts;
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-				var magentoServiceLowLevel = MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
-				resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails ).ConfigureAwait( false );
+				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true );
+				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails ).ConfigureAwait( false );
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
-				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodResult : resultProductsBriefInfo ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : resultProductsBriefInfo ) );
 
 				return resultProducts;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -522,7 +520,7 @@ namespace MagentoAccess
 			var mark = Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo ) );
 
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -530,14 +528,14 @@ namespace MagentoAccess
 				{
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 					//crunch for 1702
-					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) ? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) : await this.UpdateStockItemsBySoap( inventories, MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true ), mark ).ConfigureAwait( false );
+					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) ? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) : await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true ), mark ).ConfigureAwait( false );
 				}
 
-				MagentoLogger.LogTraceEnded( CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
