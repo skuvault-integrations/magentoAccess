@@ -99,12 +99,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
-			this._magentoSoapService = this.CreateMagentoSalesOrderRepositoryServiceClient( baseMagentoUrl );
 		}
 
 		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl();
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "integrationAdminTokenServiceV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
@@ -114,7 +113,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private salesOrderRepositoryV1PortTypeClient CreateMagentoSalesOrderRepositoryServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
@@ -124,7 +123,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private catalogProductRepositoryV1PortTypeClient CreateMagentoCatalogProductRepositoryServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductRepositoryV1" }.BuildUrl(trimTailsSlash:true);
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductRepositoryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogProductRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
@@ -134,7 +133,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private catalogInventoryStockRegistryV1PortTypeClient CreateMagentoCatalogInventoryStockServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogInventoryStockRegistryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogInventoryStockRegistryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
