@@ -54,7 +54,7 @@ namespace MagentoAccessTests.Misc
 			var s7 = new MagentoServiceLowLevelStub( "1.9.2.1" );
 			var s8= new MagentoServiceLowLevelStub( "1.9.2.2" );
 
-			Dictionary< string, IMagentoServiceLowLevelSoap > factories = new Dictionary< string, IMagentoServiceLowLevelSoap >
+			var factories = new Dictionary< string, IMagentoServiceLowLevelSoap >
 			{
 				{ s1.Store, s1 },
 				{ s2.Store, s2 },
@@ -89,7 +89,7 @@ namespace MagentoAccessTests.Misc
 
 			public MagentoServiceLowLevelStub( string store )
 			{
-				Store = store;
+				this.Store = store;
 			}
 
 			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )

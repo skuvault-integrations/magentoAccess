@@ -228,7 +228,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			//if( _testData == null )
 			//	_testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
 			//var magentoServiceSoapCredentialses = _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
-			yield return new MagentoServiceSoapCredentials() { StoreUrl = "http://127.0.0.0/magento", SoapApiUser = "user", SoapApiKey = "password" };
+			yield return new MagentoServiceSoapCredentials() { StoreUrl = "http://199.48.164.39:4423/Magento-2-0-2-0-ce", SoapApiUser = "user", SoapApiKey = "vdvm4gi9egyp5arq1914oeqilrlwk1sb", MagentoVersion="2.0.2.0" };
 		}
 	}
 }
