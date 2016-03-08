@@ -122,7 +122,7 @@ namespace MagentoAccess.Misc
 			}
 		}
 
-		public static string BuildUrl( this IEnumerable< string > urlParrts, bool escapeUrl = false )
+		public static string BuildUrl(this IEnumerable<string> urlParrts, bool escapeUrl = false, bool trimTailsSlash = false)
 		{
 			var resultUrl = string.Empty;
 			try
@@ -152,6 +152,8 @@ namespace MagentoAccess.Misc
 							result = string.IsNullOrWhiteSpace( ac ) ? string.Empty : ac;
 					}
 
+					if( trimTailsSlash )
+						result = result.TrimEnd('/');
 					return result;
 				} );
 			}

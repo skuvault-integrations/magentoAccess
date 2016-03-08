@@ -225,7 +225,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 							var frameworkSearchCriteriaInterface = new FrameworkSearchCriteriaInterface()
 							{
-								currentPage = currentPage++,
+								currentPage = currentPage,
 								currentPageSpecified = true,
 								pageSize = 100,
 								pageSizeSpecified = true,
@@ -235,8 +235,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 							var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
 							catalogProductRepositoryV1GetListResponse = await privateClient.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false );
 							var catalogDataProductInterfaces = catalogProductRepositoryV1GetListResponse == null ? new List< CatalogDataProductInterface >() : catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.items.ToList();
-
 							res.AddRange( catalogDataProductInterfaces );
+							currentPage++;
 						}
 					} ).ConfigureAwait( false );
 				} while( catalogProductRepositoryV1GetListResponse != null && res.Count < catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.totalCount );
