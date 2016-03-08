@@ -68,7 +68,7 @@ namespace MagentoAccessTests.Misc
 			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null, null, factories );
 
 			//------------ Act
-			var magentoServiceLowLevelSoap = magentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( magentoVer, true );
+			var magentoServiceLowLevelSoap = magentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( magentoVer, true, false );
 			//------------ Assert
 			return magentoServiceLowLevelSoap.Store;
 		}

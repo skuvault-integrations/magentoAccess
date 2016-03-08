@@ -22,7 +22,7 @@ namespace MagentoAccessTestsIntegration
 			try
 			{
 				//------------ Arrange
-				var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+				var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 				//------------ Act
 				var firstCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).First();
 				var lastCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).Last();
@@ -53,7 +53,7 @@ namespace MagentoAccessTestsIntegration
 		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
 			var getProductsTask = magentoService.GetProductsAsync();
@@ -68,7 +68,7 @@ namespace MagentoAccessTestsIntegration
 		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 
 			//------------ Act
 			var onlyProductsCreatedForThisTests = GetOnlyProductsCreatedForThisTests( credentials );
@@ -97,7 +97,7 @@ namespace MagentoAccessTestsIntegration
 		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 
 			//------------ Act
 			var getProductsTask = magentoService.GetProductsAsync();
@@ -144,7 +144,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var service = CreateMagentoService( credentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+				var service = this.CreateMagentoService(credentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 
 				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
@@ -163,7 +163,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Act
 			Action act = () =>
 			{
-				var service = CreateMagentoService( "incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+				var service = this.CreateMagentoService("incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 
 				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
@@ -178,7 +178,7 @@ namespace MagentoAccessTestsIntegration
 		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 			//------------ Act
 			Action act = () =>
 			{
@@ -264,7 +264,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ) );
+					this._testData.GetMagentoSoapUser().ApiKey ), null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -291,7 +291,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ) );
+					this._testData.GetMagentoSoapUser().ApiKey ), null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -318,7 +318,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ) );
+					this._testData.GetMagentoSoapUser().ApiKey ), null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -345,7 +345,7 @@ namespace MagentoAccessTestsIntegration
 					"incorrect consumer secret",
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ) );
+					this._testData.GetMagentoSoapUser().ApiKey ), null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -372,7 +372,7 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					"incorrect consumer key",
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ) );
+					this._testData.GetMagentoSoapUser().ApiKey ), null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -388,7 +388,7 @@ namespace MagentoAccessTestsIntegration
 		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com" );
+			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 
 			//------------ Act
 			Action act = () =>

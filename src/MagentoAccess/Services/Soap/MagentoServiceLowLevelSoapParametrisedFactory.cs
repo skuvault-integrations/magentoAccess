@@ -14,17 +14,17 @@ namespace MagentoAccess.Services.Soap
 
 		public MagentoServiceLowLevelSoapFactory( string store, string baseMagentoUrl, string apiKey, string apiUser, Dictionary< string, IMagentoServiceLowLevelSoap > factories )
 		{
-			_store = store;
-			_baseMagentoUrl = baseMagentoUrl;
-			_apiKey = apiKey;
-			_apiUser = apiUser;
-			_factories = factories;
+			this._store = store;
+			this._baseMagentoUrl = baseMagentoUrl;
+			this._apiKey = apiKey;
+			this._apiUser = apiUser;
+			this._factories = factories;
 		}
 
-		public IMagentoServiceLowLevelSoap GetMagentoServiceLowLevelSoap( string magentoVersion, bool returnDefaultInsteadOfexception )
+		public IMagentoServiceLowLevelSoap GetMagentoServiceLowLevelSoap( string magentoVersion, bool tryToSelectSuitable, bool returnNullIfNoSuitable )
 		{
-			var factories = _factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
-			if( returnDefaultInsteadOfexception && !factories.ContainsKey( magentoVersion ) )
+			var factories = this._factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
+			if( tryToSelectSuitable && !factories.ContainsKey( magentoVersion ) )
 			{
 				for( var j = 0; j < magentoVersion.Length; j++ )
 				{
@@ -36,8 +36,10 @@ namespace MagentoAccess.Services.Soap
 						return factories[ magentoVersion ];
 					}
 				}
+				if( returnNullIfNoSuitable )
+					return null;
 
-				_factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( _apiUser, _apiKey, _baseMagentoUrl, _store ) );
+				this._factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( _apiUser, _apiKey, _baseMagentoUrl, _store ) );
 			}
 
 			return factories[ magentoVersion ];
