@@ -16,56 +16,99 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using Netco.Extensions;
+using CatalogInventoryDataStockItemInterface = MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryDataStockItemInterface;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
 	{
+		private class UpdateRessult
+		{
+			public UpdateRessult( PutStockItem putStockItem, int success )
+			{
+				this.PutStockItem = putStockItem;
+				this.Success = success;
+			}
+
+			public int Success{ get; set; }
+			public PutStockItem PutStockItem{ get; set; }
+		}
+
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
 			{
-				var stockItemsProcessed = stockItems.Select( x =>
-				{
-					var catalogInventoryStockItemUpdateEntity = ( x.Qty > 0 ) ?
-						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = x.Qty.ToString() } :
-						new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = x.Qty.ToString() };
-					return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
-				} );
-
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var res = false;
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				var res = new List< UpdateRessult >();
+
+				await stockItems.DoInBatchAsync( 10, async x =>
 				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					await ActionPolicies.GetAsync.Do( async () =>
 					{
-						MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark : markForLog ) );
+						var statusChecker = new StatusChecker( maxCheckCount );
+						TimerCallback tcb = statusChecker.CheckStatus;
 
-						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
+						if( privateClient.State != CommunicationState.Opened
+						    && privateClient.State != CommunicationState.Created
+						    && privateClient.State != CommunicationState.Opening )
+							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-						res = temp.result;
+						var updateResult = new UpdateRessult( x, 0 );
+						res.Add( updateResult );
 
-						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
-						MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : markForLog, methodResult : updateBriefInfo ) );
-					}
+						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						{
+							MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark : markForLog ) );
+
+							var catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface()
+							{
+								qty = x.Qty,
+								productId = int.Parse( x.ProductId ),
+								productIdSpecified = true,
+								isInStock = x.Qty > 0,
+								isQtyDecimal = false,
+								showDefaultNotificationMessage = false,
+								useConfigMinQty = true,
+								minQty = 0,
+								useConfigMinSaleQty = 1,
+								minSaleQty = 1,
+								useConfigMaxSaleQty = true,
+								maxSaleQty = 10000,
+								useConfigBackorders = true,
+								backorders = 0,
+								useConfigNotifyStockQty = true,
+								notifyStockQty = 1,
+								useConfigQtyIncrements = true,
+								qtyIncrements = 0,
+								useConfigEnableQtyInc = false,
+								enableQtyIncrements = false,
+								useConfigManageStock = true,
+								manageStock = true,
+								//lowStockDate = "2016-02-29 20:48:26",
+								isDecimalDivided = false,
+								stockStatusChangedAuto = 1
+							};
+							var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest()
+							{
+								//productSku = x.Sku,
+								stockItem = catalogInventoryDataStockItemInterface
+							};
+
+							var temp = await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
+
+							updateResult.Success = temp.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse.result;
+						}
+					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return res;
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : markForLog, methodResult : res.ToJson() ) );
+
+				return res.All( x => x.Success > 0 );
 			}
 			catch( Exception exc )
 			{
@@ -79,15 +122,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			try
 			{
-				var catalogInventoryStockItemUpdateEntity = ( putStockItem.Qty > 0 ) ?
-					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = putStockItem.Qty.ToString() } :
-					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = putStockItem.Qty.ToString() };
-
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
 
 				var res = false;
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -97,17 +136,49 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+						privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
 						MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( productsBriefInfo, markForLog ) );
 
-						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false );
+						var catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface()
+						{
+							qty = putStockItem.Qty,
+							productId = int.Parse( putStockItem.ProductId ),
+							productIdSpecified = true,
+							isInStock = putStockItem.Qty > 0,
+							isQtyDecimal = false,
+							showDefaultNotificationMessage = false,
+							useConfigMinQty = true,
+							minQty = 0,
+							useConfigMinSaleQty = 1,
+							minSaleQty = 1,
+							useConfigMaxSaleQty = true,
+							maxSaleQty = 10000,
+							useConfigBackorders = true,
+							backorders = 0,
+							useConfigNotifyStockQty = true,
+							notifyStockQty = 1,
+							useConfigQtyIncrements = true,
+							qtyIncrements = 0,
+							useConfigEnableQtyInc = false,
+							enableQtyIncrements = false,
+							useConfigManageStock = true,
+							manageStock = true,
+							//lowStockDate = "2016-02-29 20:48:26",
+							isDecimalDivided = false,
+							stockStatusChangedAuto = 1
+						};
+						var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest()
+						{
+							//productSku = x.Sku,
+							stockItem = catalogInventoryDataStockItemInterface
+						};
 
-						res = temp.result > 0;
+						var temp = await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
+
+						res = temp.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse.result > 0;
 
 						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
 						MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( productsBriefInfo, markForLog, methodResult : updateBriefInfo ) );
@@ -242,7 +313,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, productId, "0", "1" ).ConfigureAwait( false );
+						//res = await privateClient.catalogProductAttributeMediaListAsync(sessionId, productId, "0", "1").ConfigureAwait(false);
+						res = null; //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new ProductAttributeMediaListResponse( res, productId );
@@ -276,7 +348,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogCategoryTreeAsync( sessionId, rootCategory, "0" ).ConfigureAwait( false );
+						//res = await privateClient.catalogCategoryTreeAsync(sessionId, rootCategory, "0").ConfigureAwait(false);
+						res = null; //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new GetCategoryTreeResponse( res );
@@ -311,7 +384,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductInfoAsync( sessionId, skusOrId, "0", attributes, idPassed ? "1" : "0" ).ConfigureAwait( false );
+						//res = await privateClient.catalogProductInfoAsync(sessionId, skusOrId, "0", attributes, idPassed ? "1" : "0").ConfigureAwait(false);
+						res = null; //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductInfoResponse( res );
@@ -345,7 +419,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
+						//res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
+						res = null; //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductAttributeInfoResponse( res );
