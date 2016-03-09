@@ -27,11 +27,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				httpRequestMessage = new HttpRequestMessageProperty();
 				httpRequestMessage.Headers.Add( "Accept-Encoding", "" );
 				request.Properties.Add( HttpRequestMessageProperty.Name, httpRequestMessage );
-
 			}
 
 			//Auth Mangeot 2.0
-			httpRequestMessage.Headers.Add("Authorization", "Bearer " + AccessToken);
+			if( httpRequestMessage.Headers.AllKeys.Contains( "Authorization" ) )
+				httpRequestMessage.Headers[ "Authorization" ] = "Bearer " + this.AccessToken;
+			else
+				httpRequestMessage.Headers.Add( "Authorization", "Bearer " + this.AccessToken );
 
 			return null;
 		}
