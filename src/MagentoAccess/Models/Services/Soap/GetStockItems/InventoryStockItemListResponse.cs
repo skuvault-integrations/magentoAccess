@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Models.Services.Soap.GetStockItems
 {
@@ -57,7 +58,7 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 		{
 			this.IsInStock = catalogInventoryStockItemEntity.isInStock.ToString( CultureInfo.InvariantCulture );
 			this.ProductId = catalogInventoryStockItemEntity.productId.ToString( CultureInfo.InvariantCulture );
-			this.Qty = catalogInventoryStockItemEntity.qty.ToString( CultureInfo.InvariantCulture );
+			this.Qty = catalogInventoryStockItemEntity.qty.ToDecimalOrDefault().ToString( CultureInfo.InvariantCulture );
 			this.Sku = sku;
 		}
 	}

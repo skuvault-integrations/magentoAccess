@@ -67,7 +67,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 							var catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface()
 							{
-								qty = x.Qty,
+								qty = x.Qty.ToString(),
 								productId = int.Parse( x.ProductId ),
 								productIdSpecified = true,
 								isInStock = x.Qty > 0,
@@ -144,7 +144,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 						var catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface()
 						{
-							qty = putStockItem.Qty,
+							qty = putStockItem.Qty.ToString(),
 							productId = int.Parse( putStockItem.ProductId ),
 							productIdSpecified = true,
 							isInStock = putStockItem.Qty > 0,
