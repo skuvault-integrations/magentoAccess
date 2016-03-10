@@ -557,6 +557,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.UpdatedAt = ( salesOrderListEntity.updatedAt ?? string.Empty ).ToString( cultureToString );
 			this.Weight = ( salesOrderListEntity.weight ?? string.Empty ).ToString( cultureToString );
 			this.XForwardedFOR = salesOrderListEntity.xForwardedFor;
+			this.OrderId = salesOrderListEntity.entityId.ToString();
 		}
 
 		public string AdjustmentNegative{ get; private set; }

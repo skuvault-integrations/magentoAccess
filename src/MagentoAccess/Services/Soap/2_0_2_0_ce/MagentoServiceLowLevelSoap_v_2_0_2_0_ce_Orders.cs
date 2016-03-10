@@ -155,8 +155,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.salesOrderRepositoryV1GetAsync( filters ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
