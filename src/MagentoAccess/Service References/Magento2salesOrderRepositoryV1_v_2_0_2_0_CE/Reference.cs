@@ -3040,91 +3040,91 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string additionalDataField;
         
-        private float amountRefundedField;
+        private string amountRefundedField;
         
         private bool amountRefundedFieldSpecified;
         
         private string appliedRuleIdsField;
         
-        private float baseAmountRefundedField;
+        private string baseAmountRefundedField;
         
         private bool baseAmountRefundedFieldSpecified;
         
-        private float baseCostField;
+        private string baseCostField;
         
         private bool baseCostFieldSpecified;
         
-        private float baseDiscountAmountField;
+        private string baseDiscountAmountField;
         
         private bool baseDiscountAmountFieldSpecified;
         
-        private float baseDiscountInvoicedField;
+        private string baseDiscountInvoicedField;
         
         private bool baseDiscountInvoicedFieldSpecified;
         
-        private float baseDiscountRefundedField;
+        private string baseDiscountRefundedField;
         
         private bool baseDiscountRefundedFieldSpecified;
         
-        private float baseDiscountTaxCompensationAmountField;
+        private string baseDiscountTaxCompensationAmountField;
         
-        private float baseDiscountTaxCompensationInvoicedField;
+        private string baseDiscountTaxCompensationInvoicedField;
         
-        private float baseDiscountTaxCompensationRefundedField;
+        private string baseDiscountTaxCompensationRefundedField;
         
-        private float baseOriginalPriceField;
+        private string baseOriginalPriceField;
         
         private bool baseOriginalPriceFieldSpecified;
         
-        private float basePriceField;
+        private string basePriceField;
         
         private bool basePriceFieldSpecified;
         
-        private float basePriceInclTaxField;
+        private string basePriceInclTaxField;
         
         private bool basePriceInclTaxFieldSpecified;
         
-        private float baseRowInvoicedField;
+        private string baseRowInvoicedField;
         
         private bool baseRowInvoicedFieldSpecified;
         
-        private float baseRowTotalField;
+        private string baseRowTotalField;
         
         private bool baseRowTotalFieldSpecified;
         
-        private float baseRowTotalInclTaxField;
+        private string baseRowTotalInclTaxField;
         
         private bool baseRowTotalInclTaxFieldSpecified;
         
-        private float baseTaxAmountField;
+        private string baseTaxAmountField;
         
         private bool baseTaxAmountFieldSpecified;
         
-        private float baseTaxBeforeDiscountField;
+        private string baseTaxBeforeDiscountField;
         
         private bool baseTaxBeforeDiscountFieldSpecified;
         
-        private float baseTaxInvoicedField;
+        private string baseTaxInvoicedField;
         
         private bool baseTaxInvoicedFieldSpecified;
         
-        private float baseTaxRefundedField;
+        private string baseTaxRefundedField;
         
         private bool baseTaxRefundedFieldSpecified;
         
-        private float baseWeeeTaxAppliedAmountField;
+        private string baseWeeeTaxAppliedAmountField;
         
         private bool baseWeeeTaxAppliedAmountFieldSpecified;
         
-        private float baseWeeeTaxAppliedRowAmntField;
+        private string baseWeeeTaxAppliedRowAmntField;
         
         private bool baseWeeeTaxAppliedRowAmntFieldSpecified;
         
-        private float baseWeeeTaxDispositionField;
+        private string baseWeeeTaxDispositionField;
         
         private bool baseWeeeTaxDispositionFieldSpecified;
         
-        private float baseWeeeTaxRowDispositionField;
+        private string baseWeeeTaxRowDispositionField;
         
         private bool baseWeeeTaxRowDispositionFieldSpecified;
         
@@ -3132,19 +3132,19 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string descriptionField;
         
-        private float discountAmountField;
+        private string discountAmountField;
         
         private bool discountAmountFieldSpecified;
         
-        private float discountInvoicedField;
+        private string discountInvoicedField;
         
         private bool discountInvoicedFieldSpecified;
         
-        private float discountPercentField;
+        private string discountPercentField;
         
         private bool discountPercentFieldSpecified;
         
-        private float discountRefundedField;
+        private string discountRefundedField;
         
         private bool discountRefundedFieldSpecified;
         
@@ -3158,27 +3158,27 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool freeShippingFieldSpecified;
         
-        private float gwBasePriceField;
+        private string gwBasePriceField;
         
         private bool gwBasePriceFieldSpecified;
         
-        private float gwBasePriceInvoicedField;
+        private string gwBasePriceInvoicedField;
         
         private bool gwBasePriceInvoicedFieldSpecified;
         
-        private float gwBasePriceRefundedField;
+        private string gwBasePriceRefundedField;
         
         private bool gwBasePriceRefundedFieldSpecified;
         
-        private float gwBaseTaxAmountField;
+        private string gwBaseTaxAmountField;
         
         private bool gwBaseTaxAmountFieldSpecified;
         
-        private float gwBaseTaxAmountInvoicedField;
+        private string gwBaseTaxAmountInvoicedField;
         
         private bool gwBaseTaxAmountInvoicedFieldSpecified;
         
-        private float gwBaseTaxAmountRefundedField;
+        private string gwBaseTaxAmountRefundedField;
         
         private bool gwBaseTaxAmountRefundedFieldSpecified;
         
@@ -3186,37 +3186,37 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool gwIdFieldSpecified;
         
-        private float gwPriceField;
+        private string gwPriceField;
         
         private bool gwPriceFieldSpecified;
         
-        private float gwPriceInvoicedField;
+        private string gwPriceInvoicedField;
         
         private bool gwPriceInvoicedFieldSpecified;
         
-        private float gwPriceRefundedField;
+        private string gwPriceRefundedField;
         
         private bool gwPriceRefundedFieldSpecified;
         
-        private float gwTaxAmountField;
+        private string gwTaxAmountField;
         
         private bool gwTaxAmountFieldSpecified;
         
-        private float gwTaxAmountInvoicedField;
+        private string gwTaxAmountInvoicedField;
         
         private bool gwTaxAmountInvoicedFieldSpecified;
         
-        private float gwTaxAmountRefundedField;
+        private string gwTaxAmountRefundedField;
         
         private bool gwTaxAmountRefundedFieldSpecified;
         
-        private float discountTaxCompensationAmountField;
+        private string discountTaxCompensationAmountField;
         
-        private float discountTaxCompensationCanceledField;
+        private string discountTaxCompensationCanceledField;
         
-        private float discountTaxCompensationInvoicedField;
+        private string discountTaxCompensationInvoicedField;
         
-        private float discountTaxCompensationRefundedField;
+        private string discountTaxCompensationRefundedField;
         
         private int isQtyDecimalField;
         
@@ -3248,7 +3248,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool orderIdFieldSpecified;
         
-        private float originalPriceField;
+        private string originalPriceField;
         
         private bool originalPriceFieldSpecified;
         
@@ -3256,11 +3256,11 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool parentItemIdFieldSpecified;
         
-        private float priceField;
+        private string priceField;
         
         private bool priceFieldSpecified;
         
-        private float priceInclTaxField;
+        private string priceInclTaxField;
         
         private bool priceInclTaxFieldSpecified;
         
@@ -3270,31 +3270,31 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string productTypeField;
         
-        private float qtyBackorderedField;
+        private string qtyBackorderedField;
         
         private bool qtyBackorderedFieldSpecified;
         
-        private float qtyCanceledField;
+        private string qtyCanceledField;
         
         private bool qtyCanceledFieldSpecified;
         
-        private float qtyInvoicedField;
+        private string qtyInvoicedField;
         
         private bool qtyInvoicedFieldSpecified;
         
-        private float qtyOrderedField;
+        private string qtyOrderedField;
         
         private bool qtyOrderedFieldSpecified;
         
-        private float qtyRefundedField;
+        private string qtyRefundedField;
         
         private bool qtyRefundedFieldSpecified;
         
-        private float qtyReturnedField;
+        private string qtyReturnedField;
         
         private bool qtyReturnedFieldSpecified;
         
-        private float qtyShippedField;
+        private string qtyShippedField;
         
         private bool qtyShippedFieldSpecified;
         
@@ -3302,19 +3302,19 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool quoteItemIdFieldSpecified;
         
-        private float rowInvoicedField;
+        private string rowInvoicedField;
         
         private bool rowInvoicedFieldSpecified;
         
-        private float rowTotalField;
+        private string rowTotalField;
         
         private bool rowTotalFieldSpecified;
         
-        private float rowTotalInclTaxField;
+        private string rowTotalInclTaxField;
         
         private bool rowTotalInclTaxFieldSpecified;
         
-        private float rowWeightField;
+        private string rowWeightField;
         
         private bool rowWeightFieldSpecified;
         
@@ -3324,27 +3324,27 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool storeIdFieldSpecified;
         
-        private float taxAmountField;
+        private string taxAmountField;
         
         private bool taxAmountFieldSpecified;
         
-        private float taxBeforeDiscountField;
+        private string taxBeforeDiscountField;
         
         private bool taxBeforeDiscountFieldSpecified;
         
-        private float taxCanceledField;
+        private string taxCanceledField;
         
         private bool taxCanceledFieldSpecified;
         
-        private float taxInvoicedField;
+        private string taxInvoicedField;
         
         private bool taxInvoicedFieldSpecified;
         
-        private float taxPercentField;
+        private string taxPercentField;
         
         private bool taxPercentFieldSpecified;
         
-        private float taxRefundedField;
+        private string taxRefundedField;
         
         private bool taxRefundedFieldSpecified;
         
@@ -3352,23 +3352,23 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string weeeTaxAppliedField;
         
-        private float weeeTaxAppliedAmountField;
+        private string weeeTaxAppliedAmountField;
         
         private bool weeeTaxAppliedAmountFieldSpecified;
         
-        private float weeeTaxAppliedRowAmountField;
+        private string weeeTaxAppliedRowAmountField;
         
         private bool weeeTaxAppliedRowAmountFieldSpecified;
         
-        private float weeeTaxDispositionField;
+        private string weeeTaxDispositionField;
         
         private bool weeeTaxDispositionFieldSpecified;
         
-        private float weeeTaxRowDispositionField;
+        private string weeeTaxRowDispositionField;
         
         private bool weeeTaxRowDispositionFieldSpecified;
         
-        private float weightField;
+        private string weightField;
         
         private bool weightFieldSpecified;
         
@@ -3392,7 +3392,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public float amountRefunded {
+        public string amountRefunded {
             get {
                 return this.amountRefundedField;
             }
@@ -3428,7 +3428,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public float baseAmountRefunded {
+        public string baseAmountRefunded {
             get {
                 return this.baseAmountRefundedField;
             }
@@ -3452,7 +3452,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public float baseCost {
+        public string baseCost {
             get {
                 return this.baseCostField;
             }
@@ -3476,7 +3476,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public float baseDiscountAmount {
+        public string baseDiscountAmount {
             get {
                 return this.baseDiscountAmountField;
             }
@@ -3500,7 +3500,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public float baseDiscountInvoiced {
+        public string baseDiscountInvoiced {
             get {
                 return this.baseDiscountInvoicedField;
             }
@@ -3524,7 +3524,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public float baseDiscountRefunded {
+        public string baseDiscountRefunded {
             get {
                 return this.baseDiscountRefundedField;
             }
@@ -3548,7 +3548,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public float baseDiscountTaxCompensationAmount {
+        public string baseDiscountTaxCompensationAmount {
             get {
                 return this.baseDiscountTaxCompensationAmountField;
             }
@@ -3560,7 +3560,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public float baseDiscountTaxCompensationInvoiced {
+        public string baseDiscountTaxCompensationInvoiced {
             get {
                 return this.baseDiscountTaxCompensationInvoicedField;
             }
@@ -3572,7 +3572,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public float baseDiscountTaxCompensationRefunded {
+        public string baseDiscountTaxCompensationRefunded {
             get {
                 return this.baseDiscountTaxCompensationRefundedField;
             }
@@ -3584,7 +3584,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
-        public float baseOriginalPrice {
+        public string baseOriginalPrice {
             get {
                 return this.baseOriginalPriceField;
             }
@@ -3608,7 +3608,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
-        public float basePrice {
+        public string basePrice {
             get {
                 return this.basePriceField;
             }
@@ -3632,7 +3632,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
-        public float basePriceInclTax {
+        public string basePriceInclTax {
             get {
                 return this.basePriceInclTaxField;
             }
@@ -3656,7 +3656,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
-        public float baseRowInvoiced {
+        public string baseRowInvoiced {
             get {
                 return this.baseRowInvoicedField;
             }
@@ -3680,7 +3680,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
-        public float baseRowTotal {
+        public string baseRowTotal {
             get {
                 return this.baseRowTotalField;
             }
@@ -3704,7 +3704,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
-        public float baseRowTotalInclTax {
+        public string baseRowTotalInclTax {
             get {
                 return this.baseRowTotalInclTaxField;
             }
@@ -3728,7 +3728,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=17)]
-        public float baseTaxAmount {
+        public string baseTaxAmount {
             get {
                 return this.baseTaxAmountField;
             }
@@ -3752,7 +3752,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=18)]
-        public float baseTaxBeforeDiscount {
+        public string baseTaxBeforeDiscount {
             get {
                 return this.baseTaxBeforeDiscountField;
             }
@@ -3776,7 +3776,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=19)]
-        public float baseTaxInvoiced {
+        public string baseTaxInvoiced {
             get {
                 return this.baseTaxInvoicedField;
             }
@@ -3800,7 +3800,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=20)]
-        public float baseTaxRefunded {
+        public string baseTaxRefunded {
             get {
                 return this.baseTaxRefundedField;
             }
@@ -3824,7 +3824,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=21)]
-        public float baseWeeeTaxAppliedAmount {
+        public string baseWeeeTaxAppliedAmount {
             get {
                 return this.baseWeeeTaxAppliedAmountField;
             }
@@ -3848,7 +3848,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=22)]
-        public float baseWeeeTaxAppliedRowAmnt {
+        public string baseWeeeTaxAppliedRowAmnt {
             get {
                 return this.baseWeeeTaxAppliedRowAmntField;
             }
@@ -3872,7 +3872,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=23)]
-        public float baseWeeeTaxDisposition {
+        public string baseWeeeTaxDisposition {
             get {
                 return this.baseWeeeTaxDispositionField;
             }
@@ -3896,7 +3896,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=24)]
-        public float baseWeeeTaxRowDisposition {
+        public string baseWeeeTaxRowDisposition {
             get {
                 return this.baseWeeeTaxRowDispositionField;
             }
@@ -3944,7 +3944,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=27)]
-        public float discountAmount {
+        public string discountAmount {
             get {
                 return this.discountAmountField;
             }
@@ -3968,7 +3968,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=28)]
-        public float discountInvoiced {
+        public string discountInvoiced {
             get {
                 return this.discountInvoicedField;
             }
@@ -3992,7 +3992,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=29)]
-        public float discountPercent {
+        public string discountPercent {
             get {
                 return this.discountPercentField;
             }
@@ -4016,7 +4016,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=30)]
-        public float discountRefunded {
+        public string discountRefunded {
             get {
                 return this.discountRefundedField;
             }
@@ -4100,7 +4100,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=34)]
-        public float gwBasePrice {
+        public string gwBasePrice {
             get {
                 return this.gwBasePriceField;
             }
@@ -4124,7 +4124,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=35)]
-        public float gwBasePriceInvoiced {
+        public string gwBasePriceInvoiced {
             get {
                 return this.gwBasePriceInvoicedField;
             }
@@ -4148,7 +4148,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=36)]
-        public float gwBasePriceRefunded {
+        public string gwBasePriceRefunded {
             get {
                 return this.gwBasePriceRefundedField;
             }
@@ -4172,7 +4172,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=37)]
-        public float gwBaseTaxAmount {
+        public string gwBaseTaxAmount {
             get {
                 return this.gwBaseTaxAmountField;
             }
@@ -4196,7 +4196,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=38)]
-        public float gwBaseTaxAmountInvoiced {
+        public string gwBaseTaxAmountInvoiced {
             get {
                 return this.gwBaseTaxAmountInvoicedField;
             }
@@ -4220,7 +4220,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=39)]
-        public float gwBaseTaxAmountRefunded {
+        public string gwBaseTaxAmountRefunded {
             get {
                 return this.gwBaseTaxAmountRefundedField;
             }
@@ -4268,7 +4268,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=41)]
-        public float gwPrice {
+        public string gwPrice {
             get {
                 return this.gwPriceField;
             }
@@ -4292,7 +4292,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=42)]
-        public float gwPriceInvoiced {
+        public string gwPriceInvoiced {
             get {
                 return this.gwPriceInvoicedField;
             }
@@ -4316,7 +4316,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=43)]
-        public float gwPriceRefunded {
+        public string gwPriceRefunded {
             get {
                 return this.gwPriceRefundedField;
             }
@@ -4340,7 +4340,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=44)]
-        public float gwTaxAmount {
+        public string gwTaxAmount {
             get {
                 return this.gwTaxAmountField;
             }
@@ -4364,7 +4364,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=45)]
-        public float gwTaxAmountInvoiced {
+        public string gwTaxAmountInvoiced {
             get {
                 return this.gwTaxAmountInvoicedField;
             }
@@ -4388,7 +4388,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=46)]
-        public float gwTaxAmountRefunded {
+        public string gwTaxAmountRefunded {
             get {
                 return this.gwTaxAmountRefundedField;
             }
@@ -4412,7 +4412,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=47)]
-        public float discountTaxCompensationAmount {
+        public string discountTaxCompensationAmount {
             get {
                 return this.discountTaxCompensationAmountField;
             }
@@ -4424,7 +4424,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=48)]
-        public float discountTaxCompensationCanceled {
+        public string discountTaxCompensationCanceled {
             get {
                 return this.discountTaxCompensationCanceledField;
             }
@@ -4436,7 +4436,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=49)]
-        public float discountTaxCompensationInvoiced {
+        public string discountTaxCompensationInvoiced {
             get {
                 return this.discountTaxCompensationInvoicedField;
             }
@@ -4448,7 +4448,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=50)]
-        public float discountTaxCompensationRefunded {
+        public string discountTaxCompensationRefunded {
             get {
                 return this.discountTaxCompensationRefundedField;
             }
@@ -4640,7 +4640,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=59)]
-        public float originalPrice {
+        public string originalPrice {
             get {
                 return this.originalPriceField;
             }
@@ -4688,7 +4688,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=61)]
-        public float price {
+        public string price {
             get {
                 return this.priceField;
             }
@@ -4712,7 +4712,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=62)]
-        public float priceInclTax {
+        public string priceInclTax {
             get {
                 return this.priceInclTaxField;
             }
@@ -4772,7 +4772,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=65)]
-        public float qtyBackordered {
+        public string qtyBackordered {
             get {
                 return this.qtyBackorderedField;
             }
@@ -4796,7 +4796,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=66)]
-        public float qtyCanceled {
+        public string qtyCanceled {
             get {
                 return this.qtyCanceledField;
             }
@@ -4820,7 +4820,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=67)]
-        public float qtyInvoiced {
+        public string qtyInvoiced {
             get {
                 return this.qtyInvoicedField;
             }
@@ -4844,7 +4844,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=68)]
-        public float qtyOrdered {
+        public string qtyOrdered {
             get {
                 return this.qtyOrderedField;
             }
@@ -4868,7 +4868,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=69)]
-        public float qtyRefunded {
+        public string qtyRefunded {
             get {
                 return this.qtyRefundedField;
             }
@@ -4892,7 +4892,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=70)]
-        public float qtyReturned {
+        public string qtyReturned {
             get {
                 return this.qtyReturnedField;
             }
@@ -4916,7 +4916,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=71)]
-        public float qtyShipped {
+        public string qtyShipped {
             get {
                 return this.qtyShippedField;
             }
@@ -4964,7 +4964,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=73)]
-        public float rowInvoiced {
+        public string rowInvoiced {
             get {
                 return this.rowInvoicedField;
             }
@@ -4988,7 +4988,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=74)]
-        public float rowTotal {
+        public string rowTotal {
             get {
                 return this.rowTotalField;
             }
@@ -5012,7 +5012,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=75)]
-        public float rowTotalInclTax {
+        public string rowTotalInclTax {
             get {
                 return this.rowTotalInclTaxField;
             }
@@ -5036,7 +5036,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=76)]
-        public float rowWeight {
+        public string rowWeight {
             get {
                 return this.rowWeightField;
             }
@@ -5096,7 +5096,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=79)]
-        public float taxAmount {
+        public string taxAmount {
             get {
                 return this.taxAmountField;
             }
@@ -5120,7 +5120,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=80)]
-        public float taxBeforeDiscount {
+        public string taxBeforeDiscount {
             get {
                 return this.taxBeforeDiscountField;
             }
@@ -5144,7 +5144,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=81)]
-        public float taxCanceled {
+        public string taxCanceled {
             get {
                 return this.taxCanceledField;
             }
@@ -5168,7 +5168,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=82)]
-        public float taxInvoiced {
+        public string taxInvoiced {
             get {
                 return this.taxInvoicedField;
             }
@@ -5192,7 +5192,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=83)]
-        public float taxPercent {
+        public string taxPercent {
             get {
                 return this.taxPercentField;
             }
@@ -5216,7 +5216,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=84)]
-        public float taxRefunded {
+        public string taxRefunded {
             get {
                 return this.taxRefundedField;
             }
@@ -5264,7 +5264,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=87)]
-        public float weeeTaxAppliedAmount {
+        public string weeeTaxAppliedAmount {
             get {
                 return this.weeeTaxAppliedAmountField;
             }
@@ -5288,7 +5288,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=88)]
-        public float weeeTaxAppliedRowAmount {
+        public string weeeTaxAppliedRowAmount {
             get {
                 return this.weeeTaxAppliedRowAmountField;
             }
@@ -5312,7 +5312,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=89)]
-        public float weeeTaxDisposition {
+        public string weeeTaxDisposition {
             get {
                 return this.weeeTaxDispositionField;
             }
@@ -5336,7 +5336,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=90)]
-        public float weeeTaxRowDisposition {
+        public string weeeTaxRowDisposition {
             get {
                 return this.weeeTaxRowDispositionField;
             }
@@ -5360,7 +5360,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=91)]
-        public float weight {
+        public string weight {
             get {
                 return this.weightField;
             }
@@ -5436,162 +5436,162 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderInterface : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private float adjustmentNegativeField;
+
+		private string adjustmentNegativeField;
         
         private bool adjustmentNegativeFieldSpecified;
         
-        private float adjustmentPositiveField;
+        private string adjustmentPositiveField;
         
         private bool adjustmentPositiveFieldSpecified;
         
         private string appliedRuleIdsField;
         
-        private float baseAdjustmentNegativeField;
+        private string baseAdjustmentNegativeField;
         
         private bool baseAdjustmentNegativeFieldSpecified;
         
-        private float baseAdjustmentPositiveField;
+        private string baseAdjustmentPositiveField;
         
         private bool baseAdjustmentPositiveFieldSpecified;
         
         private string baseCurrencyCodeField;
         
-        private float baseDiscountAmountField;
+        private string baseDiscountAmountField;
         
         private bool baseDiscountAmountFieldSpecified;
         
-        private float baseDiscountCanceledField;
+        private string baseDiscountCanceledField;
         
         private bool baseDiscountCanceledFieldSpecified;
         
-        private float baseDiscountInvoicedField;
+        private string baseDiscountInvoicedField;
         
         private bool baseDiscountInvoicedFieldSpecified;
         
-        private float baseDiscountRefundedField;
+        private string baseDiscountRefundedField;
         
         private bool baseDiscountRefundedFieldSpecified;
         
-        private float baseGrandTotalField;
+        private string baseGrandTotalField;
         
-        private float baseDiscountTaxCompensationAmountField;
+        private string baseDiscountTaxCompensationAmountField;
         
-        private float baseDiscountTaxCompensationInvoicedField;
+        private string baseDiscountTaxCompensationInvoicedField;
         
-        private float baseDiscountTaxCompensationRefundedField;
+        private string baseDiscountTaxCompensationRefundedField;
         
-        private float baseShippingAmountField;
+        private string baseShippingAmountField;
         
         private bool baseShippingAmountFieldSpecified;
         
-        private float baseShippingCanceledField;
+        private string baseShippingCanceledField;
         
         private bool baseShippingCanceledFieldSpecified;
         
-        private float baseShippingDiscountAmountField;
+        private string baseShippingDiscountAmountField;
         
         private bool baseShippingDiscountAmountFieldSpecified;
         
-        private float baseShippingDiscountTaxCompensationAmntField;
+        private string baseShippingDiscountTaxCompensationAmntField;
         
-        private float baseShippingInclTaxField;
+        private string baseShippingInclTaxField;
         
         private bool baseShippingInclTaxFieldSpecified;
         
-        private float baseShippingInvoicedField;
+        private string baseShippingInvoicedField;
         
         private bool baseShippingInvoicedFieldSpecified;
         
-        private float baseShippingRefundedField;
+        private string baseShippingRefundedField;
         
         private bool baseShippingRefundedFieldSpecified;
         
-        private float baseShippingTaxAmountField;
+        private string baseShippingTaxAmountField;
         
         private bool baseShippingTaxAmountFieldSpecified;
         
-        private float baseShippingTaxRefundedField;
+        private string baseShippingTaxRefundedField;
         
         private bool baseShippingTaxRefundedFieldSpecified;
         
-        private float baseSubtotalField;
+        private string baseSubtotalField;
         
         private bool baseSubtotalFieldSpecified;
         
-        private float baseSubtotalCanceledField;
+        private string baseSubtotalCanceledField;
         
         private bool baseSubtotalCanceledFieldSpecified;
         
-        private float baseSubtotalInclTaxField;
+        private string baseSubtotalInclTaxField;
         
         private bool baseSubtotalInclTaxFieldSpecified;
         
-        private float baseSubtotalInvoicedField;
+        private string baseSubtotalInvoicedField;
         
         private bool baseSubtotalInvoicedFieldSpecified;
         
-        private float baseSubtotalRefundedField;
+        private string baseSubtotalRefundedField;
         
         private bool baseSubtotalRefundedFieldSpecified;
         
-        private float baseTaxAmountField;
+        private string baseTaxAmountField;
         
         private bool baseTaxAmountFieldSpecified;
         
-        private float baseTaxCanceledField;
+        private string baseTaxCanceledField;
         
         private bool baseTaxCanceledFieldSpecified;
         
-        private float baseTaxInvoicedField;
+        private string baseTaxInvoicedField;
         
         private bool baseTaxInvoicedFieldSpecified;
         
-        private float baseTaxRefundedField;
+        private string baseTaxRefundedField;
         
         private bool baseTaxRefundedFieldSpecified;
         
-        private float baseTotalCanceledField;
+        private string baseTotalCanceledField;
         
         private bool baseTotalCanceledFieldSpecified;
         
-        private float baseTotalDueField;
+        private string baseTotalDueField;
         
         private bool baseTotalDueFieldSpecified;
         
-        private float baseTotalInvoicedField;
+        private string baseTotalInvoicedField;
         
         private bool baseTotalInvoicedFieldSpecified;
         
-        private float baseTotalInvoicedCostField;
+        private string baseTotalInvoicedCostField;
         
         private bool baseTotalInvoicedCostFieldSpecified;
         
-        private float baseTotalOfflineRefundedField;
+        private string baseTotalOfflineRefundedField;
         
         private bool baseTotalOfflineRefundedFieldSpecified;
         
-        private float baseTotalOnlineRefundedField;
+        private string baseTotalOnlineRefundedField;
         
         private bool baseTotalOnlineRefundedFieldSpecified;
         
-        private float baseTotalPaidField;
+        private string baseTotalPaidField;
         
         private bool baseTotalPaidFieldSpecified;
         
-        private float baseTotalQtyOrderedField;
+        private string baseTotalQtyOrderedField;
         
         private bool baseTotalQtyOrderedFieldSpecified;
         
-        private float baseTotalRefundedField;
+        private string baseTotalRefundedField;
         
         private bool baseTotalRefundedFieldSpecified;
         
-        private float baseToGlobalRateField;
+        private string baseToGlobalRateField;
         
         private bool baseToGlobalRateFieldSpecified;
         
-        private float baseToOrderRateField;
+        private string baseToOrderRateField;
         
         private bool baseToOrderRateFieldSpecified;
         
@@ -5649,21 +5649,21 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string customerTaxvatField;
         
-        private float discountAmountField;
+        private string discountAmountField;
         
         private bool discountAmountFieldSpecified;
         
-        private float discountCanceledField;
+        private string discountCanceledField;
         
         private bool discountCanceledFieldSpecified;
         
         private string discountDescriptionField;
         
-        private float discountInvoicedField;
+        private string discountInvoicedField;
         
         private bool discountInvoicedFieldSpecified;
         
-        private float discountRefundedField;
+        private string discountRefundedField;
         
         private bool discountRefundedFieldSpecified;
         
@@ -5689,13 +5689,13 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string globalCurrencyCodeField;
         
-        private float grandTotalField;
+        private string grandTotalField;
         
-        private float discountTaxCompensationAmountField;
+        private string discountTaxCompensationAmountField;
         
-        private float discountTaxCompensationInvoicedField;
+        private string discountTaxCompensationInvoicedField;
         
-        private float discountTaxCompensationRefundedField;
+        private string discountTaxCompensationRefundedField;
         
         private string holdBeforeStateField;
         
@@ -5711,7 +5711,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string originalIncrementIdField;
         
-        private float paymentAuthorizationAmountField;
+        private string paymentAuthorizationAmountField;
         
         private bool paymentAuthorizationAmountFieldSpecified;
         
@@ -5739,39 +5739,39 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string remoteIpField;
         
-        private float shippingAmountField;
+        private string shippingAmountField;
         
         private bool shippingAmountFieldSpecified;
         
-        private float shippingCanceledField;
+        private string shippingCanceledField;
         
         private bool shippingCanceledFieldSpecified;
         
         private string shippingDescriptionField;
         
-        private float shippingDiscountAmountField;
+        private string shippingDiscountAmountField;
         
         private bool shippingDiscountAmountFieldSpecified;
         
-        private float shippingDiscountTaxCompensationAmountField;
+        private string shippingDiscountTaxCompensationAmountField;
         
-        private float shippingInclTaxField;
+        private string shippingInclTaxField;
         
         private bool shippingInclTaxFieldSpecified;
         
-        private float shippingInvoicedField;
+        private string shippingInvoicedField;
         
         private bool shippingInvoicedFieldSpecified;
         
-        private float shippingRefundedField;
+        private string shippingRefundedField;
         
         private bool shippingRefundedFieldSpecified;
         
-        private float shippingTaxAmountField;
+        private string shippingTaxAmountField;
         
         private bool shippingTaxAmountFieldSpecified;
         
-        private float shippingTaxRefundedField;
+        private string shippingTaxRefundedField;
         
         private bool shippingTaxRefundedFieldSpecified;
         
@@ -5787,59 +5787,59 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private string storeNameField;
         
-        private float storeToBaseRateField;
+        private string storeToBaseRateField;
         
         private bool storeToBaseRateFieldSpecified;
         
-        private float storeToOrderRateField;
+        private string storeToOrderRateField;
         
         private bool storeToOrderRateFieldSpecified;
         
-        private float subtotalField;
+        private string subtotalField;
         
         private bool subtotalFieldSpecified;
         
-        private float subtotalCanceledField;
+        private string subtotalCanceledField;
         
         private bool subtotalCanceledFieldSpecified;
         
-        private float subtotalInclTaxField;
+        private string subtotalInclTaxField;
         
         private bool subtotalInclTaxFieldSpecified;
         
-        private float subtotalInvoicedField;
+        private string subtotalInvoicedField;
         
         private bool subtotalInvoicedFieldSpecified;
         
-        private float subtotalRefundedField;
+        private string subtotalRefundedField;
         
         private bool subtotalRefundedFieldSpecified;
         
-        private float taxAmountField;
+        private string taxAmountField;
         
         private bool taxAmountFieldSpecified;
         
-        private float taxCanceledField;
+        private string taxCanceledField;
         
         private bool taxCanceledFieldSpecified;
         
-        private float taxInvoicedField;
+        private string taxInvoicedField;
         
         private bool taxInvoicedFieldSpecified;
         
-        private float taxRefundedField;
+        private string taxRefundedField;
         
         private bool taxRefundedFieldSpecified;
         
-        private float totalCanceledField;
+        private string totalCanceledField;
         
         private bool totalCanceledFieldSpecified;
         
-        private float totalDueField;
+        private string totalDueField;
         
         private bool totalDueFieldSpecified;
         
-        private float totalInvoicedField;
+        private string totalInvoicedField;
         
         private bool totalInvoicedFieldSpecified;
         
@@ -5847,29 +5847,29 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         private bool totalItemCountFieldSpecified;
         
-        private float totalOfflineRefundedField;
+        private string totalOfflineRefundedField;
         
         private bool totalOfflineRefundedFieldSpecified;
         
-        private float totalOnlineRefundedField;
+        private string totalOnlineRefundedField;
         
         private bool totalOnlineRefundedFieldSpecified;
         
-        private float totalPaidField;
+        private string totalPaidField;
         
         private bool totalPaidFieldSpecified;
         
-        private float totalQtyOrderedField;
+        private string totalQtyOrderedField;
         
         private bool totalQtyOrderedFieldSpecified;
         
-        private float totalRefundedField;
+        private string totalRefundedField;
         
         private bool totalRefundedFieldSpecified;
         
         private string updatedAtField;
         
-        private float weightField;
+        private string weightField;
         
         private bool weightFieldSpecified;
         
@@ -5887,7 +5887,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public float adjustmentNegative {
+        public string adjustmentNegative {
             get {
                 return this.adjustmentNegativeField;
             }
@@ -5911,7 +5911,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public float adjustmentPositive {
+        public string adjustmentPositive {
             get {
                 return this.adjustmentPositiveField;
             }
@@ -5947,7 +5947,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public float baseAdjustmentNegative {
+        public string baseAdjustmentNegative {
             get {
                 return this.baseAdjustmentNegativeField;
             }
@@ -5971,7 +5971,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public float baseAdjustmentPositive {
+        public string baseAdjustmentPositive {
             get {
                 return this.baseAdjustmentPositiveField;
             }
@@ -6007,7 +6007,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public float baseDiscountAmount {
+        public string baseDiscountAmount {
             get {
                 return this.baseDiscountAmountField;
             }
@@ -6031,7 +6031,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public float baseDiscountCanceled {
+        public string baseDiscountCanceled {
             get {
                 return this.baseDiscountCanceledField;
             }
@@ -6055,7 +6055,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public float baseDiscountInvoiced {
+        public string baseDiscountInvoiced {
             get {
                 return this.baseDiscountInvoicedField;
             }
@@ -6079,7 +6079,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public float baseDiscountRefunded {
+        public string baseDiscountRefunded {
             get {
                 return this.baseDiscountRefundedField;
             }
@@ -6103,7 +6103,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public float baseGrandTotal {
+        public string baseGrandTotal {
             get {
                 return this.baseGrandTotalField;
             }
@@ -6115,7 +6115,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
-        public float baseDiscountTaxCompensationAmount {
+        public string baseDiscountTaxCompensationAmount {
             get {
                 return this.baseDiscountTaxCompensationAmountField;
             }
@@ -6127,7 +6127,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
-        public float baseDiscountTaxCompensationInvoiced {
+        public string baseDiscountTaxCompensationInvoiced {
             get {
                 return this.baseDiscountTaxCompensationInvoicedField;
             }
@@ -6139,7 +6139,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
-        public float baseDiscountTaxCompensationRefunded {
+        public string baseDiscountTaxCompensationRefunded {
             get {
                 return this.baseDiscountTaxCompensationRefundedField;
             }
@@ -6151,7 +6151,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
-        public float baseShippingAmount {
+        public string baseShippingAmount {
             get {
                 return this.baseShippingAmountField;
             }
@@ -6175,7 +6175,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
-        public float baseShippingCanceled {
+        public string baseShippingCanceled {
             get {
                 return this.baseShippingCanceledField;
             }
@@ -6199,7 +6199,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
-        public float baseShippingDiscountAmount {
+        public string baseShippingDiscountAmount {
             get {
                 return this.baseShippingDiscountAmountField;
             }
@@ -6223,7 +6223,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=17)]
-        public float baseShippingDiscountTaxCompensationAmnt {
+        public string baseShippingDiscountTaxCompensationAmnt {
             get {
                 return this.baseShippingDiscountTaxCompensationAmntField;
             }
@@ -6235,7 +6235,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=18)]
-        public float baseShippingInclTax {
+        public string baseShippingInclTax {
             get {
                 return this.baseShippingInclTaxField;
             }
@@ -6259,7 +6259,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=19)]
-        public float baseShippingInvoiced {
+        public string baseShippingInvoiced {
             get {
                 return this.baseShippingInvoicedField;
             }
@@ -6283,7 +6283,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=20)]
-        public float baseShippingRefunded {
+        public string baseShippingRefunded {
             get {
                 return this.baseShippingRefundedField;
             }
@@ -6307,7 +6307,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=21)]
-        public float baseShippingTaxAmount {
+        public string baseShippingTaxAmount {
             get {
                 return this.baseShippingTaxAmountField;
             }
@@ -6331,7 +6331,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=22)]
-        public float baseShippingTaxRefunded {
+        public string baseShippingTaxRefunded {
             get {
                 return this.baseShippingTaxRefundedField;
             }
@@ -6355,7 +6355,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=23)]
-        public float baseSubtotal {
+        public string baseSubtotal {
             get {
                 return this.baseSubtotalField;
             }
@@ -6379,7 +6379,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=24)]
-        public float baseSubtotalCanceled {
+        public string baseSubtotalCanceled {
             get {
                 return this.baseSubtotalCanceledField;
             }
@@ -6403,7 +6403,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=25)]
-        public float baseSubtotalInclTax {
+        public string baseSubtotalInclTax {
             get {
                 return this.baseSubtotalInclTaxField;
             }
@@ -6427,7 +6427,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=26)]
-        public float baseSubtotalInvoiced {
+        public string baseSubtotalInvoiced {
             get {
                 return this.baseSubtotalInvoicedField;
             }
@@ -6451,7 +6451,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=27)]
-        public float baseSubtotalRefunded {
+        public string baseSubtotalRefunded {
             get {
                 return this.baseSubtotalRefundedField;
             }
@@ -6475,7 +6475,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=28)]
-        public float baseTaxAmount {
+        public string baseTaxAmount {
             get {
                 return this.baseTaxAmountField;
             }
@@ -6499,7 +6499,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=29)]
-        public float baseTaxCanceled {
+        public string baseTaxCanceled {
             get {
                 return this.baseTaxCanceledField;
             }
@@ -6523,7 +6523,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=30)]
-        public float baseTaxInvoiced {
+        public string baseTaxInvoiced {
             get {
                 return this.baseTaxInvoicedField;
             }
@@ -6547,7 +6547,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=31)]
-        public float baseTaxRefunded {
+        public string baseTaxRefunded {
             get {
                 return this.baseTaxRefundedField;
             }
@@ -6571,7 +6571,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=32)]
-        public float baseTotalCanceled {
+        public string baseTotalCanceled {
             get {
                 return this.baseTotalCanceledField;
             }
@@ -6595,7 +6595,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=33)]
-        public float baseTotalDue {
+        public string baseTotalDue {
             get {
                 return this.baseTotalDueField;
             }
@@ -6619,7 +6619,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=34)]
-        public float baseTotalInvoiced {
+        public string baseTotalInvoiced {
             get {
                 return this.baseTotalInvoicedField;
             }
@@ -6643,7 +6643,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=35)]
-        public float baseTotalInvoicedCost {
+        public string baseTotalInvoicedCost {
             get {
                 return this.baseTotalInvoicedCostField;
             }
@@ -6667,7 +6667,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=36)]
-        public float baseTotalOfflineRefunded {
+        public string baseTotalOfflineRefunded {
             get {
                 return this.baseTotalOfflineRefundedField;
             }
@@ -6691,7 +6691,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=37)]
-        public float baseTotalOnlineRefunded {
+        public string baseTotalOnlineRefunded {
             get {
                 return this.baseTotalOnlineRefundedField;
             }
@@ -6715,7 +6715,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=38)]
-        public float baseTotalPaid {
+        public string baseTotalPaid {
             get {
                 return this.baseTotalPaidField;
             }
@@ -6739,7 +6739,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=39)]
-        public float baseTotalQtyOrdered {
+        public string baseTotalQtyOrdered {
             get {
                 return this.baseTotalQtyOrderedField;
             }
@@ -6763,7 +6763,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=40)]
-        public float baseTotalRefunded {
+        public string baseTotalRefunded {
             get {
                 return this.baseTotalRefundedField;
             }
@@ -6787,7 +6787,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=41)]
-        public float baseToGlobalRate {
+        public string baseToGlobalRate {
             get {
                 return this.baseToGlobalRateField;
             }
@@ -6811,7 +6811,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=42)]
-        public float baseToOrderRate {
+        public string baseToOrderRate {
             get {
                 return this.baseToOrderRateField;
             }
@@ -7159,7 +7159,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=62)]
-        public float discountAmount {
+        public string discountAmount {
             get {
                 return this.discountAmountField;
             }
@@ -7183,7 +7183,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=63)]
-        public float discountCanceled {
+        public string discountCanceled {
             get {
                 return this.discountCanceledField;
             }
@@ -7219,7 +7219,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=65)]
-        public float discountInvoiced {
+        public string discountInvoiced {
             get {
                 return this.discountInvoicedField;
             }
@@ -7243,7 +7243,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=66)]
-        public float discountRefunded {
+        public string discountRefunded {
             get {
                 return this.discountRefundedField;
             }
@@ -7399,7 +7399,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=74)]
-        public float grandTotal {
+        public string grandTotal {
             get {
                 return this.grandTotalField;
             }
@@ -7411,7 +7411,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=75)]
-        public float discountTaxCompensationAmount {
+        public string discountTaxCompensationAmount {
             get {
                 return this.discountTaxCompensationAmountField;
             }
@@ -7423,7 +7423,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=76)]
-        public float discountTaxCompensationInvoiced {
+        public string discountTaxCompensationInvoiced {
             get {
                 return this.discountTaxCompensationInvoicedField;
             }
@@ -7435,7 +7435,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=77)]
-        public float discountTaxCompensationRefunded {
+        public string discountTaxCompensationRefunded {
             get {
                 return this.discountTaxCompensationRefundedField;
             }
@@ -7531,7 +7531,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=84)]
-        public float paymentAuthorizationAmount {
+        public string paymentAuthorizationAmount {
             get {
                 return this.paymentAuthorizationAmountField;
             }
@@ -7699,7 +7699,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=94)]
-        public float shippingAmount {
+        public string shippingAmount {
             get {
                 return this.shippingAmountField;
             }
@@ -7723,7 +7723,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=95)]
-        public float shippingCanceled {
+        public string shippingCanceled {
             get {
                 return this.shippingCanceledField;
             }
@@ -7759,7 +7759,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=97)]
-        public float shippingDiscountAmount {
+        public string shippingDiscountAmount {
             get {
                 return this.shippingDiscountAmountField;
             }
@@ -7783,7 +7783,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=98)]
-        public float shippingDiscountTaxCompensationAmount {
+        public string shippingDiscountTaxCompensationAmount {
             get {
                 return this.shippingDiscountTaxCompensationAmountField;
             }
@@ -7795,7 +7795,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=99)]
-        public float shippingInclTax {
+        public string shippingInclTax {
             get {
                 return this.shippingInclTaxField;
             }
@@ -7819,7 +7819,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=100)]
-        public float shippingInvoiced {
+        public string shippingInvoiced {
             get {
                 return this.shippingInvoicedField;
             }
@@ -7843,7 +7843,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=101)]
-        public float shippingRefunded {
+        public string shippingRefunded {
             get {
                 return this.shippingRefundedField;
             }
@@ -7867,7 +7867,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=102)]
-        public float shippingTaxAmount {
+        public string shippingTaxAmount {
             get {
                 return this.shippingTaxAmountField;
             }
@@ -7891,7 +7891,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=103)]
-        public float shippingTaxRefunded {
+        public string shippingTaxRefunded {
             get {
                 return this.shippingTaxRefundedField;
             }
@@ -7987,7 +7987,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=109)]
-        public float storeToBaseRate {
+        public string storeToBaseRate {
             get {
                 return this.storeToBaseRateField;
             }
@@ -8011,7 +8011,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=110)]
-        public float storeToOrderRate {
+        public string storeToOrderRate {
             get {
                 return this.storeToOrderRateField;
             }
@@ -8035,7 +8035,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=111)]
-        public float subtotal {
+        public string subtotal {
             get {
                 return this.subtotalField;
             }
@@ -8059,7 +8059,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=112)]
-        public float subtotalCanceled {
+        public string subtotalCanceled {
             get {
                 return this.subtotalCanceledField;
             }
@@ -8083,7 +8083,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=113)]
-        public float subtotalInclTax {
+        public string subtotalInclTax {
             get {
                 return this.subtotalInclTaxField;
             }
@@ -8107,7 +8107,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=114)]
-        public float subtotalInvoiced {
+        public string subtotalInvoiced {
             get {
                 return this.subtotalInvoicedField;
             }
@@ -8131,7 +8131,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=115)]
-        public float subtotalRefunded {
+        public string subtotalRefunded {
             get {
                 return this.subtotalRefundedField;
             }
@@ -8155,7 +8155,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=116)]
-        public float taxAmount {
+        public string taxAmount {
             get {
                 return this.taxAmountField;
             }
@@ -8179,7 +8179,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=117)]
-        public float taxCanceled {
+        public string taxCanceled {
             get {
                 return this.taxCanceledField;
             }
@@ -8203,7 +8203,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=118)]
-        public float taxInvoiced {
+        public string taxInvoiced {
             get {
                 return this.taxInvoicedField;
             }
@@ -8227,7 +8227,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=119)]
-        public float taxRefunded {
+        public string taxRefunded {
             get {
                 return this.taxRefundedField;
             }
@@ -8251,7 +8251,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=120)]
-        public float totalCanceled {
+        public string totalCanceled {
             get {
                 return this.totalCanceledField;
             }
@@ -8275,7 +8275,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=121)]
-        public float totalDue {
+        public string totalDue {
             get {
                 return this.totalDueField;
             }
@@ -8299,7 +8299,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=122)]
-        public float totalInvoiced {
+        public string totalInvoiced {
             get {
                 return this.totalInvoicedField;
             }
@@ -8347,7 +8347,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=124)]
-        public float totalOfflineRefunded {
+        public string totalOfflineRefunded {
             get {
                 return this.totalOfflineRefundedField;
             }
@@ -8371,7 +8371,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=125)]
-        public float totalOnlineRefunded {
+        public string totalOnlineRefunded {
             get {
                 return this.totalOnlineRefundedField;
             }
@@ -8395,7 +8395,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=126)]
-        public float totalPaid {
+        public string totalPaid {
             get {
                 return this.totalPaidField;
             }
@@ -8419,7 +8419,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=127)]
-        public float totalQtyOrdered {
+        public string totalQtyOrdered {
             get {
                 return this.totalQtyOrderedField;
             }
@@ -8443,7 +8443,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=128)]
-        public float totalRefunded {
+        public string totalRefunded {
             get {
                 return this.totalRefundedField;
             }
@@ -8479,7 +8479,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=130)]
-        public float weight {
+        public string weight {
             get {
                 return this.weightField;
             }

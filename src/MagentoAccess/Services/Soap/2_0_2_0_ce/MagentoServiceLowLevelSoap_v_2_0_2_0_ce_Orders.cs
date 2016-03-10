@@ -20,7 +20,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "updated_At", conditionType = "gt", value = modifiedFrom.ToSoapParameterString() } } },
 					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "updated_At", conditionType = "lt", value = modifiedTo.ToSoapParameterString() } } },
 				};
-				if( string.IsNullOrWhiteSpace( this.Store ) )
+				if( !string.IsNullOrWhiteSpace( this.Store ) )
 					frameworkSearchFilterGroups.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );
 
 				var filters = new SalesOrderRepositoryV1GetListRequest
@@ -52,8 +52,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
