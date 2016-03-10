@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetOpenAuth.Messaging;
 using MagentoAccess;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
@@ -200,7 +201,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceSoapCredentials magentoServiceSoapCredentials )
 		{
-			var magentoService = this.CreateMagentoService( magentoServiceSoapCredentials.SoapApiUser, magentoServiceSoapCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
+			var magentoService = this.CreateMagentoService( magentoServiceSoapCredentials.SoapApiUser, magentoServiceSoapCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0 );
 			var getProductsTask = magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 

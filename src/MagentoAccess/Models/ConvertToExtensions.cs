@@ -10,7 +10,7 @@ namespace MagentoAccess.Models
 	{
 		public static Inventory ToInventory( this Product product, int setQty = 0 )
 		{
-			return new Inventory() { ProductId = product.ProductId, ItemId = product.EntityId, Qty = setQty };
+			return new Inventory() { ProductId = product.ProductId, ItemId = product.EntityId, Qty = setQty, Sku = product.Sku };
 		}
 
 		public static IEnumerable< Inventory > ToInventory( this IEnumerable< Product > product, Func< Product, int > setQty = null )

@@ -541,7 +541,9 @@ namespace MagentoAccess
 				{
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 					//crunch for 1702
-					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) ? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) : await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false ), mark ).ConfigureAwait( false );
+					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) 
+						? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) 
+						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false ), mark ).ConfigureAwait( false );
 				}
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );

@@ -95,7 +95,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 							};
 							var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest()
 							{
-								//productSku = x.Sku,
+								productSku = x.Sku,
 								stockItem = catalogInventoryDataStockItemInterface
 							};
 

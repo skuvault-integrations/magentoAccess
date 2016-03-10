@@ -77,7 +77,10 @@ namespace MagentoAccess.Models.Services.Soap.PutStockItems
 			this.MinQty = updateEntity.MinQty;
 			this.Qty = updateEntity.Qty;
 			this.StockId = updateEntity.StockId;
+			this.Sku = updateEntity.Sku;
 		}
+
+		public string Sku{ get; set; }
 
 		public string StockId { get; set; }
 
