@@ -29,7 +29,7 @@ namespace MagentoAccess.Models.GetOrders
 				} );
 			var shippingAddress = Tuple.Create(
 				AddressTypeEnum.Shipping,
-				new Address
+				order.ShippingAddress == null ? new Address() : new Address
 				{
 					AddressType = order.ShippingAddress.AddressType,
 					City = order.ShippingAddress.City,
