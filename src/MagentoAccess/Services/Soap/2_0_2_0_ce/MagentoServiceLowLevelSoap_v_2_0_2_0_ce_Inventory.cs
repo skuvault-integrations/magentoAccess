@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -297,9 +298,9 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( this.BaseMagentoUrl );
 
-				var res = new catalogProductAttributeMediaListResponse();
+				var res = new catalogProductAttributeMediaGalleryManagementV1GetListResponse1();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
@@ -308,13 +309,12 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( this.BaseMagentoUrl );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
+					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest()
+					{ sku = "" };
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						//res = await privateClient.catalogProductAttributeMediaListAsync(sessionId, productId, "0", "1").ConfigureAwait(false);
-						res = null; //TODO: Implement
+						res = await privateClient.catalogProductAttributeMediaGalleryManagementV1GetListAsync( catalogProductAttributeMediaGalleryManagementV1GetListRequest ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new ProductAttributeMediaListResponse( res, productId );
@@ -368,7 +368,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				const int delayBeforeCheck = 1800000;
 
 				var res = new catalogProductInfoResponse();
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -378,13 +378,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient(this.BaseMagentoUrl);
 
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 					var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						//res = await privateClient.catalogProductInfoAsync(sessionId, skusOrId, "0", attributes, idPassed ? "1" : "0").ConfigureAwait(false);
+					{
+						var qwe = new CatalogProductRepositoryV1GetRequest();
+						res = await privateClient.catalogProductRepositoryV1GetAsync( qwe).ConfigureAwait(false);
+					}
+					//res = await privateClient.catalogProductRepositoryV1GetAsync( skusOrId, "0", attributes, idPassed ? "1" : "0").ConfigureAwait(false);
 						res = null; //TODO: Implement
 				} ).ConfigureAwait( false );
 

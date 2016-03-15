@@ -207,7 +207,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
 			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds[ magentoServiceSoapCredentials.StoreUrl ].ContainsKey( int.Parse( x.ProductId ) ) );
-			return onlyProductsCreatedForThisTests;
+			return allProductsinMagent;
 		}
 
 		internal class MagentoServiceSoapCredentials

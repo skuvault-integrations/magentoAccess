@@ -43,16 +43,16 @@ namespace MagentoAccess.Models.GetProducts
 		public decimal SpecialPrice { get; set; }
 		public decimal Cost { get; set; }
 		public string Manufacturer { get; set; }
-		public IEnumerable< MagentoUrl > Images { get; set; }
+		public IEnumerable< MagentoUrl > Images { get; set; }//imagento2
 		public string ShortDescription { get; set; }
-		public string Weight { get; set; }
-		public string EntityId { get; set; }
-		public string Sku { get; set; }
-		public decimal Price { get; set; }
-		public string Name { get; set; }
-		public string Description { get; set; }
+		public string Weight { get; set; }//imagento2
+		public string EntityId { get; set; }  //id
+		public string Sku { get; set; }//imagento2
+		public decimal Price { get; set; }//imagento2
+		public string Name { get; set; }//imagento2
+		public string Description { get; set; }//custom attributes
 		public string Qty { get; set; }
-		public string ProductId { get; set; }
-		public Category[] Categories { get; set; }
+		public string ProductId { get; set; }   //id
+		public Category[] Categories { get; set; } //category_ids have many
 	}
 }

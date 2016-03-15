@@ -6,6 +6,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
@@ -107,6 +108,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
+
+			return magentoSoapService;
+		}
+
+		private catalogProductAttributeMediaGalleryManagementV1PortTypeClient CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient(string baseMagentoUrl)
+		{
+			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl(trimTailsSlash: true);
+			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient(this._customBinding, new EndpointAddress(endPoint));
+
+			magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior() { AccessToken = this.ApiKey });
 
 			return magentoSoapService;
 		}

@@ -57,7 +57,7 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
-			var getProductsTask = magentoService.GetProductsAsync();
+			var getProductsTask = magentoService.GetProductsAsync(true);
 			getProductsTask.Wait();
 
 			//------------ Assert

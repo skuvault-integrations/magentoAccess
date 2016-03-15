@@ -138,6 +138,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Magento2catalogProductRepositoryV1_v_2_0_2_0_CE\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -218,6 +223,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoWSDL.wsdl" />
+    <None Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\MagentoWSDL.wsdl" />
     <None Include="Service References\Magento2catalogProductRepositoryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1DeleteByIdResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1609,6 +1615,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\" />
+    <WCFMetadataStorage Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2catalogProductRepositoryV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2salesOrderRepositoryV1_v_2_0_2_0_CE\" />
@@ -1683,6 +1690,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Magento2catalogProductRepositoryV1_v_2_0_2_0_CE\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

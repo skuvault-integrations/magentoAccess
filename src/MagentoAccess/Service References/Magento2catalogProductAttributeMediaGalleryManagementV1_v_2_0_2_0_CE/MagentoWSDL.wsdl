@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+      <xsd:element name="GenericFault" type="tns:GenericFault" />
+      <xsd:complexType name="GenericFaultParameter">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="key" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfGenericFaultParameter">
+        <xsd:annotation>
+          <xsd:documentation>An array of GenericFaultParameter items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:GenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfGenericFaultParameter.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WrappedError">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="message" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="parameters" type="tns:ArrayOfGenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>Message parameters.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWrappedError">
+        <xsd:annotation>
+          <xsd:documentation>An array of WrappedError items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:WrappedError">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfWrappedError.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="GenericFault">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="Trace" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Exception calls stack trace.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="Parameters" type="tns:ArrayOfGenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>Additional exception parameters.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="WrappedErrors" type="tns:ArrayOfWrappedError">
+            <xsd:annotation>
+              <xsd:documentation>Additional wrapped errors.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:annotation>
+          <xsd:documentation>An array of string items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfString.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkDataImageContentInterface">
+        <xsd:annotation>
+          <xsd:documentation>Image Content data interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="base64EncodedData" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Media data (base64 encoded content)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="type" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>MIME type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Image name</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkDataVideoContentInterface">
+        <xsd:annotation>
+          <xsd:documentation>Video Content data interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>MIME type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoProvider" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Provider</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoUrl" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Video URL</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoTitle" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Title</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoDescription" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Video Description</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoMetadata" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Metadata</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
+        <xsd:annotation>
+          <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="videoContent" type="tns:FrameworkDataVideoContentInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryInterface">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry ID</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Media type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="label" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry alternative text</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry position (sort order)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="disabled" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>If gallery entry is hidden from product page</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="types" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry image types (thumbnail, image, small_image etc)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="file" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>File path</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="content" type="tns:FrameworkDataImageContentInterface">
+            <xsd:annotation>
+              <xsd:documentation>Media gallery content</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
+            <xsd:annotation>
+              <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1GetRequest" type="tns:CatalogProductAttributeMediaGalleryManagementV1GetRequest" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1GetRequest">
+        <xsd:annotation>
+          <xsd:documentation>Return information about gallery entry</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="entryId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1GetResponse" type="tns:CatalogProductAttributeMediaGalleryManagementV1GetResponse" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1GetResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogProductAttributeMediaGalleryManagementV1Get call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogDataProductAttributeMediaGalleryEntryInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Get</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1CreateRequest" type="tns:CatalogProductAttributeMediaGalleryManagementV1CreateRequest" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1CreateRequest">
+        <xsd:annotation>
+          <xsd:documentation>Create new gallery entry</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="entry" type="tns:CatalogDataProductAttributeMediaGalleryEntryInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1CreateResponse" type="tns:CatalogProductAttributeMediaGalleryManagementV1CreateResponse" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1CreateResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogProductAttributeMediaGalleryManagementV1Create call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>gallery entry ID</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Create</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1UpdateRequest" type="tns:CatalogProductAttributeMediaGalleryManagementV1UpdateRequest" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1UpdateRequest">
+        <xsd:annotation>
+          <xsd:documentation>Update gallery entry</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="entry" type="tns:CatalogDataProductAttributeMediaGalleryEntryInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1UpdateResponse" type="tns:CatalogProductAttributeMediaGalleryManagementV1UpdateResponse" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1UpdateResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogProductAttributeMediaGalleryManagementV1Update call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Update</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1RemoveRequest" type="tns:CatalogProductAttributeMediaGalleryManagementV1RemoveRequest" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1RemoveRequest">
+        <xsd:annotation>
+          <xsd:documentation>Remove gallery entry</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Remove</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="entryId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Remove</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1RemoveResponse" type="tns:CatalogProductAttributeMediaGalleryManagementV1RemoveResponse" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1RemoveResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogProductAttributeMediaGalleryManagementV1Remove call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1Remove</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1GetListRequest" type="tns:CatalogProductAttributeMediaGalleryManagementV1GetListRequest" />
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1GetListRequest">
+        <xsd:annotation>
+          <xsd:documentation>Retrieve the list of gallery entries associated with given product</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1GetList</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogProductAttributeMediaGalleryManagementV1GetListResponse" type="tns:CatalogProductAttributeMediaGalleryManagementV1GetListResponse" />
+      <xsd:complexType name="ArrayOfCatalogDataProductAttributeMediaGalleryEntryInterface">
+        <xsd:annotation>
+          <xsd:documentation>An array of CatalogDataProductAttributeMediaGalleryEntryInterface items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductAttributeMediaGalleryEntryInterface">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfCatalogDataProductAttributeMediaGalleryEntryInterface.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1GetList</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogProductAttributeMediaGalleryManagementV1GetListResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogProductAttributeMediaGalleryManagementV1GetList call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="result" type="tns:ArrayOfCatalogDataProductAttributeMediaGalleryEntryInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogProductAttributeMediaGalleryManagementV1GetList</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GenericFault">
+    <wsdl:part name="messageParameters" element="tns:GenericFault" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1GetRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1GetRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1GetResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1GetResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1CreateRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1CreateRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1CreateResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1CreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1UpdateRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1UpdateRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1UpdateResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1UpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1RemoveRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1RemoveRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1RemoveResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1RemoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1GetListRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1GetListRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogProductAttributeMediaGalleryManagementV1GetListResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogProductAttributeMediaGalleryManagementV1GetListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="catalogProductAttributeMediaGalleryManagementV1PortType">
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Get">
+      <wsdl:input message="tns:catalogProductAttributeMediaGalleryManagementV1GetRequest" />
+      <wsdl:output message="tns:catalogProductAttributeMediaGalleryManagementV1GetResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Create">
+      <wsdl:input message="tns:catalogProductAttributeMediaGalleryManagementV1CreateRequest" />
+      <wsdl:output message="tns:catalogProductAttributeMediaGalleryManagementV1CreateResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Update">
+      <wsdl:input message="tns:catalogProductAttributeMediaGalleryManagementV1UpdateRequest" />
+      <wsdl:output message="tns:catalogProductAttributeMediaGalleryManagementV1UpdateResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Remove">
+      <wsdl:input message="tns:catalogProductAttributeMediaGalleryManagementV1RemoveRequest" />
+      <wsdl:output message="tns:catalogProductAttributeMediaGalleryManagementV1RemoveResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1GetList">
+      <wsdl:input message="tns:catalogProductAttributeMediaGalleryManagementV1GetListRequest" />
+      <wsdl:output message="tns:catalogProductAttributeMediaGalleryManagementV1GetListResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="catalogProductAttributeMediaGalleryManagementV1Binding" type="tns:catalogProductAttributeMediaGalleryManagementV1PortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Get">
+      <soap12:operation soapAction="catalogProductAttributeMediaGalleryManagementV1Get" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Create">
+      <soap12:operation soapAction="catalogProductAttributeMediaGalleryManagementV1Create" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Update">
+      <soap12:operation soapAction="catalogProductAttributeMediaGalleryManagementV1Update" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1Remove">
+      <soap12:operation soapAction="catalogProductAttributeMediaGalleryManagementV1Remove" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogProductAttributeMediaGalleryManagementV1GetList">
+      <soap12:operation soapAction="catalogProductAttributeMediaGalleryManagementV1GetList" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="catalogProductAttributeMediaGalleryManagementV1Service">
+    <wsdl:port name="catalogProductAttributeMediaGalleryManagementV1Port" binding="tns:catalogProductAttributeMediaGalleryManagementV1Binding">
+      <soap12:address location="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProductAttributeMediaGalleryManagementV1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
