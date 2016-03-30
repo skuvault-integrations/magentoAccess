@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
@@ -24,14 +25,23 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Id = int.TryParse( id, out temp ) ? temp : 0;
 		}
 
-		public int Id { get; set; }
-		public int ParentId { get; set; }
-		public int Level { get; set; }
-		public string Name { get; set; }
+		public Category( Models.GetProducts.Category category )
+		{
+			var categoryDeepClone = category.DeepClone();
+			this.Id = categoryDeepClone.Id;
+			this.ParentId = categoryDeepClone.ParentId;
+			this.Level = categoryDeepClone.Level;
+			this.Name = categoryDeepClone.Name;
+			this.IsActive = categoryDeepClone.IsActive;
+			this.Childrens = categoryDeepClone.Childrens.Select( x => new Category( x ) ).ToList();
+		}
 
-		public int IsActive { get; set; }
-
-		public List< Category > Childrens { get; set; }
+		public int Id{ get; set; }
+		public int ParentId{ get; set; }
+		public int Level{ get; set; }
+		public string Name{ get; set; }
+		public int IsActive{ get; set; }
+		public List< Category > Childrens{ get; set; }
 
 		public List< Category > Flatten()
 		{
@@ -68,6 +78,20 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			}
 
 			return null;
+		}
+
+		public Models.GetProducts.Category ToCategory()
+		{
+			var result = new Models.GetProducts.Category( this.Id.ToString() )
+			{
+				ParentId = this.ParentId,
+				Level = this.Level,
+				Name = this.Name,
+				IsActive = this.IsActive,
+				Childrens = this.Childrens.Select( z => z.ToCategory() ).ToList()
+			};
+
+			return result;
 		}
 	}
 }

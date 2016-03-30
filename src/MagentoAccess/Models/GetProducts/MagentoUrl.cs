@@ -11,8 +11,15 @@ namespace MagentoAccess.Models.GetProducts
 			Type = ( MagentoUrlType )magentoImage.ImageType;
 		}
 
-		public string Url { get; set; }
-		public MagentoUrlType Type { get; set; }
+		public string Url{ get; set; }
+
+		public MagentoUrlType Type{ get; set; }
+
+		internal MagentoUrl( string magentoImageUrl, MagentoUrlType magentoUrlType )
+		{
+			this.Url = magentoImageUrl;
+			this.Type = magentoUrlType;
+		}
 	}
 
 	[ Flags ]

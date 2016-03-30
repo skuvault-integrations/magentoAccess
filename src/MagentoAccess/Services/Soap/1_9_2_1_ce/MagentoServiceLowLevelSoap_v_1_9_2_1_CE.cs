@@ -32,6 +32,8 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		public string BaseMagentoUrl { get; set; }
 
+		protected IMagento1XxxHelper Magento1xxxHelper{get;set;}
+
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
 		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient _magentoSoapService;
@@ -39,6 +41,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		protected string _sessionId;
 
 		protected DateTime _sessionIdCreatedAt;
+
 		private readonly CustomBinding _customBinding;
 
 		protected const int SessionIdLifeTime = 3590;
@@ -104,6 +107,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			_customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+			this.Magento1xxxHelper = new Magento1xxxHelper(this);
 		}
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
@@ -482,6 +486,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetManufacturerAsync()" ), exc );
 			}
+		}
+
+		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+		{
+			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )

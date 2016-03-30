@@ -206,6 +206,11 @@ namespace MagentoAccessTests.Misc
 			{
 				return null;
 			}
+
+			public Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+			{
+				return null;
+			}
 		}
 	}
 }
