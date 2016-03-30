@@ -786,10 +786,12 @@ namespace MagentoAccess
 			var productAttributes = magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var resultProductslist = resultProducts as IList< Product > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
+
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, attributes, true ).ConfigureAwait( false ) );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
 			var categoriesTreeResponseTask = magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
 			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
+
 			var productsInfo = productsInfoTask.Result;
 			var mediaListResponses = mediaListResponsesTask.Result;
 			var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
