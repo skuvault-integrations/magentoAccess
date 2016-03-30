@@ -367,7 +367,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var res = new catalogProductInfoResponse();
+				var res = new catalogProductRepositoryV1GetResponse1();
 				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
 				await ActionPolicies.GetAsync.Do( async () =>
@@ -380,15 +380,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient(this.BaseMagentoUrl);
 
-					var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
+					// we don't need them, since Magento 2.0 returns all attributes
+					//var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						var qwe = new CatalogProductRepositoryV1GetRequest();
-						res = await privateClient.catalogProductRepositoryV1GetAsync( qwe).ConfigureAwait(false);
+						var catalogProductRepositoryV1GetRequest = new CatalogProductRepositoryV1GetRequest() { sku = skusOrId };
+						res = await privateClient.catalogProductRepositoryV1GetAsync( catalogProductRepositoryV1GetRequest ).ConfigureAwait(false);
 					}
-					//res = await privateClient.catalogProductRepositoryV1GetAsync( skusOrId, "0", attributes, idPassed ? "1" : "0").ConfigureAwait(false);
-						res = null; //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductInfoResponse( res );
