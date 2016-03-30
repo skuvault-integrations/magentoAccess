@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 
 namespace MagentoAccess.Models.Services.Soap.GetProductInfo
@@ -36,6 +39,23 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 
 			if( catalogProductInfoResponse.result.additional_attributes != null && catalogProductInfoResponse.result.additional_attributes.Any() )
 				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
+		}
+
+		public CatalogProductInfoResponse( catalogProductRepositoryV1GetResponse1 catalogProductInfoResponse )
+		{
+			this.ShortDescription = string.Empty;
+			this.Price = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.price.ToString( CultureInfo.InvariantCulture );
+			this.Weight = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.weight.ToString( CultureInfo.InvariantCulture );
+			this.ProductId = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.id.ToString( CultureInfo.InvariantCulture );
+
+			if( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes != null
+			    && catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.Any() )
+			{
+				this.Description = ( string )( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, "description", StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
+				this.SpecialPrice = ( string )( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.FirstOrDefault( x => x.attributeCode.Equals( "special_price", StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
+				this.CategoryIds = ( string[] )( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.FirstOrDefault( x => x.attributeCode.Equals( "category_ids", StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
+				this.Attributes = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.Select( x => new ProductAttribute( x.attributeCode, x.value.ToString() ) ).ToList();
+			}
 		}
 
 		private string GetAttributeValue( string sttributeName )

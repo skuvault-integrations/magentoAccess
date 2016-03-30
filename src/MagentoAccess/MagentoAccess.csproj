@@ -126,6 +126,9 @@
     <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\ProductAttributeMediaList.cs" />
     <Compile Include="Models\Services\Soap\GetProductInfo\CatalogProductInfoResponse.cs" />
     <Compile Include="Models\Services\Soap\GetProductInfo\ProductAttribute.cs" />
+    <Compile Include="Models\Services\Soap\GetProducts\Category.cs" />
+    <Compile Include="Models\Services\Soap\GetProducts\MagentoUrl.cs" />
+    <Compile Include="Models\Services\Soap\GetProducts\ProductDetails.cs" />
     <Compile Include="Models\Services\Soap\GetStockItems\InventoryStockItemListResponse.cs" />
     <Compile Include="Models\Services\Soap\GetMagentoInfo\GetMagentoInfoResponse.cs" />
     <Compile Include="Models\Services\Soap\GetOrders\GetOrdersResponse.cs" />

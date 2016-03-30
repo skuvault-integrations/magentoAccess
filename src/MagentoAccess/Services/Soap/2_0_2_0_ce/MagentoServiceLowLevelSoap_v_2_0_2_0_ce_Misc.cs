@@ -112,12 +112,12 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return magentoSoapService;
 		}
 
-		private catalogProductAttributeMediaGalleryManagementV1PortTypeClient CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient(string baseMagentoUrl)
+		private catalogProductAttributeMediaGalleryManagementV1PortTypeClient CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl(trimTailsSlash: true);
-			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient(this._customBinding, new EndpointAddress(endPoint));
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl( trimTailsSlash : true );
+			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior() { AccessToken = this.ApiKey });
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
 
 			return magentoSoapService;
 		}
