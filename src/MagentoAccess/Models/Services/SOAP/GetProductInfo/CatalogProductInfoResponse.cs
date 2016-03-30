@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Xml;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 
@@ -43,19 +44,68 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 
 		public CatalogProductInfoResponse( catalogProductRepositoryV1GetResponse1 catalogProductInfoResponse )
 		{
-			this.ShortDescription = string.Empty;
-			this.Price = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.price.ToString( CultureInfo.InvariantCulture );
-			this.Weight = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.weight.ToString( CultureInfo.InvariantCulture );
-			this.ProductId = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.id.ToString( CultureInfo.InvariantCulture );
+			if( catalogProductInfoResponse == null
+			    || catalogProductInfoResponse.catalogProductRepositoryV1GetResponse == null
+			    || catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result == null )
+				return;
 
-			if( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes != null
-			    && catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.Any() )
+			var catalogDataProductInterface = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result;
+
+			this.ShortDescription = string.Empty;
+			this.Price = catalogDataProductInterface.price.ToString( CultureInfo.InvariantCulture );
+			this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
+			this.ProductId = catalogDataProductInterface.id.ToString( CultureInfo.InvariantCulture );
+
+			if( catalogDataProductInterface.customAttributes != null
+			    && catalogDataProductInterface.customAttributes.Any() )
 			{
-				this.Description = ( string )( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, "description", StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
-				this.SpecialPrice = ( string )( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.FirstOrDefault( x => x.attributeCode.Equals( "special_price", StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
-				this.CategoryIds = ( string[] )( catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.FirstOrDefault( x => x.attributeCode.Equals( "category_ids", StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
-				this.Attributes = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result.customAttributes.Select( x => new ProductAttribute( x.attributeCode, x.value.ToString() ) ).ToList();
+				this.Description = GetSimpleStringCustomAttribute( catalogDataProductInterface, "description" );
+				this.SpecialPrice = GetSimpleStringCustomAttribute( catalogDataProductInterface, "special_price" );
+				this.CategoryIds = GetArrayOfStringCustomAttribute( catalogDataProductInterface, "category_ids" );
+
+				this.Attributes = catalogDataProductInterface.customAttributes.Select( x => new ProductAttribute( x.attributeCode, GetCustomAttribute( catalogDataProductInterface, x.attributeCode ) ) ).ToList();
 			}
+		}
+
+		private static string GetCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
+		{
+			var descriptionNodes = ( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
+			if( descriptionNodes is XmlNode[] )
+			{
+				var nodeValue = descriptionNodes as XmlNode[];
+				var temp = new List< string >();
+				if( nodeValue != null && nodeValue.Length > 0 )
+					temp.AddRange(from XmlNode xmlNode in nodeValue where xmlNode != null select xmlNode.InnerText);
+				return string.Join( ",", temp.ToArray() );
+			}
+			else if( descriptionNodes is XmlNode )
+			{
+				var nodeValue = descriptionNodes as XmlNode;
+				string temp = null;
+				if( nodeValue != null )
+					temp = nodeValue.InnerText;
+				return temp;
+			}
+			else
+				return null;
+		}
+
+		private static string[] GetArrayOfStringCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
+		{
+			var descriptionNodes = ( XmlNode[] )( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
+			var temp = new List< string >();
+			if( descriptionNodes != null && descriptionNodes.Length > 0 )
+				temp.AddRange( from XmlNode VARIABLE in descriptionNodes[ 0 ] where descriptionNodes[ 0 ] != null select VARIABLE.InnerText );
+			return temp.ToArray();
+		}
+
+		private static string GetSimpleStringCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
+		{
+			var descriptionNodes = ( ( XmlNode[] )( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value );
+			string temp = null;
+			if( descriptionNodes != null && descriptionNodes.Length > 0 && descriptionNodes[ 0 ] != null )
+				temp = descriptionNodes[ 0 ].InnerText;
+			return temp;
 		}
 
 		private string GetAttributeValue( string sttributeName )

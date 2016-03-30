@@ -99,15 +99,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
-			this._customBinding = CustomBinding( baseMagentoUrl );
+			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
 		}
 
 		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "integrationAdminTokenServiceV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
+			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
+			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
 
 			return magentoSoapService;
 		}
@@ -117,7 +118,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
 
 			return magentoSoapService;
 		}
@@ -127,7 +128,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
 
 			return magentoSoapService;
 		}
@@ -135,9 +136,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		private catalogProductRepositoryV1PortTypeClient CreateMagentoCatalogProductRepositoryServiceClient( string baseMagentoUrl )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductRepositoryV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new catalogProductRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
+			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
+			var magentoSoapService = new catalogProductRepositoryV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
 
 			return magentoSoapService;
 		}
@@ -147,7 +150,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogInventoryStockRegistryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogInventoryStockRegistryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
 
 			return magentoSoapService;
 		}
@@ -159,11 +162,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return task.Result;
 		}
 
-		private static CustomBinding CustomBinding( string baseMagentoUrl )
+		private static CustomBinding CustomBinding( string baseMagentoUrl, MessageVersion messageVersion )
 		{
 			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
 			{
-				MessageVersion = MessageVersion.Soap11,
+				MessageVersion = messageVersion,
 				WriteEncoding = new UTF8Encoding()
 			};
 
@@ -195,7 +198,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
 			{
-				MessageVersion = MessageVersion.Soap11,
+				MessageVersion = messageVersion,
 			};
 
 			ICollection< BindingElement > bindingElements = new List< BindingElement >();
@@ -213,6 +216,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0
+				//TODO: make any call to verificate credentials
 				return new GetMagentoInfoResponse( new magentoInfoResponse() { result = new magentoInfoEntity() { magento_edition = "n/a", magento_version = "2.0.X.X" } } );
 			}
 			catch( Exception exc )

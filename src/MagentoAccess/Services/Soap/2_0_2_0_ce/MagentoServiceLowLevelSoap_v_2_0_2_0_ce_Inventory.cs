@@ -291,7 +291,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productIdOrSku )
 		{
 			try
 			{
@@ -311,17 +311,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( this.BaseMagentoUrl );
 
-					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest()
-					{ sku = "" };
+					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest() { sku = productIdOrSku };
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.catalogProductAttributeMediaGalleryManagementV1GetListAsync( catalogProductAttributeMediaGalleryManagementV1GetListRequest ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new ProductAttributeMediaListResponse( res, productId );
+				return new ProductAttributeMediaListResponse( res, productIdOrSku );
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productId ), exc );
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productIdOrSku ), exc );
 			}
 		}
 
@@ -439,7 +438,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 
-			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductInfoAsync( x.ProductId, attributes, true ).ConfigureAwait( false ) );
+			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductInfoAsync( x.Sku, attributes, false ).ConfigureAwait( false ) );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductAttributeMediaListAsync( x.Sku ).ConfigureAwait( false ) );
 
 			var categoriesTreeResponseTask = this.GetCategoriesTreeAsync();
