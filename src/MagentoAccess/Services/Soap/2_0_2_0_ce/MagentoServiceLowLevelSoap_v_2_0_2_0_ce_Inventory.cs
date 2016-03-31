@@ -347,8 +347,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						//res = await privateClient.catalogCategoryTreeAsync(sessionId, rootCategory, "0").ConfigureAwait(false);
 						res = null; //TODO: Implement
@@ -419,8 +417,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						//res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
