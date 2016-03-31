@@ -90,8 +90,9 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 				Level = this.Level,
 				Name = this.Name,
 				IsActive = this.IsActive,
-				Childrens = this.Childrens.Select( z => z.ToCategory() ).ToList()
 			};
+			if( this.Childrens != null )
+				result.Childrens = this.Childrens.Select( z => z.ToCategory() ).ToList();
 
 			return result;
 		}

@@ -17,7 +17,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Qty = rp.Qty;
 			this.Categories = categories == null ? rp.Categories : categories.ToArray();
 
-			this.Images = images ?? rp.Images;
+			this.Images = ( images ?? rp.Images ).ToArray();
 			decimal temp;
 			this.Price = price.ToDecimalOrDefault( out temp ) ? temp : rp.Price;
 			this.SpecialPrice = specialPrice.ToDecimalOrDefault( out temp ) ? temp : rp.SpecialPrice;
@@ -57,7 +57,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 		public decimal SpecialPrice{ get; set; }
 		public decimal Cost{ get; set; }
 		public string Manufacturer{ get; set; }
-		public IEnumerable< MagentoUrl > Images{ get; set; } //imagento2
+		public MagentoUrl[] Images{ get; set; } //imagento2
 		public string ShortDescription{ get; set; }
 		public string Weight{ get; set; } //imagento2
 		public string EntityId{ get; set; } //id
@@ -77,7 +77,6 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			product.EntityId = productDeepClone.EntityId;
 			product.Categories = productDeepClone.Categories.Select( x => x.ToCategory() ).ToArray();
 			product.Images = productDeepClone.Images.Select( x => x.ToMagentoUrl() ).ToArray();
-			;
 			product.SpecialPrice = productDeepClone.SpecialPrice;
 			product.Weight = productDeepClone.Weight;
 			product.ShortDescription = productDeepClone.ShortDescription;
