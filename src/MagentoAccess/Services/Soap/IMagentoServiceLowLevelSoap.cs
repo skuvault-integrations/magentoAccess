@@ -45,7 +45,8 @@ namespace MagentoAccess.Services.Soap
 		/// <param name="catalogProductInfoRequest"></param>
 		/// <returns></returns>
 		Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest );
-		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId );
+
+		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest );
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );

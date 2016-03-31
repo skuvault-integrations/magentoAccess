@@ -352,7 +352,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest )
 		{
 			try
 			{
@@ -375,14 +375,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, productId, "0", "1" ).ConfigureAwait( false );
+						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, getProductAttributeMediaListRequest.ProductId, "0", "1" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new ProductAttributeMediaListResponse( res, productId );
+				return new ProductAttributeMediaListResponse( res, getProductAttributeMediaListRequest.ProductId, getProductAttributeMediaListRequest.Sku );
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productId ), exc );
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", getProductAttributeMediaListRequest ), exc );
 			}
 		}
 

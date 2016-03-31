@@ -192,7 +192,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId )
+			public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest )
 			{
 				return null;
 			}

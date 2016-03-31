@@ -294,7 +294,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productIdOrSku )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( Models.Services.Soap.GetProductAttributeMediaList.GetProductAttributeMediaListRequest getProductAttributeMediaListRequest )
 		{
 			try
 			{
@@ -314,16 +314,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					    && privateClient.State != CommunicationState.Opening )
 						privateClient = this.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( this.BaseMagentoUrl );
 
-					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest() { sku = productIdOrSku };
+					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest() { sku = getProductAttributeMediaListRequest.Sku };
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.catalogProductAttributeMediaGalleryManagementV1GetListAsync( catalogProductAttributeMediaGalleryManagementV1GetListRequest ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new ProductAttributeMediaListResponse( res, productIdOrSku );
+				return new ProductAttributeMediaListResponse(res, getProductAttributeMediaListRequest.ProductId, getProductAttributeMediaListRequest.Sku);
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", productIdOrSku ), exc );
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", getProductAttributeMediaListRequest ), exc );
 			}
 		}
 
@@ -436,9 +436,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
-			//TODO: extract parameters dto for 2 mthods below
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
-			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductAttributeMediaListAsync( x.Sku ).ConfigureAwait( false ) );
+			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ) ).ConfigureAwait( false ) );
 
 			var categoriesTreeResponseTask = this.GetCategoriesTreeAsync();
 			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
@@ -475,8 +474,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();
 			resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
-			resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();
-			resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();
+			//resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();//TODO: remove completely
+			//resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();//TODO: implement GetCategories()
 			return resultProducts;
 		}
 	}

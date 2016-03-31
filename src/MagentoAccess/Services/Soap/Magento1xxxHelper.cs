@@ -31,7 +31,7 @@ namespace MagentoAccess.Services.Soap
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
-			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
+			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ) ).ConfigureAwait( false ) );
 			var categoriesTreeResponseTask = this._magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
 			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
 

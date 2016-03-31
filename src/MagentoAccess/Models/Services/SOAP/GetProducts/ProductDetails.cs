@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.Misc;
@@ -5,9 +6,10 @@ using MagentoAccess.Models.GetProducts;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
 {
+	[ Serializable ]
 	internal class ProductDetails
 	{
-		public ProductDetails(ProductDetails rp, IEnumerable<MagentoUrl> images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable<Category> categories = null)
+		public ProductDetails( ProductDetails rp, IEnumerable< MagentoUrl > images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null )
 		{
 			this.EntityId = rp.EntityId;
 			this.Sku = rp.Sku;
@@ -17,8 +19,8 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 
 			this.Images = images ?? rp.Images;
 			decimal temp;
-			this.Price = price.ToDecimalOrDefault(out temp) ? temp : rp.Price;
-			this.SpecialPrice = specialPrice.ToDecimalOrDefault(out temp) ? temp : rp.SpecialPrice;
+			this.Price = price.ToDecimalOrDefault( out temp ) ? temp : rp.Price;
+			this.SpecialPrice = specialPrice.ToDecimalOrDefault( out temp ) ? temp : rp.SpecialPrice;
 			this.Description = description ?? rp.Description;
 			this.ProductId = rp.ProductId;
 			this.Weight = weight ?? rp.Weight;
@@ -51,21 +53,21 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Upc = productDeepClone.Upc;
 		}
 
-		public string Upc { get; set; }
-		public decimal SpecialPrice { get; set; }
-		public decimal Cost { get; set; }
-		public string Manufacturer { get; set; }
-		public IEnumerable<MagentoUrl> Images { get; set; }//imagento2
-		public string ShortDescription { get; set; }
-		public string Weight { get; set; }//imagento2
-		public string EntityId { get; set; }  //id
-		public string Sku { get; set; }//imagento2
-		public decimal Price { get; set; }//imagento2
-		public string Name { get; set; }//imagento2
-		public string Description { get; set; }
-		public string Qty { get; set; }
-		public string ProductId { get; set; }   //id
-		public Category[] Categories { get; set; } //category_ids have many
+		public string Upc{ get; set; }
+		public decimal SpecialPrice{ get; set; }
+		public decimal Cost{ get; set; }
+		public string Manufacturer{ get; set; }
+		public IEnumerable< MagentoUrl > Images{ get; set; } //imagento2
+		public string ShortDescription{ get; set; }
+		public string Weight{ get; set; } //imagento2
+		public string EntityId{ get; set; } //id
+		public string Sku{ get; set; } //imagento2
+		public decimal Price{ get; set; } //imagento2
+		public string Name{ get; set; } //imagento2
+		public string Description{ get; set; }
+		public string Qty{ get; set; }
+		public string ProductId{ get; set; } //id
+		public Category[] Categories{ get; set; } //category_ids have many
 
 		public Product ToProduct()
 		{

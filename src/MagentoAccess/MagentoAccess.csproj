@@ -185,6 +185,7 @@
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
     <Compile Include="Models\GetProducts\CatalogProductInfoRequest.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\ChannelBehaviour\ClientMessageInspector.cs" />
+    <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\GetProductAttributeMediaListRequest.cs" />
     <Compile Include="Services\Soap\IMagento1XxxHelper.cs" />
     <Compile Include="Services\Soap\Magento1xxxHelper.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\ChannelBehaviour\CustomBehavior.cs" />

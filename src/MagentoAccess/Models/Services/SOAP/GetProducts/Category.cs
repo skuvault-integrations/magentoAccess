@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.Misc;
@@ -5,6 +6,7 @@ using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
 {
+	[ Serializable ]
 	public class Category
 	{
 		internal Category( CategoryNode value )

@@ -3,6 +3,7 @@ using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
 {
+	[ Serializable ]
 	internal class MagentoUrl
 	{
 		internal MagentoUrl( MagentoImage magentoImage )

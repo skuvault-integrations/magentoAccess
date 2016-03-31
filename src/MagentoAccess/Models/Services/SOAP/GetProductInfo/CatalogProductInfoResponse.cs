@@ -103,8 +103,8 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 		{
 			var descriptionNodes = ( ( XmlNode[] )( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value );
 			string temp = null;
-			if( descriptionNodes != null && descriptionNodes.Length > 0 && descriptionNodes[ 0 ] != null )
-				temp = descriptionNodes[ 0 ].InnerText;
+			if( descriptionNodes != null && descriptionNodes.Length > 0 )
+				temp = string.Join( "", descriptionNodes.Where( x => x != null ).Select( x => x.InnerText ) );
 			return temp;
 		}
 

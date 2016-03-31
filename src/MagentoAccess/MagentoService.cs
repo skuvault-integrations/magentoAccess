@@ -732,7 +732,7 @@ namespace MagentoAccess
 			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null ) ).ToList();
 
 			if( includeDetails )
-				resultProducts = ( await magentoServiceLowLevelSoap.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Select( y => y.ToProduct() );
+				resultProducts = ( await magentoServiceLowLevelSoap.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
 			return resultProducts;
 		}
 
