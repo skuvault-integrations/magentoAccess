@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using Netco.Extensions;
+using Category = MagentoAccess.Models.Services.Soap.GetProducts.Category;
+using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;
 
 namespace MagentoAccess.Services.Soap
 {
@@ -27,7 +30,7 @@ namespace MagentoAccess.Services.Soap
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 
-			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductInfoAsync( x.ProductId, attributes, true ).ConfigureAwait( false ) );
+			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( x.ProductId ).ConfigureAwait( false ) );
 			var categoriesTreeResponseTask = this._magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
 			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );

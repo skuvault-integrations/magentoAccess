@@ -9,6 +9,7 @@ using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
@@ -18,6 +19,8 @@ using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using Netco.Extensions;
 using CatalogInventoryDataStockItemInterface = MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryDataStockItemInterface;
+using Category = MagentoAccess.Models.Services.Soap.GetProducts.Category;
+using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
@@ -359,7 +362,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, string[] custAttributes, bool idPassed = false )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest )
 		{
 			try
 			{
@@ -377,15 +380,15 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient(this.BaseMagentoUrl);
+						privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
 					// we don't need them, since Magento 2.0 returns all attributes
 					//var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						var catalogProductRepositoryV1GetRequest = new CatalogProductRepositoryV1GetRequest() { sku = skusOrId };
-						res = await privateClient.catalogProductRepositoryV1GetAsync( catalogProductRepositoryV1GetRequest ).ConfigureAwait(false);
+						var catalogProductRepositoryV1GetRequest = new CatalogProductRepositoryV1GetRequest() { sku = catalogProductInfoRequest.Sku };
+						res = await privateClient.catalogProductRepositoryV1GetAsync( catalogProductRepositoryV1GetRequest ).ConfigureAwait( false );
 					}
 				} ).ConfigureAwait( false );
 
@@ -393,7 +396,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductInfoAsync({0})", skusOrId ), exc );
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductInfoAsync({0})", catalogProductInfoRequest.ToJson() ), exc );
 			}
 		}
 
@@ -437,8 +440,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
-
-			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductInfoAsync( x.Sku, attributes, false ).ConfigureAwait( false ) );
+			//TODO: extract parameters dto for 2 mthods below
+			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductAttributeMediaListAsync( x.Sku ).ConfigureAwait( false ) );
 
 			var categoriesTreeResponseTask = this.GetCategoriesTreeAsync();
@@ -481,5 +484,4 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return resultProducts;
 		}
 	}
-
 }

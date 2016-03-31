@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
@@ -41,11 +42,9 @@ namespace MagentoAccess.Services.Soap
 		/// <summary>
 		/// Provides additional information about product. (Description,ShortDescription,Price,SpecialPrice,Weight,ProductId,CategoryIds)
 		/// </summary>
-		/// <param name="skusOrId"></param>
-		/// <param name="custAttributes"></param>
-		/// <param name="idPassed"></param>
+		/// <param name="catalogProductInfoRequest"></param>
 		/// <returns></returns>
-		Task< CatalogProductInfoResponse > GetProductInfoAsync( string skusOrId, string[] custAttributes, bool idPassed = false );
+		Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest );
 		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( string productId );
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
