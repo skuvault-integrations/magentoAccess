@@ -176,6 +176,25 @@ namespace MagentoAccessTestsIntegration
 
 		[ Test ]
 		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void PingSoapAsync_IncorrectUrl_ThrowException( MagentoServiceSoapCredentials credentials )
+		{
+			//------------ Arrange
+
+			//------------ Act
+			Action act = () =>
+			{
+				var service = this.CreateMagentoService( "incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", "http://w.com", "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+
+				var magentoInfoAsyncTask = service.PingSoapAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			//------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+
+		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
