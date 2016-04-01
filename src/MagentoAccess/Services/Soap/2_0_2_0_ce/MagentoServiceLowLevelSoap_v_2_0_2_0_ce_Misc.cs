@@ -224,17 +224,18 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return customBinding;
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
 		{
 			try
 			{
-				// Magento doesn't provide method to receive magento vesrion, since Magento2.0
+				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
 				var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
-				var magentoVersion = ( modules != null && modules.Modules != null && modules.Modules.Count > 0 ) ? "2.0.X.X" : "n/a";
-				return new GetMagentoInfoResponse( new magentoInfoResponse() { result = new magentoInfoEntity() { magento_edition = "n/a", magento_version = magentoVersion } } );
+				return modules != null && modules.Modules != null && modules.Modules.Count > 0 ? new GetMagentoInfoResponse( "2.0.X.X", "CE" ) : null;
 			}
 			catch( Exception exc )
 			{
+				if( suppressException )
+					return null;
 				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
 			}
 		}

@@ -214,7 +214,7 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Act
 
-			var productsAsync = magentoInternalService.GetMagentoInfoAsync();
+			var productsAsync = magentoInternalService.GetMagentoInfoAsync( false );
 			productsAsync.Wait();
 
 			//------------ Assert

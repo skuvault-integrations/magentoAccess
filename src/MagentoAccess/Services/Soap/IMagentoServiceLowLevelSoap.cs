@@ -26,7 +26,7 @@ namespace MagentoAccess.Services.Soap
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );
-		Task< GetMagentoInfoResponse > GetMagentoInfoAsync();
+		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException );
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );
 		Task< int > CreateProduct( string storeId, string name, string sku, int isInStock );

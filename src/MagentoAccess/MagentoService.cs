@@ -240,7 +240,7 @@ namespace MagentoAccess
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
-				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync().ConfigureAwait( false );
+				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );

@@ -56,6 +56,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			try
 			{
+				// TODO: repplace < to > , in all other versions too.
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
 
@@ -679,7 +680,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
 		{
 			try
 			{
@@ -709,6 +710,8 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 			catch( Exception exc )
 			{
+				if( suppressException )
+					return null;
 				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
 			}
 		}

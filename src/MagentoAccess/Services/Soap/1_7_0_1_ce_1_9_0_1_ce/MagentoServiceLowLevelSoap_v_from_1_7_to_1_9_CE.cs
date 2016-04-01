@@ -631,7 +631,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
 		{
 			try
 			{
@@ -661,6 +661,8 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
+				if( suppressException )
+					return null;
 				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
 			}
 		}

@@ -18,7 +18,7 @@ namespace MagentoAccessTests.TestEnvironment
 		{
 		}
 
-		public override Task< GetMagentoInfoResponse > GetMagentoInfoAsync()
+		public override Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
 		{
 			throw new Exception();
 		}
