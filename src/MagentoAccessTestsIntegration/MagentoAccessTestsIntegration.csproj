@@ -95,6 +95,7 @@
     <Compile Include="Services\MeagentoServiceLowLevelRestTest.cs" />
     <Compile Include="Services\MeagentoServiceLowLevelSoap_1_9_2_1_ce.cs" />
     <Compile Include="TestEnvironment\BaseTest.cs" />
+    <Compile Include="TestEnvironment\BaseTestSecret.cs" />
     <Compile Include="TestEnvironment\MagentoAccessToken.cs" />
     <Compile Include="TestEnvironment\MagentoConsumerCredentials.cs" />
     <Compile Include="TestEnvironment\MagentoUrls.cs" />

@@ -22,13 +22,13 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
 {
-	internal class BaseTest
+	internal partial class BaseTest
 	{
-		protected TestData _testData;
 		private MagentoConsumerCredentials _consumer;
 		private MagentoUrls _authorityUrls;
 		private MagentoAccessToken _accessToken;
 
+		protected TestData _testData;
 		protected TransmitVerificationCodeDelegate transmitVerificationCode;
 		protected MagentoService _magentoServiceNotAuth;
 		protected MagentoSoapCredentials _soapUserCredentials;
@@ -87,11 +87,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			this.transmitVerificationCode = () => this._testData.TransmitVerification();
 
 			this._magentoLowLevelSoapVFrom17To19CeService = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
-
 			this._magentoServiceLowLevelSoapV11410Ee = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null );
-
 			this._magentoServiceLowLevelRestRestRestRestNotAuth = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
-
 			this._magentoServiceLowLevelRestRestRestRest = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
 
 			//this.CreateProductstems();
@@ -209,16 +206,6 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			var allProductsinMagent = getProductsTask.Result.ToList();
 			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds[ magentoServiceSoapCredentials.StoreUrl ].ContainsKey( int.Parse( x.ProductId ) ) );
 			return allProductsinMagent;
-		}
-
-		internal IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
-		{
-			// Resharper test runner can't process cases loaded runtime
-			//if( _testData == null )
-			//	_testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
-			//var magentoServiceSoapCredentialses = _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
-			yield return new MagentoServiceSoapCredentials() { StoreUrl = "http://127.0.0.1:1234/Magento-2-0-2-0-ce", SoapApiUser = "user", SoapApiKey = "atglbbsuwi1nnxlxpui0t1vkqymtbbku", MagentoVersion = "2.0.2.0" };
-
 		}
 
 		internal class MagentoServiceSoapCredentials

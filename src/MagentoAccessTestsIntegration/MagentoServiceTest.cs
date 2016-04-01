@@ -17,6 +17,24 @@ namespace MagentoAccessTestsIntegration
 	{
 		[ Test ]
 		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void DetermineMagentoVersionAsync_CorrectCredentials_ReceiveStoreVersion( MagentoServiceSoapCredentials credentials )
+		{
+			//------------ Arrange
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+			//------------ Act
+
+			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
+			getOrdersTask.Wait();
+
+			//------------ Assert
+			var pingSoapInfo = getOrdersTask.Result;
+
+			pingSoapInfo.Should().NotBeNull();
+			pingSoapInfo.Edition.Should().BeSameAs( credentials.MagentoVersion );
+		}
+
+		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			try

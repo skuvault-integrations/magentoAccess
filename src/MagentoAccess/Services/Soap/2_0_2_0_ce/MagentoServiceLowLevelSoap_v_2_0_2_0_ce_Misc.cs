@@ -230,7 +230,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
 				var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
-				return modules != null && modules.Modules != null && modules.Modules.Count > 0 ? new GetMagentoInfoResponse( "2.0.X.X", "CE" ) : null;
+				return modules != null && modules.Modules != null && modules.Modules.Count > 0 ? new GetMagentoInfoResponse( "2.0.2.0", "CE" ) : null;
 			}
 			catch( Exception exc )
 			{
