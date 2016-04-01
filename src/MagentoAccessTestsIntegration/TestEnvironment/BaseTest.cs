@@ -10,8 +10,8 @@ using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.DeleteProducts;
+using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
@@ -34,7 +34,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected MagentoSoapCredentials _soapUserCredentials;
 		protected MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE _magentoLowLevelSoapVFrom17To19CeService;
 		protected MagentoServiceLowLevelSoap_v_1_14_1_0_EE _magentoServiceLowLevelSoapV11410Ee;
-		protected ConcurrentDictionary< string,List< MagentoAccess.Models.GetOrders.Order >> _orders;
+		protected ConcurrentDictionary< string, List< Order > > _orders;
 		protected ConcurrentDictionary< string, Dictionary< int, string > > _productsIds;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
 		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
@@ -42,8 +42,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl, string magentoVersionByDefault )
 		{
-			return (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(accessTokenSecret)) ?
-				new MagentoService(new MagentoNonAuthenticatedUserCredentials(
+			return ( string.IsNullOrWhiteSpace( accessToken ) || string.IsNullOrWhiteSpace( accessTokenSecret ) ) ?
+				new MagentoService( new MagentoNonAuthenticatedUserCredentials(
 					consumerKey,
 					consumerSecret,
 					magentoBaseUrl,
@@ -106,8 +106,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected void CreateOrders()
 		{
-			var ordersIds = new List< string >();
-			var testStoresCredentials = GetTestStoresCredentials();
+			var testStoresCredentials = this.GetTestStoresCredentials();
 			Parallel.ForEach( testStoresCredentials, credentials =>
 			{
 				try
@@ -121,19 +120,20 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
 					var creationResult = magentoService.CreateOrderAsync( ordersModels );
 					creationResult.Wait();
-					ordersIds = creationResult.Result.Select(x => x.OrderId).ToList();
-					var ordersTask = magentoService.GetOrdersAsync(ordersIds);
+					var ordersIds = creationResult.Result.Select( x => x.OrderId ).ToList();
+					var ordersTask = magentoService.GetOrdersAsync( ordersIds );
 					ordersTask.Wait();
 
 					if( this._orders == null )
-						this._orders = new ConcurrentDictionary<string, List<MagentoAccess.Models.GetOrders.Order>>();
+						this._orders = new ConcurrentDictionary< string, List< Order > >();
 
-					this._orders[credentials.StoreUrl] = new List<MagentoAccess.Models.GetOrders.Order>();
+					this._orders[ credentials.StoreUrl ] = new List< Order >();
 					var ordersToAdd = ordersTask.Result.ToList().OrderBy( x => x.UpdatedAt );
 					this._orders[ credentials.StoreUrl ].AddRange( ordersToAdd );
 				}
-				catch( Exception exception )
+				catch
 				{
+					// ignored
 				}
 			} );
 		}
@@ -144,7 +144,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			{
 				this._productsIds = new ConcurrentDictionary< string, Dictionary< int, string > >(); // new Dictionary< int, string >();
 
-				var testStoresCredentials = GetTestStoresCredentials();
+				var testStoresCredentials = this.GetTestStoresCredentials();
 
 				Parallel.ForEach( testStoresCredentials, credentials =>
 				{
@@ -165,13 +165,15 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 						this._productsIds[ credentials.StoreUrl ] = new Dictionary< int, string >();
 						this._productsIds[ credentials.StoreUrl ].AddRange( creationResult.Result.ToDictionary( x => x.Result, y => y.Sku ) );
 					}
-					catch( Exception exception )
+					catch
 					{
+						// ignored
 					}
 				} );
 			}
 			catch
 			{
+				// ignored
 			}
 		}
 
@@ -179,11 +181,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		{
 			try
 			{
-				var testStoresCredentials = GetTestStoresCredentials();
+				var testStoresCredentials = this.GetTestStoresCredentials();
 
 				foreach( var credentials in testStoresCredentials )
 				{
-					var productsToRemove = GetOnlyProductsCreatedForThisTests( credentials );
+					var productsToRemove = this.GetOnlyProductsCreatedForThisTests( credentials );
 					var productsToRemoveDeleteProductModels = productsToRemove.Select( p => new DeleteProductModel( "0", 0, p.ProductId, "" ) ).ToList();
 
 					var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
@@ -198,7 +200,6 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			}
 		}
 
-
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceSoapCredentials magentoServiceSoapCredentials )
 		{
 			var magentoService = this.CreateMagentoService( magentoServiceSoapCredentials.SoapApiUser, magentoServiceSoapCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0 );
@@ -210,26 +211,27 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			return allProductsinMagent;
 		}
 
-		internal class MagentoServiceSoapCredentials
-		{
-			public string SoapApiUser { get; set; }
-			public string SoapApiKey { get; set; }
-			public string StoreUrl { get; set; }
-			public string MagentoVersion{ get; set; }
-
-			public override string ToString()
-			{
-				return StoreUrl.ToString();
-			}
-		}
-
 		internal IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
 		{
 			// Resharper test runner can't process cases loaded runtime
 			//if( _testData == null )
 			//	_testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
 			//var magentoServiceSoapCredentialses = _testData._accessTokensFromFile.Zip( _testData._storesUrlsFromFile, ( x, y ) => new MagentoServiceSoapCredentials { SoapApiKey = x.SoapApiKey, SoapApiUser = x.SoapUserName, StoreUrl = y.MagentoBaseUrl } );
-			yield return new MagentoServiceSoapCredentials() { StoreUrl = "http://199.48.164.39:4423/Magento-2-0-2-0-ce", SoapApiUser = "user", SoapApiKey = "vdvm4gi9egyp5arq1914oeqilrlwk1sb", MagentoVersion="2.0.2.0" };
+			yield return new MagentoServiceSoapCredentials() { StoreUrl = "http://127.0.0.1:1234/Magento-2-0-2-0-ce", SoapApiUser = "user", SoapApiKey = "atglbbsuwi1nnxlxpui0t1vkqymtbbku", MagentoVersion = "2.0.2.0" };
+
+		}
+
+		internal class MagentoServiceSoapCredentials
+		{
+			public string SoapApiUser{ get; set; }
+			public string SoapApiKey{ get; set; }
+			public string StoreUrl{ get; set; }
+			public string MagentoVersion{ get; set; }
+
+			public override string ToString()
+			{
+				return this.StoreUrl.ToString();
+			}
 		}
 	}
 }
