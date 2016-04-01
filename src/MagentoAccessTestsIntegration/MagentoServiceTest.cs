@@ -30,7 +30,25 @@ namespace MagentoAccessTestsIntegration
 			var pingSoapInfo = getOrdersTask.Result;
 
 			pingSoapInfo.Should().NotBeNull();
-			pingSoapInfo.Edition.Should().BeSameAs( credentials.MagentoVersion );
+			pingSoapInfo.Version.Should().NotBeNullOrWhiteSpace( credentials.MagentoVersion );
+			pingSoapInfo.SoapWorks.Should().BeTrue();
+		}
+
+		[ Test ]
+		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		public void DetermineMagentoVersionAsync_InCorrectApiKey_ReceiveNull( MagentoServiceSoapCredentials credentials )
+		{
+			//------------ Arrange
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey+"1", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+			//------------ Act
+
+			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
+			getOrdersTask.Wait();
+
+			//------------ Assert
+			var pingSoapInfo = getOrdersTask.Result;
+
+			pingSoapInfo.SoapWorks.Should().BeFalse();
 		}
 
 		[ Test ]
