@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\SvVs2012\skuvault\src\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-	<SkipValidatePackageReferences>true</SkipValidatePackageReferences>
+    <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,15 +38,15 @@
       <HintPath>..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.Core">
-	  <Properties>SkipValidatePackageReferences=true</Properties>
+      <Properties>SkipValidatePackageReferences=true</Properties>
       <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth">
-	  <Properties>SkipValidatePackageReferences=true</Properties>	
+      <Properties>SkipValidatePackageReferences=true</Properties>
       <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="DotNetOpenAuth.OAuth.Consumer">
-	  <Properties>SkipValidatePackageReferences=true</Properties>
+      <Properties>SkipValidatePackageReferences=true</Properties>
       <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
     </Reference>
     <Reference Include="Netco">
@@ -140,6 +140,11 @@
     <Compile Include="Models\Services\Soap\GetProducts\SoapGetProductsResponse.cs" />
     <Compile Include="Models\Services\Soap\PutStockItems\PutStockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -190,6 +195,7 @@
     <Compile Include="Models\GetProducts\CatalogProductInfoRequest.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\ChannelBehaviour\ClientMessageInspector.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\GetProductAttributeMediaListRequest.cs" />
+    <Compile Include="Services\Soap\2_0_2_0_ce\GetBackEndMuduleServiceResponse.cs" />
     <Compile Include="Services\Soap\IMagento1XxxHelper.cs" />
     <Compile Include="Services\Soap\Magento1xxxHelper.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\ChannelBehaviour\CustomBehavior.cs" />
@@ -210,6 +216,13 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE.BackendModuleServiceV1GetModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE.backendModuleServiceV1GetModulesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\MagentoWSDL.wsdl" />
     <None Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1626,6 +1639,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\" />
     <WCFMetadataStorage Include="Service References\Magento2catalogProductRepositoryV1_v_2_0_2_0_CE\" />
@@ -1714,6 +1728,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Magento2backendModuleServiceV1_v_2_0_2_0_CE\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
