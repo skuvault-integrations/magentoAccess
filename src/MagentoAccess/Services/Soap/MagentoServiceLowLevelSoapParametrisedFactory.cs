@@ -21,6 +21,11 @@ namespace MagentoAccess.Services.Soap
 			this._factories = factories;
 		}
 
+		public IEnumerable< KeyValuePair< string, IMagentoServiceLowLevelSoap > > GetAll()
+		{
+			return this._factories.ToList();
+		}
+
 		public IMagentoServiceLowLevelSoap GetMagentoServiceLowLevelSoap( string magentoVersion, bool tryToSelectSuitable, bool returnNullIfNoSuitable )
 		{
 			var factories = this._factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
