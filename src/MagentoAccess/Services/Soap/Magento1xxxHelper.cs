@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
@@ -26,16 +27,17 @@ namespace MagentoAccess.Services.Soap
 
 		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
-			var productAttributes = this._magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
+			var productAttributesTask = this._magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this._magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ) ).ConfigureAwait( false ) );
 			var categoriesTreeResponseTask = this._magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
-			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
+			await Task.WhenAll( productAttributesTask, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
 
 			var productsInfo = productsInfoTask.Result;
+			var productAttributes = ( productAttributesTask.Result == null || productAttributesTask.Result.Attributes == null ) ? new CatalogProductAttributeInfoResponse( new catalogProductAttributeInfoResponse() ) { Attributes = new List< ProductAttributeInfo >() } : productAttributesTask.Result;
 			var mediaListResponses = mediaListResponsesTask.Result;
 			var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
 
@@ -66,8 +68,8 @@ namespace MagentoAccess.Services.Soap
 
 			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();
 			resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
-			resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();
 			resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();
+			resultProducts = FillManufactures( resultProducts, productAttributes ).ToList();
 			return resultProducts;
 		}
 	}
