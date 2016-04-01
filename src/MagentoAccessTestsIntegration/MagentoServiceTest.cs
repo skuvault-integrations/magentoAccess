@@ -159,6 +159,7 @@ namespace MagentoAccessTestsIntegration
 		[ TestCaseSource( "GetTestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiUser_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
+			// can be red for magento 2.0 since user doesn't used in magento2.0 version
 			//------------ Arrange
 
 			//------------ Act
