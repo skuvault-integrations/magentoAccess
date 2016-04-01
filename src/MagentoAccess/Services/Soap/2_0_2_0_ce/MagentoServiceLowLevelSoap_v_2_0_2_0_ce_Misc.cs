@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
@@ -145,6 +146,18 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return magentoSoapService;
 		}
 
+		private backendModuleServiceV1PortTypeClient CreateMagentoBackendModuleServiceV1Client( string baseMagentoUrl )
+		{
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "backendModuleServiceV1" }.BuildUrl( trimTailsSlash : true );
+
+			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
+			var magentoSoapService = new backendModuleServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+
+			return magentoSoapService;
+		}
+
 		private catalogInventoryStockRegistryV1PortTypeClient CreateMagentoCatalogInventoryStockServiceClient( string baseMagentoUrl )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogInventoryStockRegistryV1" }.BuildUrl( trimTailsSlash : true );
@@ -216,10 +229,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0
-				// TODO: replace to anu other method that will cosume few time.
-				var products = await this.GetProductsAsync( 1 ).ConfigureAwait( false );
-				var orders = await this.GetOrdersAsync( DateTime.UtcNow.AddDays( 2 ), DateTime.UtcNow ).ConfigureAwait( false );
-				var magentoVersion = products != null || orders == null ? "2.0.X.X" : "n/a";
+				var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
+				var magentoVersion = ( modules != null && modules.Modules != null && modules.Modules.Count > 0 ) ? "2.0.X.X" : "n/a";
 				return new GetMagentoInfoResponse( new magentoInfoResponse() { result = new magentoInfoEntity() { magento_edition = "n/a", magento_version = magentoVersion } } );
 			}
 			catch( Exception exc )

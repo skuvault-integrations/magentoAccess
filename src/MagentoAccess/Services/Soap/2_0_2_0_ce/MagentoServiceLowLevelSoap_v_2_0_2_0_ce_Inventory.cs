@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
+using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
@@ -251,6 +252,41 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				} while( catalogProductRepositoryV1GetListResponse != null && res.Count < limit && res.Count < catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.totalCount );
 
 				return new SoapGetProductsResponse( res.TakeWhile( ( x, i ) => i < limit ).ToList() );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
+			}
+		}
+
+		private async Task< GetBackEndMuduleServiceResponse > GetBackEndModulesAsync()
+		{
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				GetBackEndMuduleServiceResponse res = null;
+				var privateClient = this.CreateMagentoBackendModuleServiceV1Client( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					var statusChecker = new StatusChecker( maxCheckCount );
+					TimerCallback tcb = statusChecker.CheckStatus;
+
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoBackendModuleServiceV1Client( this.BaseMagentoUrl );
+
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					{
+						var backendModuleServiceV1GetModulesResponse1 = await privateClient.backendModuleServiceV1GetModulesAsync( new BackendModuleServiceV1GetModulesRequest() ).ConfigureAwait( false );
+						res = new GetBackEndMuduleServiceResponse( backendModuleServiceV1GetModulesResponse1 );
+					}
+				} ).ConfigureAwait( false );
+
+				return res;
 			}
 			catch( Exception exc )
 			{
