@@ -16,8 +16,14 @@ namespace MagentoAccess.Models.Services.Soap.GetMagentoInfo
 			this.MagentoVersion = res.result.magento_version;
 		}
 
-		public string MagentoVersion { get; set; }
+		public GetMagentoInfoResponse( string magentoVersion, string magentoEdition )
+		{
+			this.MagentoEdition = magentoEdition;
+			this.MagentoVersion = magentoVersion;
+		}
 
-		public string MagentoEdition { get; set; }
+		public string MagentoVersion{ get; set; }
+
+		public string MagentoEdition{ get; set; }
 	}
 }
