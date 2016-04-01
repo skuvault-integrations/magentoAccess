@@ -216,8 +216,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0
-				//todo: replace to anu other method that will cosume few time.
-				var products = await this.GetProductsAsync().ConfigureAwait( false );
+				// TODO: replace to anu other method that will cosume few time.
+				var products = await this.GetProductsAsync( 1 ).ConfigureAwait( false );
 				var orders = await this.GetOrdersAsync( DateTime.UtcNow.AddDays( 2 ), DateTime.UtcNow ).ConfigureAwait( false );
 				var magentoVersion = products != null || orders == null ? "2.0.X.X" : "n/a";
 				return new GetMagentoInfoResponse( new magentoInfoResponse() { result = new magentoInfoEntity() { magento_edition = "n/a", magento_version = magentoVersion } } );

@@ -199,6 +199,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync()
 		{
+			return await this.GetProductsAsync( int.MaxValue );
+		}
+
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit )
+		{
 			try
 			{
 				const int maxCheckCount = 2;
@@ -243,9 +248,9 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 							currentPage++;
 						}
 					} ).ConfigureAwait( false );
-				} while( catalogProductRepositoryV1GetListResponse != null && res.Count < catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.totalCount );
+				} while( catalogProductRepositoryV1GetListResponse != null && res.Count < limit && res.Count < catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.totalCount );
 
-				return new SoapGetProductsResponse( res );
+				return new SoapGetProductsResponse( res.TakeWhile( ( x, i ) => i < limit ).ToList() );
 			}
 			catch( Exception exc )
 			{
