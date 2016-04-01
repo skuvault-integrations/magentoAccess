@@ -17,6 +17,7 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
+using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
@@ -196,35 +197,6 @@ namespace MagentoAccess
 				magentoAuthenticatedUserCredentials.AccessTokenSecret
 				);
 
-			var MagentoServiceLowLevelSoap_1_7_To_1_9_CE = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE(
-				magentoAuthenticatedUserCredentials.SoapApiUser,
-				magentoAuthenticatedUserCredentials.SoapApiKey,
-				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
-				null
-				);
-
-
-			var MagentoServiceLowLevelSoap_1_14_1_EE = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE(
-				magentoAuthenticatedUserCredentials.SoapApiUser,
-				magentoAuthenticatedUserCredentials.SoapApiKey,
-				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
-				null
-				);
-
-			var MagentoServiceLowLevelSoap_1_9_2_1_CE = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(
-				magentoAuthenticatedUserCredentials.SoapApiUser,
-				magentoAuthenticatedUserCredentials.SoapApiKey,
-				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
-				null
-				);
-
-			var MagentoServiceLowLevelSoap_2_0_2_0_CE = new MagentoServiceLowLevelSoap_v_2_0_2_0_ce(
-				magentoAuthenticatedUserCredentials.SoapApiUser,
-				magentoAuthenticatedUserCredentials.SoapApiKey,
-				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
-				null
-				);
-
 			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
 			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null,
 				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
@@ -232,14 +204,14 @@ namespace MagentoAccess
 				magentoAuthenticatedUserCredentials.SoapApiUser,
 				new Dictionary< string, IMagentoServiceLowLevelSoap >
 				{
-					{ MagentoVersions.M_1_9_2_0, MagentoServiceLowLevelSoap_1_9_2_1_CE },
-					{ MagentoVersions.M_1_9_2_1, MagentoServiceLowLevelSoap_1_9_2_1_CE },
-					{ MagentoVersions.M_1_9_2_2, MagentoServiceLowLevelSoap_1_9_2_1_CE },
-					{ MagentoVersions.M_1_9_0_1, MagentoServiceLowLevelSoap_1_7_To_1_9_CE },
-					{ MagentoVersions.M_1_8_1_0, MagentoServiceLowLevelSoap_1_7_To_1_9_CE },
-					{ MagentoVersions.M_1_7_0_2, MagentoServiceLowLevelSoap_1_7_To_1_9_CE },
-					{ MagentoVersions.M_1_14_1_0, MagentoServiceLowLevelSoap_1_14_1_EE },
-					{ MagentoVersions.M_2_0_2_0, MagentoServiceLowLevelSoap_2_0_2_0_CE },
+					{ MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_1_9_2_1, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_1_9_2_2, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 				}
 				);
 
