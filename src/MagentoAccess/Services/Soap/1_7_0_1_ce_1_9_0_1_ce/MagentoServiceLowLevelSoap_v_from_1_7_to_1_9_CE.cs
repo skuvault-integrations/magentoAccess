@@ -59,31 +59,17 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return this._sessionId;
 
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 120000;
-
-				var res = string.Empty;
-
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				//await ActionPolicies.GetAsync.Do( async () =>
-				//{
-				//	var statusChecker = new StatusChecker(maxCheckCount);
-				//	TimerCallback tcb = statusChecker.CheckStatus;
 
 				if( privateClient.State != CommunicationState.Opened
 				    && privateClient.State != CommunicationState.Created
 				    && privateClient.State != CommunicationState.Opening )
 					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
-				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-				{
-					var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
-					this._sessionIdCreatedAt = DateTime.UtcNow;
-					this._sessionId = loginResponse.result;
-					res = this._sessionId;
-				}
-				//} ).ConfigureAwait( false );
+				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				this._sessionIdCreatedAt = DateTime.UtcNow;
+				this._sessionId = loginResponse.result;
+				var res = this._sessionId;
 
 				return res;
 			}
