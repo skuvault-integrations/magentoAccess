@@ -46,7 +46,10 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 		protected string _sessionId;
 
 		protected DateTime _sessionIdCreatedAt;
+
 		private readonly CustomBinding _customBinding;
+
+		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected const int SessionIdLifeTime = 3590;
 
@@ -59,22 +62,16 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 		{
 			try
 			{
+				this.getSessionIdSemaphore.Wait();
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var sessionId = await this.PullSessionId().ConfigureAwait( false );
 
-				if( privateClient.State != CommunicationState.Opened
-				    && privateClient.State != CommunicationState.Created
-				    && privateClient.State != CommunicationState.Opening )
-					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				this._sessionIdCreatedAt = sessionId.Item2;
+				this._sessionId = sessionId.Item1;
 
-				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
-				this._sessionIdCreatedAt = DateTime.UtcNow;
-				this._sessionId = loginResponse.result;
-				var res = this._sessionId;
-
-				return new GetSessionIdResponse( res, false );
+				return new GetSessionIdResponse( this._sessionId, false );
 				;
 			}
 			catch( Exception exc )
@@ -86,6 +83,10 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 					this.LogTraceGetResponseException( exc );
 					return null;
 				}
+			}
+			finally
+			{
+				this.getSessionIdSemaphore.Release();
 			}
 		}
 
@@ -99,6 +100,14 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			_customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
+			this.PullSessionId = async () =>
+			{
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
+			};
+
+			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
