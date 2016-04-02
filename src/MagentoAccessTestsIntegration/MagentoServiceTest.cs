@@ -30,8 +30,7 @@ namespace MagentoAccessTestsIntegration
 			var pingSoapInfo = getOrdersTask.Result;
 
 			pingSoapInfo.Should().NotBeNull();
-			pingSoapInfo.Version.Should().NotBeNullOrWhiteSpace( credentials.MagentoVersion );
-			pingSoapInfo.SoapWorks.Should().BeTrue();
+			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeTrue();
 		}
 
 		[ Test ]
@@ -48,7 +47,7 @@ namespace MagentoAccessTestsIntegration
 			//------------ Assert
 			var pingSoapInfo = getOrdersTask.Result;
 
-			pingSoapInfo.SoapWorks.Should().BeFalse();
+			pingSoapInfo.Any(x => x.SoapWorks && string.Compare(x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase) == 0).Should().BeFalse();
 		}
 
 		[ Test ]

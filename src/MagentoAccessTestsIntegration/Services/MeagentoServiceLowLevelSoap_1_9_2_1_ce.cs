@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services
 {
 	[ TestFixture ]
-	internal class MeagentoServiceLowLevelSoap_1_9_2_1_ce : BaseTest
+	internal class MeagentoServiceLowLevelSoap_1_9_2_1_ce: BaseTest
 	{
 		protected IMagentoServiceLowLevelSoap CreateMagentoInternalSoapService( MagentoServiceSoapCredentials soapCredentials )
 		{
@@ -25,7 +25,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetOrders_ByDatesStoreContainsOrders_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -63,7 +63,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetOrders_ByIdsStoreContainsOrders_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -100,7 +100,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetProducts_StoreContainsProducts_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -115,7 +115,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetStockItems_StoreContainsStockItems_ReceiveStockItems( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -133,7 +133,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetSessionId_StoreContainsUser_ReceiveSessionId( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -148,7 +148,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetSessionId_IncorrectApiUser_NoExceptionThrowns( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -169,7 +169,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void UpdateInventory_StoreWithItems_ItemsUpdated( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -206,7 +206,7 @@ namespace MagentoAccessTestsIntegration.Services
 		}
 
 		[ Test ]
-		[ TestCaseSource( "GetTestStoresCredentials" ) ]
+		[ TestCaseSource( "GetTestStoresCredentials_1_9_2_1_ce" ) ]
 		public void GetMagentoInfoAsync_StoreExist_StoreVersionRecived( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange

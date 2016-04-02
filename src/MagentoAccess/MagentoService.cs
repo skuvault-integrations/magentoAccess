@@ -233,7 +233,7 @@ namespace MagentoAccess
 		#endregion
 
 		#region ping
-		public async Task< PingSoapInfo > DetermineMagentoVersionAsync( Mark mark = null )
+		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null )
 		{
 			if( mark.IsBlank() )
 				mark = Mark.CreateNew();
@@ -243,8 +243,8 @@ namespace MagentoAccess
 
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
 				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, kvp => kvp.Value.GetMagentoInfoAsync( true ) ).ConfigureAwait( false );
-				var workingStore = storesVersions.FirstOrDefault( x => x != null && !string.IsNullOrWhiteSpace( x.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
-				var pingSoapInfo = workingStore != null ? new PingSoapInfo( workingStore.MagentoVersion, workingStore.MagentoEdition, true ) : new PingSoapInfo( null, null, false );
+				var workingStore = storesVersions.Where( x => x != null && !string.IsNullOrWhiteSpace( x.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
+				var pingSoapInfo = workingStore.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfo.ToJson() ) );
 
