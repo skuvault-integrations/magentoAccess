@@ -21,6 +21,7 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
@@ -33,6 +34,8 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public string Store{ get; private set; }
 
 		public string BaseMagentoUrl{ get; set; }
+
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
 
 		protected IMagento1XxxHelper Magento1xxxHelper{ get; set; }
 
@@ -58,6 +61,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this._customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
+			this.PullSessionId = async () =>
+			{
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
+			};
 		}
 
 		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
@@ -67,30 +76,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 120000;
+				var sessionId = await this.PullSessionId().ConfigureAwait( false );
 
-				var res = string.Empty;
+				this._sessionIdCreatedAt = sessionId.Item2;
+				this._sessionId = sessionId.Item1;
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				//await ActionPolicies.GetAsync.Do( async () =>
-				//{
-				//	var statusChecker = new StatusChecker(maxCheckCount);
-				//	TimerCallback tcb = statusChecker.CheckStatus;
-
-				privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
-
-				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-				{
-					var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
-					this._sessionIdCreatedAt = DateTime.UtcNow;
-					this._sessionId = loginResponse.result;
-					res = this._sessionId;
-				}
-				//} ).ConfigureAwait( false );
-
-				return new GetSessionIdResponse( res, false );
+				return new GetSessionIdResponse( this._sessionId, false );
 			}
 			catch( Exception exc )
 			{
