@@ -46,7 +46,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		protected string _sessionId;
 
 		protected DateTime _sessionIdCreatedAt;
+
 		private readonly CustomBinding _customBinding;
+
+		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected const int SessionIdLifeTime = 3590;
 
@@ -59,37 +62,16 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			try
 			{
-				// TODO: repplace < to > , in all other versions too.
+				this.getSessionIdSemaphore.Wait();
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 120000;
+				var sessionId = await this.PullSessionId().ConfigureAwait( false );
 
-				var res = string.Empty;
+				this._sessionIdCreatedAt = sessionId.Item2;
+				this._sessionId = sessionId.Item1;
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				//await ActionPolicies.GetAsync.Do( async () =>
-				//{
-				//	var statusChecker = new StatusChecker(maxCheckCount);
-				//	TimerCallback tcb = statusChecker.CheckStatus;
-
-				if( privateClient.State != CommunicationState.Opened
-				    && privateClient.State != CommunicationState.Created
-				    && privateClient.State != CommunicationState.Opening )
-					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-				{
-					var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
-					this._sessionIdCreatedAt = DateTime.UtcNow;
-					this._sessionId = loginResponse.result;
-					res = this._sessionId;
-				}
-				//} ).ConfigureAwait( false );
-
-				return new GetSessionIdResponse( res, false );
+				return new GetSessionIdResponse( this._sessionId, false );
 			}
 			catch( Exception exc )
 			{
@@ -100,6 +82,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					this.LogTraceGetResponseException( exc );
 					return null;
 				}
+			}
+			finally
+			{
+				this.getSessionIdSemaphore.Release();
 			}
 		}
 
@@ -113,6 +99,13 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			_customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
+			this.PullSessionId = async () =>
+			{
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
+			};
+			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl, bool keepAlive = true )
