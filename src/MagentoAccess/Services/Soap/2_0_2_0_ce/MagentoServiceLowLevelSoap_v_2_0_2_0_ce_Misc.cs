@@ -28,6 +28,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public string BaseMagentoUrl{ get; set; }
 
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
+
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";
 

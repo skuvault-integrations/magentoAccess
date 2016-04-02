@@ -33,9 +33,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 		public string Store { get; private set; }
 
-		public string BaseMagentoUrl { get; set; }
+		public string BaseMagentoUrl{ get; set; }
 
-		protected IMagento1XxxHelper Magento1xxxHelper { get; set; }
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
+
+		protected IMagento1XxxHelper Magento1xxxHelper{ get; set; }
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
