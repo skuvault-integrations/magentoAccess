@@ -43,13 +43,20 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected DateTime _sessionIdCreatedAt;
 
-		private readonly CustomBinding _customBinding;
+		protected readonly CustomBinding _customBinding;
 
 		protected const int SessionIdLifeTime = 3590;
 
-		private void LogTraceGetResponseException( Exception exception )
+		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
-			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
+			this.ApiUser = apiUser;
+			this.ApiKey = apiKey;
+			this.Store = store;
+			this.BaseMagentoUrl = baseMagentoUrl;
+
+			this._customBinding = CustomBinding( baseMagentoUrl );
+			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 		}
 
 		public async Task< string > GetSessionId( bool throwException = true )
@@ -94,84 +101,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					return null;
 				}
 			}
-		}
-
-		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
-		{
-			this.ApiUser = apiUser;
-			this.ApiKey = apiKey;
-			this.Store = store;
-			this.BaseMagentoUrl = baseMagentoUrl;
-
-			_customBinding = CustomBinding( baseMagentoUrl );
-			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
-			this.Magento1xxxHelper = new Magento1xxxHelper( this );
-		}
-
-		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
-
-			return magentoSoapService;
-		}
-
-		private async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
-		{
-			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl ) );
-			await Task.WhenAll( task ).ConfigureAwait( false );
-			return task.Result;
-		}
-
-		private static CustomBinding CustomBinding( string baseMagentoUrl )
-		{
-			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
-			{
-				MessageVersion = MessageVersion.Soap11,
-				WriteEncoding = new UTF8Encoding()
-			};
-
-			BindingElement httpTransportBindingElement;
-			if( baseMagentoUrl.StartsWith( "https" ) )
-			{
-				httpTransportBindingElement = new HttpsTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-				};
-			}
-			else
-			{
-				httpTransportBindingElement = new HttpTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-				};
-			}
-
-			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
-			{
-				MessageVersion = MessageVersion.Soap11,
-			};
-
-			ICollection< BindingElement > bindingElements = new List< BindingElement >();
-			var httpBindingElement = httpTransportBindingElement;
-			var textBindingElement = myTextMessageEncodingBindingElement;
-			bindingElements.Add( textBindingElement );
-			bindingElements.Add( httpBindingElement );
-
-			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
-			return customBinding;
 		}
 
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -462,13 +391,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient )
-		{
-			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-			return privateClient;
-		}
-
 		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
@@ -644,7 +566,85 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				);
 		}
 
-		private string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
+		protected void LogTraceGetResponseException(Exception exception)
+		{
+			MagentoLogger.Log().Trace(exception, "[magento] SOAP throw an exception.");
+		}
+
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient(string baseMagentoUrl)
+		{
+			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient(_customBinding, new EndpointAddress(endPoint));
+
+			magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
+
+			return magentoSoapService;
+		}
+
+		protected async Task<Mage_Api_Model_Server_Wsi_HandlerPortTypeClient> CreateMagentoServiceClientAsync(string baseMagentoUrl)
+		{
+			var task = Task.Factory.StartNew(() => CreateMagentoServiceClient(baseMagentoUrl));
+			await Task.WhenAll(task).ConfigureAwait(false);
+			return task.Result;
+		}
+
+		protected static CustomBinding CustomBinding(string baseMagentoUrl)
+		{
+			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
+			{
+				MessageVersion = MessageVersion.Soap11,
+				WriteEncoding = new UTF8Encoding()
+			};
+
+			BindingElement httpTransportBindingElement;
+			if (baseMagentoUrl.StartsWith("https"))
+			{
+				httpTransportBindingElement = new HttpsTransportBindingElement
+				{
+					DecompressionEnabled = false,
+					MaxReceivedMessageSize = 999999999,
+					MaxBufferSize = 999999999,
+					MaxBufferPoolSize = 999999999,
+					KeepAliveEnabled = true,
+					AllowCookies = false,
+				};
+			}
+			else
+			{
+				httpTransportBindingElement = new HttpTransportBindingElement
+				{
+					DecompressionEnabled = false,
+					MaxReceivedMessageSize = 999999999,
+					MaxBufferSize = 999999999,
+					MaxBufferPoolSize = 999999999,
+					KeepAliveEnabled = true,
+					AllowCookies = false,
+				};
+			}
+
+			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement(textMessageEncodingBindingElement, "qwe")
+			{
+				MessageVersion = MessageVersion.Soap11,
+			};
+
+			ICollection<BindingElement> bindingElements = new List<BindingElement>();
+			var httpBindingElement = httpTransportBindingElement;
+			var textBindingElement = myTextMessageEncodingBindingElement;
+			bindingElements.Add(textBindingElement);
+			bindingElements.Add(httpBindingElement);
+
+			var customBinding = new CustomBinding(bindingElements) { ReceiveTimeout = new TimeSpan(0, 2, 30, 0), SendTimeout = new TimeSpan(0, 2, 30, 0), OpenTimeout = new TimeSpan(0, 2, 30, 0), CloseTimeout = new TimeSpan(0, 2, 30, 0), Name = "CustomHttpBinding" };
+			return customBinding;
+		}
+
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient )
+		{
+			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
+				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+			return privateClient;
+		}
+
+		protected string CreateMethodCallInfo(string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [CallerMemberName] string memberName = "", string notes = "")
 		{
 			mark = mark ?? Mark.Blank();
 			var connectionInfo = this.ToJsonSoapInfo();
