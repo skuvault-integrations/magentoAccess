@@ -107,20 +107,20 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
 
 			//------------ Act
-			var onlyProductsCreatedForThisTests = this.GetOnlyProductsCreatedForThisTests( credentials );
+			var onlyProductsCreatedForThisTests = this.GetOnlyProductsCreatedForThisTests(  magentoService );
 			var updateFirstTimeQty = 123;
 			var updateInventoryTask = magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests.ToInventory( x => updateFirstTimeQty ).ToList() );
 			updateInventoryTask.Wait();
 
 			/////
-			var onlyProductsCreatedForThisTests2 = this.GetOnlyProductsCreatedForThisTests( credentials );
+			var onlyProductsCreatedForThisTests2 = this.GetOnlyProductsCreatedForThisTests( magentoService);
 
 			var updateSecondTimeQty = 100500;
 			var updateInventoryTask2 = magentoService.UpdateInventoryAsync( onlyProductsCreatedForThisTests2.ToInventory( x => updateSecondTimeQty ).ToList() );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
-			var onlyProductsCreatedForThisTests3 = this.GetOnlyProductsCreatedForThisTests( credentials );
+			var onlyProductsCreatedForThisTests3 = this.GetOnlyProductsCreatedForThisTests( magentoService);
 
 			onlyProductsCreatedForThisTests2.Should().NotBeNullOrEmpty();
 			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateFirstTimeQty );

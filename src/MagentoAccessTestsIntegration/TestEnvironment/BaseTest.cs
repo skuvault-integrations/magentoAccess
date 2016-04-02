@@ -114,7 +114,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 						ordersModels.Add( new CreateOrderModel() { StoreId = "0", CustomerFirstName = "max", CustomerMail = "qwe@qwe.com", CustomerLastName = "kits", ProductIds = this._productsIds[ credentials.StoreUrl ].Keys.Select( x => x.ToString() ) } );
 					}
 
-					var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
+					var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 					var creationResult = magentoService.CreateOrderAsync( ordersModels );
 					creationResult.Wait();
 					var ordersIds = creationResult.Result.Select( x => x.OrderId ).ToList();
@@ -155,7 +155,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 							var name = string.Format( "TddTestName{0}_{1}", i, tiks );
 							source.Add( new CreateProductModel( "0", sku, name, 1 ) );
 						}
-						var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
+						var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 						var creationResult = magentoService.CreateProductAsync( source );
 
 						creationResult.Wait();
@@ -182,10 +182,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 				foreach( var credentials in testStoresCredentials )
 				{
-					var productsToRemove = this.GetOnlyProductsCreatedForThisTests( credentials );
+					var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+
+					var productsToRemove = this.GetOnlyProductsCreatedForThisTests( magentoService );
 					var productsToRemoveDeleteProductModels = productsToRemove.Select( p => new DeleteProductModel( "0", 0, p.ProductId, "" ) ).ToList();
 
-					var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
 					var deleteres = magentoService.DeleteProductAsync( productsToRemoveDeleteProductModels );
 
 					deleteres.Wait();
@@ -205,7 +206,17 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
 			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => this._productsIds[ magentoServiceSoapCredentials.StoreUrl ].ContainsKey( int.Parse( x.ProductId ) ) );
-			return allProductsinMagent;
+			return onlyProductsCreatedForThisTests;
+		}
+
+		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( IMagentoService service )
+		{
+			var getProductsTask = service.GetProductsAsync();
+			getProductsTask.Wait();
+
+			var allProductsinMagent = getProductsTask.Result.ToList();
+			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => x.Sku.StartsWith( "testsku", StringComparison.InvariantCultureIgnoreCase ) ).TakeWhile( ( x, i ) => i < 5 );
+			return onlyProductsCreatedForThisTests;
 		}
 
 		internal class MagentoServiceSoapCredentials
