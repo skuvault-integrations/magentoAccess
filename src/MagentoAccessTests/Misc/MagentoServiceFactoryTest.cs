@@ -10,6 +10,7 @@ using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
+using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Soap;
@@ -183,7 +184,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< string > GetSessionId( bool throwException = true )
+			public Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 			{
 				return null;
 			}

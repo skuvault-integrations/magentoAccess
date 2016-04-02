@@ -14,6 +14,7 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
+using MagentoAccess.Models.Services.Soap.GetSessionId;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
@@ -45,12 +46,12 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		public async Task< string > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 		{
 			try
 			{
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
-					return this._sessionId;
+					return new GetSessionIdResponse( this._sessionId, true );
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
@@ -79,7 +80,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				}
 				//} ).ConfigureAwait( false );
 
-				return res;
+				return new GetSessionIdResponse( res, false );
 			}
 			catch( Exception exc )
 			{

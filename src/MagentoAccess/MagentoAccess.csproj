@@ -133,6 +133,7 @@
     <Compile Include="Models\Services\Soap\GetProducts\Category.cs" />
     <Compile Include="Models\Services\Soap\GetProducts\MagentoUrl.cs" />
     <Compile Include="Models\Services\Soap\GetProducts\ProductDetails.cs" />
+    <Compile Include="Models\Services\Soap\GetSessionId\GetSessionIdResponse.cs" />
     <Compile Include="Models\Services\Soap\GetStockItems\InventoryStockItemListResponse.cs" />
     <Compile Include="Models\Services\Soap\GetMagentoInfo\GetMagentoInfoResponse.cs" />
     <Compile Include="Models\Services\Soap\GetOrders\GetOrdersResponse.cs" />

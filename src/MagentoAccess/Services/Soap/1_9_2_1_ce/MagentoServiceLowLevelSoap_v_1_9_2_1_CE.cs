@@ -18,6 +18,7 @@ using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
+using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 
@@ -59,12 +60,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 		}
 
-		public async Task< string > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 		{
 			try
 			{
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
-					return this._sessionId;
+					return new GetSessionIdResponse( this._sessionId, true );
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 120000;
@@ -89,7 +90,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				}
 				//} ).ConfigureAwait( false );
 
-				return res;
+				return new GetSessionIdResponse( res, false );
 			}
 			catch( Exception exc )
 			{
@@ -137,7 +138,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+						res = await privateClient.salesOrderListAsync( sessionId.SessionId, filters ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				//crutch for magento 1.7 
@@ -186,7 +187,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderListAsync( sessionId, filters ).ConfigureAwait( false );
+						res = await privateClient.salesOrderListAsync( sessionId.SessionId, filters ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new GetOrdersResponse( res );
@@ -221,7 +222,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductListAsync( sessionId, filters, store ).ConfigureAwait( false );
+						res = await privateClient.catalogProductListAsync( sessionId.SessionId, filters, store ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new SoapGetProductsResponse( res );
@@ -254,7 +255,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogInventoryStockItemListAsync( sessionId, skusArray ).ConfigureAwait( false );
+						res = await privateClient.catalogInventoryStockItemListAsync( sessionId.SessionId, skusArray ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new InventoryStockItemListResponse( res );
@@ -286,7 +287,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId, getProductAttributeMediaListRequest.ProductId, "0", "1" ).ConfigureAwait( false );
+						res = await privateClient.catalogProductAttributeMediaListAsync( sessionId.SessionId, getProductAttributeMediaListRequest.ProductId, "0", "1" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new ProductAttributeMediaListResponse( res, getProductAttributeMediaListRequest.ProductId, getProductAttributeMediaListRequest.Sku );
@@ -317,7 +318,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogCategoryTreeAsync( sessionId, rootCategory, "0" ).ConfigureAwait( false );
+						res = await privateClient.catalogCategoryTreeAsync( sessionId.SessionId, rootCategory, "0" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new GetCategoryTreeResponse( res );
@@ -349,7 +350,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var attributes = new catalogProductRequestAttributes { additional_attributes = request.custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductInfoAsync( sessionId, request.ProductId, "0", attributes, "1" ).ConfigureAwait( false );
+						res = await privateClient.catalogProductInfoAsync( sessionId.SessionId, request.ProductId, "0", attributes, "1" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductInfoResponse( res );
@@ -380,7 +381,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
+						res = await privateClient.catalogProductAttributeInfoAsync( sessionId.SessionId, attribute ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductAttributeInfoResponse( res );
@@ -428,7 +429,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					{
 						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark : markForLog ) );
 
-						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
+						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
 
 						res = temp.result;
 
@@ -474,7 +475,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					{
 						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( productsBriefInfo, markForLog ) );
 
-						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false );
+						var temp = await privateClient.catalogInventoryStockItemUpdateAsync( sessionId.SessionId, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false );
 
 						res = temp.result > 0;
 
@@ -512,7 +513,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderInfoAsync( sessionId, incrementId ).ConfigureAwait( false );
+						res = await privateClient.salesOrderInfoAsync( sessionId.SessionId, incrementId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new OrderInfoResponse( res );
@@ -543,7 +544,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.magentoInfoAsync( sessionId ).ConfigureAwait( false );
+						res = await privateClient.magentoInfoAsync( sessionId.SessionId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new GetMagentoInfoResponse( res );
@@ -669,7 +670,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var res = await this._magentoSoapService.shoppingCartCreateAsync( sessionId, storeid ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartCreateAsync( sessionId.SessionId, storeid ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -685,7 +686,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var res = await this._magentoSoapService.shoppingCartOrderAsync( sessionId, shoppingcartid, store, null ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartOrderAsync( sessionId.SessionId, shoppingcartid, store, null ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -719,7 +720,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					store_id = storeId,
 					group_id = groupId
 				};
-				var res = await this._magentoSoapService.customerCustomerCreateAsync( sessionId, customerCustomerEntityToCreate ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.customerCustomerCreateAsync( sessionId.SessionId, customerCustomerEntityToCreate ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -735,7 +736,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var cutomers = await this._magentoSoapService.customerCustomerListAsync( sessionId, new filters() ).ConfigureAwait( false );
+				var cutomers = await this._magentoSoapService.customerCustomerListAsync( sessionId.SessionId, new filters() ).ConfigureAwait( false );
 
 				var customer = cutomers.result.First( x => x.customer_id == customerId );
 
@@ -756,7 +757,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					website_id = customer.website_id,
 					website_idSpecified = customer.website_idSpecified
 				};
-				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId, shoppingCart, customerShoppingCart, store ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId.SessionId, shoppingCart, customerShoppingCart, store ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -782,7 +783,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					mode = "guest",
 				};
 
-				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId, shoppingCart, customer, store ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartCustomerSetAsync( sessionId.SessionId, shoppingCart, customer, store ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -833,7 +834,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					is_default_billing = 0
 				};
 
-				var res = await this._magentoSoapService.shoppingCartCustomerAddressesAsync( sessionId, shoppingCart, customerAddressEntities, store ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartCustomerAddressesAsync( sessionId.SessionId, shoppingCart, customerAddressEntities, store ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -849,7 +850,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var res = await this._magentoSoapService.customerCustomerDeleteAsync( sessionId, customerId ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.customerCustomerDeleteAsync( sessionId.SessionId, customerId ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -869,7 +870,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 				shoppingCartProductEntities[ 0 ] = new shoppingCartProductEntity { product_id = productId, qty = 3 };
 
-				var res = await this._magentoSoapService.shoppingCartProductAddAsync( sessionId, shoppingCartId, shoppingCartProductEntities, store ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartProductAddAsync( sessionId.SessionId, shoppingCartId, shoppingCartProductEntities, store ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -899,7 +900,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					cc_exp_month = null
 				};
 
-				var res = await this._magentoSoapService.shoppingCartPaymentMethodAsync( sessionId, shoppingCartId, cartPaymentMethodEntity, store ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartPaymentMethodAsync( sessionId.SessionId, shoppingCartId, cartPaymentMethodEntity, store ).ConfigureAwait( false );
 
 				return res.result;
 			}
@@ -915,12 +916,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
-				var res = await this._magentoSoapService.shoppingCartShippingListAsync( sessionId, shoppingCartId, store ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.shoppingCartShippingListAsync( sessionId.SessionId, shoppingCartId, store ).ConfigureAwait( false );
 
 				var shippings = res.result;
 				var shipping = shippings.First();
 
-				var shippingMethodResponse = await this._magentoSoapService.shoppingCartShippingMethodAsync( sessionId, shoppingCartId, shipping.code, store ).ConfigureAwait( false );
+				var shippingMethodResponse = await this._magentoSoapService.shoppingCartShippingMethodAsync( sessionId.SessionId, shoppingCartId, shipping.code, store ).ConfigureAwait( false );
 
 				return shippingMethodResponse.result;
 			}
@@ -935,7 +936,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			try
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId, storeId ).ConfigureAwait( false );
+				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
 
 				var catalogProductCreateEntity = new catalogProductCreateEntity
 				{
@@ -952,7 +953,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 
-				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
 
 				//product id
 				return res.result;
@@ -968,7 +969,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			try
 			{
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-				var res = await this._magentoSoapService.catalogCategoryRemoveProductAsync( sessionId, categoryId, productId, identiferType ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.catalogCategoryRemoveProductAsync( sessionId.SessionId, categoryId, productId, identiferType ).ConfigureAwait( false );
 
 				//product id
 				return res.result;

@@ -10,6 +10,7 @@ using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
+using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 
@@ -38,7 +39,7 @@ namespace MagentoAccess.Services.Soap
 		Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store );
 		Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store );
 		Task< string > CreateOrder( int shoppingcartid, string store );
-		Task< string > GetSessionId( bool throwException = true );
+		Task< GetSessionIdResponse > GetSessionId( bool throwException = true );
 		/// <summary>
 		/// Provides additional information about product. (Description,ShortDescription,Price,SpecialPrice,Weight,ProductId,CategoryIds)
 		/// </summary>
