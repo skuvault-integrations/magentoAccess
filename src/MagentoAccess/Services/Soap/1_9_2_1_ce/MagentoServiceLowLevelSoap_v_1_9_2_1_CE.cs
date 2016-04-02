@@ -49,7 +49,9 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected readonly CustomBinding _customBinding;
 
-		protected const int SessionIdLifeTime = 3590;
+		protected SemaphoreSlim getSessionIdSemaphore;
+
+		protected const int SessionIdLifeTimeMs = 3590;
 
 		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
@@ -67,13 +69,16 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
+
+			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
 
 		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 		{
 			try
 			{
-				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
+				this.getSessionIdSemaphore.Wait();
+				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalMilliseconds < SessionIdLifeTimeMs )
 					return new GetSessionIdResponse( this._sessionId, true );
 
 				var sessionId = await this.PullSessionId().ConfigureAwait( false );
@@ -92,6 +97,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					this.LogTraceGetResponseException( exc );
 					return null;
 				}
+			}
+			finally
+			{
+				this.getSessionIdSemaphore.Release();
 			}
 		}
 
