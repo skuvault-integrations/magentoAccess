@@ -12,7 +12,6 @@ using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
@@ -60,12 +59,12 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				var sessionId = await this.PullSessionId().ConfigureAwait(false);
+				var sessionId = await this.PullSessionId().ConfigureAwait( false );
 
 				this._sessionIdCreatedAt = sessionId.Item2;
 				this._sessionId = sessionId.Item1;
 
-				return new GetSessionIdResponse(this._sessionId, false);
+				return new GetSessionIdResponse( this._sessionId, false );
 			}
 			catch( Exception exc )
 			{
@@ -285,7 +284,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync({0})", storeid), exc);
 			//}
-			return 0;
+			return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
 		public async Task< string > CreateOrder( int shoppingcartid, string store )
@@ -302,7 +301,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
 			//}
-			return "";
+			return await Task.FromResult( "" ).ConfigureAwait( false );
 		}
 
 		public async Task< int > CreateCustomer(
@@ -337,7 +336,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
 			//}
-			return 0;
+			return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store )
@@ -375,7 +374,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
@@ -402,7 +401,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
@@ -454,7 +453,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during GetMagentoInfoAsync()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > DeleteCustomer( int customerId )
@@ -471,7 +470,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during DeleteCustomer()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
@@ -492,7 +491,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during ShoppingCartAddProduct()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
@@ -523,7 +522,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during ShoppingCartAddProduct()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
@@ -545,7 +544,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during ShoppingCartAddProduct()"), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
 		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock )
@@ -579,7 +578,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during CreateProduct({0})", storeId), exc);
 			//}
-			return 0;
+			return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
@@ -596,7 +595,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during DeleteProduct({0})", storeId), exc);
 			//}
-			return false;
+			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 		#endregion
 	}

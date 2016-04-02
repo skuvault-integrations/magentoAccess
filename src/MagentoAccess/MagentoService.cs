@@ -284,7 +284,6 @@ namespace MagentoAccess
 		public async Task< PingRestInfo > PingRestAsync()
 		{
 			var mark = Mark.CreateNew();
-			const string currentMenthodName = "PingRestAsync";
 			try
 			{
 				MagentoLogger.LogTraceStarted( CreateMethodCallInfo( mark : mark ) );

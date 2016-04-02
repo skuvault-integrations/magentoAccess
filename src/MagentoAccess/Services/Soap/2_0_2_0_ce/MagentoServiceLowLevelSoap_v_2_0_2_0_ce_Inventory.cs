@@ -390,7 +390,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						//res = await privateClient.catalogCategoryTreeAsync(sessionId, rootCategory, "0").ConfigureAwait(false);
-						res = null; //TODO: Implement
+						res = await Task.FromResult< catalogCategoryTreeResponse >( null ); //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new GetCategoryTreeResponse( res );
@@ -461,7 +461,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						//res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
-						res = null; //TODO: Implement
+						res = await Task.FromResult< catalogProductAttributeInfoResponse >( null ); //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductAttributeInfoResponse( res );
