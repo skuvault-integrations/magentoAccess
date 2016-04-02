@@ -53,5 +53,7 @@ namespace MagentoAccess
 		TransmitVerificationCodeDelegate TransmitVerificationCode{ get; set; }
 
 		Func< string > AdditionalLogInfo{ get; set; }
+
+		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null );
 	}
 }

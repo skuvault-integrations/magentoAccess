@@ -233,6 +233,40 @@ namespace MagentoAccess
 		#endregion
 
 		#region ping
+		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null )
+		{
+			if( mark.IsBlank() )
+				mark = Mark.CreateNew();
+			try
+			{
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+
+				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false );
+				var soapInfos = await this.DetermineMagentoVersionAsync( mark ).ConfigureAwait( false );
+				var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
+				if( pingSoapInfos.Any() )
+				{
+					var temp = pingSoapInfos.First();
+					if( temp != null )
+					{
+						soapInfo = temp;
+						if( string.IsNullOrWhiteSpace( soapInfo.Version ) )
+							this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( soapInfo.Version, true, false );
+					}
+				}
+
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : soapInfo.ToJson() ) );
+
+				return soapInfo;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+				MagentoLogger.LogTraceException( mexc );
+				throw mexc;
+			}
+		}
+
 		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null )
 		{
 			if( mark.IsBlank() )
