@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
@@ -39,7 +40,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		protected string _sessionId;
 
 		protected DateTime _sessionIdCreatedAt;
+
 		private readonly CustomBinding _customBinding;
+
+		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected const int SessionIdLifeTime = 3590;
 
@@ -52,37 +56,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			try
 			{
+				this.getSessionIdSemaphore.Wait();
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 120000;
+				var sessionId = await this.PullSessionId().ConfigureAwait(false);
 
-				var res = string.Empty;
+				this._sessionIdCreatedAt = sessionId.Item2;
+				this._sessionId = sessionId.Item1;
 
-				var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
-
-				//await ActionPolicies.GetAsync.Do( async () =>
-				//{
-				//	var statusChecker = new StatusChecker(maxCheckCount);
-				//	TimerCallback tcb = statusChecker.CheckStatus;
-
-				if( privateClient.State != CommunicationState.Opened
-				    && privateClient.State != CommunicationState.Created
-				    && privateClient.State != CommunicationState.Opening )
-					privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
-
-				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-				{
-					var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
-					var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
-					this._sessionIdCreatedAt = DateTime.UtcNow;
-					this._sessionId = loginResponse.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse.result;
-					res = this._sessionId;
-				}
-				//} ).ConfigureAwait( false );
-
-				return new GetSessionIdResponse( res, false );
+				return new GetSessionIdResponse(this._sessionId, false);
 			}
 			catch( Exception exc )
 			{
@@ -94,6 +77,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					return null;
 				}
 			}
+			finally
+			{
+				this.getSessionIdSemaphore.Release();
+			}
 		}
 
 		public MagentoServiceLowLevelSoap_v_2_0_2_0_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
@@ -104,6 +91,18 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
+			this.PullSessionId = async () =>
+			{
+				var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
+				var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
+				var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
+				this._sessionIdCreatedAt = DateTime.UtcNow;
+				this._sessionId = loginResponse.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse.result;
+
+				return Tuple.Create( this._sessionId, DateTime.UtcNow );
+			};
+
+			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
 
 		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
