@@ -71,8 +71,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				//	var statusChecker = new StatusChecker(maxCheckCount);
 				//	TimerCallback tcb = statusChecker.CheckStatus;
 
-				if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 				//	using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 				{
@@ -204,8 +203,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -254,8 +252,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -290,8 +287,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -324,8 +320,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -357,8 +352,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -389,8 +383,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -421,8 +414,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 					var attributes = new catalogProductRequestAttributes { additional_attributes = request.custAttributes ?? new string[ 0 ] };
@@ -454,8 +446,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -469,6 +460,13 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetManufacturerAsync()" ), exc );
 			}
+		}
+
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient )
+		{
+			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
+				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+			return privateClient;
 		}
 
 		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
@@ -500,8 +498,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -547,8 +544,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -589,8 +585,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -621,8 +616,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
