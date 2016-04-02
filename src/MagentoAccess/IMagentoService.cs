@@ -30,20 +30,28 @@ namespace MagentoAccess
 
 		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
 
-		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
-
-		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
-		Func< string > AdditionalLogInfo { get; set; }
-
 		Task< PingSoapInfo > PingSoapAsync( Mark mark = null );
 
 		Task< PingRestInfo > PingRestAsync();
+
 		Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory );
+
 		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
+
 		Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models );
+
 		Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models );
+
 		Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds );
+
 		Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products );
+
 		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null );
+
+		MagentoService.SaveAccessToken AfterGettingToken{ get; set; }
+
+		TransmitVerificationCodeDelegate TransmitVerificationCode{ get; set; }
+
+		Func< string > AdditionalLogInfo{ get; set; }
 	}
 }
