@@ -2,6 +2,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.Xml;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 {
@@ -32,6 +33,21 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 				httpRequestMessage.Headers[ "Authorization" ] = "Bearer " + this.AccessToken;
 			else
 				httpRequestMessage.Headers.Add( "Authorization", "Bearer " + this.AccessToken );
+
+
+			using (XmlDictionaryReader reader = request.GetReaderAtBodyContents())
+			{
+				//TODO: correct solution
+				string content = reader.ReadOuterXml();
+				var s = content + "asD";
+				//Other stuff here...                
+			}
+
+
+			//string data = request.GetBody<string>();
+			//var reader = request.GetReaderAtBodyContents();
+			//var newMessage = System.ServiceModel.Channels.Message.CreateMessage(MessageVersion.Default, "newAction", reader);
+			//var xxx = reader.ReadContentAsString();
 
 			return null;
 		}
