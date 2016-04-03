@@ -250,7 +250,7 @@ namespace MagentoAccess
 					if( temp != null )
 					{
 						soapInfo = temp;
-						if( string.IsNullOrWhiteSpace( soapInfo.Version ) )
+						if( !string.IsNullOrWhiteSpace( soapInfo.Version ) )
 							this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( soapInfo.Version, true, false );
 					}
 				}
