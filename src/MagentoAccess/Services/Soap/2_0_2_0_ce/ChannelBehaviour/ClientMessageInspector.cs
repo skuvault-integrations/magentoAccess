@@ -54,7 +54,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 			//	//Other stuff here...                
 			//}
 
-			Modify3(ref request,channel);
+			Modify3(ref request,channel, "Magento-2-0-2-0-ce", "magento-2-0-2-0-ce-2" );
 
 			return null;
 		}
@@ -97,23 +97,23 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 
 		}
 
-
-		private void Modify3(ref Message request, IClientChannel channel)
+		private void Modify3(ref Message request, IClientChannel channel, string magentoCe, string newValue )
 		{
 
 			using (XmlDictionaryReader reader = request.GetReaderAtBodyContents())
 			{
 				string content = reader.ReadOuterXml();
-				var strBuf2 = content.Replace("Magento-2-0-2-0-ce", "magento-2-0-2-0-ce-2");
-				using (var writer2 = this.GenerateStreamFromString(strBuf2))
-				using (var writer = XmlDictionaryWriter.CreateBinaryWriter(writer2))
+				var strBuf2 = content.Replace(magentoCe, newValue);
+				using( var writer2 = this.GenerateStreamFromString( strBuf2 ) )
+				using( var writer = XmlDictionaryWriter.CreateBinaryWriter( writer2 ) )
 				{
 					//request.WriteBody(writer);
 
-					var v = System.Xml.XmlReader.Create(GenerateStreamFromString(strBuf2));
-					Message newMessage = Message.CreateMessage(request.Version, null, v);
-					newMessage.Properties.CopyProperties(request.Properties);
-					newMessage.Headers.CopyHeaderFrom(request, 0);
+					var v = XmlReader.Create( this.GenerateStreamFromString( strBuf2 ) );
+					Message newMessage = Message.CreateMessage( request.Version, null, v );
+					newMessage.Properties.CopyProperties( request.Properties );
+					if( request.Headers != null && request.Headers.Count > 0 )
+						newMessage.Headers.CopyHeaderFrom( request, 0 );
 
 					//var modifiedReply = buffer.CreateMessage(); // need to recreate the message here
 					request = newMessage;
@@ -171,6 +171,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 				// get the content type headers
 				var contentType = prop.Headers[ "Content-Type" ];
 			}
+
+			this.Modify3( ref reply, null,  "magento-2-0-2-0-ce-2","Magento-2-0-2-0-ce" );
 		}
 	}
 }
