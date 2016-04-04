@@ -61,11 +61,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 			{
 				var content = reader.ReadOuterXml();
 				var contentWithChanges = content.Replace( magentoCe, newValue );
-				Message newMessage;
-				using( var xmlReader = XmlReader.Create( this.GenerateStreamFromString( contentWithChanges ) ) )
-				{
-					newMessage = Message.CreateMessage( request.Version, null, xmlReader );
-				}
+				var xmlReader = XmlReader.Create( this.GenerateStreamFromString( contentWithChanges ) );
+				var newMessage = Message.CreateMessage( request.Version, null, xmlReader );
 				newMessage.Properties.CopyProperties( request.Properties );
 				if( request.Headers != null && request.Headers.Count > 0 )
 					newMessage.Headers.CopyHeaderFrom( request, 0 );
