@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -174,7 +174,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryDataStockItemExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -193,7 +193,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryDataStockItemInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -632,7 +632,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockItemBySkuResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -665,7 +665,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockItemBySkuRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -722,7 +722,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1", ConfigurationName="Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistr" +
         "yV1PortType")]
     public interface catalogInventoryStockRegistryV1PortType {
@@ -770,7 +770,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest;
         
@@ -788,7 +788,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySkuResponse;
         
@@ -805,7 +805,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -852,7 +852,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -886,7 +886,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest;
         
@@ -904,7 +904,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse;
         
@@ -921,7 +921,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetLowStockItemsRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1024,7 +1024,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetLowStockItemsResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1057,7 +1057,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusCollectionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1119,7 +1119,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1222,7 +1222,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1241,7 +1241,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockStatusCriteriaInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1334,7 +1334,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class FrameworkCriteriaInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1428,7 +1428,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetLowStockItemsRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest;
         
@@ -1446,7 +1446,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetLowStockItemsResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItemsResponse;
         
@@ -1463,7 +1463,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1524,7 +1524,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
         "ryStockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1558,7 +1558,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest;
         
@@ -1576,7 +1576,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogInvento" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
             "ryStockRegistryV1", Order=0)]
         public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySkuResponse;
         

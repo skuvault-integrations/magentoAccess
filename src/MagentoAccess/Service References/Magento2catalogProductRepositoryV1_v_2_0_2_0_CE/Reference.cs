@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1GetResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -159,7 +159,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -505,7 +505,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -613,7 +613,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class BundleDataOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -787,7 +787,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class BundleDataLinkInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1002,7 +1002,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class BundleDataLinkExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1021,7 +1021,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class BundleDataOptionExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1040,7 +1040,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class DownloadableDataLinkInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1297,7 +1297,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class DownloadableDataFileContentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1358,7 +1358,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class DownloadableDataFileContentExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1377,7 +1377,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class DownloadableDataLinkExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1396,7 +1396,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class DownloadableDataSampleInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1541,7 +1541,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class DownloadableDataSampleExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1560,7 +1560,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogInventoryDataStockItemInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1999,7 +1999,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogInventoryDataStockItemExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2018,7 +2018,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class ConfigurableProductDataOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2206,7 +2206,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class ConfigurableProductDataOptionValueInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2253,7 +2253,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class ConfigurableProductDataOptionValueExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2272,7 +2272,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class ConfigurableProductDataOptionExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2291,7 +2291,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductLinkInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2394,7 +2394,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductLinkExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2441,7 +2441,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductCustomOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2741,7 +2741,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductCustomOptionValuesInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2858,7 +2858,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductCustomOptionExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -2877,7 +2877,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductAttributeMediaGalleryEntryInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3037,7 +3037,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkDataImageContentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3098,7 +3098,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductAttributeMediaGalleryEntryExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3131,7 +3131,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkDataVideoContentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3234,7 +3234,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductTierPriceInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3309,7 +3309,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductTierPriceExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3328,7 +3328,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkAttributeInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3375,7 +3375,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1GetRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3492,7 +3492,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1GetListResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3525,7 +3525,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogDataProductSearchResultsInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3587,7 +3587,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkSearchCriteriaInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3692,7 +3692,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkSearchFilterGroup : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3726,7 +3726,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkFilter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3787,7 +3787,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class FrameworkSortOrder : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3834,7 +3834,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1GetListRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3867,7 +3867,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1DeleteByIdResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3900,7 +3900,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1DeleteByIdRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3933,7 +3933,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1SaveResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -3966,7 +3966,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4014,7 +4014,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1")]
     public partial class CatalogProductRepositoryV1SaveRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4071,7 +4071,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "RepositoryV1", ConfigurationName="Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.catalogProductRepositoryV1PortTyp" +
         "e")]
     public interface catalogProductRepositoryV1PortType {
@@ -4143,7 +4143,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1SaveRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1SaveRequest catalogProductRepositoryV1SaveRequest;
         
@@ -4161,7 +4161,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1SaveResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1SaveResponse catalogProductRepositoryV1SaveResponse;
         
@@ -4179,7 +4179,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1DeleteByIdRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1DeleteByIdRequest catalogProductRepositoryV1DeleteByIdRequest;
         
@@ -4197,7 +4197,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1DeleteByIdResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1DeleteByIdResponse catalogProductRepositoryV1DeleteByIdResponse;
         
@@ -4215,7 +4215,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1GetListRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1GetListRequest catalogProductRepositoryV1GetListRequest;
         
@@ -4233,7 +4233,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1GetListResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1GetListResponse catalogProductRepositoryV1GetListResponse;
         
@@ -4251,7 +4251,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1GetRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1GetRequest catalogProductRepositoryV1GetRequest;
         
@@ -4269,7 +4269,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductRepositoryV1GetResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "RepositoryV1", Order=0)]
         public MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE.CatalogProductRepositoryV1GetResponse catalogProductRepositoryV1GetResponse;
         

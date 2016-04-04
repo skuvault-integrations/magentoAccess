@@ -21,10 +21,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?wsdl&amp;services=catalogInventoryStockRegistryV1" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://hereshouldbeyourmagentostoreurl.com/soap/default?wsdl&amp;services=catalogInventoryStockRegistryV1" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MagentoWSDL.wsdl" MetadataType="Wsdl" ID="31479e4f-5638-48db-b241-17606ddb5320" SourceId="1" SourceUrl="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?wsdl&amp;services=catalogInventoryStockRegistryV1" />
+    <MetadataFile FileName="MagentoWSDL.wsdl" MetadataType="Wsdl" ID="31479e4f-5638-48db-b241-17606ddb5320" SourceId="1" SourceUrl="http://hereshouldbeyourmagentostoreurl.com/soap/default?wsdl&amp;services=catalogInventoryStockRegistryV1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
         "erviceV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
         "erviceV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
         "erviceV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -174,7 +174,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
         "erviceV1")]
     public partial class BackendModuleServiceV1GetModulesResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -208,7 +208,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
         "erviceV1")]
     public partial class BackendModuleServiceV1GetModulesRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -223,7 +223,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
         "erviceV1", ConfigurationName="Magento2backendModuleServiceV1_v_2_0_2_0_CE.backendModuleServiceV1PortType")]
     public interface backendModuleServiceV1PortType {
         
@@ -243,7 +243,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class backendModuleServiceV1GetModulesRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
             "erviceV1", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE.BackendModuleServiceV1GetModulesRequest backendModuleServiceV1GetModulesRequest;
@@ -262,7 +262,7 @@ namespace MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class backendModuleServiceV1GetModulesResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://199.48.164.39:4423/Magento-2-0-2-0-ce/soap/default?services=backendModuleS" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=backendModuleS" +
             "erviceV1", Order=0)]
         public MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE.BackendModuleServiceV1GetModulesResponse backendModuleServiceV1GetModulesResponse;
         
