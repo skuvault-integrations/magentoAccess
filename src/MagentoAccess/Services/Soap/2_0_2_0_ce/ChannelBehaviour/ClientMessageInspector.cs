@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
@@ -9,7 +10,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 {
 	internal class ClientMessageInspector: IClientMessageInspector
 	{
+		private const string StandartNamespaceStub = "hereshouldbeyourmagentostoreurl.com";
 		public string AccessToken;
+		private readonly object lockObject = new object();
+		private string replacedUrl;
 
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
@@ -35,33 +39,34 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 			else
 				httpRequestMessage.Headers.Add( "Authorization", "Bearer " + this.AccessToken );
 
-			// crutch for magento 2.0
-			this.ReplaceInMessageBody( ref request, channel, "Magento-2-0-2-0-ce", "magento-2-0-2-0-ce-2" );
+			//Crutch for magento 2.0
+			var newValue = channel.RemoteAddress.Uri.ToString();
+			var urlWithoutProtocolIndex1 = newValue.IndexOf( "//", StringComparison.Ordinal ) + 2;
+			var urlWithoutProtocolIndex2 = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
+			var storeUrlWithoutProtocol = newValue.Substring( urlWithoutProtocolIndex1, urlWithoutProtocolIndex2 - urlWithoutProtocolIndex1 ).Trim();
+
+			lock( this.lockObject )
+			{
+				if( string.IsNullOrWhiteSpace( this.replacedUrl ) )
+					this.replacedUrl = storeUrlWithoutProtocol;
+			}
+			this.ReplaceInMessageBody( ref request, StandartNamespaceStub, storeUrlWithoutProtocol );
 
 			return null;
 		}
 
-		private void ReplaceInMessageBody( ref Message request, IClientChannel channel, string magentoCe, string newValue )
+		private void ReplaceInMessageBody( ref Message request, string magentoCe, string newValue )
 		{
-			using( XmlDictionaryReader reader = request.GetReaderAtBodyContents() )
+			using( var reader = request.GetReaderAtBodyContents() )
 			{
-				string content = reader.ReadOuterXml();
-				var strBuf2 = content.Replace( magentoCe, newValue );
-				using( var writer2 = this.GenerateStreamFromString( strBuf2 ) )
-				using( var writer = XmlDictionaryWriter.CreateBinaryWriter( writer2 ) )
-				{
-					//request.WriteBody(writer);
-
-					var v = XmlReader.Create( this.GenerateStreamFromString( strBuf2 ) );
-					Message newMessage = Message.CreateMessage( request.Version, null, v );
-					newMessage.Properties.CopyProperties( request.Properties );
-					if( request.Headers != null && request.Headers.Count > 0 )
-						newMessage.Headers.CopyHeaderFrom( request, 0 );
-
-					//var modifiedReply = buffer.CreateMessage(); // need to recreate the message here
-					request = newMessage;
-				}
-				//Other stuff here...                
+				var content = reader.ReadOuterXml();
+				var contentWithChanges = content.Replace( magentoCe, newValue );
+				var xmlReader = XmlReader.Create( this.GenerateStreamFromString( contentWithChanges ) );
+				var newMessage = Message.CreateMessage( request.Version, null, xmlReader );
+				newMessage.Properties.CopyProperties( request.Properties );
+				if( request.Headers != null && request.Headers.Count > 0 )
+					newMessage.Headers.CopyHeaderFrom( request, 0 );
+				request = newMessage;
 			}
 		}
 
@@ -86,7 +91,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 				var contentType = prop.Headers[ "Content-Type" ];
 			}
 
-			this.ReplaceInMessageBody( ref reply, null, "magento-2-0-2-0-ce-2", "Magento-2-0-2-0-ce" );
+			this.ReplaceInMessageBody( ref reply, this.replacedUrl, StandartNamespaceStub );
 		}
 	}
 }

@@ -38,7 +38,7 @@ namespace MagentoAccessTestsIntegration
 		public void DetermineMagentoVersionAsync_InCorrectApiKey_ReceiveNull( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey+"1", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey+"_incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 			//------------ Act
 
 			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
