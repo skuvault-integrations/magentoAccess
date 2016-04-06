@@ -488,17 +488,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), false ).ConfigureAwait( false ) );
 			productsInfoTask.Wait();
-			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ), false ).ConfigureAwait( false ) );
-			mediaListResponsesTask.Wait();
-
+			//var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ), false ).ConfigureAwait( false ) );
+			//mediaListResponsesTask.Wait();
 
 			var categoriesTreeResponseTask = this.GetCategoriesTreeAsync();
 			categoriesTreeResponseTask.Wait();
 			//await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
 
 			var productsInfo = productsInfoTask.Result.Where( x => x.Exc == null );
-			var mediaListResponses = mediaListResponsesTask.Result.Where( x => x.Exc == null );
-			var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
+			//var mediaListResponses = mediaListResponsesTask.Result.Where( x => x.Exc == null );
+			//var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
 
 			Func< IEnumerable< ProductDetails >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< ProductDetails > > FillImageUrls = ( prods, mediaLists ) =>
 				( from rp in prods
@@ -511,7 +510,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				( prods, prodInfos ) => ( from rp in prods
 					join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 					from pair in pairs.DefaultIfEmpty()
-					select pair == null ? rp : new ProductDetails( rp, upc : pair.GetUpcAttributeValue(), manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ) ) );
+					let imageesUrls = ( pair.Attributes ?? new List< ProductAttribute >() ).Where( IsImageUrlAttribute ).Select( x => new MagentoUrl( new MagentoImage( x.Key, this.BaseMagentoUrl + x.Value ) ) ).ToList() // new List< MagentoUrl >()
+					select pair == null ? rp : new ProductDetails( rp, upc : pair.GetUpcAttributeValue(), manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ), images : imageesUrls ) );
 
 			Func< IEnumerable< ProductDetails >, CatalogProductAttributeInfoResponse, IEnumerable< ProductDetails > > FillManufactures =
 				( prods, prodInfos ) => ( from rp in prods
@@ -527,10 +527,18 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					select new ProductDetails( prod, categories : prodCategories ) );
 
 			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();
-			resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
+			//resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
 			//resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();//TODO: remove completely
 			//resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();//TODO: implement GetCategories()
 			return resultProducts;
+		}
+
+		private static bool IsImageUrlAttribute( ProductAttribute x )
+		{
+			return string.Compare( x.Key, "swatch_image", StringComparison.CurrentCultureIgnoreCase ) == 0
+			       || string.Compare( x.Key, "thumbnail", StringComparison.CurrentCultureIgnoreCase ) == 0
+				   || string.Compare(x.Key, "small_image", StringComparison.CurrentCultureIgnoreCase) == 0
+				   || string.Compare(x.Key, "image", StringComparison.CurrentCultureIgnoreCase) == 0;
 		}
 	}
 }
