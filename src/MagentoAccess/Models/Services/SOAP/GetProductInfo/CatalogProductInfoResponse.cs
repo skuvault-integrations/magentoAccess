@@ -8,7 +8,7 @@ using MagentoAccess.MagentoSoapServiceReference;
 
 namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 {
-	internal class CatalogProductInfoResponse
+	internal class CatalogProductInfoResponse: ResponseWithExceptions
 	{
 		public CatalogProductInfoResponse( catalogProductInfoResponse catalogProductInfoResponse )
 		{
@@ -24,9 +24,9 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
 		}
 
-		public string SpecialPrice { get; set; }
+		public string SpecialPrice{ get; set; }
 
-		public List< ProductAttribute > Attributes { get; set; }
+		public List< ProductAttribute > Attributes{ get; set; }
 
 		public CatalogProductInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductInfoResponse catalogProductInfoResponse )
 		{
@@ -52,8 +52,10 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			var catalogDataProductInterface = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result;
 
 			this.ShortDescription = string.Empty;
-			this.Price = catalogDataProductInterface.price.ToString( CultureInfo.InvariantCulture );
-			this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
+			if( !string.IsNullOrWhiteSpace( catalogDataProductInterface.price ) )
+				this.Price = catalogDataProductInterface.price.ToString( CultureInfo.InvariantCulture );
+			if( !string.IsNullOrWhiteSpace( catalogDataProductInterface.weight ) )
+				this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
 			this.ProductId = catalogDataProductInterface.id.ToString( CultureInfo.InvariantCulture );
 
 			if( catalogDataProductInterface.customAttributes != null
@@ -67,6 +69,11 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			}
 		}
 
+		public CatalogProductInfoResponse( Exception catalogProductInfoResponse )
+		{
+			this.Exc = catalogProductInfoResponse;
+		}
+
 		private static string GetCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
 		{
 			var descriptionNodes = ( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
@@ -74,16 +81,14 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			{
 				var nodeValue = descriptionNodes as XmlNode[];
 				var temp = new List< string >();
-				if( nodeValue != null && nodeValue.Length > 0 )
-					temp.AddRange(from XmlNode xmlNode in nodeValue where xmlNode != null select xmlNode.InnerText);
+				if( nodeValue.Length > 0 )
+					temp.AddRange( from XmlNode xmlNode in nodeValue where xmlNode != null select xmlNode.InnerText );
 				return string.Join( ",", temp.ToArray() );
 			}
 			else if( descriptionNodes is XmlNode )
 			{
 				var nodeValue = descriptionNodes as XmlNode;
-				string temp = null;
-				if( nodeValue != null )
-					temp = nodeValue.InnerText;
+				string temp = nodeValue.InnerText;
 				return temp;
 			}
 			else
@@ -92,7 +97,10 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 
 		private static string[] GetArrayOfStringCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
 		{
-			var descriptionNodes = ( XmlNode[] )( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
+			var frameworkAttributeInterfaces = catalogDataProductInterface.customAttributes;
+			var firstOrDefault = frameworkAttributeInterfaces.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) );
+			var frameworkAttributeInterface = firstOrDefault != null ? firstOrDefault : new FrameworkAttributeInterface();
+			var descriptionNodes = frameworkAttributeInterface.value as XmlNode[];
 			var temp = new List< string >();
 			if( descriptionNodes != null && descriptionNodes.Length > 0 )
 				temp.AddRange( from XmlNode VARIABLE in descriptionNodes[ 0 ] where descriptionNodes[ 0 ] != null select VARIABLE.InnerText );
@@ -101,7 +109,8 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 
 		private static string GetSimpleStringCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
 		{
-			var descriptionNodes = ( ( XmlNode[] )( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value );
+			var frameworkAttributeInterface = catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface();
+			var descriptionNodes = frameworkAttributeInterface.value as XmlNode[];
 			string temp = null;
 			if( descriptionNodes != null && descriptionNodes.Length > 0 )
 				temp = string.Join( "", descriptionNodes.Where( x => x != null ).Select( x => x.InnerText ) );
@@ -134,16 +143,16 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			return GetAttributeValue( ProductAttributeCodes.Cost );
 		}
 
-		public string[] CategoryIds { set; get; }
+		public string[] CategoryIds{ set; get; }
 
-		public string ProductId { get; set; }
+		public string ProductId{ get; set; }
 
-		public string Weight { get; set; }
+		public string Weight{ get; set; }
 
-		public string Price { get; set; }
+		public string Price{ get; set; }
 
-		public string ShortDescription { get; set; }
+		public string ShortDescription{ get; set; }
 
-		public string Description { get; set; }
+		public string Description{ get; set; }
 	}
 }
