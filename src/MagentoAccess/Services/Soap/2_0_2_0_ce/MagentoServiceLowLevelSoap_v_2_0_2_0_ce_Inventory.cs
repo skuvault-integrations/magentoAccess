@@ -480,7 +480,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
-			resultProducts = resultProducts.Where( x => x.Sku == "parent-t-shirt-M-Green" );
 			var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			productAttributes.Wait();
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
