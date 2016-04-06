@@ -267,7 +267,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
 		{
 			try
 			{
@@ -329,7 +329,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request, bool throwException = true )
 		{
 			try
 			{

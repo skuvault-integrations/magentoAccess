@@ -40,14 +40,16 @@ namespace MagentoAccess.Services.Soap
 		Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store );
 		Task< string > CreateOrder( int shoppingcartid, string store );
 		Task< GetSessionIdResponse > GetSessionId( bool throwException = true );
+
 		/// <summary>
 		/// Provides additional information about product. (Description,ShortDescription,Price,SpecialPrice,Weight,ProductId,CategoryIds)
 		/// </summary>
 		/// <param name="catalogProductInfoRequest"></param>
+		/// <param name="throwException"></param>
 		/// <returns></returns>
-		Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest );
+		Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, bool throwException = true );
 
-		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest );
+		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true );
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );

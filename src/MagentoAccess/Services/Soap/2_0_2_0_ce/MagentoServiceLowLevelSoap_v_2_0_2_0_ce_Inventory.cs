@@ -335,7 +335,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( Models.Services.Soap.GetProductAttributeMediaList.GetProductAttributeMediaListRequest getProductAttributeMediaListRequest )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
 		{
 			try
 			{
@@ -360,11 +360,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 						res = await privateClient.catalogProductAttributeMediaGalleryManagementV1GetListAsync( catalogProductAttributeMediaGalleryManagementV1GetListRequest ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new ProductAttributeMediaListResponse(res, getProductAttributeMediaListRequest.ProductId, getProductAttributeMediaListRequest.Sku);
+				return new ProductAttributeMediaListResponse( res, getProductAttributeMediaListRequest.ProductId, getProductAttributeMediaListRequest.Sku );
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", getProductAttributeMediaListRequest ), exc );
+				if( throwException )
+					throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", getProductAttributeMediaListRequest ), exc );
+				else
+					return new ProductAttributeMediaListResponse( exc );
 			}
 		}
 
@@ -401,7 +404,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, bool throwException = true )
 		{
 			try
 			{
@@ -435,7 +438,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductInfoAsync({0})", catalogProductInfoRequest.ToJson() ), exc );
+				if( throwException )
+					throw new MagentoSoapException( string.Format( "An error occured during GetProductInfoAsync({0})", catalogProductInfoRequest.ToJson() ), exc );
+				else
+					return new CatalogProductInfoResponse( exc );
 			}
 		}
 
@@ -474,17 +480,25 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
+			resultProducts = resultProducts.Where( x => x.Sku == "parent-t-shirt-M-Green" );
 			var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
+			productAttributes.Wait();
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
-			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
-			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 10, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ) ).ConfigureAwait( false ) );
+			var batchSize = 11;
+
+			var productsInfoTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), false ).ConfigureAwait( false ) );
+			productsInfoTask.Wait();
+			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ), false ).ConfigureAwait( false ) );
+			mediaListResponsesTask.Wait();
+
 
 			var categoriesTreeResponseTask = this.GetCategoriesTreeAsync();
-			await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
+			categoriesTreeResponseTask.Wait();
+			//await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
 
-			var productsInfo = productsInfoTask.Result;
-			var mediaListResponses = mediaListResponsesTask.Result;
+			var productsInfo = productsInfoTask.Result.Where( x => x.Exc == null );
+			var mediaListResponses = mediaListResponsesTask.Result.Where( x => x.Exc == null );
 			var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
 
 			Func< IEnumerable< ProductDetails >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< ProductDetails > > FillImageUrls = ( prods, mediaLists ) =>
