@@ -175,7 +175,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool attributeSetIdFieldSpecified;
         
-        private float priceField;
+        private string priceField;
         
         private bool priceFieldSpecified;
         
@@ -193,7 +193,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string updatedAtField;
         
-        private float weightField;
+        private string weightField;
         
         private bool weightFieldSpecified;
         
@@ -283,7 +283,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public float price {
+        public string price {
             get {
                 return this.priceField;
             }
@@ -391,7 +391,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public float weight {
+        public string weight {
             get {
                 return this.weightField;
             }
