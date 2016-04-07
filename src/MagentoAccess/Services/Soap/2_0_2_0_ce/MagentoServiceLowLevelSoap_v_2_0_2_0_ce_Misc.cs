@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
@@ -127,8 +128,18 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private salesOrderRepositoryV1PortTypeClient CreateMagentoSalesOrderRepositoryServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogCategoryManagementV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
+
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+
+			return magentoSoapService;
+		}
+
+		private catalogCategoryManagementV1PortTypeClient CreateMagentoCategoriesRepositoryServiceClient( string baseMagentoUrl )
+		{
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogCategoryManagementV1" }.BuildUrl( trimTailsSlash : true );
+			var magentoSoapService = new catalogCategoryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
 

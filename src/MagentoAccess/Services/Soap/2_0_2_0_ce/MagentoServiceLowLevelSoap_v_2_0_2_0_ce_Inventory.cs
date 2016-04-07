@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
@@ -378,9 +379,9 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this.CreateMagentoCategoriesRepositoryServiceClient( this.BaseMagentoUrl );
 
-				var res = new catalogCategoryTreeResponse();
+				var res = new catalogCategoryManagementV1GetTreeResponse1();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
@@ -389,11 +390,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					if( privateClient.State != CommunicationState.Opened
 					    && privateClient.State != CommunicationState.Created
 					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+						privateClient = this.CreateMagentoCategoriesRepositoryServiceClient( this.BaseMagentoUrl );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						//res = await privateClient.catalogCategoryTreeAsync(sessionId, rootCategory, "0").ConfigureAwait(false);
-						res = await Task.FromResult< catalogCategoryTreeResponse >( null ); //TODO: Implement
+					{
+						var someRequest = new CatalogCategoryManagementV1GetTreeRequest() { depth = 111, depthSpecified = true, rootCategoryId = ( int )rootCategory.ToDecimalOrDefault(), rootCategoryIdSpecified = true };
+						res = await privateClient.catalogCategoryManagementV1GetTreeAsync( someRequest ).ConfigureAwait( false );
+					}
 				} ).ConfigureAwait( false );
 
 				return new GetCategoryTreeResponse( res );

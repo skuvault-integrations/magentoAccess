@@ -1,4 +1,5 @@
-﻿using MagentoAccess.MagentoSoapServiceReference;
+﻿using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_0_2_0_CE;
+using MagentoAccess.MagentoSoapServiceReference;
 
 namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 {
@@ -20,6 +21,15 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			RootCategory = rootCategory;
 		}
 
-		public CategoryNode RootCategory { get; set; }
+		public GetCategoryTreeResponse( catalogCategoryManagementV1GetTreeResponse1 catalogCategoryTreeResponse )
+		{
+			if( catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.catalogCategoryManagementV1GetTreeResponse == null
+			    || catalogCategoryTreeResponse.catalogCategoryManagementV1GetTreeResponse.result == null )
+				return;
+			var rootCategory = new CategoryNode( catalogCategoryTreeResponse.catalogCategoryManagementV1GetTreeResponse.result );
+			this.RootCategory = rootCategory;
+		}
+
+		public CategoryNode RootCategory{ get; set; }
 	}
 }
