@@ -483,19 +483,24 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
-			var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
-			productAttributes.Wait();
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
-			var batchSize = 11;
+			var batchSize = 10;
+
+			//
+
+			var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
+			productAttributes.Wait();
 
 			var productsInfoTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), false ).ConfigureAwait( false ) );
 			productsInfoTask.Wait();
+
 			//var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ), false ).ConfigureAwait( false ) );
 			//mediaListResponsesTask.Wait();
 
 			var categoriesTreeResponseTask = this.GetCategoriesTreeAsync();
 			categoriesTreeResponseTask.Wait();
+
 			//await Task.WhenAll( productAttributes, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
 
 			var productsInfo = productsInfoTask.Result.Where( x => x.Exc == null );
