@@ -523,10 +523,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					select pair == null ? rp : new ProductDetails( rp, manufacturer : pair.Label ) );
 
 			Func< IEnumerable< ProductDetails >, IEnumerable< Category >, IEnumerable< ProductDetails > > FillProductsDeepestCategory =
-				( prods, categories ) => ( from prod in prods
-					let prodCategories = ( from category in ( prod.Categories ?? Enumerable.Empty< Category >() )
-						join category2 in categories on category.Id equals category2.Id
-						select category2 )
+				( prods, allCategories ) => ( from prod in prods
+					let prodCategories = ( from prodCategory in ( prod.Categories ?? Enumerable.Empty< Category >() )
+						join itemFromAllCategories in allCategories on prodCategory.Id equals itemFromAllCategories.Id
+						select itemFromAllCategories )
 					select new ProductDetails( prod, categories : prodCategories ) );
 
 			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();

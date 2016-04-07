@@ -103,7 +103,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			var descriptionNodes = frameworkAttributeInterface.value as XmlNode[];
 			var temp = new List< string >();
 			if( descriptionNodes != null && descriptionNodes.Length > 0 )
-				temp.AddRange( from XmlNode VARIABLE in descriptionNodes[ 0 ] where descriptionNodes[ 0 ] != null select VARIABLE.InnerText );
+				temp.AddRange( from XmlNode node in descriptionNodes where node != null select node.InnerText );
 			return temp.ToArray();
 		}
 
