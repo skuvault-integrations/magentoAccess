@@ -128,7 +128,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private salesOrderRepositoryV1PortTypeClient CreateMagentoSalesOrderRepositoryServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogCategoryManagementV1" }.BuildUrl( trimTailsSlash : true );
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
