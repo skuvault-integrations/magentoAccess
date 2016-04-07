@@ -532,7 +532,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();
 			//resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
 			//resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();//TODO: remove completely
-			resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();//TODO: implement GetCategories()
+			resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();
 			return resultProducts;
 		}
 
@@ -540,8 +540,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			return string.Compare( x.Key, "swatch_image", StringComparison.CurrentCultureIgnoreCase ) == 0
 			       || string.Compare( x.Key, "thumbnail", StringComparison.CurrentCultureIgnoreCase ) == 0
-				   || string.Compare(x.Key, "small_image", StringComparison.CurrentCultureIgnoreCase) == 0
-				   || string.Compare(x.Key, "image", StringComparison.CurrentCultureIgnoreCase) == 0;
+			       || string.Compare( x.Key, "small_image", StringComparison.CurrentCultureIgnoreCase ) == 0
+			       || string.Compare( x.Key, "image", StringComparison.CurrentCultureIgnoreCase ) == 0;
 		}
 	}
 }
