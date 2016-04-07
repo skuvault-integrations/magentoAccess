@@ -500,7 +500,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			var productsInfo = productsInfoTask.Result.Where( x => x.Exc == null );
 			//var mediaListResponses = mediaListResponsesTask.Result.Where( x => x.Exc == null );
-			//var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
+			var magentoCategoriesList = categoriesTreeResponseTask.Result.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponseTask.Result.RootCategory.Flatten();
 
 			Func< IEnumerable< ProductDetails >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< ProductDetails > > FillImageUrls = ( prods, mediaLists ) =>
 				( from rp in prods
@@ -532,7 +532,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			resultProducts = FillWeightDescriptionShortDescriptionPricev( resultProductslist, productsInfo ).ToList();
 			//resultProducts = FillImageUrls( resultProducts, mediaListResponses ).ToList();
 			//resultProducts = FillManufactures( resultProducts, productAttributes.Result ).ToList();//TODO: remove completely
-			//resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();//TODO: implement GetCategories()
+			resultProducts = FillProductsDeepestCategory( resultProducts, magentoCategoriesList.Select( y => new Category( y ) ).ToList() ).ToList();//TODO: implement GetCategories()
 			return resultProducts;
 		}
 
