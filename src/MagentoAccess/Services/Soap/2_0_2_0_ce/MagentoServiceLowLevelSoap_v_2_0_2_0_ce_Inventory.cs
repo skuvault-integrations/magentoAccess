@@ -487,20 +487,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 			var batchSize = 10;
 
-			//
-
 			//var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			//productAttributes.Wait();
 
 			var productsInfo = await resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), false ).ConfigureAwait( false ) ).ConfigureAwait( false );
-
-			//var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ), false ).ConfigureAwait( false ) );
-			//mediaListResponsesTask.Wait();
-
 			var categoriesTreeResponse = await this.GetCategoriesTreeAsync().ConfigureAwait( false );
 
 			productsInfo = productsInfo.Where( x => x.Exc == null );
-			//var mediaListResponses = mediaListResponsesTask.Result.Where( x => x.Exc == null );
 			var magentoCategoriesList = categoriesTreeResponse.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponse.RootCategory.Flatten();
 
 			Func< IEnumerable< ProductDetails >, IEnumerable< ProductAttributeMediaListResponse >, IEnumerable< ProductDetails > > FillImageUrls = ( prods, mediaLists ) =>
