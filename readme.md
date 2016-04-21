@@ -36,3 +36,51 @@ For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl```
 			var magentoInventory = await magentoService.GetProductsAsync();
 ```
 
+
+**Other methods to Magento**
+
+To work with magento store you should use ```public class MagentoService : IMagentoService```. Here you can see all methods to work with store.
+```C#
+  public interface IMagentoService
+  {
+    MagentoService.SaveAccessToken AfterGettingToken { get; set; }
+
+    TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
+
+    Func<string> AdditionalLogInfo { get; set; }
+
+    Task<IEnumerable<Order>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
+
+    Task<IEnumerable<Order>> GetOrdersAsync();
+
+    Task UpdateInventoryAsync(IEnumerable<Inventory> products);
+
+    Task<IEnumerable<Product>> GetProductsSimpleAsync();
+
+    Task<IEnumerable<Product>> GetProductsAsync(bool includeDetails = false);
+
+    VerificationData RequestVerificationUri();
+
+    void PopulateAccessTokenAndAccessTokenSecret(string verificationCode, string requestToken, string requestTokenSecret);
+
+    Task<PingSoapInfo> PingSoapAsync(Mark mark = null);
+
+    Task<PingRestInfo> PingRestAsync();
+
+    Task UpdateInventoryBySkuAsync(IEnumerable<InventoryBySku> inventory);
+
+    Task<IEnumerable<CreateProductModelResult>> CreateProductAsync(IEnumerable<CreateProductModel> models);
+
+    Task<IEnumerable<DeleteProductModelResult>> DeleteProductAsync(IEnumerable<DeleteProductModel> models);
+
+    Task<IEnumerable<CreateOrderModelResult>> CreateOrderAsync(IEnumerable<CreateOrderModel> models);
+
+    Task<IEnumerable<Order>> GetOrdersAsync(IEnumerable<string> orderIds);
+
+    Task<IEnumerable<Product>> FillProductsDetailsAsync(IEnumerable<Product> products);
+
+    Task<IEnumerable<PingSoapInfo>> DetermineMagentoVersionAsync(Mark mark = null);
+
+    Task<PingSoapInfo> DetermineMagentoVersionAndSetupServiceAsync(Mark mark = null);
+  }
+```
