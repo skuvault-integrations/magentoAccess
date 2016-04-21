@@ -37,7 +37,7 @@ For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl```
 ```
 
 
-**Other methods to Magento**
+**Other methods to work with Magento**
 
 To work with magento store you should use ```public class MagentoService : IMagentoService```. Here you can see all methods to work with store.
 ```C#
