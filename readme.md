@@ -23,7 +23,7 @@ Install the [NuGet package](https://www.nuget.org/packages/MagentoAccess).
 
 **Create service and get products from Magento**
 
-For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl``` will be enough (set other parameters as empty strings). MagentoAccess interacts with store throught SOAP (adding support for REST is in process), WS-I compliance should be turned on.
+For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl``` will be enough (set other parameters as empty strings). MagentoAccess interacts with store through SOAP (adding support for REST is in process), WS-I compliance should be turned on.
 ```C#
 			var servicesFactory = new MagentoFactory();
 			var magentoService = servicesFactory.CreateService(new MagentoAuthenticatedUserCredentials("AccessToken", "AccessTokenSecret", "StoreUrl", "ConsumerSecret", "ConsumerKey", "SoapApiUser", "SoapApiKey"), new MagentoConfig() { EditionByDefault = "ce", VersionByDefault = "2.0.2.0" });
