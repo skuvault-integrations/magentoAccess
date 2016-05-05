@@ -98,6 +98,7 @@
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Test.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Test.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Test.cs" />
+    <Compile Include="Services\UtilityTests.cs" />
     <Compile Include="TestEnvironment\MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub.cs" />
     <Compile Include="TestEnvironment\MagentoServiceLowLevelRestRestStubThrowExceptionStub.cs" />
   </ItemGroup>
