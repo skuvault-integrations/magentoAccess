@@ -35,5 +35,5 @@ _dotTrace*/
 build
 log
 *Credentials*.csv
-#BaseTestSecret.cs
+BaseTestSecret.cs
 
