@@ -15,6 +15,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 	public class MagentoTestCases
 	{
+		/// <summary>
+		/// GetTestStoresCredentials shoud return the same credentials as this method
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable TestStoresCredentials()
 		{
 			yield return new TestCaseData(new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.0", SoapApiKey = "123", SoapApiUser = "MaxKits", StoreUrl = "http://localhost:4423/magento-1-9-2-0-ce" }).SetName("magento-1-9-2-0-ce");
