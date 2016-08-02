@@ -8,12 +8,18 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 	{
 		private IEnumerable<MagentoServiceSoapCredentials> GetTestStoresCredentials()
 		{
-			yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.0", SoapApiKey = "123", SoapApiUser = "MaxKits", StoreUrl = "http://localhost:4423/magento-1-9-2-0-ce" };
+			//yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.0", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-2-0-ce" };
+			//yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.1", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-2-1-ce" };
+			//yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.2", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-2-2-ce" };
+			//yield return new MagentoServiceSoapCredentials() { MagentoVersion = "2.0.2.0", SoapApiKey = "123123", SoapApiUser = "SoapUser", StoreUrl = "http://127.0.0.1:7777/magento-2-0-2-0-ce" };
+			//yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.8.1.0", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-8-1-0-ce" };
+			//yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.9.0.1", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-0-1-ce" };
+			yield return new MagentoServiceSoapCredentials() { MagentoVersion = "1.9.1.0", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-1-0-ce" };
 		}
 	}
 
 
-	public class MagentoTestCases
+	public class GeneralTestCases
 	{
 		/// <summary>
 		/// GetTestStoresCredentials shoud return the same credentials as this method
@@ -23,6 +29,13 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		{
 			get
 			{
+				//yield return new TestCaseData(new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.0", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-2-0-ce" }).SetName("magento-1-9-2-0-ce");
+				//yield return new TestCaseData(new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.1", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-2-1-ce" }).SetName("magento-1-9-2-1-ce");
+				//yield return new TestCaseData(new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.9.2.2", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-2-2-ce" }).SetName("magento-1-9-2-2-ce");
+				//yield return new TestCaseData(new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "2.0.2.0", SoapApiKey = "123123", SoapApiUser = "SoapUser", StoreUrl = "http://127.0.0.1:7777/magento-2-0-2-0-ce" }).SetName("magento-2-0-2-0-ce");
+				//yield return new TestCaseData(new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.8.1.0", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-8-1-0-ce" }).SetName("magento-1-8-1-0-ce");
+				//yield return new TestCaseData( new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.9.0.1", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-0-1-ce" } ).SetName( "magento-1-9-0-1-ce" );
+				yield return new TestCaseData( new BaseTest.MagentoServiceSoapCredentials() { MagentoVersion = "1.9.1.0", SoapApiKey = "123123", SoapApiUser = "ForAutoTestingDoNotChangePass123123", StoreUrl = "http://127.0.0.1:7777/magento-1-9-1-0-ce" } ).SetName( "magento-1-9-0-1-ce" );
 			}
 		}
 	}
