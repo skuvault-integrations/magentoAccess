@@ -509,7 +509,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false, string productType = null )
+		public async Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false, string productType = null, bool excludeProductByType = false )
 		{
 			var mark = Mark.CreateNew();
 			try
@@ -518,7 +518,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
-				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType ).ConfigureAwait( false );
+				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType ).ConfigureAwait( false );
 
 				var resultProductsBriefInfo = resultProducts.ToJson();
 
@@ -616,7 +616,7 @@ namespace MagentoAccess
 					}
 					else
 					{
-						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync().ConfigureAwait( false );
+						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync( ).ConfigureAwait( false );
 						var resultProducts = productsWithSkuUpdatedQtyId.Select( x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() } );
 						await this.UpdateInventoryAsync( resultProducts ).ConfigureAwait( false );
 					}
@@ -733,11 +733,11 @@ namespace MagentoAccess
 			return dates;
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType )
+		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
 			IEnumerable< Product > resultProducts = new List< Product >();
-			var catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType ).ConfigureAwait( false );
+			var catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded ).ConfigureAwait( false );
 
 			if( catalogProductListResponse == null || catalogProductListResponse.Products == null )
 				return resultProducts;

@@ -199,7 +199,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
 		{
 			return await this.GetProductsAsync( int.MaxValue, productType);
 		}

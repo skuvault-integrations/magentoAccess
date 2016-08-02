@@ -282,7 +282,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
 		{
 			Func< bool, Task< catalogProductListResponse > > call = async ( keepAlive ) =>
 			{

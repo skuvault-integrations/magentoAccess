@@ -95,7 +95,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.GetProductsAsync().ConfigureAwait( false ) );
+			Assert.Throws< MagentoCommonException >( async () => await magentoService.GetProductsAsync(  ).ConfigureAwait( false ) );
 		}
 
 		[ Test ]

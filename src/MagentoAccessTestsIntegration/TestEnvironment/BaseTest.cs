@@ -202,7 +202,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceSoapCredentials magentoServiceSoapCredentials )
 		{
 			var magentoService = this.CreateMagentoService( magentoServiceSoapCredentials.SoapApiUser, magentoServiceSoapCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0 );
-			var getProductsTask = magentoService.GetProductsAsync();
+			var getProductsTask = magentoService.GetProductsAsync( );
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -212,7 +212,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( IMagentoService service )
 		{
-			var getProductsTask = service.GetProductsAsync();
+			var getProductsTask = service.GetProductsAsync( );
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();

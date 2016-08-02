@@ -86,7 +86,7 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
-			var getProductsTask = magentoService.GetProductsAsync( true );
+			var getProductsTask = magentoService.GetProductsAsync( includeDetails : true );
 			getProductsTask.Wait();
 
 			//------------ Assert
@@ -101,8 +101,8 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync( true, "simple" );
-			var getProductsTask2 = magentoService.GetProductsAsync( true, "bundle" );
+			var getProductsTask1 = magentoService.GetProductsAsync( includeDetails : true, productType : "simple", excludeProductByType : false );
+			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true, productType : "bundle", excludeProductByType : false);
 			Task.WhenAll( getProductsTask1 /*, getProductsTask2*/ ).Wait();
 
 			//------------ Assert
@@ -111,6 +111,26 @@ namespace MagentoAccessTestsIntegration
 
 			getProductsTask1.Result.All( x => x.ProductType == "simple" ).Should().BeTrue();
 			getProductsTask2.Result.All( x => x.ProductType == "bundle" ).Should().BeTrue();
+		}
+
+		[Test]
+		[TestCaseSource(typeof(GeneralTestCases), "TestStoresCredentials")]
+		public void GetProductsAsync_GetProductsWithoutSpecifiedType_ReceiveProducts(MagentoServiceSoapCredentials credentials)
+		{
+			//------------ Arrange
+			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
+
+			//------------ Act
+			var getProductsTask1 = magentoService.GetProductsAsync(includeDetails: true, productType: "simple", excludeProductByType: true);
+			var getProductsTask2 = magentoService.GetProductsAsync(includeDetails: true, productType: "bundle", excludeProductByType: true);
+			Task.WhenAll(getProductsTask1 /*, getProductsTask2*/ ).Wait();
+
+			//------------ Assert
+			getProductsTask1.Result.Should().NotBeNullOrEmpty();
+			getProductsTask2.Result.Should().NotBeNullOrEmpty();
+
+			getProductsTask1.Result.All(x => x.ProductType != "simple").Should().BeTrue();
+			getProductsTask2.Result.All(x => x.ProductType != "bundle").Should().BeTrue();
 		}
 
 		[ Test ]
@@ -150,7 +170,7 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
-			var getProductsTask = magentoService.GetProductsAsync();
+			var getProductsTask = magentoService.GetProductsAsync( );
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -163,7 +183,7 @@ namespace MagentoAccessTestsIntegration
 
 			/////
 
-			var getProductsTask2 = magentoService.GetProductsAsync();
+			var getProductsTask2 = magentoService.GetProductsAsync(  );
 			getProductsTask2.Wait();
 
 			var allProductsinMagent2 = getProductsTask2.Result.ToList();
@@ -175,7 +195,7 @@ namespace MagentoAccessTestsIntegration
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
-			var getProductsTask3 = magentoService.GetProductsAsync();
+			var getProductsTask3 = magentoService.GetProductsAsync(  );
 			getProductsTask3.Wait();
 
 			var allProductsinMagent3 = getProductsTask3.Result.ToList();

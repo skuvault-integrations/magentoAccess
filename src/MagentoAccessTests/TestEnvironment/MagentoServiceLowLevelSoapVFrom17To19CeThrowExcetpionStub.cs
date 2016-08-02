@@ -38,7 +38,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< SoapGetProductsResponse > GetProductsAsync( string productType )
+		public override Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
 		{
 			throw new Exception();
 		}
