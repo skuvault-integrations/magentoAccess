@@ -276,11 +276,21 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
+		private static void AddFilter( filters filters, string value, string key, bool excludeKey )
+		{
+			var temp = filters.complex_filter.ToList();
+			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = excludeKey ? "neq" : "eq", value = value } } );
+			filters.complex_filter = temp.ToArray();
+		}
+
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
 		{
 			try
 			{
-				var filters = new filters { filter = new associativeEntity[ 0 ] };
+				var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
+
+				if( productType != null )
+					AddFilter(filters, productType, "type", productTypeShouldBeExcluded);
 
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
