@@ -931,7 +931,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
 		{
 			try
 			{
@@ -953,7 +953,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 				};
 
-				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "bundle", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
 
 				//product id
 				return res.result;

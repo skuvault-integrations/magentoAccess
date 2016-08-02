@@ -16,7 +16,7 @@ namespace MagentoAccessTestsIntegration
 	internal class MagentoServiceTest: BaseTest
 	{
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void DetermineMagentoVersionAsync_CorrectCredentials_ReceiveStoreVersion( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -34,7 +34,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void DetermineMagentoVersionAsync_InCorrectApiKey_ReceiveNull( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -51,7 +51,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -78,7 +78,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -93,7 +93,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -122,7 +122,7 @@ namespace MagentoAccessTestsIntegration
 
 		[ Ignore ]
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -165,7 +165,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiKey_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -184,7 +184,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiUser_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
 			// can be red for magento 2.0 since user doesn't used in magento2.0 version
@@ -204,7 +204,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectUrl_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -223,7 +223,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -240,7 +240,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore ]
 		public void PopulateAccessTokenAndAccessTokenSecret_UserHasNotGotAccessTokens_AuthCalled( MagentoServiceSoapCredentials credentials )
 		{
@@ -263,7 +263,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore ]
 		//this test is not completed to use it - manually fill verificatio code in file
 		public void InitiateDesktopAuthentication_UserHasNotGotAccessTokens_AuthCalled()
@@ -279,7 +279,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore ]
 		public void RequestVerificationUri_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
 		{
@@ -297,7 +297,7 @@ namespace MagentoAccessTestsIntegration
 
 		#region Rest
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectAccessToken_ThrowException()
 		{
@@ -324,7 +324,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectAccessTokenSecret_ThrowException()
 		{
@@ -351,7 +351,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectBaseUrl_ThrowException()
 		{
@@ -378,7 +378,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectConsumerSecret_ThrowException()
 		{
@@ -405,7 +405,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectConsumerKey_ThrowException()
 		{
@@ -432,7 +432,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof( MagentoTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{

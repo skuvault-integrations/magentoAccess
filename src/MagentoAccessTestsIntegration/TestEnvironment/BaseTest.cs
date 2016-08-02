@@ -153,7 +153,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 							var tiks = DateTime.UtcNow.Ticks.ToString();
 							var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
 							var name = string.Format( "TddTestName{0}_{1}", i, tiks );
-							source.Add( new CreateProductModel( "0", sku, name, 1 ) );
+
+							source.Add( new CreateProductModel( "0", sku, name, 1, ( i == 4 ) ? "bundle" : "simple") );
 						}
 						var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 						var creationResult = magentoService.CreateProductAsync( source );

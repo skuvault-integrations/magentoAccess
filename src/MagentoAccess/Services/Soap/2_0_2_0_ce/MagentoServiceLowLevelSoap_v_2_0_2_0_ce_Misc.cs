@@ -558,7 +558,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
 		{
 			//try
 			//{
