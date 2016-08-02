@@ -198,11 +198,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync()
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType )
 		{
 			try
 			{
 				var filters = new filters { filter = new associativeEntity[ 0 ] };
+
+				if( productType != null )
+					AddFilter( filters, productType, "type" );
 
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
@@ -231,6 +234,13 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
 			}
+		}
+
+		private static void AddFilter( filters filters, string value, string key )
+		{
+			var temp = filters.filter.ToList();
+			temp.Add( new associativeEntity() { key = key, value = value } );
+			filters.filter =  temp.ToArray();
 		}
 
 		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )

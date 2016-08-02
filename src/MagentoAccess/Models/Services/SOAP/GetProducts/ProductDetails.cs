@@ -29,6 +29,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Manufacturer = manufacturer ?? rp.Manufacturer;
 			this.Cost = cost ?? rp.Cost;
 			this.Upc = upc ?? rp.Upc;
+			this.ProductType = upc ?? rp.ProductType;
 		}
 
 		public ProductDetails( Product product )
@@ -51,6 +52,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Manufacturer = productDeepClone.Manufacturer;
 			this.Cost = productDeepClone.Cost;
 			this.Upc = productDeepClone.Upc;
+			this.ProductType = productDeepClone.ProductType;
 		}
 
 		public string Upc{ get; set; }
@@ -69,10 +71,12 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 		public string ProductId{ get; set; } //id
 		public Category[] Categories{ get; set; } //category_ids have many
 
+		public string ProductType{ get; set; }
+
 		public Product ToProduct()
 		{
 			var productDeepClone = this.DeepClone();
-			var product = new Product( productDeepClone.ProductId, productDeepClone.EntityId, productDeepClone.Name, productDeepClone.Sku, productDeepClone.Qty, productDeepClone.Price, productDeepClone.Description );
+			var product = new Product( productDeepClone.ProductId, productDeepClone.EntityId, productDeepClone.Name, productDeepClone.Sku, productDeepClone.Qty, productDeepClone.Price, productDeepClone.Description, productDeepClone.ProductType );
 
 			product.EntityId = productDeepClone.EntityId;
 			product.Categories = productDeepClone.Categories.Select( x => x.ToCategory() ).ToArray();
@@ -83,6 +87,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			product.Manufacturer = productDeepClone.Manufacturer;
 			product.Cost = productDeepClone.Cost;
 			product.Upc = productDeepClone.Upc;
+			product.ProductType = productDeepClone.ProductType;
 
 			return product;
 		}

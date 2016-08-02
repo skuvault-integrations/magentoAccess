@@ -23,7 +23,7 @@ namespace MagentoAccess.Services.Soap
 		string Store { get; }
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
-		Task< SoapGetProductsResponse > GetProductsAsync();
+		Task< SoapGetProductsResponse > GetProductsAsync( string productType );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );

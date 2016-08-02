@@ -199,12 +199,12 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync()
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType )
 		{
-			return await this.GetProductsAsync( int.MaxValue );
+			return await this.GetProductsAsync( int.MaxValue, productType);
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit )
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType )
 		{
 			try
 			{
@@ -242,6 +242,16 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 								pageSizeSpecified = true,
 								//filterGroups = frameworkSearchFilterGroups
 							};
+
+							if( productType != null )
+							{
+								if( frameworkSearchCriteriaInterface.filterGroups == null )
+									frameworkSearchCriteriaInterface.filterGroups = new FrameworkSearchFilterGroup[] { };
+
+								var temp = frameworkSearchCriteriaInterface.filterGroups.ToList();
+								temp.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "like", field = "type", value = productType } } } );
+								frameworkSearchCriteriaInterface.filterGroups = temp.ToArray();
+							}
 
 							var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
 							catalogProductRepositoryV1GetListResponse = await privateClient.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false );

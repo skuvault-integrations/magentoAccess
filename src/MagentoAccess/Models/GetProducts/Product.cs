@@ -8,53 +8,58 @@ namespace MagentoAccess.Models.GetProducts
 	[ Serializable ]
 	public class Product
 	{
-		public Product( Product rp, IEnumerable< MagentoUrl > images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null )
+		public Product( Product rp, IEnumerable< MagentoUrl > images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null, string productType = null )
 		{
-			EntityId = rp.EntityId;
-			Sku = rp.Sku;
-			Name = rp.Name;
-			Qty = rp.Qty;
-			Categories = categories == null ? rp.Categories : categories.ToArray();
+			this.EntityId = rp.EntityId;
+			this.Sku = rp.Sku;
+			this.Name = rp.Name;
+			this.Qty = rp.Qty;
+			this.Categories = categories == null ? rp.Categories : categories.ToArray();
 
-			Images = images ?? rp.Images;
+			this.Images = images ?? rp.Images;
 			decimal temp;
-			Price = price.ToDecimalOrDefault( out temp ) ? temp : rp.Price;
-			SpecialPrice = specialPrice.ToDecimalOrDefault( out temp ) ? temp : rp.SpecialPrice;
-			Description = description ?? rp.Description;
-			ProductId = rp.ProductId;
-			Weight = weight ?? rp.Weight;
-			ShortDescription = shortDescription ?? rp.ShortDescription;
+			this.Price = price.ToDecimalOrDefault( out temp ) ? temp : rp.Price;
+			this.SpecialPrice = specialPrice.ToDecimalOrDefault( out temp ) ? temp : rp.SpecialPrice;
+			this.Description = description ?? rp.Description;
+			this.ProductId = rp.ProductId;
+			this.Weight = weight ?? rp.Weight;
+			this.ShortDescription = shortDescription ?? rp.ShortDescription;
 
-			Manufacturer = manufacturer ?? rp.Manufacturer;
-			Cost = cost ?? rp.Cost;
-			Upc = upc ?? rp.Upc;
+			this.Manufacturer = manufacturer ?? rp.Manufacturer;
+			this.Cost = cost ?? rp.Cost;
+			this.Upc = upc ?? rp.Upc;
+			this.ProductType = productType ?? rp.ProductType;
 		}
 
-		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description )
+		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description, string productType )
 		{
-			ProductId = productId;
-			EntityId = entityId;
-			Name = name;
-			Sku = sku;
-			Qty = qty;
-			Price = price;
-			Description = description;
+			this.ProductId = productId;
+			this.EntityId = entityId;
+			this.Name = name;
+			this.Sku = sku;
+			this.Qty = qty;
+			this.Price = price;
+			this.Description = description;
+			this.ProductType = productType;
 		}
 
-		public string Upc { get; set; }
-		public decimal SpecialPrice { get; set; }
-		public decimal Cost { get; set; }
-		public string Manufacturer { get; set; }
-		public IEnumerable< MagentoUrl > Images { get; set; }//imagento2
-		public string ShortDescription { get; set; }
-		public string Weight { get; set; }//imagento2
-		public string EntityId { get; set; }  //id
-		public string Sku { get; set; }//imagento2
-		public decimal Price { get; set; }//imagento2
-		public string Name { get; set; }//imagento2
-		public string Description { get; set; }//custom attributes
-		public string Qty { get; set; }
-		public string ProductId { get; set; }   //id
-		public Category[] Categories { get; set; } //category_ids have many
+		public string Upc{ get; set; }
+		public decimal SpecialPrice{ get; set; }
+		public decimal Cost{ get; set; }
+		public string Manufacturer{ get; set; }
+		public IEnumerable< MagentoUrl > Images{ get; set; } //imagento2
+		public string ShortDescription{ get; set; }
+		public string Weight{ get; set; } //imagento2
+		public string EntityId{ get; set; } //id
+		public string Sku{ get; set; } //imagento2
+		public decimal Price{ get; set; } //imagento2
+		public string Name{ get; set; } //imagento2
+		public string Description{ get; set; } //custom attributes
+		public string Qty{ get; set; }
+		public string ProductId{ get; set; } //id
+		public Category[] Categories{ get; set; }
+		public string ProductType{ get; set; }
+
+		//category_ids have many
 	}
 }
