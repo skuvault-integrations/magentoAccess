@@ -17,7 +17,7 @@ namespace MagentoAccessTestsIntegration
 	internal class MagentoServiceTest: BaseTest
 	{
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void DetermineMagentoVersionAsync_CorrectCredentials_ReceiveStoreVersion( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -35,7 +35,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void DetermineMagentoVersionAsync_InCorrectApiKey_ReceiveNull( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -52,7 +52,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -79,7 +79,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -102,8 +102,8 @@ namespace MagentoAccessTestsIntegration
 
 			//------------ Act
 			var getProductsTask1 = magentoService.GetProductsAsync( includeDetails : true, productType : "simple", excludeProductByType : false );
-			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true, productType : "bundle", excludeProductByType : false);
-			Task.WhenAll( getProductsTask1 /*, getProductsTask2*/ ).Wait();
+			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true, productType : "bundle", excludeProductByType : false );
+			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
 
 			//------------ Assert
 			getProductsTask1.Result.Should().NotBeNullOrEmpty();
@@ -113,28 +113,28 @@ namespace MagentoAccessTestsIntegration
 			getProductsTask2.Result.All( x => x.ProductType == "bundle" ).Should().BeTrue();
 		}
 
-		[Test]
-		[TestCaseSource(typeof(GeneralTestCases), "TestStoresCredentials")]
-		public void GetProductsAsync_GetProductsWithoutSpecifiedType_ReceiveProducts(MagentoServiceSoapCredentials credentials)
+		[ Test ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
+		public void GetProductsAsync_GetProductsWithoutSpecifiedType_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
-			var magentoService = this.CreateMagentoService(credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion);
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync(includeDetails: true, productType: "simple", excludeProductByType: true);
-			var getProductsTask2 = magentoService.GetProductsAsync(includeDetails: true, productType: "bundle", excludeProductByType: true);
-			Task.WhenAll(getProductsTask1 /*, getProductsTask2*/ ).Wait();
+			var getProductsTask1 = magentoService.GetProductsAsync( includeDetails : true, productType : "simple", excludeProductByType : true );
+			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true, productType : "bundle", excludeProductByType : true );
+			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
 
 			//------------ Assert
 			getProductsTask1.Result.Should().NotBeNullOrEmpty();
 			getProductsTask2.Result.Should().NotBeNullOrEmpty();
 
-			getProductsTask1.Result.All(x => x.ProductType != "simple").Should().BeTrue();
-			getProductsTask2.Result.All(x => x.ProductType != "bundle").Should().BeTrue();
+			getProductsTask1.Result.All( x => x.ProductType != "simple" ).Should().BeTrue();
+			getProductsTask2.Result.All( x => x.ProductType != "bundle" ).Should().BeTrue();
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -163,14 +163,14 @@ namespace MagentoAccessTestsIntegration
 
 		[ Ignore ]
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 
 			//------------ Act
-			var getProductsTask = magentoService.GetProductsAsync( );
+			var getProductsTask = magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -183,7 +183,7 @@ namespace MagentoAccessTestsIntegration
 
 			/////
 
-			var getProductsTask2 = magentoService.GetProductsAsync(  );
+			var getProductsTask2 = magentoService.GetProductsAsync();
 			getProductsTask2.Wait();
 
 			var allProductsinMagent2 = getProductsTask2.Result.ToList();
@@ -195,7 +195,7 @@ namespace MagentoAccessTestsIntegration
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
-			var getProductsTask3 = magentoService.GetProductsAsync(  );
+			var getProductsTask3 = magentoService.GetProductsAsync();
 			getProductsTask3.Wait();
 
 			var allProductsinMagent3 = getProductsTask3.Result.ToList();
@@ -206,7 +206,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiKey_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -225,7 +225,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectApiUser_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
 			// can be red for magento 2.0 since user doesn't used in magento2.0 version
@@ -245,7 +245,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_IncorrectUrl_ThrowException( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -264,7 +264,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -281,7 +281,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore ]
 		public void PopulateAccessTokenAndAccessTokenSecret_UserHasNotGotAccessTokens_AuthCalled( MagentoServiceSoapCredentials credentials )
 		{
@@ -304,7 +304,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore ]
 		//this test is not completed to use it - manually fill verificatio code in file
 		public void InitiateDesktopAuthentication_UserHasNotGotAccessTokens_AuthCalled()
@@ -320,7 +320,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore ]
 		public void RequestVerificationUri_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
 		{
@@ -338,7 +338,7 @@ namespace MagentoAccessTestsIntegration
 
 		#region Rest
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectAccessToken_ThrowException()
 		{
@@ -365,7 +365,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectAccessTokenSecret_ThrowException()
 		{
@@ -392,7 +392,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectBaseUrl_ThrowException()
 		{
@@ -419,7 +419,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectConsumerSecret_ThrowException()
 		{
@@ -446,7 +446,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_IncorrectConsumerKey_ThrowException()
 		{
@@ -473,7 +473,7 @@ namespace MagentoAccessTestsIntegration
 		}
 
 		[ Test ]
-		[ TestCaseSource( typeof(GeneralTestCases), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		[ Ignore( "Since rest is a vestigie" ) ]
 		public void PingRestAsync_CorrectConsumerKey_NotExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
