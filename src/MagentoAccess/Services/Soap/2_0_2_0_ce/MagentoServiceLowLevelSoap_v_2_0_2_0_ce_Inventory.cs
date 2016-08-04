@@ -201,10 +201,10 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
 		{
-			return await this.GetProductsAsync( int.MaxValue, productType);
+			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded );
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType )
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded )
 		{
 			try
 			{
@@ -243,24 +243,34 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 								//filterGroups = frameworkSearchFilterGroups
 							};
 
-							if( productType != null )
-							{
-								if( frameworkSearchCriteriaInterface.filterGroups == null )
-									frameworkSearchCriteriaInterface.filterGroups = new FrameworkSearchFilterGroup[] { };
+							// filtering by typeId doesn't works for magento2.0.2
+							//if( productType != null )
+							//{
+							//	if( frameworkSearchCriteriaInterface.filterGroups == null )
+							//		frameworkSearchCriteriaInterface.filterGroups = new FrameworkSearchFilterGroup[] { };
 
-								var temp = frameworkSearchCriteriaInterface.filterGroups.ToList();
-								temp.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "like", field = "type", value = productType } } } );
-								frameworkSearchCriteriaInterface.filterGroups = temp.ToArray();
-							}
+							//	var temp = frameworkSearchCriteriaInterface.filterGroups.ToList();
+							//	temp.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "like", field = "type", value = productType } } } );
+							//	frameworkSearchCriteriaInterface.filterGroups = temp.ToArray();
+							//}
 
 							var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
 							catalogProductRepositoryV1GetListResponse = await privateClient.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false );
 							var catalogDataProductInterfaces = catalogProductRepositoryV1GetListResponse == null ? new List< CatalogDataProductInterface >() : catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.items.ToList();
+
+
 							res.AddRange( catalogDataProductInterfaces );
 							currentPage++;
 						}
 					} ).ConfigureAwait( false );
 				} while( catalogProductRepositoryV1GetListResponse != null && res.Count < limit && res.Count < catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.totalCount );
+
+				if( !string.IsNullOrWhiteSpace( productType ) )
+				{
+					res = productTypeShouldBeExcluded
+						? res.Where( x => !string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList()
+						: res.Where( x => string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
+				}
 
 				return new SoapGetProductsResponse( res.TakeWhile( ( x, i ) => i < limit ).ToList() );
 			}
