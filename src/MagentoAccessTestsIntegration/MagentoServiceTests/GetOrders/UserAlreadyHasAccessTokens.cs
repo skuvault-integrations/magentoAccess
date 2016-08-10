@@ -4,7 +4,7 @@ using FluentAssertions;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
-namespace MagentoAccessTestsIntegration
+namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 {
 	[ TestFixture ]
 	[ Parallelizable ]
