@@ -27,5 +27,5 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 			pingSoapInfo.Should().NotBeNull();
 			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeTrue();
 		}
-}
+	}
 }
