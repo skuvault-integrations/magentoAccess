@@ -92,6 +92,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MagentoServiceTest.cs" />
+    <Compile Include="MagentoServiceTest\GetOrdersTest.cs" />
+    <Content Include="MagentoServiceTest\Readme.txt" />
+    <Compile Include="MagentoServiceTest\GetProductsTest.cs" />
+    <Compile Include="MagentoServiceTest\PingSoapTest.cs" />
+    <Compile Include="MagentoServiceTest\DetermineMagentoVersionTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MeagentoServiceLowLevelRestTest.cs" />

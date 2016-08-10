@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccess.Misc;
@@ -13,126 +12,9 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration
 {
-	[ TestFixture ]
+    [ TestFixture ]
 	internal class MagentoServiceTest: BaseTest
 	{
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void DetermineMagentoVersionAsync_CorrectCredentials_ReceiveStoreVersion( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
-			//------------ Act
-
-			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
-			getOrdersTask.Wait();
-
-			//------------ Assert
-			var pingSoapInfo = getOrdersTask.Result;
-
-			pingSoapInfo.Should().NotBeNull();
-			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeTrue();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void DetermineMagentoVersionAsync_InCorrectApiKey_ReceiveNull( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey + "_incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-			//------------ Act
-
-			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
-			getOrdersTask.Wait();
-
-			//------------ Assert
-			var pingSoapInfo = getOrdersTask.Result;
-
-			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeFalse();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-			//------------ Act
-			//var firstCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).First();
-			//var lastCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).Last();
-
-			//var modifiedFrom = new DateTime( ( firstCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
-			//var modifiedTo = new DateTime( ( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
-			var modifiedFrom = new DateTime( 2016, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
-			var modifiedTo = new DateTime( 2016, 5, 2, 23, 30, 39 ).AddSeconds( -1 );
-
-			var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
-			getOrdersTask.Wait();
-
-			//------------ Assert
-			//var thatMustBeReturned = this._orders[ credentials.StoreUrl ].Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.OrderIncrementalId ).ToList();
-			//var thatWasReturned = getOrdersTask.Result.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.OrderIncrementalId ).ToList();
-			var thatWasReturned = getOrdersTask.Result.Select( x => x.OrderIncrementalId ).ToList();
-
-			//thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
-			thatWasReturned.Should().NotBeNullOrEmpty();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void GetProductsAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-
-			//------------ Act
-			var getProductsTask = magentoService.GetProductsAsync( includeDetails : true );
-			getProductsTask.Wait();
-
-			//------------ Assert
-			getProductsTask.Result.Should().NotBeNullOrEmpty();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void GetProductsAsync_GetOnlySpecialByTypeProducs_ReceiveProducts( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-
-			//------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync( includeDetails : true, productType : "simple", excludeProductByType : false );
-			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true, productType : "bundle", excludeProductByType : false );
-			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
-
-			//------------ Assert
-			getProductsTask1.Result.Should().NotBeNullOrEmpty();
-			getProductsTask2.Result.Should().NotBeNullOrEmpty();
-
-			getProductsTask1.Result.All( x => x.ProductType == "simple" ).Should().BeTrue();
-			getProductsTask2.Result.All( x => x.ProductType == "bundle" ).Should().BeTrue();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void GetProductsAsync_GetProductsWithoutSpecifiedType_ReceiveProducts( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-
-			//------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync( includeDetails : true, productType : "simple", excludeProductByType : true );
-			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true, productType : "bundle", excludeProductByType : true );
-			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
-
-			//------------ Assert
-			getProductsTask1.Result.Should().NotBeNullOrEmpty();
-			getProductsTask2.Result.Should().NotBeNullOrEmpty();
-
-			getProductsTask1.Result.All( x => x.ProductType != "simple" ).Should().BeTrue();
-			getProductsTask2.Result.All( x => x.ProductType != "bundle" ).Should().BeTrue();
-		}
-
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
@@ -203,81 +85,6 @@ namespace MagentoAccessTestsIntegration
 
 			onlyProductsCreatedForThisTests2.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 123 );
 			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == 100500 );
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void PingSoapAsync_IncorrectApiKey_ThrowException( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-
-			//------------ Act
-			Action act = () =>
-			{
-				var service = this.CreateMagentoService( credentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-
-				var magentoInfoAsyncTask = service.PingSoapAsync();
-				magentoInfoAsyncTask.Wait();
-			};
-
-			//------------ Assert
-			act.ShouldThrow< Exception >();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void PingSoapAsync_IncorrectApiUser_ThrowException( MagentoServiceSoapCredentials credentials )
-		{
-			// can be red for magento 2.0 since user doesn't used in magento2.0 version
-			//------------ Arrange
-
-			//------------ Act
-			Action act = () =>
-			{
-				var service = this.CreateMagentoService( "incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-
-				var magentoInfoAsyncTask = service.PingSoapAsync();
-				magentoInfoAsyncTask.Wait();
-			};
-
-			//------------ Assert
-			act.ShouldThrow< Exception >();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void PingSoapAsync_IncorrectUrl_ThrowException( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-
-			//------------ Act
-			Action act = () =>
-			{
-				var service = this.CreateMagentoService( "incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", "http://w.com", "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-
-				var magentoInfoAsyncTask = service.PingSoapAsync();
-				magentoInfoAsyncTask.Wait();
-			};
-
-			//------------ Assert
-			act.ShouldThrow< Exception >();
-		}
-
-		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
-		{
-			//------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
-			//------------ Act
-			Action act = () =>
-			{
-				var magentoInfoAsyncTask = magentoService.PingSoapAsync();
-				magentoInfoAsyncTask.Wait();
-			};
-
-			//------------ Assert
-			act.ShouldNotThrow< Exception >();
 		}
 
 		[ Test ]
