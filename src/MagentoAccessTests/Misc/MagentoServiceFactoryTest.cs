@@ -21,10 +21,10 @@ namespace MagentoAccessTests.Misc
 	[ TestFixture ]
 	internal class MagentoServiceFactoryTest
 	{
-		[ TestCase( 0, "1.2.3.4", Result = "1" ) ]
-		[ TestCase( 3, "1.2.3.4", Result = "4" ) ]
-		[ TestCase( 0, "11.2.3.4", Result = "11" ) ]
-		[ TestCase( 3, "11.2.3.44", Result = "44" ) ]
+		[ TestCase( 0, "1.2.3.4", ExpectedResult = "1" ) ]
+		[ TestCase( 3, "1.2.3.4", ExpectedResult = "4" ) ]
+		[ TestCase( 0, "11.2.3.4", ExpectedResult = "11" ) ]
+		[ TestCase( 3, "11.2.3.44", ExpectedResult = "44" ) ]
 		[ Test ]
 		public string GetMagentoSubVersion_InputIsCorrectVersion_SubversionReturned( int deep, string magentoVer )
 		{
@@ -37,12 +37,12 @@ namespace MagentoAccessTests.Misc
 			return version;
 		}
 
-		[TestCase("1.7.0.2", Result = "1.7.0.2")]
-		[TestCase("1.7.1.2", Result = "1.7.0.2")]
-		[TestCase("1.8.1.2", Result = "1.8.1.0")]
-		[TestCase("1.8.0.2", Result = "1.8.0.1")]
-		[TestCase("1.9.1.3", Result = "1.9.1.0")]
-		[TestCase("1.9.2.3", Result = "1.9.2.0")]
+		[TestCase("1.7.0.2", ExpectedResult = "1.7.0.2")]
+		[TestCase("1.7.1.2", ExpectedResult = "1.7.0.2")]
+		[TestCase("1.8.1.2", ExpectedResult = "1.8.1.0")]
+		[TestCase("1.8.0.2", ExpectedResult = "1.8.0.1")]
+		[TestCase("1.9.1.3", ExpectedResult = "1.9.1.0")]
+		[TestCase("1.9.2.3", ExpectedResult = "1.9.2.0")]
 		[ Test ]
 		public string GetMagentoServiceLowLevel_InputIsCorrectVersion_SimilarOrEvenExectlyTheSameVersionOfServiceFound( string magentoVer )
 		{

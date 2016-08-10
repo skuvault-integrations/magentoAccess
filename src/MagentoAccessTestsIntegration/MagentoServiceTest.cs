@@ -161,7 +161,7 @@ namespace MagentoAccessTestsIntegration
 			onlyProductsCreatedForThisTests3.Should().OnlyContain( x => x.Qty.ToDecimalOrDefault() == updateSecondTimeQty );
 		}
 
-		[ Ignore ]
+		[ Ignore("can corrupt data") ]
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void UpdateInventoryBYSkuAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
@@ -282,7 +282,7 @@ namespace MagentoAccessTestsIntegration
 
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		[ Ignore ]
+		[ Ignore("can corrupt data")]
 		public void PopulateAccessTokenAndAccessTokenSecret_UserHasNotGotAccessTokens_AuthCalled( MagentoServiceSoapCredentials credentials )
 		{
 			//------------ Arrange
@@ -305,7 +305,7 @@ namespace MagentoAccessTestsIntegration
 
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		[ Ignore ]
+		[ Ignore("can corrupt data")]
 		//this test is not completed to use it - manually fill verificatio code in file
 		public void InitiateDesktopAuthentication_UserHasNotGotAccessTokens_AuthCalled()
 		{
@@ -321,7 +321,7 @@ namespace MagentoAccessTestsIntegration
 
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		[ Ignore ]
+		[ Ignore("can corrupt data")]
 		public void RequestVerificationUri_UserHasNotGotAccessTokensURLCOntainsPort_AuthCalled()
 		{
 			//------------ Arrange
