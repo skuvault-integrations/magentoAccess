@@ -1,0 +1,31 @@
+using System;
+using FluentAssertions;
+using MagentoAccessTestsIntegration.TestEnvironment;
+using NUnit.Framework;
+
+namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
+{
+	[ TestFixture ]
+	[ Parallelizable ]
+	internal class IncorrectApiKey : BaseTest
+	{
+		[ Test ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
+		public void ThrowException( MagentoServiceSoapCredentials credentials )
+		{
+			// ------------ Arrange
+
+			// ------------ Act
+			Action act = () =>
+			{
+				var service = this.CreateMagentoService( credentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+
+				var magentoInfoAsyncTask = service.PingSoapAsync();
+				magentoInfoAsyncTask.Wait();
+			};
+
+			// ------------ Assert
+			act.ShouldThrow< Exception >();
+		}
+}
+}

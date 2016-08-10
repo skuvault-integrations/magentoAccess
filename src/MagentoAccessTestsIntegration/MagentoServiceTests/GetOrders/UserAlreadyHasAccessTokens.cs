@@ -8,11 +8,11 @@ namespace MagentoAccessTestsIntegration
 {
 	[ TestFixture ]
 	[ Parallelizable ]
-	internal class GetOrdersTest : BaseTest
+	internal class UserAlreadyHasAccessTokens : BaseTest
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void GetOrders_UserAlreadyHasAccessTokens_ReceiveOrders( MagentoServiceSoapCredentials credentials )
+		public void ReceiveOrders( MagentoServiceSoapCredentials credentials )
 		{
 			// ------------ Arrange
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
