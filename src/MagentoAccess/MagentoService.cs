@@ -16,11 +16,6 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.GetStockItems;
-using MagentoAccess.Models.Services.Soap.GetCategoryTree;
-using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
-using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
-using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
-using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
@@ -353,10 +348,10 @@ namespace MagentoAccess
 				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                             || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                             || string.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                             || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 
 				var salesOrderInfoResponses = await orderIds.ProcessInBatchAsync( 16, async x =>
 				{
@@ -408,13 +403,12 @@ namespace MagentoAccess
 
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
-				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
-				                             || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                                                         || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                                                         || string.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                                                         || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
 					MagentoLogger.LogTrace( $"OrdersRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : $"{x.Item1},{x.Item2}" )}" );
@@ -575,7 +569,7 @@ namespace MagentoAccess
 				{
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 					//crunch for 1702
-					updateBriefInfo = String.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) 
+					updateBriefInfo = string.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase ) 
 						? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false ) 
 						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false ), mark ).ConfigureAwait( false );
 				}
@@ -605,10 +599,10 @@ namespace MagentoAccess
 					if( this.UseSoapOnly )
 					{
 						var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-						var magentoServiceLowLevelSoap = String.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-						                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
-						                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
-						                                 || String.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+						var magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+						                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+						                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+						                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 
 						var stockitems = await magentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList() ).ConfigureAwait( false );
 						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
@@ -638,15 +632,14 @@ namespace MagentoAccess
 		{
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "InitiateDesktopAuthentication()" ) );
+				MagentoLogger.LogTraceStarted( "InitiateDesktopAuthentication()" );
 				this.MagentoServiceLowLevelRest.TransmitVerificationCode = this.TransmitVerificationCode;
 				var authorizeTask = this.MagentoServiceLowLevelRest.InitiateDescktopAuthenticationProcess();
 				authorizeTask.Wait();
 
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
+				this.AfterGettingToken?.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
 
-				MagentoLogger.LogTraceEnded( string.Format( "InitiateDesktopAuthentication()" ) );
+				MagentoLogger.LogTraceEnded( "InitiateDesktopAuthentication()" );
 			}
 			catch( Exception exception )
 			{
@@ -660,9 +653,9 @@ namespace MagentoAccess
 		{
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "RequestVerificationUri()" ) );
+				MagentoLogger.LogTraceStarted( "RequestVerificationUri()" );
 				var res = this.MagentoServiceLowLevelRest.RequestVerificationUri();
-				MagentoLogger.LogTraceEnded( string.Format( "RequestVerificationUri()" ) );
+				MagentoLogger.LogTraceEnded( "RequestVerificationUri()" );
 
 				return res;
 			}
@@ -678,13 +671,12 @@ namespace MagentoAccess
 		{
 			try
 			{
-				MagentoLogger.LogTraceStarted( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
+				MagentoLogger.LogTraceStarted( "PopulateAccessTokenAndAccessTokenSecret(...)" );
 				this.MagentoServiceLowLevelRest.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
 
-				if( this.AfterGettingToken != null )
-					this.AfterGettingToken.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
+				this.AfterGettingToken?.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
 
-				MagentoLogger.LogTraceEnded( string.Format( "PopulateAccessTokenAndAccessTokenSecret(...)" ) );
+				MagentoLogger.LogTraceEnded( "PopulateAccessTokenAndAccessTokenSecret(...)" );
 			}
 			catch( Exception exception )
 			{
@@ -729,7 +721,7 @@ namespace MagentoAccess
 			IEnumerable< Product > resultProducts = new List< Product >();
 			var catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded ).ConfigureAwait( false );
 
-			if( catalogProductListResponse == null || catalogProductListResponse.Products == null )
+			if( catalogProductListResponse?.Products == null )
 				return resultProducts;
 
 			var products = catalogProductListResponse.Products.ToList();
@@ -761,8 +753,6 @@ namespace MagentoAccess
 
 		private async Task< IEnumerable< Product > > GetProductsByRest()
 		{
-			IEnumerable< Product > resultProducts;
-
 			// this code doesn't work for magento 1.8.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
 			// this code works for magento 1.9.0.1
 			var stockItemsAsync = this.GetRestStockItemsAsync();
@@ -781,7 +771,7 @@ namespace MagentoAccess
 			//			var productsStr = string.Join( "\n", tempp );
 			//#endif
 
-			resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product( stockItem.ProductId, stockItem.EntityId, product.Name, product.Sku, stockItem.Qty, product.Price, product.Description, product.ProductType ) ).ToList();
+			IEnumerable< Product > resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product( stockItem.ProductId, stockItem.EntityId, product.Name, product.Sku, stockItem.Qty, product.Price, product.Description, product.ProductType ) ).ToList();
 			return resultProducts;
 		}
 
@@ -863,12 +853,12 @@ namespace MagentoAccess
 
 			receivedProducts.AddRange( productsChunk );
 
-			var getProductsTasks = new List< Task< List< Models.Services.Rest.GetProducts.Product > > >();
+			var getProductsTasks = new List< Task< List< Models.Services.Rest.GetProducts.Product > > > {
+				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
+				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
+				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
+				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) };
 
-			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
-			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
-			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
-			getProductsTasks.Add( Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ) );
 
 			await Task.WhenAll( getProductsTasks ).ConfigureAwait( false );
 
@@ -892,20 +882,21 @@ namespace MagentoAccess
 				getProductsTask.Wait();
 				var localProductsChunk = getProductsTask.Result.Products;
 
-				var repeatedItems = from c in localProductsChunk join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
+				var lastProductsChunksList = localProductsChunk as IList< Models.Services.Rest.GetProducts.Product > ?? localProductsChunk.ToList();
+				var repeatedItems = from c in lastProductsChunksList join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
 
-				localLastReceivedProducts = localProductsChunk;
+				localLastReceivedProducts = lastProductsChunksList;
 
 				localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
 
 				// try to get items that was added before last iteration
 				if( localIsLastAndCurrentResponsesHaveTheSameProducts )
 				{
-					var notRrepeatedItems = localProductsChunk.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
+					var notRrepeatedItems = lastProductsChunksList.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
 					localReceivedProducts.AddRange( notRrepeatedItems );
 				}
 				else
-					localReceivedProducts.AddRange( localProductsChunk );
+					localReceivedProducts.AddRange( lastProductsChunksList );
 			} while( !localIsLastAndCurrentResponsesHaveTheSameProducts );
 
 			return localReceivedProducts;
@@ -956,7 +947,6 @@ namespace MagentoAccess
 
 		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories, string markForLog = "" )
 		{
-			string updateBriefInfo;
 			const int productsUpdateMaxChunkSize = 50;
 			var inventoryItems = inventories.Select( x => new Models.Services.Rest.PutStockItems.StockItem
 			{
@@ -977,7 +967,7 @@ namespace MagentoAccess
 
 			var unSecessefullyUpdated = updateResult.Where( x => x.Code != "200" );
 
-			updateBriefInfo = updateResult.ToJson();
+			var updateBriefInfo = updateResult.ToJson();
 
 			if( unSecessefullyUpdated.Any() )
 				throw new Exception( $"Not updated: {unSecessefullyUpdated.ToJson()}, Updated: {secessefullyUpdated.ToJson()}" );
