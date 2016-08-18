@@ -887,12 +887,13 @@ namespace MagentoAccess
 
 				localLastReceivedProducts = lastProductsChunksList;
 
-				localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
+				var repeatedItemsList = repeatedItems as IList< Models.Services.Rest.GetProducts.Product > ?? repeatedItems.ToList();
+				localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItemsList.Any();
 
 				// try to get items that was added before last iteration
 				if( localIsLastAndCurrentResponsesHaveTheSameProducts )
 				{
-					var notRrepeatedItems = lastProductsChunksList.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
+					var notRrepeatedItems = lastProductsChunksList.Where( x => !repeatedItemsList.Exists( r => r.EntityId == x.EntityId ) );
 					localReceivedProducts.AddRange( notRrepeatedItems );
 				}
 				else
