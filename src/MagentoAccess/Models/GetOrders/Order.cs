@@ -102,6 +102,7 @@ namespace MagentoAccess.Models.GetOrders
 			this.ShippingLastname = order.ShippingLastname;
 			this.ShippingMethod = order.ShippingMethod;
 			this.ShippingName = order.ShippingName;
+			this.CustomerEmail = order.CustomerEmail;
 			this.UpdatedAt = order.UpdatedAT.ToDateTimeOrDefault();
 			OrderStatusesEnum tempstatus;
 			OrderStateEnum tempstate;
@@ -109,6 +110,7 @@ namespace MagentoAccess.Models.GetOrders
 			this.State = Enum.TryParse( order.State, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
 		}
 
+		public string CustomerEmail { get; set; }
 		public DateTime UpdatedAt { get; set; }
 
 		public string ShippingName { get; set; }
@@ -290,6 +292,7 @@ namespace MagentoAccess.Models.GetOrders
 			this.ShippingLastname = order.shipping_lastname;
 			this.ShippingMethod = order.shipping_method;
 			this.ShippingName = order.shipping_name;
+			this.CustomerEmail = order.customer_email;
 
 			OrderStatusesEnum tempstatus;
 			OrderStateEnum tempstate;
