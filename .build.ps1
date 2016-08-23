@@ -22,10 +22,12 @@ $src_dir = "$BuildRoot\src"
 $solution_file = "$src_dir\$($project_name).sln"
 	
 # Use MSBuild.
-use Framework\v4.0.30319 MSBuild
+#use Framework\v4.0.30319 MSBuild
+Set-Alias MSBuild14 (Join-Path -Path (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\14.0").MSBuildToolsPath -ChildPath "MSBuild.exe")
+
 
 task Clean { 
-	exec { MSBuild "$solution_file" /t:Clean /p:Configuration=Release /v:quiet } 
+	exec { MSBuild14 "$solution_file" /t:Clean /p:Configuration=Release /p:VisualStudioVersion="14.0" /v:quiet } 
 	Remove-Item -force -recurse $build_dir -ErrorAction SilentlyContinue | Out-Null
 }
 
@@ -36,7 +38,7 @@ task Init Clean, {
 }
 
 task Build {
-	exec { MSBuild "$solution_file" /t:Build /p:Configuration=Release /v:minimal /p:OutDir="$build_artifacts_dir\" }
+	exec { MSBuild14 "$solution_file" /t:Build /p:Configuration=Release /p:VisualStudioVersion="14.0" /v:minimal /p:OutDir="$build_artifacts_dir\" }
 }
 
 task Package  {
