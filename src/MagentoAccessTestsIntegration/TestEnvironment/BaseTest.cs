@@ -154,7 +154,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 							var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
 							var name = string.Format( "TddTestName{0}_{1}", i, tiks );
 
-							source.Add( new CreateProductModel( "0", sku, name, 1, ( i == 4 ) ? "bundle" : "simple") );
+							source.Add( new CreateProductModel( "0", sku, name, 1, ( i == 4 ) ? "bundle" : "simple" ) );
 						}
 						var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 						var creationResult = magentoService.CreateProductAsync( source );
@@ -202,7 +202,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceSoapCredentials magentoServiceSoapCredentials )
 		{
 			var magentoService = this.CreateMagentoService( magentoServiceSoapCredentials.SoapApiUser, magentoServiceSoapCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0 );
-			var getProductsTask = magentoService.GetProductsAsync( );
+			var getProductsTask = magentoService.GetProductsAsync();
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -212,7 +212,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( IMagentoService service )
 		{
-			var getProductsTask = service.GetProductsAsync( );
+			var getProductsTask = service.GetProductsAsync();
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -222,10 +222,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		internal class MagentoServiceSoapCredentials
 		{
-			public string SoapApiUser{ get; set; }
-			public string SoapApiKey{ get; set; }
-			public string StoreUrl{ get; set; }
-			public string MagentoVersion{ get; set; }
+			public string SoapApiUser { get; set; }
+			public string SoapApiKey { get; set; }
+			public string StoreUrl { get; set; }
+			public string MagentoVersion { get; set; }
 
 			public override string ToString()
 			{
