@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
 using MagentoAccess;
 using MagentoAccess.Models.Credentials;
+using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap;
@@ -73,7 +76,7 @@ namespace MagentoAccessTests
 				MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub
 			};
 
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.GetOrdersAsync().ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetOrdersAsync().ConfigureAwait( false ) );
 		}
 
 		[ Test ]
@@ -84,7 +87,8 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.GetOrdersAsync( default(DateTime), default(DateTime) ).ConfigureAwait( false ) );
+
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetOrdersAsync( default(DateTime), default(DateTime) ).ConfigureAwait( false ) );
 		}
 
 		[ Test ]
@@ -95,7 +99,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.GetProductsAsync(  ).ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetProductsAsync(  ).ConfigureAwait( false ) );
 		}
 
 		[ Test ]
@@ -106,7 +110,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.GetProductsSimpleAsync().ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetProductsSimpleAsync().ConfigureAwait( false ) );
 		}
 
 		[ Test ]
@@ -117,7 +121,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.PingRestAsync().ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.PingRestAsync().ConfigureAwait( false ) );
 		}
 
 		[ Test ]
@@ -128,7 +132,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.PingSoapAsync().ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.PingSoapAsync().ConfigureAwait( false ) );
 		}
 
 		[ Test ]
@@ -150,7 +154,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.Throws< MagentoCommonException >( async () => await magentoService.UpdateInventoryAsync( new List< Inventory > { new Inventory() } ).ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.UpdateInventoryAsync( new List< Inventory > { new Inventory() } ).ConfigureAwait( false ) );
 		}
 	}
 }

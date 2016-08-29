@@ -103,7 +103,6 @@
     <Compile Include="MagentoServiceTests\PingSoap\IncorrectUrl.cs" />
     <Compile Include="MagentoServiceTests\PingSoap\PingSoapTest.cs" />
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\InCorrectApiKey.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MeagentoServiceLowLevelRestTest.cs" />
     <Compile Include="TestEnvironment\BaseTest.cs" />
