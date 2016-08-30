@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 
@@ -15,13 +15,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			try
 			{
-				var frameworkSearchFilterGroups = new List< FrameworkSearchFilterGroup >
+				var frameworkSearchFilterGroups = new List<Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup >
 				{
-					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "updated_At", conditionType = "gt", value = modifiedFrom.ToSoapParameterString() } } },
-					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "updated_At", conditionType = "lt", value = modifiedTo.ToSoapParameterString() } } },
+					new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup() { filters = new[] { new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkFilter() { field = "updated_At", conditionType = "gt", value = modifiedFrom.ToSoapParameterString() } } },
+					new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup() { filters = new[] { new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkFilter() { field = "updated_At", conditionType = "lt", value = modifiedTo.ToSoapParameterString() } } },
 				};
 				if( !string.IsNullOrWhiteSpace( this.Store ) )
-					frameworkSearchFilterGroups.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );
+					frameworkSearchFilterGroups.Add( new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup() { filters = new[] { new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );
 
 				var filters = new SalesOrderRepositoryV1GetListRequest
 				{
@@ -30,7 +30,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						currentPage = 1,
 						currentPageSpecified = true,
 						filterGroups = frameworkSearchFilterGroups.ToArray(),
-						sortOrders = new FrameworkSortOrder[] { new FrameworkSortOrder() { direction = "ASC", field = "Id" } },
+						sortOrders = new[] { new FrameworkSortOrder() { direction = "ASC", field = "Id" } },
 						pageSize = 100,
 						pageSizeSpecified = true,
 					}

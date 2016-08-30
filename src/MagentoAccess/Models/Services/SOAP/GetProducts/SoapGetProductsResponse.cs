@@ -23,6 +23,11 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Products = res.Select( x => new SoapProduct( x ) );
 		}
 
+		public SoapGetProductsResponse( List< Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductInterface > res )
+		{
+			this.Products = res.Select(x => new SoapProduct(x));
+		}
+
 		public IEnumerable< SoapProduct > Products{ get; set; }
 	}
 
@@ -41,20 +46,28 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 
 		public SoapProduct( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductEntity catalogProductEntity )
 		{
-			CategoryIds = catalogProductEntity.category_ids.ToList();
-			Name = catalogProductEntity.name;
-			ProductId = catalogProductEntity.product_id;
-			Set = catalogProductEntity.set;
-			Sku = catalogProductEntity.sku;
+			this.CategoryIds = catalogProductEntity.category_ids.ToList();
+			this.Name = catalogProductEntity.name;
+			this.ProductId = catalogProductEntity.product_id;
+			this.Set = catalogProductEntity.set;
+			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.type;
-			WebsiteIds = catalogProductEntity.website_ids.ToList();
+			this.WebsiteIds = catalogProductEntity.website_ids.ToList();
 		}
 
 		public SoapProduct( CatalogDataProductInterface catalogProductEntity )
 		{
-			Name = catalogProductEntity.name;
-			ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
-			Sku = catalogProductEntity.sku;
+			this.Name = catalogProductEntity.name;
+			this.ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
+			this.Sku = catalogProductEntity.sku;
+			this.Type = catalogProductEntity.typeId;
+		}
+
+		public SoapProduct( Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductInterface catalogProductEntity )
+		{
+			this.Name = catalogProductEntity.name;
+			this.ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
+			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.typeId;
 		}
 
