@@ -1,0 +1,1390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+      <xsd:element name="GenericFault" type="tns:GenericFault" />
+      <xsd:complexType name="GenericFaultParameter">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="key" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfGenericFaultParameter">
+        <xsd:annotation>
+          <xsd:documentation>An array of GenericFaultParameter items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:GenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfGenericFaultParameter.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WrappedError">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="message" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="parameters" type="tns:ArrayOfGenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>Message parameters.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWrappedError">
+        <xsd:annotation>
+          <xsd:documentation>An array of WrappedError items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:WrappedError">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfWrappedError.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="GenericFault">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="Trace" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Exception calls stack trace.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="Parameters" type="tns:ArrayOfGenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>Additional exception parameters.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="WrappedErrors" type="tns:ArrayOfWrappedError">
+            <xsd:annotation>
+              <xsd:documentation>Additional wrapped errors.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkDataImageContentInterface">
+        <xsd:annotation>
+          <xsd:documentation>Image Content data interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="base64EncodedData" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Media data (base64 encoded content)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="type" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>MIME type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Image name</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:annotation>
+          <xsd:documentation>An array of string items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfString.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkDataVideoContentInterface">
+        <xsd:annotation>
+          <xsd:documentation>Video Content data interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>MIME type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoProvider" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Provider</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoUrl" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Video URL</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoTitle" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Title</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoDescription" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Video Description</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoMetadata" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Metadata</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
+        <xsd:annotation>
+          <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="videoContent" type="tns:FrameworkDataVideoContentInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryInterface">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry ID</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Media type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="label" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry alternative text</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry position (sort order)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="disabled" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>If gallery entry is hidden from product page</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="types" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry image types (thumbnail, image, small_image etc)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="file" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>File path</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="content" type="tns:FrameworkDataImageContentInterface">
+            <xsd:annotation>
+              <xsd:documentation>Media gallery content</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
+            <xsd:annotation>
+              <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1GetStockItemBySkuRequest" type="tns:CatalogInventoryStockRegistryV1GetStockItemBySkuRequest" />
+      <xsd:complexType name="CatalogInventoryStockRegistryV1GetStockItemBySkuRequest">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="productSku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="scopeId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1GetStockItemBySkuResponse" type="tns:CatalogInventoryStockRegistryV1GetStockItemBySkuResponse" />
+      <xsd:complexType name="CatalogInventoryDataStockItemExtensionInterface">
+        <xsd:annotation>
+          <xsd:documentation>ExtensionInterface class for @see \Magento\CatalogInventory\Api\Data\StockItemInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogInventoryDataStockItemInterface">
+        <xsd:annotation>
+          <xsd:documentation>Interface StockItem</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="itemId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="productId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="stockId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Stock identifier</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="qty" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="isInStock" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Stock Availability</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="isQtyDecimal" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="showDefaultNotificationMessage" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigMinQty" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="minQty" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation>Minimal quantity available for item status in stock</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigMinSaleQty" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="minSaleQty" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation>Minimum Qty Allowed in Shopping Cart or NULL when there is no limitation</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigMaxSaleQty" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="maxSaleQty" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation>Maximum Qty Allowed in Shopping Cart data wrapper</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigBackorders" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="backorders" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Backorders status</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigNotifyStockQty" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="notifyStockQty" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation>Notify for Quantity Below data wrapper</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigQtyIncrements" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="qtyIncrements" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation>Quantity Increments data wrapper</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigEnableQtyInc" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="enableQtyIncrements" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Whether Quantity Increments is enabled</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="useConfigManageStock" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="manageStock" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Can Manage Stock</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="lowStockDate" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="isDecimalDivided" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="stockStatusChangedAuto" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogInventoryDataStockItemExtensionInterface">
+            <xsd:annotation>
+              <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogInventoryStockRegistryV1GetStockItemBySkuResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogInventoryStockRegistryV1GetStockItemBySku call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogInventoryDataStockItemInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockItemBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest" type="tns:CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest" />
+      <xsd:complexType name="CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="productSku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="stockItem" type="tns:CatalogInventoryDataStockItemInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse" type="tns:CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse" />
+      <xsd:complexType name="CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogInventoryStockRegistryV1UpdateStockItemBySku call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1UpdateStockItemBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1GetLowStockItemsRequest" type="tns:CatalogInventoryStockRegistryV1GetLowStockItemsRequest" />
+      <xsd:complexType name="CatalogInventoryStockRegistryV1GetLowStockItemsRequest">
+        <xsd:annotation>
+          <xsd:documentation>Retrieves a list of SKU's with low inventory qty</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="scopeId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="qty" type="xsd:float">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="currentPage" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:default>1</inf:default>
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="pageSize" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1GetLowStockItemsResponse" type="tns:CatalogInventoryStockRegistryV1GetLowStockItemsResponse" />
+      <xsd:complexType name="CatalogInventoryDataStockStatusExtensionInterface">
+        <xsd:annotation>
+          <xsd:documentation>ExtensionInterface class for @see \Magento\CatalogInventory\Api\Data\StockStatusInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogInventoryDataStockStatusInterface">
+        <xsd:annotation>
+          <xsd:documentation>Interface StockStatusInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="productId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="stockId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="qty" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="stockStatus" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="stockItem" type="tns:CatalogInventoryDataStockItemInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogInventoryDataStockStatusExtensionInterface">
+            <xsd:annotation>
+              <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogInventoryDataStockStatusInterface">
+        <xsd:annotation>
+          <xsd:documentation>An array of CatalogInventoryDataStockStatusInterface items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogInventoryDataStockStatusInterface">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfCatalogInventoryDataStockStatusInterface.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfFrameworkCriteriaInterface">
+        <xsd:annotation>
+          <xsd:documentation>An array of FrameworkCriteriaInterface items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:FrameworkCriteriaInterface">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfFrameworkCriteriaInterface.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkCriteriaInterface">
+        <xsd:annotation>
+          <xsd:documentation>Interface CriteriaInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mapperInterfaceName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Associated Mapper Interface name</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="criteriaList" type="tns:ArrayOfFrameworkCriteriaInterface">
+            <xsd:annotation>
+              <xsd:documentation>Criteria objects added to current Composite Criteria</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="filters" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>List of filters</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="orders" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Ordering criteria</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="limit" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Limit</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogInventoryStockStatusCriteriaInterface">
+        <xsd:annotation>
+          <xsd:documentation>Interface StockStatusCriteriaInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mapperInterfaceName" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Associated Mapper Interface name</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="criteriaList" type="tns:ArrayOfFrameworkCriteriaInterface">
+            <xsd:annotation>
+              <xsd:documentation>Criteria objects added to current Composite Criteria</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="filters" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>List of filters</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="orders" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Ordering criteria</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="limit" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Limit</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogInventoryDataStockStatusCollectionInterface">
+        <xsd:annotation>
+          <xsd:documentation>Stock Status collection interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="items" type="tns:ArrayOfCatalogInventoryDataStockStatusInterface">
+            <xsd:annotation>
+              <xsd:documentation>Items</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="searchCriteria" type="tns:CatalogInventoryStockStatusCriteriaInterface">
+            <xsd:annotation>
+              <xsd:documentation>Search criteria.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="totalCount" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Total count.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogInventoryStockRegistryV1GetLowStockItemsResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogInventoryStockRegistryV1GetLowStockItems call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogInventoryDataStockStatusCollectionInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetLowStockItems</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1GetStockStatusBySkuRequest" type="tns:CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest" />
+      <xsd:complexType name="CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="productSku" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="scopeId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogInventoryStockRegistryV1GetStockStatusBySkuResponse" type="tns:CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse" />
+      <xsd:complexType name="CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogInventoryStockRegistryV1GetStockStatusBySku call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogInventoryDataStockStatusInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1">
+                <inf:callInfo>
+                  <inf:callName>catalogInventoryStockRegistryV1GetStockStatusBySku</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GenericFault">
+    <wsdl:part name="messageParameters" element="tns:GenericFault" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1GetStockItemBySkuRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1GetStockItemBySkuRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1GetStockItemBySkuResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1GetStockItemBySkuResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1GetLowStockItemsRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1GetLowStockItemsRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1GetLowStockItemsResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1GetLowStockItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1GetStockStatusBySkuRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1GetStockStatusBySkuRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogInventoryStockRegistryV1GetStockStatusBySkuResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogInventoryStockRegistryV1GetStockStatusBySkuResponse" />
+  </wsdl:message>
+  <wsdl:portType name="catalogInventoryStockRegistryV1PortType">
+    <wsdl:operation name="catalogInventoryStockRegistryV1GetStockItemBySku">
+      <wsdl:input message="tns:catalogInventoryStockRegistryV1GetStockItemBySkuRequest" />
+      <wsdl:output message="tns:catalogInventoryStockRegistryV1GetStockItemBySkuResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogInventoryStockRegistryV1UpdateStockItemBySku">
+      <wsdl:input message="tns:catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest" />
+      <wsdl:output message="tns:catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogInventoryStockRegistryV1GetLowStockItems">
+      <wsdl:input message="tns:catalogInventoryStockRegistryV1GetLowStockItemsRequest" />
+      <wsdl:output message="tns:catalogInventoryStockRegistryV1GetLowStockItemsResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogInventoryStockRegistryV1GetStockStatusBySku">
+      <wsdl:input message="tns:catalogInventoryStockRegistryV1GetStockStatusBySkuRequest" />
+      <wsdl:output message="tns:catalogInventoryStockRegistryV1GetStockStatusBySkuResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="catalogInventoryStockRegistryV1Binding" type="tns:catalogInventoryStockRegistryV1PortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="catalogInventoryStockRegistryV1GetStockItemBySku">
+      <soap12:operation soapAction="catalogInventoryStockRegistryV1GetStockItemBySku" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogInventoryStockRegistryV1UpdateStockItemBySku">
+      <soap12:operation soapAction="catalogInventoryStockRegistryV1UpdateStockItemBySku" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogInventoryStockRegistryV1GetLowStockItems">
+      <soap12:operation soapAction="catalogInventoryStockRegistryV1GetLowStockItems" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogInventoryStockRegistryV1GetStockStatusBySku">
+      <soap12:operation soapAction="catalogInventoryStockRegistryV1GetStockStatusBySku" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="catalogInventoryStockRegistryV1Service">
+    <wsdl:port name="catalogInventoryStockRegistryV1Port" binding="tns:catalogInventoryStockRegistryV1Binding">
+      <soap12:address location="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogInventoryStockRegistryV1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

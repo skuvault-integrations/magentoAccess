@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+      <xsd:element name="GenericFault" type="tns:GenericFault" />
+      <xsd:complexType name="GenericFaultParameter">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="key" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfGenericFaultParameter">
+        <xsd:annotation>
+          <xsd:documentation>An array of GenericFaultParameter items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:GenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfGenericFaultParameter.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WrappedError">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="message" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="parameters" type="tns:ArrayOfGenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>Message parameters.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWrappedError">
+        <xsd:annotation>
+          <xsd:documentation>An array of WrappedError items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:WrappedError">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfWrappedError.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="GenericFault">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="Trace" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Exception calls stack trace.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="Parameters" type="tns:ArrayOfGenericFaultParameter">
+            <xsd:annotation>
+              <xsd:documentation>Additional exception parameters.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="WrappedErrors" type="tns:ArrayOfWrappedError">
+            <xsd:annotation>
+              <xsd:documentation>Additional wrapped errors.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkDataImageContentInterface">
+        <xsd:annotation>
+          <xsd:documentation>Image Content data interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="base64EncodedData" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Media data (base64 encoded content)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="type" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>MIME type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Image name</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:annotation>
+          <xsd:documentation>An array of string items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfString.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FrameworkDataVideoContentInterface">
+        <xsd:annotation>
+          <xsd:documentation>Video Content data interface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>MIME type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoProvider" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Provider</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoUrl" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Video URL</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoTitle" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Title</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoDescription" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Video Description</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="videoMetadata" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Metadata</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
+        <xsd:annotation>
+          <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="videoContent" type="tns:FrameworkDataVideoContentInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryInterface">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry ID</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Media type</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="label" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry alternative text</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry position (sort order)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="disabled" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>If gallery entry is hidden from product page</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:default>false</inf:default>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="types" type="tns:ArrayOfString">
+            <xsd:annotation>
+              <xsd:documentation>Gallery entry image types (thumbnail, image, small_image etc)</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="file" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>File path</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="content" type="tns:FrameworkDataImageContentInterface">
+            <xsd:annotation>
+              <xsd:documentation>Media gallery content</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
+            <xsd:annotation>
+              <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogCategoryManagementV1GetTreeRequest" type="tns:CatalogCategoryManagementV1GetTreeRequest" />
+      <xsd:complexType name="CatalogCategoryManagementV1GetTreeRequest">
+        <xsd:annotation>
+          <xsd:documentation>Retrieve list of categories</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="rootCategoryId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="depth" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogCategoryManagementV1GetTreeResponse" type="tns:CatalogCategoryManagementV1GetTreeResponse" />
+      <xsd:complexType name="ArrayOfCatalogDataCategoryTreeInterface">
+        <xsd:annotation>
+          <xsd:documentation>An array of CatalogDataCategoryTreeInterface items.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataCategoryTreeInterface">
+            <xsd:annotation>
+              <xsd:documentation>An item of ArrayOfCatalogDataCategoryTreeInterface.</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogDataCategoryTreeInterface">
+        <xsd:annotation>
+          <xsd:documentation />
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="parentId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Parent category ID</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Category name</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:maxLength />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="isActive" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Whether category is active</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Category position</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="level" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Category level</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="productCount" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation>Product count</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="childrenData" type="tns:ArrayOfCatalogDataCategoryTreeInterface">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:natureOfType>array</inf:natureOfType>
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Conditionally</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogCategoryManagementV1GetTreeResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogCategoryManagementV1GetTree call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogDataCategoryTreeInterface">
+            <xsd:annotation>
+              <xsd:documentation>containing Tree objects</xsd:documentation>
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1GetTree</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogCategoryManagementV1MoveRequest" type="tns:CatalogCategoryManagementV1MoveRequest" />
+      <xsd:complexType name="CatalogCategoryManagementV1MoveRequest">
+        <xsd:annotation>
+          <xsd:documentation>Move category</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="categoryId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1Move</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="1" name="parentId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1Move</inf:callName>
+                  <inf:requiredInput>Yes</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="1" name="afterId" type="xsd:int">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:min />
+                <inf:max />
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1Move</inf:callName>
+                  <inf:requiredInput>No</inf:requiredInput>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="catalogCategoryManagementV1MoveResponse" type="tns:CatalogCategoryManagementV1MoveResponse" />
+      <xsd:complexType name="CatalogCategoryManagementV1MoveResponse">
+        <xsd:annotation>
+          <xsd:documentation>Response container for the catalogCategoryManagementV1Move call.</xsd:documentation>
+          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation />
+              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1">
+                <inf:default>false</inf:default>
+                <inf:callInfo>
+                  <inf:callName>catalogCategoryManagementV1Move</inf:callName>
+                  <inf:returned>Always</inf:returned>
+                </inf:callInfo>
+              </xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GenericFault">
+    <wsdl:part name="messageParameters" element="tns:GenericFault" />
+  </wsdl:message>
+  <wsdl:message name="catalogCategoryManagementV1GetTreeRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogCategoryManagementV1GetTreeRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogCategoryManagementV1GetTreeResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogCategoryManagementV1GetTreeResponse" />
+  </wsdl:message>
+  <wsdl:message name="catalogCategoryManagementV1MoveRequest">
+    <wsdl:part name="messageParameters" element="tns:catalogCategoryManagementV1MoveRequest" />
+  </wsdl:message>
+  <wsdl:message name="catalogCategoryManagementV1MoveResponse">
+    <wsdl:part name="messageParameters" element="tns:catalogCategoryManagementV1MoveResponse" />
+  </wsdl:message>
+  <wsdl:portType name="catalogCategoryManagementV1PortType">
+    <wsdl:operation name="catalogCategoryManagementV1GetTree">
+      <wsdl:input message="tns:catalogCategoryManagementV1GetTreeRequest" />
+      <wsdl:output message="tns:catalogCategoryManagementV1GetTreeResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogCategoryManagementV1Move">
+      <wsdl:input message="tns:catalogCategoryManagementV1MoveRequest" />
+      <wsdl:output message="tns:catalogCategoryManagementV1MoveResponse" />
+      <wsdl:fault name="GenericFault" message="tns:GenericFault" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="catalogCategoryManagementV1Binding" type="tns:catalogCategoryManagementV1PortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="catalogCategoryManagementV1GetTree">
+      <soap12:operation soapAction="catalogCategoryManagementV1GetTree" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+    <wsdl:operation name="catalogCategoryManagementV1Move">
+      <soap12:operation soapAction="catalogCategoryManagementV1Move" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GenericFault" />
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="catalogCategoryManagementV1Service">
+    <wsdl:port name="catalogCategoryManagementV1Port" binding="tns:catalogCategoryManagementV1Binding">
+      <soap12:address location="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategoryManagementV1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
