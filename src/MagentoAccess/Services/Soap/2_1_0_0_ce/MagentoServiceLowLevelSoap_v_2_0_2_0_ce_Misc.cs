@@ -6,20 +6,20 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
+using MagentoAccess.Magento2backendModuleServiceV1_v_2_1_0_0_CE;
+using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE;
+using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
+using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE;
+using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE;
+using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE;
+using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
-	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevelSoap_v_2_1_0_0_ce : IMagentoServiceLowLevelSoap
 	{
 		public string ApiUser{ get; private set; }
 
@@ -83,7 +83,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_2_0_2_0_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
+		public MagentoServiceLowLevelSoap_v_2_1_0_0_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
