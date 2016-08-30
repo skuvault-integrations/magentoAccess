@@ -35,6 +35,13 @@ namespace MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList
 			this.Exc = exc;
 		}
 
+		public ProductAttributeMediaListResponse( Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.catalogProductAttributeMediaGalleryManagementV1GetListResponse1 res, string productId, string sku )
+		{
+			this.ProductId = productId;
+			this.Sku = sku;
+			this.MagentoImages = res.catalogProductAttributeMediaGalleryManagementV1GetListResponse.result.Select( x => new MagentoImage( x ) ).ToList();
+		}
+
 		public string ProductId{ get; private set; }
 		public string Sku{ get; private set; }
 

@@ -80,6 +80,19 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			this.Childrens = category.childrenData != null ? category.childrenData.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 
+		public CategoryNode( Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.CatalogDataCategoryTreeInterface category )
+		{
+			if( category == null )
+				return;
+
+			this.Id = category.id;
+			this.Level = category.level;
+			this.Name = category.name;
+			this.ParentId = category.parentId;
+			this.IsActive = category.isActive ? 1 : 0;
+			this.Childrens = category.childrenData != null ? category.childrenData.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
+		}
+
 		public List< CategoryNode > Flatten()
 		{
 			var res = new List< CategoryNode >();

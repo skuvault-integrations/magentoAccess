@@ -30,6 +30,15 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			this.RootCategory = rootCategory;
 		}
 
-		public CategoryNode RootCategory{ get; set; }
+		public GetCategoryTreeResponse( Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.catalogCategoryManagementV1GetTreeResponse1 catalogCategoryTreeResponse )
+		{
+			if( catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.catalogCategoryManagementV1GetTreeResponse == null
+			    || catalogCategoryTreeResponse.catalogCategoryManagementV1GetTreeResponse.result == null )
+				return;
+			var rootCategory = new CategoryNode( catalogCategoryTreeResponse.catalogCategoryManagementV1GetTreeResponse.result );
+			this.RootCategory = rootCategory;
+		}
+
+		public CategoryNode RootCategory { get; set; }
 	}
 }

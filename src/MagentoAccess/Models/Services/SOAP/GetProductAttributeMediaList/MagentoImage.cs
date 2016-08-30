@@ -55,6 +55,18 @@ namespace MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList
 			if( Enum.TryParse( imageType, true, out magentoUrlType ) )
 				this.ImageType = magentoUrlType;
 		}
+
+		public MagentoImage( Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogDataProductAttributeMediaGalleryEntryInterface catalogProductImageEntity )
+		{
+			this.ImageUrl = catalogProductImageEntity.file;
+			this.ImageType = catalogProductImageEntity.types.Select( x =>
+			{
+				MagentoUrlType magentoUrlType;
+				if( Enum.TryParse( x, true, out magentoUrlType ) )
+					return magentoUrlType;
+				return ( MagentoUrlType )0;
+			} ).Aggregate( ( MagentoUrlType )0, ( x, y ) => x | y );
+		}
 	}
 
 	[ Flags ]

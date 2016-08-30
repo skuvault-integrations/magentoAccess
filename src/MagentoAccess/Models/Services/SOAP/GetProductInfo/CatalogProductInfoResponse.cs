@@ -74,6 +74,33 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			this.Exc = catalogProductInfoResponse;
 		}
 
+		public CatalogProductInfoResponse( Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.catalogProductRepositoryV1GetResponse1 catalogProductInfoResponse )
+		{
+			if (catalogProductInfoResponse == null
+				|| catalogProductInfoResponse.catalogProductRepositoryV1GetResponse == null
+				|| catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result == null)
+				return;
+
+			var catalogDataProductInterface = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result;
+
+			this.ShortDescription = string.Empty;
+			if (!string.IsNullOrWhiteSpace(catalogDataProductInterface.price))
+				this.Price = catalogDataProductInterface.price.ToString(CultureInfo.InvariantCulture);
+			if (!string.IsNullOrWhiteSpace(catalogDataProductInterface.weight))
+				this.Weight = catalogDataProductInterface.weight.ToString(CultureInfo.InvariantCulture);
+			this.ProductId = catalogDataProductInterface.id.ToString(CultureInfo.InvariantCulture);
+
+			if (catalogDataProductInterface.customAttributes != null
+				&& catalogDataProductInterface.customAttributes.Any())
+			{
+				this.Description = GetSimpleStringCustomAttribute(catalogDataProductInterface, "description");
+				this.SpecialPrice = GetSimpleStringCustomAttribute(catalogDataProductInterface, "special_price");
+				this.CategoryIds = GetArrayOfStringCustomAttribute(catalogDataProductInterface, "category_ids");
+
+				this.Attributes = catalogDataProductInterface.customAttributes.Select(x => new ProductAttribute(x.attributeCode, GetCustomAttribute(catalogDataProductInterface, x.attributeCode))).ToList();
+			}
+		}
+
 		private static string GetCustomAttribute( CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
 		{
 			var descriptionNodes = ( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new FrameworkAttributeInterface() ).value;
