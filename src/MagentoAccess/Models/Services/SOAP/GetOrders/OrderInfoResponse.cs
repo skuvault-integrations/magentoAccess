@@ -531,34 +531,34 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 				};
 				this.BillingAddress = billingAddress;
 			}
-			BillingAddressId = res.billingAddressId.ToString( CultureInfo.InvariantCulture );
+			this.BillingAddressId = res.billingAddressId.ToString( CultureInfo.InvariantCulture );
 			//BillingFirstname = res.billingFirstname;
 			//BillingLastname = res.billingLastname;
 			//BillingName = res.billingName;
-			CreatedAt = res.createdAt;
-			CustomerEmail = res.customerEmail;
-			CustomerFirstname = res.customerFirstname;
-			CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
-			CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
-			CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
-			CustomerLastname = res.customerLastname;
-			CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
-			DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
-			EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
+			this.CreatedAt = res.createdAt;
+			this.CustomerEmail = res.customerEmail;
+			this.CustomerFirstname = res.customerFirstname;
+			this.CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
+			this.CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
+			this.CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
+			this.CustomerLastname = res.customerLastname;
+			this.CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
+			this.DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
+			this.EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
 			//GiftMessage = res.giftMessage;
 			//GiftMessageId = res.giftMessageId;
-			GlobalCurrencyCode = res.globalCurrencyCode;
-			GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
-			IncrementId = res.incrementId;
+			this.GlobalCurrencyCode = res.globalCurrencyCode;
+			this.GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
+			this.IncrementId = res.incrementId;
 			//IsActive = res.isActive;
-			IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
 
 			if( res.items != null )
-				Items = res.items.Select( x => new OrderItemEntity( x ) );
+				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
 
-			OrderCurrencyCode = res.orderCurrencyCode;
-			OrderId = ( res.extOrderId ).ToString( CultureInfo.InvariantCulture );
-			ParentId = res.relationParentId;
+			this.OrderCurrencyCode = res.orderCurrencyCode;
+			this.OrderId = ( res.extOrderId ).ToString( CultureInfo.InvariantCulture );
+			this.ParentId = res.relationParentId;
 
 			if( res.payment != null )
 			{
@@ -585,10 +585,10 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 					ShippingAmount = res.payment.shippingAmount.ToString( CultureInfo.InvariantCulture ),
 					//UpdatedAt = res.payment.updatedAt,
 				};
-				Payment = payment;
+				this.Payment = payment;
 			}
-			QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
-			RemoteIp = res.remoteIp;
+			this.QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
+			this.RemoteIp = res.remoteIp;
 			//if (res.shippingAddress != null)
 			//{
 			//	ShippingAddress = new ShippingAddress()
@@ -614,36 +614,36 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//	};
 			//}
 			//ShippingAddressId = res.shippingAddressId;
-			ShippingAmount = res.shippingAmount.ToString( CultureInfo.InvariantCulture );
-			ShippingDescription = res.shippingDescription;
+			this.ShippingAmount = res.shippingAmount.ToString( CultureInfo.InvariantCulture );
+			this.ShippingDescription = res.shippingDescription;
 			//ShippingFirstname = res.shippingFirstname;
 			//ShippingLastname = res.shippingLastname;
 			//ShippingMethod = res.shippingMethod;
 			//ShippingName = res.shippingName;
-			State = res.state;
-			Status = res.status;
+			this.State = res.state;
+			this.Status = res.status;
 
 			if( res.statusHistories != null )
 			{
-				StatusHistory = new List< StatusHistoryRecord >(
+				this.StatusHistory = new List< StatusHistoryRecord >(
 					res.statusHistories.Select( x => new StatusHistoryRecord( x ) ) );
 			}
-			StoreCurrencyCode = res.storeCurrencyCode;
-			StoreId = res.storeId.ToString( CultureInfo.InvariantCulture );
-			StoreName = res.storeName;
-			StoreToBaseRate = ( res.storeToBaseRate ).ToString( CultureInfo.InvariantCulture );
-			StoreToOrderRate = ( res.storeToOrderRate ).ToString( CultureInfo.InvariantCulture );
-			Subtotal = ( res.subtotal ).ToString( CultureInfo.InvariantCulture );
-			TaxAmount = ( res.taxAmount ).ToString( CultureInfo.InvariantCulture );
-			TotalCanceled = ( res.totalCanceled ).ToString( CultureInfo.InvariantCulture );
-			TotalInvoiced = ( res.totalInvoiced ).ToString( CultureInfo.InvariantCulture );
-			TotalOfflineRefunded = ( res.totalOfflineRefunded ).ToString( CultureInfo.InvariantCulture );
-			TotalOnlineRefunded = ( res.totalOnlineRefunded ).ToString( CultureInfo.InvariantCulture );
-			TotalPaid = ( res.totalPaid ).ToString( CultureInfo.InvariantCulture );
-			TotalQtyOrdered = ( res.totalQtyOrdered ).ToString( CultureInfo.InvariantCulture );
-			TotalRefunded = ( res.totalRefunded ).ToString( CultureInfo.InvariantCulture );
-			UpdatedAT = res.updatedAt;
-			Weight = ( res.weight ).ToString( CultureInfo.InvariantCulture );
+			this.StoreCurrencyCode = res.storeCurrencyCode;
+			this.StoreId = res.storeId.ToString( CultureInfo.InvariantCulture );
+			this.StoreName = res.storeName;
+			this.StoreToBaseRate = ( res.storeToBaseRate ).ToString( CultureInfo.InvariantCulture );
+			this.StoreToOrderRate = ( res.storeToOrderRate ).ToString( CultureInfo.InvariantCulture );
+			this.Subtotal = ( res.subtotal ).ToString( CultureInfo.InvariantCulture );
+			this.TaxAmount = ( res.taxAmount ).ToString( CultureInfo.InvariantCulture );
+			this.TotalCanceled = ( res.totalCanceled ).ToString( CultureInfo.InvariantCulture );
+			this.TotalInvoiced = ( res.totalInvoiced ).ToString( CultureInfo.InvariantCulture );
+			this.TotalOfflineRefunded = ( res.totalOfflineRefunded ).ToString( CultureInfo.InvariantCulture );
+			this.TotalOnlineRefunded = ( res.totalOnlineRefunded ).ToString( CultureInfo.InvariantCulture );
+			this.TotalPaid = ( res.totalPaid ).ToString( CultureInfo.InvariantCulture );
+			this.TotalQtyOrdered = ( res.totalQtyOrdered ).ToString( CultureInfo.InvariantCulture );
+			this.TotalRefunded = ( res.totalRefunded ).ToString( CultureInfo.InvariantCulture );
+			this.UpdatedAT = res.updatedAt;
+			this.Weight = ( res.weight ).ToString( CultureInfo.InvariantCulture );
 		}
 
 		public string AppliedRuleIds{ get; private set; }
