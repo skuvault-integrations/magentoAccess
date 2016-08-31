@@ -15,13 +15,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			try
 			{
-				var frameworkSearchFilterGroups = new List<Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup >
+				var frameworkSearchFilterGroups = new List< FrameworkSearchFilterGroup >
 				{
-					new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup() { filters = new[] { new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkFilter() { field = "updated_At", conditionType = "gt", value = modifiedFrom.ToSoapParameterString() } } },
-					new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup() { filters = new[] { new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkFilter() { field = "updated_At", conditionType = "lt", value = modifiedTo.ToSoapParameterString() } } },
+					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "updated_At", conditionType = "gt", value = modifiedFrom.ToSoapParameterString() } } },
+					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "updated_At", conditionType = "lt", value = modifiedTo.ToSoapParameterString() } } },
 				};
 				if( !string.IsNullOrWhiteSpace( this.Store ) )
-					frameworkSearchFilterGroups.Add( new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkSearchFilterGroup() { filters = new[] { new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );
+					frameworkSearchFilterGroups.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );
 
 				var filters = new SalesOrderRepositoryV1GetListRequest
 				{
