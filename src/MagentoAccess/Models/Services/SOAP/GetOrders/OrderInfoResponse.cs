@@ -1128,6 +1128,18 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
 		}
 
+		public StatusHistoryRecord( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesDataOrderStatusHistoryInterface salesOrderStatusHistoryEntity )
+		{
+			this.Comment = salesOrderStatusHistoryEntity.comment;
+			this.CreatedAt = salesOrderStatusHistoryEntity.createdAt;
+			this.IncrementId = salesOrderStatusHistoryEntity.entityId.ToString( CultureInfo.InvariantCulture );
+			//IsActive = salesOrderStatusHistoryEntity.isActive;
+			this.IsCustomerNotified = salesOrderStatusHistoryEntity.isCustomerNotified.ToString( CultureInfo.InvariantCulture );
+			this.ParentId = salesOrderStatusHistoryEntity.parentId.ToString( CultureInfo.InvariantCulture );
+			this.Status = salesOrderStatusHistoryEntity.status;
+			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
+		}
+
 		public object qq{ get; set; }
 	}
 
