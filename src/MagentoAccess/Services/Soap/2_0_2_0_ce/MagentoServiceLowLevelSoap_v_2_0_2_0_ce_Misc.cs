@@ -17,7 +17,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 
-namespace MagentoAccess.Services.Soap._2_1_0_0_ce
+namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
 	{
