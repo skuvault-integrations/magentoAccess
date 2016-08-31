@@ -485,6 +485,167 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			Weight = ( res.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 		}
 
+		public OrderInfoResponse( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1GetResponse1 response )
+		{
+			var res = response.salesOrderRepositoryV1GetResponse.result;
+			var invariantCulture = CultureInfo.InvariantCulture;
+
+			this.AppliedRuleIds = res.appliedRuleIds;
+			this.BaseCurrencyCode = res.baseCurrencyCode;
+			this.BaseDiscountAmount = ( res.baseDiscountAmount ).ToString( invariantCulture );
+			this.BaseGrandTotal = ( res.baseGrandTotal ).ToString( CultureInfo.InvariantCulture );
+			this.BaseShippingAmount = ( res.baseShippingAmount ).ToString( CultureInfo.InvariantCulture );
+			this.BaseSubtotal = ( res.baseSubtotal ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxAmount = ( res.baseTaxAmount ).ToString( CultureInfo.InvariantCulture );
+			this.BaseToGlobalRate = ( res.baseToGlobalRate ).ToString( CultureInfo.InvariantCulture );
+			this.BaseToOrderRate = ( res.baseToOrderRate ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalCanceled = ( res.baseTotalCanceled ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalInvoiced = ( res.baseTotalInvoiced ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalOfflineRefunded = ( res.baseTotalOfflineRefunded ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalOnlineRefunded = ( res.baseTotalOnlineRefunded ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalPaid = ( res.baseTotalPaid ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalQtyOrdered = ( res.baseTotalQtyOrdered ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTotalRefunded = ( res.baseTotalRefunded ).ToString( CultureInfo.InvariantCulture );
+			if( res.billingAddress != null )
+			{
+				var billingAddress = new BillingAddress
+				{
+					//AddressId = res.billingAddress.addressId,
+					AddressType = res.billingAddress.addressType,
+					City = res.billingAddress.city,
+					Company = res.billingAddress.company,
+					CountryId = res.billingAddress.countryId,
+					//CreatedAt = res.billingAddress.createdAt,
+					Fax = res.billingAddress.fax,
+					Firstname = res.billingAddress.firstname,
+					//IncrementId = res.billingAddress.incrementId,
+					//IsActive = res.billingAddress.isActive,
+					Lastname = res.billingAddress.lastname,
+					ParentId = res.billingAddress.parentId.ToString( CultureInfo.InvariantCulture ),
+					Postcode = res.billingAddress.postcode,
+					Region = res.billingAddress.region,
+					RegionId = res.billingAddress.regionId.ToString( CultureInfo.InvariantCulture ),
+					Street = string.Join( "", res.billingAddress.street.ToList() ).ToString( CultureInfo.InvariantCulture ),
+					Telephone = res.billingAddress.telephone,
+					//UpdatedAt = res.billingAddress.updatedAt,
+				};
+				this.BillingAddress = billingAddress;
+			}
+			BillingAddressId = res.billingAddressId.ToString( CultureInfo.InvariantCulture );
+			//BillingFirstname = res.billingFirstname;
+			//BillingLastname = res.billingLastname;
+			//BillingName = res.billingName;
+			CreatedAt = res.createdAt;
+			CustomerEmail = res.customerEmail;
+			CustomerFirstname = res.customerFirstname;
+			CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
+			CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
+			CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
+			CustomerLastname = res.customerLastname;
+			CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
+			DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
+			EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
+			//GiftMessage = res.giftMessage;
+			//GiftMessageId = res.giftMessageId;
+			GlobalCurrencyCode = res.globalCurrencyCode;
+			GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
+			IncrementId = res.incrementId;
+			//IsActive = res.isActive;
+			IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
+
+			if( res.items != null )
+				Items = res.items.Select( x => new OrderItemEntity( x ) );
+
+			OrderCurrencyCode = res.orderCurrencyCode;
+			OrderId = ( res.extOrderId ).ToString( CultureInfo.InvariantCulture );
+			ParentId = res.relationParentId;
+
+			if( res.payment != null )
+			{
+				var payment = new Payment()
+				{
+					AmountOrdered = res.payment.amountOrdered.ToString( CultureInfo.InvariantCulture ),
+					BaseAmountOrdered = res.payment.baseAmountOrdered.ToString( CultureInfo.InvariantCulture ),
+					BaseShippingAmount = res.payment.baseShippingAmount.ToString( CultureInfo.InvariantCulture ),
+					CcExpMonth = res.payment.ccExpMonth,
+					CcExpYear = res.payment.ccExpYear,
+					CcLast4 = res.payment.ccLast4,
+					CcNumberEnc = res.payment.ccNumberEnc,
+					CcOwner = res.payment.ccOwner,
+					CcSsStartMonth = res.payment.ccSsStartMonth,
+					CcSsStartYear = res.payment.ccSsStartYear,
+					CcType = res.payment.ccType,
+					//CreatedAt = res.payment.createdAt,
+					IncrementId = res.payment.entityId.ToString( CultureInfo.InvariantCulture ),
+					//IsActive = res.payment.isActive,
+					Method = res.payment.method,
+					ParentId = res.payment.parentId.ToString( CultureInfo.InvariantCulture ),
+					PaymentId = res.payment.quotePaymentId.ToString( CultureInfo.InvariantCulture ),
+					PoNumber = res.payment.poNumber,
+					ShippingAmount = res.payment.shippingAmount.ToString( CultureInfo.InvariantCulture ),
+					//UpdatedAt = res.payment.updatedAt,
+				};
+				Payment = payment;
+			}
+			QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
+			RemoteIp = res.remoteIp;
+			//if (res.shippingAddress != null)
+			//{
+			//	ShippingAddress = new ShippingAddress()
+			//	{
+			//		//AddressId = res.shippingAddress.addressId,
+			//		//AddressType = res.shippingAddress.addressType,
+			//		//City = res.shippingAddress.city,
+			//		Company = res.shippingAddress.company,
+			//		CountryId = res.shippingAddress.countryId,
+			//		CreatedAt = res.shippingAddress.createdAt,
+			//		Fax = res.shippingAddress.fax,
+			//		Firstname = res.shippingAddress.firstname,
+			//		IncrementId = res.shippingAddress.incrementId,
+			//		IsActive = res.shippingAddress.isActive,
+			//		Lastname = res.shippingAddress.lastname,
+			//		ParentId = res.shippingAddress.parentId,
+			//		Postcode = res.shippingAddress.postcode,
+			//		Region = res.shippingAddress.region,
+			//		RegionId = res.shippingAddress.regionId,
+			//		Street = res.shippingAddress.street,
+			//		Telephone = res.shippingAddress.telephone,
+			//		UpdatedAt = res.shippingAddress.updatedAt,
+			//	};
+			//}
+			//ShippingAddressId = res.shippingAddressId;
+			ShippingAmount = res.shippingAmount.ToString( CultureInfo.InvariantCulture );
+			ShippingDescription = res.shippingDescription;
+			//ShippingFirstname = res.shippingFirstname;
+			//ShippingLastname = res.shippingLastname;
+			//ShippingMethod = res.shippingMethod;
+			//ShippingName = res.shippingName;
+			State = res.state;
+			Status = res.status;
+
+			if( res.statusHistories != null )
+			{
+				StatusHistory = new List< StatusHistoryRecord >(
+					res.statusHistories.Select( x => new StatusHistoryRecord( x ) ) );
+			}
+			StoreCurrencyCode = res.storeCurrencyCode;
+			StoreId = res.storeId.ToString( CultureInfo.InvariantCulture );
+			StoreName = res.storeName;
+			StoreToBaseRate = ( res.storeToBaseRate ).ToString( CultureInfo.InvariantCulture );
+			StoreToOrderRate = ( res.storeToOrderRate ).ToString( CultureInfo.InvariantCulture );
+			Subtotal = ( res.subtotal ).ToString( CultureInfo.InvariantCulture );
+			TaxAmount = ( res.taxAmount ).ToString( CultureInfo.InvariantCulture );
+			TotalCanceled = ( res.totalCanceled ).ToString( CultureInfo.InvariantCulture );
+			TotalInvoiced = ( res.totalInvoiced ).ToString( CultureInfo.InvariantCulture );
+			TotalOfflineRefunded = ( res.totalOfflineRefunded ).ToString( CultureInfo.InvariantCulture );
+			TotalOnlineRefunded = ( res.totalOnlineRefunded ).ToString( CultureInfo.InvariantCulture );
+			TotalPaid = ( res.totalPaid ).ToString( CultureInfo.InvariantCulture );
+			TotalQtyOrdered = ( res.totalQtyOrdered ).ToString( CultureInfo.InvariantCulture );
+			TotalRefunded = ( res.totalRefunded ).ToString( CultureInfo.InvariantCulture );
+			UpdatedAT = res.updatedAt;
+			Weight = ( res.weight ).ToString( CultureInfo.InvariantCulture );
+		}
+
 		public string AppliedRuleIds{ get; private set; }
 		public string BaseCurrencyCode{ get; private set; }
 		public string BaseDiscountAmount{ get; private set; }
@@ -742,6 +903,67 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			WeeeTaxDisposition = ( salesOrderItemEntity.weeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			WeeeTaxRowDisposition = ( salesOrderItemEntity.weeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			Weight = ( salesOrderItemEntity.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+		}
+
+		public OrderItemEntity( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesDataOrderItemInterface salesOrderItemEntity )
+		{
+			AmountRefunded = ( salesOrderItemEntity.amountRefunded ).ToString( CultureInfo.InvariantCulture );
+			AppliedRuleIds = ( salesOrderItemEntity.appliedRuleIds );
+			BaseAmountRefunded = ( salesOrderItemEntity.baseAmountRefunded ).ToString( CultureInfo.InvariantCulture );
+			BaseDiscountAmount = ( salesOrderItemEntity.baseDiscountAmount ).ToString( CultureInfo.InvariantCulture );
+			BaseDiscountInvoiced = ( salesOrderItemEntity.baseDiscountInvoiced ).ToString( CultureInfo.InvariantCulture );
+			BaseOriginalPrice = ( salesOrderItemEntity.baseOriginalPrice ).ToString( CultureInfo.InvariantCulture );
+			BasePrice = ( salesOrderItemEntity.basePrice ).ToString( CultureInfo.InvariantCulture );
+			BaseRowInvoiced = ( salesOrderItemEntity.baseRowInvoiced ).ToString( CultureInfo.InvariantCulture );
+			BaseRowTotal = ( salesOrderItemEntity.baseRowTotal ).ToString( CultureInfo.InvariantCulture );
+			BaseTaxAmount = ( salesOrderItemEntity.baseTaxAmount ).ToString( CultureInfo.InvariantCulture );
+			BaseTaxBeforeDiscount = ( salesOrderItemEntity.baseTaxBeforeDiscount ).ToString( CultureInfo.InvariantCulture );
+			BaseTaxInvoiced = ( salesOrderItemEntity.baseTaxInvoiced ).ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxAppliedAmount = ( salesOrderItemEntity.baseWeeeTaxAppliedAmount ).ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ).ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxDisposition = ( salesOrderItemEntity.baseWeeeTaxDisposition ).ToString( CultureInfo.InvariantCulture );
+			BaseWeeeTaxRowDisposition = ( salesOrderItemEntity.baseWeeeTaxRowDisposition ).ToString( CultureInfo.InvariantCulture );
+			Cost = ( salesOrderItemEntity.baseCost ).ToString( CultureInfo.InvariantCulture );
+			CreatedAt = ( salesOrderItemEntity.createdAt );
+			DiscountAmount = ( salesOrderItemEntity.discountAmount ).ToString( CultureInfo.InvariantCulture );
+			DiscountInvoiced = ( salesOrderItemEntity.discountInvoiced ).ToString( CultureInfo.InvariantCulture );
+			DiscountPercent = ( salesOrderItemEntity.discountPercent ).ToString( CultureInfo.InvariantCulture );
+			FreeShipping = salesOrderItemEntity.freeShipping.ToString( CultureInfo.InvariantCulture );
+			//GiftMessage = salesOrderItemEntity.giftMessage;
+			//GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
+			//GiftMessageId = salesOrderItemEntity.giftMessageId;
+			IsQtyDecimal = salesOrderItemEntity.isQtyDecimal.ToString( CultureInfo.InvariantCulture );
+			IsVirtual = salesOrderItemEntity.isVirtual.ToString( CultureInfo.InvariantCulture );
+			ItemId = salesOrderItemEntity.itemId.ToString( CultureInfo.InvariantCulture );
+			Name = ( salesOrderItemEntity.name );
+			NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
+			this.OrderId = salesOrderItemEntity.orderId.ToString( CultureInfo.InvariantCulture );
+			OriginalPrice = ( salesOrderItemEntity.originalPrice ).ToString( CultureInfo.InvariantCulture );
+			Price = ( salesOrderItemEntity.price ).ToString( CultureInfo.InvariantCulture );
+			ProductId = salesOrderItemEntity.productId.ToString( CultureInfo.InvariantCulture );
+			//ProductOptions = salesOrderItemEntity.productOptions;
+			ProductType = ( salesOrderItemEntity.productType );
+			QtyCanceled = ( salesOrderItemEntity.qtyCanceled ).ToString( CultureInfo.InvariantCulture );
+			QtyInvoiced = ( salesOrderItemEntity.qtyInvoiced ).ToString( CultureInfo.InvariantCulture );
+			QtyOrdered = ( salesOrderItemEntity.qtyOrdered ).ToString( CultureInfo.InvariantCulture );
+			QtyRefunded = ( salesOrderItemEntity.qtyRefunded ).ToString( CultureInfo.InvariantCulture );
+			QtyShipped = ( salesOrderItemEntity.qtyShipped ).ToString( CultureInfo.InvariantCulture );
+			QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
+			RowInvoiced = ( salesOrderItemEntity.rowInvoiced ).ToString( CultureInfo.InvariantCulture );
+			RowTotal = ( salesOrderItemEntity.rowTotal ).ToString( CultureInfo.InvariantCulture );
+			RowWeight = ( salesOrderItemEntity.rowWeight ).ToString( CultureInfo.InvariantCulture );
+			Sku = ( salesOrderItemEntity.sku );
+			TaxAmount = ( salesOrderItemEntity.taxAmount ).ToString( CultureInfo.InvariantCulture );
+			TaxBeforeDiscount = ( salesOrderItemEntity.taxBeforeDiscount ).ToString( CultureInfo.InvariantCulture );
+			TaxInvoiced = ( salesOrderItemEntity.taxInvoiced ).ToString( CultureInfo.InvariantCulture );
+			TaxPercent = ( salesOrderItemEntity.taxPercent ).ToString( CultureInfo.InvariantCulture );
+			UpdatedAt = ( salesOrderItemEntity.updatedAt );
+			WeeeTaxApplied = ( salesOrderItemEntity.weeeTaxApplied );
+			WeeeTaxAppliedAmount = ( salesOrderItemEntity.weeeTaxAppliedAmount ).ToString( CultureInfo.InvariantCulture );
+			WeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ).ToString( CultureInfo.InvariantCulture );
+			WeeeTaxDisposition = ( salesOrderItemEntity.weeeTaxDisposition ).ToString( CultureInfo.InvariantCulture );
+			WeeeTaxRowDisposition = ( salesOrderItemEntity.weeeTaxRowDisposition ).ToString( CultureInfo.InvariantCulture );
+			Weight = ( salesOrderItemEntity.weight ).ToString( CultureInfo.InvariantCulture );
 		}
 
 		public string OrderId{ get; set; }
