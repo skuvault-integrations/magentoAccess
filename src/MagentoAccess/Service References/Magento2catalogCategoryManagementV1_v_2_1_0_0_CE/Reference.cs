@@ -186,7 +186,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
         
         private string nameField;
         
-        private bool isActiveField;
+        private string isActiveField;
         
         private int positionField;
         
@@ -246,7 +246,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public bool isActive {
+        public string isActive {
             get {
                 return this.isActiveField;
             }

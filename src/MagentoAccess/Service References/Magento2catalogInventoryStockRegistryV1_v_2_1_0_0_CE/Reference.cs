@@ -209,7 +209,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_1_0_0_CE {
         
         private bool stockIdFieldSpecified;
         
-        private float qtyField;
+        private string qtyField;
         
         private bool isInStockField;
         
@@ -331,7 +331,7 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public float qty {
+        public string qty {
             get {
                 return this.qtyField;
             }

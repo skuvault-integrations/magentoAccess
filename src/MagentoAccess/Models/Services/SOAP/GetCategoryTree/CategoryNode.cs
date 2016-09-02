@@ -89,7 +89,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			this.Level = category.level;
 			this.Name = category.name;
 			this.ParentId = category.parentId;
-			this.IsActive = category.isActive ? 1 : 0;
+			this.IsActive = string.Compare( category.isActive, "true", StringComparison.InvariantCultureIgnoreCase ) == 0 ? 1 : 0;
 			this.Childrens = category.childrenData != null ? category.childrenData.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 

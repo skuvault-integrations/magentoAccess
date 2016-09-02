@@ -84,8 +84,10 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			var catalogDataProductInterface = catalogProductInfoResponse.catalogProductRepositoryV1GetResponse.result;
 
 			this.ShortDescription = string.Empty;
-			this.Price = catalogDataProductInterface.price.ToString( CultureInfo.InvariantCulture );
-			this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
+			if( !string.IsNullOrWhiteSpace( catalogDataProductInterface.price ) )
+				this.Price = catalogDataProductInterface.price.ToString( CultureInfo.InvariantCulture );
+			if( !string.IsNullOrWhiteSpace( catalogDataProductInterface.weight ) )
+				this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
 			this.ProductId = catalogDataProductInterface.id.ToString( CultureInfo.InvariantCulture );
 
 			if( catalogDataProductInterface.customAttributes != null
