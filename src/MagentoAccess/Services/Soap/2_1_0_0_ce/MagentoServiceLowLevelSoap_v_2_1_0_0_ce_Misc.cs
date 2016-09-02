@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -29,12 +30,15 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		public string BaseMagentoUrl{ get; set; }
 
+		public string TokenSecret { get; set; }
+
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
 
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";
 
 		protected salesOrderRepositoryV1PortTypeClient _magentoSoapService;
+
 		protected integrationAdminTokenServiceV1PortTypeClient _magentoSoapService2;
 
 		protected string _sessionId;
@@ -64,6 +68,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				this._sessionIdCreatedAt = sessionId.Item2;
 				this._sessionId = sessionId.Item1;
+				this.TokenSecret = this._sessionId;
 
 				return new GetSessionIdResponse( this._sessionId, false );
 			}
@@ -86,18 +91,25 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		public MagentoServiceLowLevelSoap_v_2_1_0_0_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
 			this.ApiUser = apiUser;
-			this.ApiKey = apiKey;
+			this.	ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
 			this.PullSessionId = async () =>
 			{
-				var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
-				var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
-				var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
-				this._sessionIdCreatedAt = DateTime.UtcNow;
-				this._sessionId = loginResponse.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse.result;
+				if( !string.IsNullOrWhiteSpace( apiUser ) )
+				{
+					var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
+					var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
+					var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
+					this._sessionIdCreatedAt = DateTime.UtcNow;
+					this._sessionId = loginResponse.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse.result;
+				}
+				else
+				{
+					this._sessionId = this.ApiKey;
+				}
 
 				return Tuple.Create( this._sessionId, DateTime.UtcNow );
 			};
@@ -111,7 +123,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -121,7 +133,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -131,7 +143,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -141,7 +153,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogCategoryManagementV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogCategoryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -153,7 +165,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			var magentoSoapService = new catalogProductRepositoryV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -165,7 +177,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			var magentoSoapService = new backendModuleServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -175,7 +187,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogInventoryStockRegistryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogInventoryStockRegistryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this.ApiKey } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 
 			return magentoSoapService;
 		}
@@ -241,8 +253,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
+
+				await this.GetSessionId().ConfigureAwait(false);
 				var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
-				return modules != null && modules.Modules != null && modules.Modules.Count > 0 ? new GetMagentoInfoResponse( "2.0.2.0", "CE" ) : null;
+				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
+				var getProductsRes = await this.GetProductsAsync( 1, null, false ).ConfigureAwait( false );
+
+				//var saveMethodResult = await this.SaveOrderMethodExistAsync().ConfigureAwait( false );
+				return modules?.Modules != null && modules.Modules.Count > 0 && getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.1.0.0", "CE" ) : null;
 			}
 			catch( Exception exc )
 			{
@@ -254,12 +272,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		public string ToJsonSoapInfo()
 		{
-			return string.Format( "{{BaseMagentoUrl:{0}, ApiUser:{1},ApiKey:{2},Store:{3}}}",
-				string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl,
-				string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser,
-				string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey,
-				string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store
-				);
+			return $"{{BaseMagentoUrl:{( string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl )}, ApiUser:{( string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser )},ApiKey:{( string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey )},ApiToken:{( string.IsNullOrWhiteSpace( this._sessionId ) ? PredefinedValues.NotAvailable : this._sessionId )},Store:{( string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store )}}}";
 		}
 
 		private string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
