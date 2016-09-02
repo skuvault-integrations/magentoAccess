@@ -30,7 +30,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						currentPage = 1,
 						currentPageSpecified = true,
 						filterGroups = frameworkSearchFilterGroups.ToArray(),
-						sortOrders = new[] { new FrameworkSortOrder() { direction = "ASC", field = "Id" } },
+						//sortOrders = new[] { new FrameworkSortOrder() { direction = "ASC", field = "Id" } }, crunch for 2.1
 						pageSize = 100,
 						pageSizeSpecified = true,
 					}
