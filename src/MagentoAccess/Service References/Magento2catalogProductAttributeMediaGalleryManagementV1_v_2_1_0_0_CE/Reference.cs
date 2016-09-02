@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -174,7 +174,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class FrameworkDataVideoContentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -277,7 +277,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogDataProductAttributeMediaGalleryEntryExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -310,7 +310,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class FrameworkDataImageContentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -371,7 +371,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogDataProductAttributeMediaGalleryEntryInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -531,7 +531,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1GetResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -564,7 +564,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1GetRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -607,7 +607,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1", ConfigurationName="Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.catalogProdu" +
         "ctAttributeMediaGalleryManagementV1PortType")]
     public interface catalogProductAttributeMediaGalleryManagementV1PortType {
@@ -664,7 +664,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1GetRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1GetRequest catalogProductAttributeMediaGalleryManagementV1GetRequest;
         
@@ -682,7 +682,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1GetResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1GetResponse catalogProductAttributeMediaGalleryManagementV1GetResponse;
         
@@ -699,7 +699,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1CreateRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -746,7 +746,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1CreateResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -780,7 +780,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1CreateRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1CreateRequest catalogProductAttributeMediaGalleryManagementV1CreateRequest;
         
@@ -798,7 +798,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1CreateResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1CreateResponse catalogProductAttributeMediaGalleryManagementV1CreateResponse;
         
@@ -815,7 +815,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1UpdateRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -862,7 +862,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1UpdateResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -896,7 +896,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1UpdateRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1UpdateRequest catalogProductAttributeMediaGalleryManagementV1UpdateRequest;
         
@@ -914,7 +914,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1UpdateResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1UpdateResponse catalogProductAttributeMediaGalleryManagementV1UpdateResponse;
         
@@ -931,7 +931,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1RemoveRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -978,7 +978,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1RemoveResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1012,7 +1012,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1RemoveRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1RemoveRequest catalogProductAttributeMediaGalleryManagementV1RemoveRequest;
         
@@ -1030,7 +1030,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1RemoveResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1RemoveResponse catalogProductAttributeMediaGalleryManagementV1RemoveResponse;
         
@@ -1047,7 +1047,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1GetListRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1080,7 +1080,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
         "AttributeMediaGalleryManagementV1")]
     public partial class CatalogProductAttributeMediaGalleryManagementV1GetListResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1115,7 +1115,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1GetListRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1GetListRequest catalogProductAttributeMediaGalleryManagementV1GetListRequest;
         
@@ -1133,7 +1133,7 @@ namespace MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogProductAttributeMediaGalleryManagementV1GetListResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProduct" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProduct" +
             "AttributeMediaGalleryManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE.CatalogProductAttributeMediaGalleryManagementV1GetListResponse catalogProductAttributeMediaGalleryManagementV1GetListResponse;
         

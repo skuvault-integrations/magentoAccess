@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <xsd:schema targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+    <xsd:schema targetNamespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
       <xsd:element name="GenericFault" type="tns:GenericFault" />
       <xsd:complexType name="GenericFaultParameter">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="key" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -16,7 +16,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -26,13 +26,13 @@
       <xsd:complexType name="ArrayOfGenericFaultParameter">
         <xsd:annotation>
           <xsd:documentation>An array of GenericFaultParameter items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:GenericFaultParameter">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfGenericFaultParameter.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -42,7 +42,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="message" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -50,7 +50,7 @@
           <xsd:element minOccurs="0" name="parameters" type="tns:ArrayOfGenericFaultParameter">
             <xsd:annotation>
               <xsd:documentation>Message parameters.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -60,13 +60,13 @@
       <xsd:complexType name="ArrayOfWrappedError">
         <xsd:annotation>
           <xsd:documentation>An array of WrappedError items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:WrappedError">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfWrappedError.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -76,7 +76,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="Trace" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Exception calls stack trace.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -84,7 +84,7 @@
           <xsd:element minOccurs="0" name="Parameters" type="tns:ArrayOfGenericFaultParameter">
             <xsd:annotation>
               <xsd:documentation>Additional exception parameters.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -92,7 +92,7 @@
           <xsd:element minOccurs="0" name="WrappedErrors" type="tns:ArrayOfWrappedError">
             <xsd:annotation>
               <xsd:documentation>Additional wrapped errors.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -102,13 +102,13 @@
       <xsd:complexType name="FrameworkDataImageContentInterface">
         <xsd:annotation>
           <xsd:documentation>Image Content data interface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="base64EncodedData" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Media data (base64 encoded content)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -116,7 +116,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="type" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>MIME type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -124,7 +124,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Image name</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -134,13 +134,13 @@
       <xsd:complexType name="ArrayOfString">
         <xsd:annotation>
           <xsd:documentation>An array of string items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfString.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -150,13 +150,13 @@
       <xsd:complexType name="FrameworkDataVideoContentInterface">
         <xsd:annotation>
           <xsd:documentation>Video Content data interface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>MIME type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -164,7 +164,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoProvider" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Provider</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -172,7 +172,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoUrl" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Video URL</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -180,7 +180,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoTitle" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Title</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -188,7 +188,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoDescription" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Video Description</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -196,7 +196,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoMetadata" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Metadata</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -206,13 +206,13 @@
       <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="videoContent" type="tns:FrameworkDataVideoContentInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -220,13 +220,13 @@
       <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Gallery entry ID</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
               </xsd:appinfo>
@@ -235,7 +235,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Media type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -243,7 +243,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="label" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Gallery entry alternative text</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -251,7 +251,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Gallery entry position (sort order)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
               </xsd:appinfo>
@@ -260,7 +260,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="disabled" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>If gallery entry is hidden from product page</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
               </xsd:appinfo>
             </xsd:annotation>
@@ -268,7 +268,7 @@
           <xsd:element name="types" type="tns:ArrayOfString">
             <xsd:annotation>
               <xsd:documentation>Gallery entry image types (thumbnail, image, small_image etc)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -276,7 +276,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="file" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>File path</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -284,13 +284,13 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="content" type="tns:FrameworkDataImageContentInterface">
             <xsd:annotation>
               <xsd:documentation>Media gallery content</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
             </xsd:annotation>
           </xsd:element>
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -299,19 +299,19 @@
       <xsd:complexType name="BundleDataLinkExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Bundle\Api\Data\LinkInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="BundleDataLinkInterface">
         <xsd:annotation>
           <xsd:documentation>Interface LinkInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>The identifier</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -328,7 +328,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Linked product sku</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -345,7 +345,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="optionId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Option id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -363,7 +363,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="qty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Qty</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -379,7 +379,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="position" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Position</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -397,7 +397,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="isDefault" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Is default</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -414,7 +414,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="price" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Price</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -430,7 +430,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="priceType" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Price type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -448,7 +448,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="canChangeQuantity" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Whether quantity could be changed</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -466,7 +466,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:BundleDataLinkExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -484,13 +484,13 @@
       <xsd:complexType name="ArrayOfBundleDataLinkInterface">
         <xsd:annotation>
           <xsd:documentation>An array of BundleDataLinkInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:BundleDataLinkInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfBundleDataLinkInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -508,19 +508,19 @@
       <xsd:complexType name="BundleDataOptionExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Bundle\Api\Data\OptionInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="BundleDataOptionInterface">
         <xsd:annotation>
           <xsd:documentation>Interface OptionInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="optionId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Option id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -538,7 +538,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="title" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Option title</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -555,7 +555,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="required" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Is required option</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -572,7 +572,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="type" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Input type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -589,7 +589,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="position" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Option position</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -607,7 +607,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Product sku</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -624,7 +624,7 @@
           <xsd:element minOccurs="0" name="productLinks" type="tns:ArrayOfBundleDataLinkInterface">
             <xsd:annotation>
               <xsd:documentation>Product links</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -641,7 +641,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:BundleDataOptionExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -659,13 +659,13 @@
       <xsd:complexType name="ArrayOfBundleDataOptionInterface">
         <xsd:annotation>
           <xsd:documentation>An array of BundleDataOptionInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:BundleDataOptionInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfBundleDataOptionInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -683,19 +683,19 @@
       <xsd:complexType name="DownloadableDataFileContentExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Downloadable\Api\Data\File\ContentInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="DownloadableDataFileContentInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="fileData" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Data (base64 encoded content)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -712,7 +712,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>File name</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -729,7 +729,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:DownloadableDataFileContentExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -747,19 +747,19 @@
       <xsd:complexType name="DownloadableDataLinkExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Downloadable\Api\Data\LinkInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="DownloadableDataLinkInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Sample(or link) id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -777,7 +777,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="title" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -794,7 +794,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sortOrder" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -812,7 +812,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="isShareable" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Shareable status</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -830,7 +830,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="price" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Price</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -846,7 +846,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="numberOfDownloads" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Of downloads per user</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -864,7 +864,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="linkType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -881,7 +881,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="linkFile" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>relative file path</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -898,7 +898,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="linkFileContent" type="tns:DownloadableDataFileContentInterface">
             <xsd:annotation>
               <xsd:documentation>File content</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -914,7 +914,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="linkUrl" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Link url or null when type is 'file'</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -931,7 +931,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sampleType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -948,7 +948,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sampleFile" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>relative file path</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -965,7 +965,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sampleFileContent" type="tns:DownloadableDataFileContentInterface">
             <xsd:annotation>
               <xsd:documentation>relative file path</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -981,7 +981,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sampleUrl" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>file URL</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -998,7 +998,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:DownloadableDataLinkExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1016,13 +1016,13 @@
       <xsd:complexType name="ArrayOfDownloadableDataLinkInterface">
         <xsd:annotation>
           <xsd:documentation>An array of DownloadableDataLinkInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:DownloadableDataLinkInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfDownloadableDataLinkInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1040,19 +1040,19 @@
       <xsd:complexType name="DownloadableDataSampleExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Downloadable\Api\Data\SampleInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="DownloadableDataSampleInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Sample(or link) id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1070,7 +1070,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="title" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Title</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1087,7 +1087,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sortOrder" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Order index for sample</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1105,7 +1105,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sampleType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1122,7 +1122,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sampleFile" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>relative file path</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1139,7 +1139,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sampleFileContent" type="tns:DownloadableDataFileContentInterface">
             <xsd:annotation>
               <xsd:documentation>Sample file content</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1155,7 +1155,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sampleUrl" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>file URL</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1172,7 +1172,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:DownloadableDataSampleExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1190,13 +1190,13 @@
       <xsd:complexType name="ArrayOfDownloadableDataSampleInterface">
         <xsd:annotation>
           <xsd:documentation>An array of DownloadableDataSampleInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:DownloadableDataSampleInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfDownloadableDataSampleInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1214,19 +1214,19 @@
       <xsd:complexType name="CatalogInventoryDataStockItemExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\CatalogInventory\Api\Data\StockItemInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="CatalogInventoryDataStockItemInterface">
         <xsd:annotation>
           <xsd:documentation>Interface StockItem</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="itemId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1244,7 +1244,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="productId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1262,7 +1262,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="stockId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Stock identifier</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1280,7 +1280,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="qty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1296,7 +1296,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="isInStock" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Stock Availability</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1313,7 +1313,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="isQtyDecimal" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1330,7 +1330,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="showDefaultNotificationMessage" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1347,7 +1347,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigMinQty" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1364,7 +1364,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="minQty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Minimal quantity available for item status in stock</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1380,7 +1380,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigMinSaleQty" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1398,7 +1398,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="minSaleQty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Minimum Qty Allowed in Shopping Cart or NULL when there is no limitation</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1414,7 +1414,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigMaxSaleQty" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1431,7 +1431,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="maxSaleQty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Maximum Qty Allowed in Shopping Cart data wrapper</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1447,7 +1447,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigBackorders" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1464,7 +1464,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="backorders" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Backorders status</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1482,7 +1482,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigNotifyStockQty" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1499,7 +1499,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="notifyStockQty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Notify for Quantity Below data wrapper</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1515,7 +1515,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigQtyIncrements" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1532,7 +1532,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="qtyIncrements" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Quantity Increments data wrapper</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1548,7 +1548,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigEnableQtyInc" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1565,7 +1565,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="enableQtyIncrements" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Whether Quantity Increments is enabled</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1582,7 +1582,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="useConfigManageStock" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1599,7 +1599,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="manageStock" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Can Manage Stock</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1616,7 +1616,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="lowStockDate" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1633,7 +1633,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="isDecimalDivided" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1650,7 +1650,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="stockStatusChangedAuto" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1668,7 +1668,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogInventoryDataStockItemExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1686,19 +1686,19 @@
       <xsd:complexType name="ConfigurableProductDataOptionValueExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\ConfigurableProduct\Api\Data\OptionValueInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="ConfigurableProductDataOptionValueInterface">
         <xsd:annotation>
           <xsd:documentation>Interface OptionValueInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="valueIndex" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1716,7 +1716,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:ConfigurableProductDataOptionValueExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1734,13 +1734,13 @@
       <xsd:complexType name="ArrayOfConfigurableProductDataOptionValueInterface">
         <xsd:annotation>
           <xsd:documentation>An array of ConfigurableProductDataOptionValueInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ConfigurableProductDataOptionValueInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfConfigurableProductDataOptionValueInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1758,19 +1758,19 @@
       <xsd:complexType name="ConfigurableProductDataOptionExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\ConfigurableProduct\Api\Data\OptionInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="ConfigurableProductDataOptionInterface">
         <xsd:annotation>
           <xsd:documentation>Interface OptionInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1788,7 +1788,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="attributeId" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1805,7 +1805,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="label" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1822,7 +1822,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="position" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1840,7 +1840,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="isUseDefault" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1857,7 +1857,7 @@
           <xsd:element minOccurs="0" name="values" type="tns:ArrayOfConfigurableProductDataOptionValueInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1874,7 +1874,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:ConfigurableProductDataOptionExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1890,7 +1890,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="productId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1910,13 +1910,13 @@
       <xsd:complexType name="ArrayOfConfigurableProductDataOptionInterface">
         <xsd:annotation>
           <xsd:documentation>An array of ConfigurableProductDataOptionInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ConfigurableProductDataOptionInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfConfigurableProductDataOptionInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -1934,13 +1934,13 @@
       <xsd:complexType name="ArrayOfInt">
         <xsd:annotation>
           <xsd:documentation>An array of int items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfInt.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -1960,13 +1960,13 @@
       <xsd:complexType name="CatalogDataProductExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" name="bundleProductOptions" type="tns:ArrayOfBundleDataOptionInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -1983,7 +1983,7 @@
           <xsd:element minOccurs="0" name="downloadableProductLinks" type="tns:ArrayOfDownloadableDataLinkInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2000,7 +2000,7 @@
           <xsd:element minOccurs="0" name="downloadableProductSamples" type="tns:ArrayOfDownloadableDataSampleInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2017,7 +2017,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="stockItem" type="tns:CatalogInventoryDataStockItemInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2033,7 +2033,7 @@
           <xsd:element minOccurs="0" name="configurableProductOptions" type="tns:ArrayOfConfigurableProductDataOptionInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2050,7 +2050,7 @@
           <xsd:element minOccurs="0" name="configurableProductLinks" type="tns:ArrayOfInt">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2069,13 +2069,13 @@
       <xsd:complexType name="CatalogDataProductLinkExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductLinkInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="qty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2093,13 +2093,13 @@
       <xsd:complexType name="CatalogDataProductLinkInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>SKU</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2116,7 +2116,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="linkType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Link type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2133,7 +2133,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="linkedProductSku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Linked product sku</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2150,7 +2150,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="linkedProductType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Linked product type (simple, virtual, etc)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2167,7 +2167,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Linked item position</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2185,7 +2185,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductLinkExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2203,13 +2203,13 @@
       <xsd:complexType name="ArrayOfCatalogDataProductLinkInterface">
         <xsd:annotation>
           <xsd:documentation>An array of CatalogDataProductLinkInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductLinkInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfCatalogDataProductLinkInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2227,13 +2227,13 @@
       <xsd:complexType name="CatalogDataProductCustomOptionValuesInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="title" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Option title</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2250,7 +2250,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sortOrder" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Sort order</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2268,7 +2268,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="price" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Price</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2284,7 +2284,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="priceType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Price type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2301,7 +2301,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Sku</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2318,7 +2318,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="optionTypeId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Option type id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2338,13 +2338,13 @@
       <xsd:complexType name="ArrayOfCatalogDataProductCustomOptionValuesInterface">
         <xsd:annotation>
           <xsd:documentation>An array of CatalogDataProductCustomOptionValuesInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductCustomOptionValuesInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfCatalogDataProductCustomOptionValuesInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2362,19 +2362,19 @@
       <xsd:complexType name="CatalogDataProductCustomOptionExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductCustomOptionInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="CatalogDataProductCustomOptionInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="productSku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Product SKU</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2391,7 +2391,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="optionId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Option id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2409,7 +2409,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="title" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Option title</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2426,7 +2426,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="type" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Option type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2443,7 +2443,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sortOrder" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Sort order</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2461,7 +2461,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="isRequire" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Is require</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2478,7 +2478,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="price" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Price</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2494,7 +2494,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="priceType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Price type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2511,7 +2511,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Sku</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2528,7 +2528,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="fileExtension" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2545,7 +2545,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="maxCharacters" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2563,7 +2563,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="imageSizeX" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2581,7 +2581,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="imageSizeY" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2599,7 +2599,7 @@
           <xsd:element minOccurs="0" name="values" type="tns:ArrayOfCatalogDataProductCustomOptionValuesInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2616,7 +2616,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductCustomOptionExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2634,13 +2634,13 @@
       <xsd:complexType name="ArrayOfCatalogDataProductCustomOptionInterface">
         <xsd:annotation>
           <xsd:documentation>An array of CatalogDataProductCustomOptionInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductCustomOptionInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfCatalogDataProductCustomOptionInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2658,13 +2658,13 @@
       <xsd:complexType name="ArrayOfCatalogDataProductAttributeMediaGalleryEntryInterface">
         <xsd:annotation>
           <xsd:documentation>An array of CatalogDataProductAttributeMediaGalleryEntryInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductAttributeMediaGalleryEntryInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfCatalogDataProductAttributeMediaGalleryEntryInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2682,19 +2682,19 @@
       <xsd:complexType name="CatalogDataProductTierPriceExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductTierPriceInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
       </xsd:complexType>
       <xsd:complexType name="CatalogDataProductTierPriceInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="customerGroupId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Customer group id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2712,7 +2712,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="qty" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Tier qty</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2728,7 +2728,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Price value</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2744,7 +2744,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductTierPriceExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2762,13 +2762,13 @@
       <xsd:complexType name="ArrayOfCatalogDataProductTierPriceInterface">
         <xsd:annotation>
           <xsd:documentation>An array of CatalogDataProductTierPriceInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductTierPriceInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfCatalogDataProductTierPriceInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2786,13 +2786,13 @@
       <xsd:complexType name="FrameworkAttributeInterface">
         <xsd:annotation>
           <xsd:documentation>Interface for custom attribute value.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="attributeCode" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Attribute code</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2809,7 +2809,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:anyType">
             <xsd:annotation>
               <xsd:documentation>Attribute value</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2827,13 +2827,13 @@
       <xsd:complexType name="ArrayOfFrameworkAttributeInterface">
         <xsd:annotation>
           <xsd:documentation>An array of FrameworkAttributeInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:FrameworkAttributeInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfFrameworkAttributeInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2851,13 +2851,13 @@
       <xsd:complexType name="CatalogDataProductInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2875,7 +2875,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Sku</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2892,7 +2892,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="name" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Name</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2909,7 +2909,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="attributeSetId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Attribute set id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2927,7 +2927,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="price" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Price</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -2943,7 +2943,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="status" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Status</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2961,7 +2961,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="visibility" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Visibility</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -2979,7 +2979,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="typeId" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Type id</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -2996,7 +2996,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="createdAt" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Created date</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3013,7 +3013,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="updatedAt" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Updated date</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3030,7 +3030,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="weight" type="xsd:float">
             <xsd:annotation>
               <xsd:documentation>Weight</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -3046,7 +3046,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -3062,7 +3062,7 @@
           <xsd:element minOccurs="0" name="productLinks" type="tns:ArrayOfCatalogDataProductLinkInterface">
             <xsd:annotation>
               <xsd:documentation>Product links info</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3079,7 +3079,7 @@
           <xsd:element minOccurs="0" name="options" type="tns:ArrayOfCatalogDataProductCustomOptionInterface">
             <xsd:annotation>
               <xsd:documentation>List of product options</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3096,7 +3096,7 @@
           <xsd:element minOccurs="0" name="mediaGalleryEntries" type="tns:ArrayOfCatalogDataProductAttributeMediaGalleryEntryInterface">
             <xsd:annotation>
               <xsd:documentation>Media gallery entries</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3113,7 +3113,7 @@
           <xsd:element minOccurs="0" name="tierPrices" type="tns:ArrayOfCatalogDataProductTierPriceInterface">
             <xsd:annotation>
               <xsd:documentation>List of product tier prices</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3130,7 +3130,7 @@
           <xsd:element minOccurs="0" name="customAttributes" type="tns:ArrayOfFrameworkAttributeInterface">
             <xsd:annotation>
               <xsd:documentation>Custom attributes values.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3149,13 +3149,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1SaveRequest">
         <xsd:annotation>
           <xsd:documentation>Create product</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="product" type="tns:CatalogDataProductInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:requiredInput>Yes</inf:requiredInput>
@@ -3166,7 +3166,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="saveOptions" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
@@ -3181,13 +3181,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1SaveResponse">
         <xsd:annotation>
           <xsd:documentation>Response container for the catalogProductRepositoryV1Save call.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogDataProductInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Save</inf:callName>
                   <inf:returned>Always</inf:returned>
@@ -3201,13 +3201,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1DeleteByIdRequest">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1DeleteById</inf:callName>
@@ -3222,13 +3222,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1DeleteByIdResponse">
         <xsd:annotation>
           <xsd:documentation>Response container for the catalogProductRepositoryV1DeleteById call.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>Will returned True if deleted</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1DeleteById</inf:callName>
@@ -3243,13 +3243,13 @@
       <xsd:complexType name="FrameworkFilter">
         <xsd:annotation>
           <xsd:documentation>Filter which can be used by any methods from service layer.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="field" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Field</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3261,7 +3261,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Value</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3273,7 +3273,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="conditionType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Condition type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3287,13 +3287,13 @@
       <xsd:complexType name="ArrayOfFrameworkFilter">
         <xsd:annotation>
           <xsd:documentation>An array of FrameworkFilter items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:FrameworkFilter">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfFrameworkFilter.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -3306,13 +3306,13 @@
       <xsd:complexType name="FrameworkSearchFilterGroup">
         <xsd:annotation>
           <xsd:documentation>Groups two or more filters together using a logical OR</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" name="filters" type="tns:ArrayOfFrameworkFilter">
             <xsd:annotation>
               <xsd:documentation>A list of filters in this group</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3326,13 +3326,13 @@
       <xsd:complexType name="ArrayOfFrameworkSearchFilterGroup">
         <xsd:annotation>
           <xsd:documentation>An array of FrameworkSearchFilterGroup items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:FrameworkSearchFilterGroup">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfFrameworkSearchFilterGroup.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -3345,13 +3345,13 @@
       <xsd:complexType name="FrameworkSortOrder">
         <xsd:annotation>
           <xsd:documentation>Data object for sort order.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="field" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Sorting field.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3363,7 +3363,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="direction" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Sorting direction.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3377,13 +3377,13 @@
       <xsd:complexType name="ArrayOfFrameworkSortOrder">
         <xsd:annotation>
           <xsd:documentation>An array of FrameworkSortOrder items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:FrameworkSortOrder">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfFrameworkSortOrder.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:requiredInput>No</inf:requiredInput>
@@ -3396,13 +3396,13 @@
       <xsd:complexType name="FrameworkSearchCriteriaInterface">
         <xsd:annotation>
           <xsd:documentation>Search criteria interface.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element name="filterGroups" type="tns:ArrayOfFrameworkSearchFilterGroup">
             <xsd:annotation>
               <xsd:documentation>A list of filter groups.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3414,7 +3414,7 @@
           <xsd:element minOccurs="0" name="sortOrders" type="tns:ArrayOfFrameworkSortOrder">
             <xsd:annotation>
               <xsd:documentation>Sort order.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3426,7 +3426,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="pageSize" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Page size.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -3439,7 +3439,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="currentPage" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Current page.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -3454,13 +3454,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1GetListRequest">
         <xsd:annotation>
           <xsd:documentation>Get product list</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="searchCriteria" type="tns:FrameworkSearchCriteriaInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:requiredInput>Yes</inf:requiredInput>
@@ -3474,13 +3474,13 @@
       <xsd:complexType name="ArrayOfCatalogDataProductInterface">
         <xsd:annotation>
           <xsd:documentation>An array of CatalogDataProductInterface items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:CatalogDataProductInterface">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfCatalogDataProductInterface.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:returned>Conditionally</inf:returned>
@@ -3493,13 +3493,13 @@
       <xsd:complexType name="CatalogDataProductSearchResultsInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element name="items" type="tns:ArrayOfCatalogDataProductInterface">
             <xsd:annotation>
               <xsd:documentation>Attributes list.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:natureOfType>array</inf:natureOfType>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
@@ -3511,7 +3511,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="searchCriteria" type="tns:FrameworkSearchCriteriaInterface">
             <xsd:annotation>
               <xsd:documentation>Search criteria.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:returned>Always</inf:returned>
@@ -3522,7 +3522,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="totalCount" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Total count.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -3537,13 +3537,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1GetListResponse">
         <xsd:annotation>
           <xsd:documentation>Response container for the catalogProductRepositoryV1GetList call.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogDataProductSearchResultsInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1GetList</inf:callName>
                   <inf:returned>Always</inf:returned>
@@ -3557,13 +3557,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1GetRequest">
         <xsd:annotation>
           <xsd:documentation>Get info about product by product SKU</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="sku" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Get</inf:callName>
@@ -3575,7 +3575,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="editMode" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Get</inf:callName>
@@ -3587,7 +3587,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="storeId" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:min />
                 <inf:max />
                 <inf:callInfo>
@@ -3600,7 +3600,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="forceReload" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:default>false</inf:default>
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Get</inf:callName>
@@ -3615,13 +3615,13 @@
       <xsd:complexType name="CatalogProductRepositoryV1GetResponse">
         <xsd:annotation>
           <xsd:documentation>Response container for the catalogProductRepositoryV1Get call.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="result" type="tns:CatalogDataProductInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1">
                 <inf:callInfo>
                   <inf:callName>catalogProductRepositoryV1Get</inf:callName>
                   <inf:returned>Always</inf:returned>
@@ -3727,7 +3727,7 @@
   </wsdl:binding>
   <wsdl:service name="catalogProductRepositoryV1Service">
     <wsdl:port name="catalogProductRepositoryV1Port" binding="tns:catalogProductRepositoryV1Binding">
-      <soap12:address location="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogProductRepositoryV1" />
+      <soap12:address location="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogProductRepositoryV1" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -174,7 +174,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class TaxDataOrderTaxDetailsItemExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -193,7 +193,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class TaxDataOrderTaxDetailsItemInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -311,7 +311,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class TaxDataOrderTaxDetailsAppliedTaxInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -428,7 +428,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class TaxDataOrderTaxDetailsAppliedTaxExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -462,7 +462,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class TaxDataAppliedTaxRateInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -551,7 +551,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class TaxDataAppliedTaxRateExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -570,7 +570,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataShippingAssignmentExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -589,7 +589,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataShippingExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -608,7 +608,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataTotalExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -627,7 +627,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataTotalInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1136,7 +1136,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataShippingInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1211,7 +1211,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderAddressInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1707,7 +1707,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderAddressExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1726,7 +1726,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataShippingAssignmentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -1816,7 +1816,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderItemInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4215,7 +4215,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class CatalogDataProductOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4248,7 +4248,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class CatalogDataProductOptionExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4326,7 +4326,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class CatalogDataCustomOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4387,7 +4387,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class CatalogDataCustomOptionExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4420,7 +4420,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class FrameworkDataImageContentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4481,7 +4481,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class BundleDataBundleOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4557,7 +4557,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class BundleDataBundleOptionExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4576,7 +4576,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class DownloadableDataDownloadableOptionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4610,7 +4610,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class ConfigurableProductDataConfigurableItemOptionValueInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4685,7 +4685,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class ConfigurableProductDataConfigurableItemOptionValueExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4704,7 +4704,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderItemExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4737,7 +4737,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class GiftMessageDataMessageInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4868,7 +4868,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class GiftMessageDataMessageExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -4915,7 +4915,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -5021,7 +5021,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderStatusHistoryExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -5040,7 +5040,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderStatusHistoryInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -5199,7 +5199,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class VaultDataPaymentTokenInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -5400,7 +5400,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderPaymentExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -5433,7 +5433,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderPaymentInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -6517,7 +6517,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -9674,7 +9674,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesOrderRepositoryV1GetResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -9707,7 +9707,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesOrderRepositoryV1GetRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -9736,7 +9736,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1", ConfigurationName="Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1PortType")]
     public interface salesOrderRepositoryV1PortType {
         
@@ -9774,7 +9774,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class salesOrderRepositoryV1GetRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
             "sitoryV1", Order=0)]
         public MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesOrderRepositoryV1GetRequest salesOrderRepositoryV1GetRequest;
         
@@ -9792,7 +9792,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class salesOrderRepositoryV1GetResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
             "sitoryV1", Order=0)]
         public MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesOrderRepositoryV1GetResponse salesOrderRepositoryV1GetResponse;
         
@@ -9809,7 +9809,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesOrderRepositoryV1GetListRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -9842,7 +9842,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class FrameworkSearchCriteria : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -9947,7 +9947,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class FrameworkSearchFilterGroup : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -9981,7 +9981,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class FrameworkFilter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10042,7 +10042,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class FrameworkSortOrder : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10089,7 +10089,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesOrderRepositoryV1GetListResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10122,7 +10122,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesDataOrderSearchResultInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10184,7 +10184,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class FrameworkSearchCriteriaInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10290,7 +10290,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class salesOrderRepositoryV1GetListRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
             "sitoryV1", Order=0)]
         public MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesOrderRepositoryV1GetListRequest salesOrderRepositoryV1GetListRequest;
         
@@ -10308,7 +10308,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class salesOrderRepositoryV1GetListResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
             "sitoryV1", Order=0)]
         public MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesOrderRepositoryV1GetListResponse salesOrderRepositoryV1GetListResponse;
         
@@ -10325,7 +10325,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesOrderRepositoryV1SaveRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10358,7 +10358,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
         "sitoryV1")]
     public partial class SalesOrderRepositoryV1SaveResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -10392,7 +10392,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class salesOrderRepositoryV1SaveRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
             "sitoryV1", Order=0)]
         public MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesOrderRepositoryV1SaveRequest salesOrderRepositoryV1SaveRequest;
         
@@ -10410,7 +10410,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class salesOrderRepositoryV1SaveResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepo" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepo" +
             "sitoryV1", Order=0)]
         public MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesOrderRepositoryV1SaveResponse salesOrderRepositoryV1SaveResponse;
         

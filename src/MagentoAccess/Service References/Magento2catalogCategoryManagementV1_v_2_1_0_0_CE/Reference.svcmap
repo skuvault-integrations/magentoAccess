@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://127.0.0.1:777/Magento-2-1-0-0-ce/soap/default?wsdl&amp;services=catalogCategoryManagementV1" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://hereshouldbeyourmagentostoreurl.com/soap/default?wsdl&amp;services=catalogCategoryManagementV1" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MagentoWSDL.wsdl" MetadataType="Wsdl" ID="5d7ce72b-018e-4c1b-a9c4-29591cfa4f2a" SourceId="1" SourceUrl="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?wsdl&amp;services=catalogCategoryManagementV1" />
+    <MetadataFile FileName="MagentoWSDL.wsdl" MetadataType="Wsdl" ID="5d7ce72b-018e-4c1b-a9c4-29591cfa4f2a" SourceId="1" SourceUrl="http://hereshouldbeyourmagentostoreurl.com/soap/default?wsdl&amp;services=catalogCategoryManagementV1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

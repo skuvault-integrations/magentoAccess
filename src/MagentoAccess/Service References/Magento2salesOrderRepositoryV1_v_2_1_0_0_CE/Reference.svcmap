@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://127.0.0.1:777/Magento-2-1-0-0-ce/soap/default?wsdl&amp;services=salesOrderRepositoryV1" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://hereshouldbeyourmagentostoreurl.com/soap/default?wsdl&amp;services=salesOrderRepositoryV1" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MagentoWSDL.wsdl" MetadataType="Wsdl" ID="71f4cb2b-a17a-408f-b4c3-e022c6943f7e" SourceId="1" SourceUrl="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?wsdl&amp;services=salesOrderRepositoryV1" />
+    <MetadataFile FileName="MagentoWSDL.wsdl" MetadataType="Wsdl" ID="71f4cb2b-a17a-408f-b4c3-e022c6943f7e" SourceId="1" SourceUrl="http://hereshouldbeyourmagentostoreurl.com/soap/default?wsdl&amp;services=salesOrderRepositoryV1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

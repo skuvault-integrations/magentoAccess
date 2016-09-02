@@ -154,10 +154,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="salesOrderRepositoryV1Port1" contract="Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1PortType" bindingType="customBinding" address="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepositoryV1" bindingConfiguration="salesOrderRepositoryV1Binding1">
+    <endpoint name="salesOrderRepositoryV1Port1" contract="Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1PortType" bindingType="customBinding" address="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepositoryV1" bindingConfiguration="salesOrderRepositoryV1Binding1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=salesOrderRepositoryV1</serializedValue>
+          <serializedValue>http://hereshouldbeyourmagentostoreurl.com/soap/default?services=salesOrderRepositoryV1</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

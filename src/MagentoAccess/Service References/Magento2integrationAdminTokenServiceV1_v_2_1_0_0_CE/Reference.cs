@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
         "inTokenServiceV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
         "inTokenServiceV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
         "inTokenServiceV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -174,7 +174,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
         "inTokenServiceV1")]
     public partial class IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -207,7 +207,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
         "inTokenServiceV1")]
     public partial class IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -250,7 +250,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
         "inTokenServiceV1", ConfigurationName="Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE.integrationAdminTokenServiceV" +
         "1PortType")]
     public interface integrationAdminTokenServiceV1PortType {
@@ -271,7 +271,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
             "inTokenServiceV1", Order=0)]
         public MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest;
         
@@ -289,7 +289,7 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdm" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
             "inTokenServiceV1", Order=0)]
         public MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessTokenResponse;
         

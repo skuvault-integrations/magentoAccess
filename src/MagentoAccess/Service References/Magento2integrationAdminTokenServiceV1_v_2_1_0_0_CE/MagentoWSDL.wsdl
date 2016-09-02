@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="MagentoWSDL" targetNamespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <xsd:schema targetNamespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+    <xsd:schema targetNamespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
       <xsd:element name="GenericFault" type="tns:GenericFault" />
       <xsd:complexType name="GenericFaultParameter">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="key" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -16,7 +16,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="value" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -26,13 +26,13 @@
       <xsd:complexType name="ArrayOfGenericFaultParameter">
         <xsd:annotation>
           <xsd:documentation>An array of GenericFaultParameter items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:GenericFaultParameter">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfGenericFaultParameter.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -42,7 +42,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="message" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -50,7 +50,7 @@
           <xsd:element minOccurs="0" name="parameters" type="tns:ArrayOfGenericFaultParameter">
             <xsd:annotation>
               <xsd:documentation>Message parameters.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -60,13 +60,13 @@
       <xsd:complexType name="ArrayOfWrappedError">
         <xsd:annotation>
           <xsd:documentation>An array of WrappedError items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:WrappedError">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfWrappedError.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -76,7 +76,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="Trace" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Exception calls stack trace.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -84,7 +84,7 @@
           <xsd:element minOccurs="0" name="Parameters" type="tns:ArrayOfGenericFaultParameter">
             <xsd:annotation>
               <xsd:documentation>Additional exception parameters.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -92,7 +92,7 @@
           <xsd:element minOccurs="0" name="WrappedErrors" type="tns:ArrayOfWrappedError">
             <xsd:annotation>
               <xsd:documentation>Additional wrapped errors.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -102,13 +102,13 @@
       <xsd:complexType name="FrameworkDataImageContentInterface">
         <xsd:annotation>
           <xsd:documentation>Image Content data interface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="base64EncodedData" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Media data (base64 encoded content)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -116,7 +116,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="type" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>MIME type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -124,7 +124,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Image name</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -134,13 +134,13 @@
       <xsd:complexType name="ArrayOfString">
         <xsd:annotation>
           <xsd:documentation>An array of string items.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>An item of ArrayOfString.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -150,13 +150,13 @@
       <xsd:complexType name="FrameworkDataVideoContentInterface">
         <xsd:annotation>
           <xsd:documentation>Video Content data interface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>MIME type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -164,7 +164,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoProvider" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Provider</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -172,7 +172,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoUrl" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Video URL</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -180,7 +180,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoTitle" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Title</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -188,7 +188,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoDescription" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Video Description</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -196,7 +196,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="videoMetadata" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Metadata</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -206,13 +206,13 @@
       <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
         <xsd:annotation>
           <xsd:documentation>ExtensionInterface class for @see \Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="videoContent" type="tns:FrameworkDataVideoContentInterface">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -220,13 +220,13 @@
       <xsd:complexType name="CatalogDataProductAttributeMediaGalleryEntryInterface">
         <xsd:annotation>
           <xsd:documentation />
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Gallery entry ID</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:min />
                 <inf:max />
               </xsd:appinfo>
@@ -235,7 +235,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="mediaType" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Media type</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -243,7 +243,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="label" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Gallery entry alternative text</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -251,7 +251,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="position" type="xsd:int">
             <xsd:annotation>
               <xsd:documentation>Gallery entry position (sort order)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:min />
                 <inf:max />
               </xsd:appinfo>
@@ -260,7 +260,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="disabled" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>If gallery entry is hidden from product page</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:default>false</inf:default>
               </xsd:appinfo>
             </xsd:annotation>
@@ -268,7 +268,7 @@
           <xsd:element name="types" type="tns:ArrayOfString">
             <xsd:annotation>
               <xsd:documentation>Gallery entry image types (thumbnail, image, small_image etc)</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:natureOfType>array</inf:natureOfType>
               </xsd:appinfo>
             </xsd:annotation>
@@ -276,7 +276,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="file" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>File path</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
               </xsd:appinfo>
             </xsd:annotation>
@@ -284,13 +284,13 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="content" type="tns:FrameworkDataImageContentInterface">
             <xsd:annotation>
               <xsd:documentation>Media gallery content</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
             </xsd:annotation>
           </xsd:element>
           <xsd:element minOccurs="0" maxOccurs="1" name="extensionAttributes" type="tns:CatalogDataProductAttributeMediaGalleryEntryExtensionInterface">
             <xsd:annotation>
               <xsd:documentation>Existing extension attributes object or create a new one.</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
@@ -299,13 +299,13 @@
       <xsd:complexType name="IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest">
         <xsd:annotation>
           <xsd:documentation>Create access token for admin given the admin credentials.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="username" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>integrationAdminTokenServiceV1CreateAdminAccessToken</inf:callName>
@@ -317,7 +317,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="password" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation />
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>integrationAdminTokenServiceV1CreateAdminAccessToken</inf:callName>
@@ -332,13 +332,13 @@
       <xsd:complexType name="IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse">
         <xsd:annotation>
           <xsd:documentation>Response container for the integrationAdminTokenServiceV1CreateAdminAccessToken call.</xsd:documentation>
-          <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+          <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
         </xsd:annotation>
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation>Token created</xsd:documentation>
-              <xsd:appinfo xmlns:inf="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1">
+              <xsd:appinfo xmlns:inf="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1">
                 <inf:maxLength />
                 <inf:callInfo>
                   <inf:callName>integrationAdminTokenServiceV1CreateAdminAccessToken</inf:callName>
@@ -382,7 +382,7 @@
   </wsdl:binding>
   <wsdl:service name="integrationAdminTokenServiceV1Service">
     <wsdl:port name="integrationAdminTokenServiceV1Port" binding="tns:integrationAdminTokenServiceV1Binding">
-      <soap12:address location="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=integrationAdminTokenServiceV1" />
+      <soap12:address location="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

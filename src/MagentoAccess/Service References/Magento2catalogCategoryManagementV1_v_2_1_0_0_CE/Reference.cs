@@ -16,7 +16,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -79,7 +79,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -126,7 +126,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -174,7 +174,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class CatalogDataCategoryTreeInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -320,7 +320,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class CatalogCategoryManagementV1GetTreeResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -353,7 +353,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class CatalogCategoryManagementV1GetTreeRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -424,7 +424,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1", ConfigurationName="Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.catalogCategoryManagementV1PortT" +
         "ype")]
     public interface catalogCategoryManagementV1PortType {
@@ -454,7 +454,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogCategoryManagementV1GetTreeRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
             "yManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.CatalogCategoryManagementV1GetTreeRequest catalogCategoryManagementV1GetTreeRequest;
         
@@ -472,7 +472,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogCategoryManagementV1GetTreeResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
             "yManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.CatalogCategoryManagementV1GetTreeResponse catalogCategoryManagementV1GetTreeResponse;
         
@@ -489,7 +489,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class CatalogCategoryManagementV1MoveRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -564,7 +564,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
         "yManagementV1")]
     public partial class CatalogCategoryManagementV1MoveResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -598,7 +598,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogCategoryManagementV1MoveRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
             "yManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.CatalogCategoryManagementV1MoveRequest catalogCategoryManagementV1MoveRequest;
         
@@ -616,7 +616,7 @@ namespace MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogCategoryManagementV1MoveResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://127.0.0.1:777/magento-2-1-0-0-ce/soap/default?services=catalogCategor" +
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogCategor" +
             "yManagementV1", Order=0)]
         public MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE.CatalogCategoryManagementV1MoveResponse catalogCategoryManagementV1MoveResponse;
         
