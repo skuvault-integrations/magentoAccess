@@ -2749,7 +2749,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private int sortOrderField;
         
-        private float priceField;
+        private string priceField;
         
         private string priceTypeField;
         
@@ -2785,7 +2785,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public float price {
+        public string price {
             get {
                 return this.priceField;
             }
@@ -3240,9 +3240,9 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private int customerGroupIdField;
         
-        private float qtyField;
+        private string qtyField;
         
-        private float valueField;
+        private string valueField;
         
         private CatalogDataProductTierPriceExtensionInterface extensionAttributesField;
         
@@ -3260,7 +3260,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public float qty {
+        public string qty {
             get {
                 return this.qtyField;
             }
@@ -3272,7 +3272,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public float value {
+        public string value {
             get {
                 return this.valueField;
             }
