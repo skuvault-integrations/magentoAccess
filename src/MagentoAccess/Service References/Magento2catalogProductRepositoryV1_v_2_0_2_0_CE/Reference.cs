@@ -799,7 +799,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool optionIdFieldSpecified;
         
-        private float qtyField;
+        private string qtyField;
         
         private bool qtyFieldSpecified;
         
@@ -809,9 +809,9 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool isDefaultField;
         
-        private float priceField;
+        private string priceField;
         
-        private int priceTypeField;
+        private string priceTypeField;
         
         private int canChangeQuantityField;
         
@@ -869,7 +869,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public float qty {
+        public string qty {
             get {
                 return this.qtyField;
             }
@@ -929,7 +929,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public float price {
+        public string price {
             get {
                 return this.priceField;
             }
@@ -941,7 +941,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public int priceType {
+        public string priceType {
             get {
                 return this.priceTypeField;
             }
@@ -1054,7 +1054,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private int isShareableField;
         
-        private float priceField;
+        private string priceField;
         
         private int numberOfDownloadsField;
         
@@ -1140,7 +1140,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public float price {
+        public string price {
             get {
                 return this.priceField;
             }
@@ -1586,15 +1586,15 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool useConfigMinQtyField;
         
-        private float minQtyField;
+        private string minQtyField;
         
         private int useConfigMinSaleQtyField;
         
-        private float minSaleQtyField;
+        private string minSaleQtyField;
         
         private bool useConfigMaxSaleQtyField;
         
-        private float maxSaleQtyField;
+        private string maxSaleQtyField;
         
         private bool useConfigBackordersField;
         
@@ -1602,11 +1602,11 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool useConfigNotifyStockQtyField;
         
-        private float notifyStockQtyField;
+        private string notifyStockQtyField;
         
         private bool useConfigQtyIncrementsField;
         
-        private float qtyIncrementsField;
+        private string qtyIncrementsField;
         
         private bool useConfigEnableQtyIncField;
         
@@ -1758,7 +1758,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public float minQty {
+        public string minQty {
             get {
                 return this.minQtyField;
             }
@@ -1782,7 +1782,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public float minSaleQty {
+        public string minSaleQty {
             get {
                 return this.minSaleQtyField;
             }
@@ -1806,7 +1806,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
-        public float maxSaleQty {
+        public string maxSaleQty {
             get {
                 return this.maxSaleQtyField;
             }
@@ -1854,7 +1854,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
-        public float notifyStockQty {
+        public string notifyStockQty {
             get {
                 return this.notifyStockQtyField;
             }
@@ -1878,7 +1878,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=18)]
-        public float qtyIncrements {
+        public string qtyIncrements {
             get {
                 return this.qtyIncrementsField;
             }
@@ -2398,13 +2398,13 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         "RepositoryV1")]
     public partial class CatalogDataProductLinkExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private float qtyField;
+        private string qtyField;
         
         private bool qtyFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public float qty {
+        public string qty {
             get {
                 return this.qtyField;
             }
@@ -2459,7 +2459,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool isRequireField;
         
-        private float priceField;
+        private string priceField;
         
         private bool priceFieldSpecified;
         
@@ -2571,7 +2571,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public float price {
+        public string price {
             get {
                 return this.priceField;
             }
