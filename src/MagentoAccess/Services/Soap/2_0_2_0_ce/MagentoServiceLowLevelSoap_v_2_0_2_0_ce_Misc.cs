@@ -216,7 +216,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
 			this.PullSessionId = async () =>
 			{
-				if( !string.IsNullOrWhiteSpace( apiUser ) )
+				if( !string.IsNullOrWhiteSpace( this.ApiUser ) && string.Compare( this.ApiUser, "bearer", StringComparison.InvariantCultureIgnoreCase ) != 0 )
 				{
 					var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
 					var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
