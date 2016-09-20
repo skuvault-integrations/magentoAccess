@@ -414,9 +414,17 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductAttributeInfoAsync( sessionId.SessionId, attribute ).ConfigureAwait( false );
+					try // this try catch block is crunch for 1.7
+					{
+						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+							res = await privateClient.catalogProductAttributeInfoAsync( sessionId.SessionId, attribute ).ConfigureAwait( false );
+					}
+					catch( Exception exc )
+					{
+						if( !( exc.Message.ToLower().Contains( "Procedure 'catalogProductAttributeInfoRequestParam' not present".ToLower())
+						                                       && this.StoreVersion.StartsWith( "1.7" ) ) )
+							throw;
+					}
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductAttributeInfoResponse( res );
