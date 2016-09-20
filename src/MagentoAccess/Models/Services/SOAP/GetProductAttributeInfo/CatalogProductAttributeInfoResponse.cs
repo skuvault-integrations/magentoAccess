@@ -8,13 +8,13 @@ namespace MagentoAccess.Models.Services.Soap.GetProductAttributeInfo
 	{
 		public CatalogProductAttributeInfoResponse( catalogProductAttributeInfoResponse res )
 		{
-			if( res != null && res.result != null && res.result.options != null && res.result.options.Any() )
+			if( res?.result?.options != null && res.result.options.Any() )
 				this.Attributes = res.result.options.Select( x => new ProductAttributeInfo( x.label, x.value ) ).ToList();
 		}
 
 		public CatalogProductAttributeInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductAttributeInfoResponse res )
 		{
-			if( res != null && res.result != null && res.result.options != null && res.result.options.Any() )
+			if( res?.result?.options != null && res.result.options.Any() )
 				this.Attributes = res.result.options.Select( x => new ProductAttributeInfo( x.label, x.value ) ).ToList();
 		}
 
