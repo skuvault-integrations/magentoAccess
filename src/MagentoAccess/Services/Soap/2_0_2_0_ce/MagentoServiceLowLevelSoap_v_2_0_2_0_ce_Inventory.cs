@@ -28,6 +28,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
 	{
+		public string StoreVersion { get; set; }
 		private class UpdateRessult
 		{
 			public UpdateRessult( PutStockItem putStockItem, int success )

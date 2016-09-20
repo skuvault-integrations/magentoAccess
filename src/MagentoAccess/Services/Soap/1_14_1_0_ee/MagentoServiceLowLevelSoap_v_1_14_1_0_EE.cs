@@ -34,6 +34,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		public string Store { get; private set; }
 
 		public string BaseMagentoUrl{ get; set; }
+		public string StoreVersion { get; set; }
 
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
 

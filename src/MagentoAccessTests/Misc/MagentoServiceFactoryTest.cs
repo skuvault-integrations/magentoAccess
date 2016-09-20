@@ -86,6 +86,7 @@ namespace MagentoAccessTests.Misc
 			{
 				get { return null; }
 			}
+			public string StoreVersion { get; set; }
 
 			public string Store { get; private set; }
 
