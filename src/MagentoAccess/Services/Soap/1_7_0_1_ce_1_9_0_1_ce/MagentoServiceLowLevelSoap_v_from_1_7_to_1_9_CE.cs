@@ -25,16 +25,16 @@ using MagentoAccess.Services.Soap._1_9_2_1_ce;
 
 namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 {
-	internal class MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE : IMagentoServiceLowLevelSoap
+	internal class MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE: IMagentoServiceLowLevelSoap
 	{
-		public string ApiUser { get; private set; }
+		public string ApiUser{ get; private set; }
 
-		public string ApiKey { get; private set; }
+		public string ApiKey{ get; private set; }
 
-		public string Store { get; private set; }
+		public string Store{ get; private set; }
 
 		public string BaseMagentoUrl{ get; set; }
-		public string StoreVersion { get; set; }
+		public string StoreVersion{ get; set; }
 
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
 
@@ -291,7 +291,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
 
 				if( productType != null )
-					AddFilter(filters, productType, "type", productTypeShouldBeExcluded);
+					AddFilter( filters, productType, "type", productTypeShouldBeExcluded );
 
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
@@ -348,7 +348,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogCategoryTreeAsync(sessionId.SessionId, rootCategory, "0").ConfigureAwait(false);
+						res = await privateClient.catalogCategoryTreeAsync( sessionId.SessionId, rootCategory, "0" ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				return new GetCategoryTreeResponse( res );
