@@ -421,8 +421,10 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 					}
 					catch( Exception exc )
 					{
-						if( !( exc.Message.ToLower().Contains( "Procedure 'catalogProductAttributeInfoRequestParam' not present".ToLower())
-						                                       && this.StoreVersion.StartsWith( "1.7" ) ) )
+						if( exc.Message.ToLower().Contains( "Procedure 'catalogProductAttributeInfoRequestParam' not present".ToLower() )
+						    && this.StoreVersion.StartsWith( "1.7" ) )
+							res = null;
+						else
 							throw;
 					}
 				} ).ConfigureAwait( false );
