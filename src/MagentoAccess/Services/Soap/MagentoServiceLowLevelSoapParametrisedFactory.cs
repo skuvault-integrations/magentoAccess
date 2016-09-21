@@ -57,6 +57,7 @@ namespace MagentoAccess.Services.Soap
 
 				// try to use 1.7- 1.9 low level service if can't detect version
 				this._factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( this._apiUser, this._apiKey, this._baseMagentoUrl, this._store ) );
+				factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( this._apiUser, this._apiKey, this._baseMagentoUrl, this._store ) );
 			}
 			return getMagentoLowLevelServiceAndConfigureIt( factories, magentoVersion );
 		}

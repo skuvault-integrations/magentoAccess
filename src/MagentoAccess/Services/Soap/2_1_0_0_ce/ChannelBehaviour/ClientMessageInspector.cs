@@ -11,6 +11,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 	internal class ClientMessageInspector: IClientMessageInspector
 	{
 		private const string StandartNamespaceStub = "hereshouldbeyourmagentostoreurl.com";
+		private const string StandartNamespaceStubWithProtocol = "http://"+ StandartNamespaceStub;
 		public string AccessToken;
 		private readonly object lockObject = new object();
 		private string replacedUrl;
@@ -41,16 +42,16 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 
 			//Crutch for magento 2.0
 			var newValue = channel.RemoteAddress.Uri.ToString();
-			var urlWithoutProtocolIndex1 = newValue.IndexOf( "//", StringComparison.Ordinal ) + 2;
-			var urlWithoutProtocolIndex2 = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
-			var storeUrlWithoutProtocol = newValue.Substring( urlWithoutProtocolIndex1, urlWithoutProtocolIndex2 - urlWithoutProtocolIndex1 ).Trim();
+			//var protocolUrlPartIndex = newValue.IndexOf( "//", StringComparison.Ordinal ) + 2;
+			var soapUrlPartIndex = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
+			var storeUrlWithoutProtocol = newValue.Substring( 0, soapUrlPartIndex ).Trim();
 
 			lock( this.lockObject )
 			{
 				if( string.IsNullOrWhiteSpace( this.replacedUrl ) )
 					this.replacedUrl = storeUrlWithoutProtocol;
 			}
-			this.ReplaceInMessageBody( ref request, StandartNamespaceStub, storeUrlWithoutProtocol );
+			this.ReplaceInMessageBody( ref request, StandartNamespaceStubWithProtocol, storeUrlWithoutProtocol );
 
 			return null;
 		}
@@ -91,7 +92,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 				var contentType = prop.Headers[ "Content-Type" ];
 			}
 
-			this.ReplaceInMessageBody( ref reply, this.replacedUrl, StandartNamespaceStub );
+			this.ReplaceInMessageBody( ref reply, this.replacedUrl, StandartNamespaceStubWithProtocol );
 		}
 	}
 }
