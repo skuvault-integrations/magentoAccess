@@ -27,5 +27,23 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 			pingSoapInfo.Should().NotBeNull();
 			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeTrue();
 		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
+		public void ReceiveStoreVersionAndSetup( MagentoServiceSoapCredentials credentials )
+		{
+			// ------------ Arrange
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", null );
+
+			// ------------ Act
+			var getOrdersTask = magentoService.DetermineMagentoVersionAndSetupServiceAsync();
+			getOrdersTask.Wait();
+
+			// ------------ Assert
+			var pingSoapInfo = getOrdersTask.Result;
+
+			pingSoapInfo.Should().NotBeNull();
+			( pingSoapInfo.SoapWorks && string.Compare( pingSoapInfo.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeTrue();
+		}
 	}
 }
