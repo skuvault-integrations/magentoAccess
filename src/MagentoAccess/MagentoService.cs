@@ -421,7 +421,8 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var ordersBriefInfo = ordersBriefInfos.Where( x => x != null && x.Orders != null ).SelectMany( x => x.Orders ).ToList();
+				var getOrdersResponses = ordersBriefInfos.Where( x => x != null && x.Orders != null ).ToList();
+				var ordersBriefInfo = getOrdersResponses.SelectMany( x => x.Orders ).ToList();
 
 				ordersBriefInfo = ordersBriefInfo.Distinct( new SalesOrderByOrderIdComparer() ).ToList();
 

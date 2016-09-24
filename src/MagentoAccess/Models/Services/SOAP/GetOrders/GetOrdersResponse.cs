@@ -28,11 +28,11 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 		public GetOrdersResponse( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1GetListResponse1 res )
 		{
-			var orders = res.salesOrderRepositoryV1GetListResponse.result.items.Select(x => new Order(x));
+			var orders = res.salesOrderRepositoryV1GetListResponse.result.items.Select( x => new Order( x ) );
 			this.Orders = orders;
 		}
 
-		public IEnumerable< Order > Orders{ get; set; }
+		public IEnumerable< Order > Orders { get; set; }
 	}
 
 	internal class Order
@@ -629,8 +629,8 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 				this.BillingLastname = salesOrderListEntity.billingAddress.lastname;
 			}
 			//this.BillingName = salesOrderListEntity.billingName;
-			this.CanShipPartially = salesOrderListEntity.canShipPartially.ToString( cultureToString );
-			this.CanShipPartiallyItem = salesOrderListEntity.canShipPartiallyItem.ToString( cultureToString );
+			this.CanShipPartially = ( salesOrderListEntity.canShipPartially ?? string.Empty ).ToString( cultureToString );
+			this.CanShipPartiallyItem = ( salesOrderListEntity.canShipPartiallyItem ?? string.Empty ).ToString( cultureToString );
 			this.CouponCode = salesOrderListEntity.couponCode;
 			this.CreatedAt = salesOrderListEntity.createdAt;
 			//this.CustomerBalanceAmount = salesOrderListEntity.customerBalanceAmount;
@@ -640,14 +640,14 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.CustomerDob = salesOrderListEntity.customerDob;
 			this.CustomerEmail = salesOrderListEntity.customerEmail;
 			this.CustomerFirstname = salesOrderListEntity.customerFirstname;
-			this.CustomerGender = salesOrderListEntity.customerGender.ToString( cultureToString );
-			this.CustomerGroupId = salesOrderListEntity.customerGroupId.ToString( cultureToString );
-			this.CustomerId = salesOrderListEntity.customerId.ToString( cultureToString );
-			this.CustomerIsGuest = salesOrderListEntity.customerIsGuest.ToString( cultureToString );
+			this.CustomerGender = ( salesOrderListEntity.customerGender ?? string.Empty ).ToString( cultureToString );
+			this.CustomerGroupId = ( salesOrderListEntity.customerGroupId ?? string.Empty ).ToString( cultureToString );
+			this.CustomerId = ( salesOrderListEntity.customerId ?? string.Empty ).ToString( cultureToString );
+			this.CustomerIsGuest = ( salesOrderListEntity.customerIsGuest ?? string.Empty ).ToString( cultureToString );
 			this.CustomerLastname = salesOrderListEntity.customerLastname;
 			this.CustomerMiddlename = salesOrderListEntity.customerMiddlename;
 			this.CustomerNote = salesOrderListEntity.customerNote;
-			this.CustomerNoteNotify = salesOrderListEntity.customerNoteNotify.ToString( cultureToString );
+			this.CustomerNoteNotify = ( salesOrderListEntity.customerNoteNotify ?? string.Empty ).ToString( cultureToString );
 			this.CustomerPrefix = salesOrderListEntity.customerPrefix;
 			this.CustomerSuffix = salesOrderListEntity.customerSuffix;
 			this.CustomerTaxvat = salesOrderListEntity.customerTaxvat;
@@ -656,8 +656,8 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.DiscountDescription = salesOrderListEntity.discountDescription;
 			this.DiscountInvoiced = ( salesOrderListEntity.discountInvoiced ?? string.Empty ).ToString( cultureToString );
 			this.DiscountRefunded = ( salesOrderListEntity.discountRefunded ?? string.Empty ).ToString( cultureToString );
-			this.EditIncrement = salesOrderListEntity.editIncrement.ToString( cultureToString );
-			this.EmailSent = salesOrderListEntity.emailSent.ToString( cultureToString );
+			this.EditIncrement = ( salesOrderListEntity.editIncrement ?? string.Empty ).ToString( cultureToString );
+			this.EmailSent = ( salesOrderListEntity.emailSent ?? string.Empty ).ToString( cultureToString );
 			this.ExtCustomerId = salesOrderListEntity.extCustomerId;
 			this.ExtOrderId = salesOrderListEntity.extOrderId;
 			//this.Firstname = salesOrderListEntity.firstname;
@@ -674,7 +674,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.HoldBeforeState = salesOrderListEntity.holdBeforeState;
 			this.HoldBeforeStatus = salesOrderListEntity.holdBeforeStatus;
 			this.incrementId = salesOrderListEntity.incrementId;
-			this.IsVirtual = salesOrderListEntity.isVirtual.ToString( cultureToString );
+			this.IsVirtual = ( salesOrderListEntity.isVirtual ?? string.Empty ).ToString( cultureToString );
 			//this.Lastname = salesOrderListEntity.lastName;
 			this.OrderCurrencyCode = salesOrderListEntity.orderCurrencyCode;
 			this.OrderId = salesOrderListEntity.extOrderId;
@@ -684,8 +684,8 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//this.PaypalIpnCustomerNotified = salesOrderListEntity.paypalIpnCustomerNotified;
 			//this.Postcode = salesOrderListEntity.postcode;
 			this.ProtectCode = salesOrderListEntity.protectCode;
-			this.QuoteAddressId = salesOrderListEntity.quoteAddressId.ToString( cultureToString );
-			this.QuoteId = salesOrderListEntity.quoteId.ToString( cultureToString );
+			this.QuoteAddressId = ( salesOrderListEntity.quoteAddressId ?? string.Empty ).ToString( cultureToString );
+			this.QuoteId = ( salesOrderListEntity.quoteId ?? string.Empty ).ToString( cultureToString );
 			this.RelationChildId = salesOrderListEntity.relationChildId;
 			this.RelationChildRealId = salesOrderListEntity.relationChildRealId;
 			this.RelationParentId = salesOrderListEntity.relationParentId;
@@ -716,7 +716,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.State = salesOrderListEntity.state;
 			this.Status = salesOrderListEntity.status;
 			this.StoreCurrencyCode = salesOrderListEntity.storeCurrencyCode;
-			this.StoreId = salesOrderListEntity.storeId.ToString( cultureToString );
+			this.StoreId = ( salesOrderListEntity.storeId ?? string.Empty ).ToString( cultureToString );
 			this.StoreName = salesOrderListEntity.storeName;
 			this.StoreToBaseRate = ( salesOrderListEntity.storeToBaseRate ?? string.Empty ).ToString( cultureToString );
 			this.StoreToOrderRate = ( salesOrderListEntity.storeToOrderRate ?? string.Empty ).ToString( cultureToString );
@@ -733,7 +733,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.TotalCanceled = ( salesOrderListEntity.totalCanceled ?? string.Empty ).ToString( cultureToString );
 			this.TotalDue = ( salesOrderListEntity.totalDue ?? string.Empty ).ToString( cultureToString );
 			this.TotalInvoiced = ( salesOrderListEntity.totalInvoiced ?? string.Empty ).ToString( cultureToString );
-			this.TotalItemCount = salesOrderListEntity.totalItemCount.ToString( cultureToString );
+			this.TotalItemCount = ( salesOrderListEntity.totalItemCount ?? string.Empty ).ToString( cultureToString );
 			this.TotalOfflineRefunded = ( salesOrderListEntity.totalOfflineRefunded ?? string.Empty ).ToString( cultureToString );
 			this.TotalOnlineRefunded = ( salesOrderListEntity.totalOnlineRefunded ?? string.Empty ).ToString( cultureToString );
 			this.TotalPaid = ( salesOrderListEntity.totalPaid ?? string.Empty ).ToString( cultureToString );
@@ -742,179 +742,179 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.UpdatedAt = ( salesOrderListEntity.updatedAt ?? string.Empty ).ToString( cultureToString );
 			this.Weight = ( salesOrderListEntity.weight ?? string.Empty ).ToString( cultureToString );
 			this.XForwardedFOR = salesOrderListEntity.xForwardedFor;
-			this.OrderId = salesOrderListEntity.entityId.ToString();
+			this.OrderId = ( salesOrderListEntity.entityId ?? string.Empty ).ToString();
 		}
 
-		public string AdjustmentNegative{ get; private set; }
-		public string AdjustmentPositive{ get; private set; }
-		public string AppliedRuleIds{ get; private set; }
-		public string BaseAdjustmentNegative{ get; private set; }
-		public string BaseAdjustmentPositive{ get; private set; }
-		public string BaseCurrencyCode{ get; private set; }
-		public string BaseCustomerBalanceAmount{ get; private set; }
-		public string BaseCustomerBalanceInvoiced{ get; private set; }
-		public string BaseCustomerBalanceRefunded{ get; private set; }
-		public string BaseCustomerBalanceTotalRefunded{ get; private set; }
-		public string BaseDiscountAmount{ get; private set; }
-		public string BaseDiscountCanceled{ get; private set; }
-		public string BaseDiscountInvoiced{ get; private set; }
-		public string BaseDiscountRefunded{ get; private set; }
-		public string BaseGiftCardsAmount{ get; private set; }
-		public string BaseGiftCardsInvoiced{ get; private set; }
-		public string BaseGiftCardsRefunded{ get; private set; }
-		public string BaseGrandTotal{ get; private set; }
-		public string BaseHiddenTaxAmount{ get; private set; }
-		public string BaseHiddenTaxInvoiced{ get; private set; }
-		public string BaseHiddenTaxRefunded{ get; private set; }
-		public string BaseRewardCurrencyAmount{ get; private set; }
-		public string BaseRewardCurrencyAmountInvoiced{ get; private set; }
-		public string BaseRewardCurrencyAmountRefunded{ get; private set; }
-		public string BaseShippingAmount{ get; private set; }
-		public string BaseShippingCanceled{ get; private set; }
-		public string BaseShippingDiscountAmount{ get; private set; }
-		public string BaseShippingHiddenTaxAmount{ get; private set; }
-		public string BaseShippingInclTax{ get; private set; }
-		public string BaseShippingInvoiced{ get; private set; }
-		public string BaseShippingRefunded{ get; private set; }
-		public string BaseShippingTaxAmount{ get; private set; }
-		public string BaseShippingTaxRefunded{ get; private set; }
-		public string BaseSubtotal{ get; private set; }
-		public string BaseSubtotalCanceled{ get; private set; }
-		public string BaseSubtotalInclTax{ get; private set; }
-		public string BaseSubtotalInvoiced{ get; private set; }
-		public string BaseSubtotalRefunded{ get; private set; }
-		public string BaseTaxAmount{ get; private set; }
-		public string BaseTaxCanceled{ get; private set; }
-		public string BaseTaxInvoiced{ get; private set; }
-		public string BaseTaxRefunded{ get; private set; }
-		public string BaseToGlobalRate{ get; private set; }
-		public string BaseToOrderRate{ get; private set; }
-		public string BaseTotalCanceled{ get; private set; }
-		public string BaseTotalDue{ get; private set; }
-		public string BaseTotalInvoiced{ get; private set; }
-		public string BaseTotalInvoicedCost{ get; private set; }
-		public string BaseTotalOfflineRefunded{ get; private set; }
-		public string BaseTotalOnlineRefunded{ get; private set; }
-		public string BaseTotalPaid{ get; private set; }
-		public string BaseTotalQtyOrdered{ get; private set; }
-		public string BaseTotalRefunded{ get; private set; }
-		public string BillingAddressId{ get; private set; }
-		public string BillingFirstname{ get; private set; }
-		public string BillingLastname{ get; private set; }
-		public string BillingName{ get; private set; }
-		public string CanShipPartially{ get; private set; }
-		public string CanShipPartiallyItem{ get; private set; }
-		public string CouponCode{ get; private set; }
-		public string CreatedAt{ get; private set; }
-		public string CustomerBalanceAmount{ get; private set; }
-		public string CustomerBalanceInvoiced{ get; private set; }
-		public string CustomerBalanceRefunded{ get; private set; }
-		public string CustomerBalanceTotalRefunded{ get; private set; }
-		public string CustomerDob{ get; private set; }
-		public string CustomerEmail{ get; private set; }
-		public string CustomerFirstname{ get; private set; }
-		public string CustomerGender{ get; private set; }
-		public string CustomerGroupId{ get; private set; }
-		public string CustomerId{ get; private set; }
-		public string CustomerIsGuest{ get; private set; }
-		public string CustomerLastname{ get; private set; }
-		public string CustomerMiddlename{ get; private set; }
-		public string CustomerNote{ get; private set; }
-		public string CustomerNoteNotify{ get; private set; }
-		public string CustomerPrefix{ get; private set; }
-		public string CustomerSuffix{ get; private set; }
-		public string CustomerTaxvat{ get; private set; }
-		public string DiscountAmount{ get; private set; }
-		public string DiscountCanceled{ get; private set; }
-		public string DiscountDescription{ get; private set; }
-		public string DiscountInvoiced{ get; private set; }
-		public string DiscountRefunded{ get; private set; }
-		public string EditIncrement{ get; private set; }
-		public string EmailSent{ get; private set; }
-		public string ExtCustomerId{ get; private set; }
-		public string ExtOrderId{ get; private set; }
-		public string Firstname{ get; private set; }
-		public string ForcedDoShipmentWithInvoice{ get; private set; }
-		public string GiftCards{ get; private set; }
-		public string GiftCardsAmount{ get; private set; }
-		public string GiftCardsInvoiced{ get; private set; }
-		public string GiftCardsRefunded{ get; private set; }
-		public string GiftMessageId{ get; private set; }
-		public string GlobalCurrencyCode{ get; private set; }
-		public string GrandTotal{ get; private set; }
-		public string HiddenTaxAmount{ get; private set; }
-		public string HiddenTaxInvoiced{ get; private set; }
-		public string HiddenTaxRefunded{ get; private set; }
-		public string HoldBeforeState{ get; private set; }
-		public string HoldBeforeStatus{ get; private set; }
-		public string incrementId{ get; private set; }
-		public string IsVirtual{ get; private set; }
-		public string Lastname{ get; private set; }
-		public string OrderCurrencyCode{ get; private set; }
-		public string OrderId{ get; private set; }
-		public string OriginalIncrementId{ get; private set; }
-		public string PaymentAuthorizationAmount{ get; private set; }
-		public string PaymentAuthorizationExpiration{ get; private set; }
-		public string PaypalIpnCustomerNotified{ get; private set; }
-		public string Postcode{ get; private set; }
-		public string ProtectCode{ get; private set; }
-		public string QuoteAddressId{ get; private set; }
-		public string QuoteId{ get; private set; }
-		public string RelationChildId{ get; private set; }
-		public string RelationChildRealId{ get; private set; }
-		public string RelationParentId{ get; private set; }
-		public string RelationParentRealId{ get; private set; }
-		public string RemoteIp{ get; private set; }
-		public string RewardCurrencyAmount{ get; private set; }
-		public string RewardCurrencyAmountInvoiced{ get; private set; }
-		public string RewardCurrencyAmountRefunded{ get; private set; }
-		public string RewardPointsBalance{ get; private set; }
-		public string RewardPointsBalanceRefunded{ get; private set; }
-		public string RewardPointsBalanceToRefund{ get; private set; }
-		public string RewardSalesrulePoints{ get; private set; }
-		public string ShippingAddressId{ get; private set; }
-		public string ShippingAmount{ get; private set; }
-		public string ShippingCanceled{ get; private set; }
-		public string ShippingDescription{ get; private set; }
-		public string ShippingDiscountAmount{ get; private set; }
-		public string ShippingFirstname{ get; private set; }
-		public string ShippingHiddenTaxAmount{ get; private set; }
-		public string ShippingInclTax{ get; private set; }
-		public string ShippingInvoiced{ get; private set; }
-		public string ShippingLastname{ get; private set; }
-		public string ShippingMethod{ get; private set; }
-		public string ShippingName{ get; private set; }
-		public string ShippingRefunded{ get; private set; }
-		public string ShippingTaxAmount{ get; private set; }
-		public string ShippingTaxRefunded{ get; private set; }
-		public string State{ get; private set; }
-		public string Status{ get; private set; }
-		public string StoreCurrencyCode{ get; private set; }
-		public string StoreId{ get; private set; }
-		public string StoreName{ get; private set; }
-		public string StoreToBaseRate{ get; private set; }
-		public string StoreToOrderRate{ get; private set; }
-		public string Subtotal{ get; private set; }
-		public string SubtotalCanceled{ get; private set; }
-		public string SubtotalInclTax{ get; private set; }
-		public string SubtotalInvoiced{ get; private set; }
-		public string SubtotalRefunded{ get; private set; }
-		public string TaxAmount{ get; private set; }
-		public string TaxCanceled{ get; private set; }
-		public string TaxInvoiced{ get; private set; }
-		public string TaxRefunded{ get; private set; }
-		public string Telephone{ get; private set; }
-		public string TotalCanceled{ get; private set; }
-		public string TotalDue{ get; private set; }
-		public string TotalInvoiced{ get; private set; }
-		public string TotalItemCount{ get; private set; }
-		public string TotalOfflineRefunded{ get; private set; }
-		public string TotalOnlineRefunded{ get; private set; }
-		public string TotalPaid{ get; private set; }
-		public string TotalQtyOrdered{ get; private set; }
-		public string TotalRefunded{ get; private set; }
-		public string UpdatedAt{ get; private set; }
-		public string Weight{ get; private set; }
-		public string XForwardedFOR{ get; private set; }
+		public string AdjustmentNegative { get; private set; }
+		public string AdjustmentPositive { get; private set; }
+		public string AppliedRuleIds { get; private set; }
+		public string BaseAdjustmentNegative { get; private set; }
+		public string BaseAdjustmentPositive { get; private set; }
+		public string BaseCurrencyCode { get; private set; }
+		public string BaseCustomerBalanceAmount { get; private set; }
+		public string BaseCustomerBalanceInvoiced { get; private set; }
+		public string BaseCustomerBalanceRefunded { get; private set; }
+		public string BaseCustomerBalanceTotalRefunded { get; private set; }
+		public string BaseDiscountAmount { get; private set; }
+		public string BaseDiscountCanceled { get; private set; }
+		public string BaseDiscountInvoiced { get; private set; }
+		public string BaseDiscountRefunded { get; private set; }
+		public string BaseGiftCardsAmount { get; private set; }
+		public string BaseGiftCardsInvoiced { get; private set; }
+		public string BaseGiftCardsRefunded { get; private set; }
+		public string BaseGrandTotal { get; private set; }
+		public string BaseHiddenTaxAmount { get; private set; }
+		public string BaseHiddenTaxInvoiced { get; private set; }
+		public string BaseHiddenTaxRefunded { get; private set; }
+		public string BaseRewardCurrencyAmount { get; private set; }
+		public string BaseRewardCurrencyAmountInvoiced { get; private set; }
+		public string BaseRewardCurrencyAmountRefunded { get; private set; }
+		public string BaseShippingAmount { get; private set; }
+		public string BaseShippingCanceled { get; private set; }
+		public string BaseShippingDiscountAmount { get; private set; }
+		public string BaseShippingHiddenTaxAmount { get; private set; }
+		public string BaseShippingInclTax { get; private set; }
+		public string BaseShippingInvoiced { get; private set; }
+		public string BaseShippingRefunded { get; private set; }
+		public string BaseShippingTaxAmount { get; private set; }
+		public string BaseShippingTaxRefunded { get; private set; }
+		public string BaseSubtotal { get; private set; }
+		public string BaseSubtotalCanceled { get; private set; }
+		public string BaseSubtotalInclTax { get; private set; }
+		public string BaseSubtotalInvoiced { get; private set; }
+		public string BaseSubtotalRefunded { get; private set; }
+		public string BaseTaxAmount { get; private set; }
+		public string BaseTaxCanceled { get; private set; }
+		public string BaseTaxInvoiced { get; private set; }
+		public string BaseTaxRefunded { get; private set; }
+		public string BaseToGlobalRate { get; private set; }
+		public string BaseToOrderRate { get; private set; }
+		public string BaseTotalCanceled { get; private set; }
+		public string BaseTotalDue { get; private set; }
+		public string BaseTotalInvoiced { get; private set; }
+		public string BaseTotalInvoicedCost { get; private set; }
+		public string BaseTotalOfflineRefunded { get; private set; }
+		public string BaseTotalOnlineRefunded { get; private set; }
+		public string BaseTotalPaid { get; private set; }
+		public string BaseTotalQtyOrdered { get; private set; }
+		public string BaseTotalRefunded { get; private set; }
+		public string BillingAddressId { get; private set; }
+		public string BillingFirstname { get; private set; }
+		public string BillingLastname { get; private set; }
+		public string BillingName { get; private set; }
+		public string CanShipPartially { get; private set; }
+		public string CanShipPartiallyItem { get; private set; }
+		public string CouponCode { get; private set; }
+		public string CreatedAt { get; private set; }
+		public string CustomerBalanceAmount { get; private set; }
+		public string CustomerBalanceInvoiced { get; private set; }
+		public string CustomerBalanceRefunded { get; private set; }
+		public string CustomerBalanceTotalRefunded { get; private set; }
+		public string CustomerDob { get; private set; }
+		public string CustomerEmail { get; private set; }
+		public string CustomerFirstname { get; private set; }
+		public string CustomerGender { get; private set; }
+		public string CustomerGroupId { get; private set; }
+		public string CustomerId { get; private set; }
+		public string CustomerIsGuest { get; private set; }
+		public string CustomerLastname { get; private set; }
+		public string CustomerMiddlename { get; private set; }
+		public string CustomerNote { get; private set; }
+		public string CustomerNoteNotify { get; private set; }
+		public string CustomerPrefix { get; private set; }
+		public string CustomerSuffix { get; private set; }
+		public string CustomerTaxvat { get; private set; }
+		public string DiscountAmount { get; private set; }
+		public string DiscountCanceled { get; private set; }
+		public string DiscountDescription { get; private set; }
+		public string DiscountInvoiced { get; private set; }
+		public string DiscountRefunded { get; private set; }
+		public string EditIncrement { get; private set; }
+		public string EmailSent { get; private set; }
+		public string ExtCustomerId { get; private set; }
+		public string ExtOrderId { get; private set; }
+		public string Firstname { get; private set; }
+		public string ForcedDoShipmentWithInvoice { get; private set; }
+		public string GiftCards { get; private set; }
+		public string GiftCardsAmount { get; private set; }
+		public string GiftCardsInvoiced { get; private set; }
+		public string GiftCardsRefunded { get; private set; }
+		public string GiftMessageId { get; private set; }
+		public string GlobalCurrencyCode { get; private set; }
+		public string GrandTotal { get; private set; }
+		public string HiddenTaxAmount { get; private set; }
+		public string HiddenTaxInvoiced { get; private set; }
+		public string HiddenTaxRefunded { get; private set; }
+		public string HoldBeforeState { get; private set; }
+		public string HoldBeforeStatus { get; private set; }
+		public string incrementId { get; private set; }
+		public string IsVirtual { get; private set; }
+		public string Lastname { get; private set; }
+		public string OrderCurrencyCode { get; private set; }
+		public string OrderId { get; private set; }
+		public string OriginalIncrementId { get; private set; }
+		public string PaymentAuthorizationAmount { get; private set; }
+		public string PaymentAuthorizationExpiration { get; private set; }
+		public string PaypalIpnCustomerNotified { get; private set; }
+		public string Postcode { get; private set; }
+		public string ProtectCode { get; private set; }
+		public string QuoteAddressId { get; private set; }
+		public string QuoteId { get; private set; }
+		public string RelationChildId { get; private set; }
+		public string RelationChildRealId { get; private set; }
+		public string RelationParentId { get; private set; }
+		public string RelationParentRealId { get; private set; }
+		public string RemoteIp { get; private set; }
+		public string RewardCurrencyAmount { get; private set; }
+		public string RewardCurrencyAmountInvoiced { get; private set; }
+		public string RewardCurrencyAmountRefunded { get; private set; }
+		public string RewardPointsBalance { get; private set; }
+		public string RewardPointsBalanceRefunded { get; private set; }
+		public string RewardPointsBalanceToRefund { get; private set; }
+		public string RewardSalesrulePoints { get; private set; }
+		public string ShippingAddressId { get; private set; }
+		public string ShippingAmount { get; private set; }
+		public string ShippingCanceled { get; private set; }
+		public string ShippingDescription { get; private set; }
+		public string ShippingDiscountAmount { get; private set; }
+		public string ShippingFirstname { get; private set; }
+		public string ShippingHiddenTaxAmount { get; private set; }
+		public string ShippingInclTax { get; private set; }
+		public string ShippingInvoiced { get; private set; }
+		public string ShippingLastname { get; private set; }
+		public string ShippingMethod { get; private set; }
+		public string ShippingName { get; private set; }
+		public string ShippingRefunded { get; private set; }
+		public string ShippingTaxAmount { get; private set; }
+		public string ShippingTaxRefunded { get; private set; }
+		public string State { get; private set; }
+		public string Status { get; private set; }
+		public string StoreCurrencyCode { get; private set; }
+		public string StoreId { get; private set; }
+		public string StoreName { get; private set; }
+		public string StoreToBaseRate { get; private set; }
+		public string StoreToOrderRate { get; private set; }
+		public string Subtotal { get; private set; }
+		public string SubtotalCanceled { get; private set; }
+		public string SubtotalInclTax { get; private set; }
+		public string SubtotalInvoiced { get; private set; }
+		public string SubtotalRefunded { get; private set; }
+		public string TaxAmount { get; private set; }
+		public string TaxCanceled { get; private set; }
+		public string TaxInvoiced { get; private set; }
+		public string TaxRefunded { get; private set; }
+		public string Telephone { get; private set; }
+		public string TotalCanceled { get; private set; }
+		public string TotalDue { get; private set; }
+		public string TotalInvoiced { get; private set; }
+		public string TotalItemCount { get; private set; }
+		public string TotalOfflineRefunded { get; private set; }
+		public string TotalOnlineRefunded { get; private set; }
+		public string TotalPaid { get; private set; }
+		public string TotalQtyOrdered { get; private set; }
+		public string TotalRefunded { get; private set; }
+		public string UpdatedAt { get; private set; }
+		public string Weight { get; private set; }
+		public string XForwardedFOR { get; private set; }
 	}
 }

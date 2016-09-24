@@ -1930,13 +1930,13 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool discountRefundedFieldSpecified;
         
-        private int eventIdField;
+        private string eventIdField;
         
         private bool eventIdFieldSpecified;
         
         private string extOrderItemIdField;
         
-        private int freeShippingField;
+        private string freeShippingField;
         
         private bool freeShippingFieldSpecified;
         
@@ -1964,7 +1964,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool gwBaseTaxAmountRefundedFieldSpecified;
         
-        private int gwIdField;
+        private string gwIdField;
         
         private bool gwIdFieldSpecified;
         
@@ -2000,33 +2000,33 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string discountTaxCompensationRefundedField;
         
-        private int isQtyDecimalField;
+        private string isQtyDecimalField;
         
         private bool isQtyDecimalFieldSpecified;
         
-        private int isVirtualField;
+        private string isVirtualField;
         
         private bool isVirtualFieldSpecified;
         
-        private int itemIdField;
+        private string itemIdField;
         
         private bool itemIdFieldSpecified;
         
-        private int lockedDoInvoiceField;
+        private string lockedDoInvoiceField;
         
         private bool lockedDoInvoiceFieldSpecified;
         
-        private int lockedDoShipField;
+        private string lockedDoShipField;
         
         private bool lockedDoShipFieldSpecified;
         
         private string nameField;
         
-        private int noDiscountField;
+        private string noDiscountField;
         
         private bool noDiscountFieldSpecified;
         
-        private int orderIdField;
+        private string orderIdField;
         
         private bool orderIdFieldSpecified;
         
@@ -2034,7 +2034,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool originalPriceFieldSpecified;
         
-        private int parentItemIdField;
+        private string parentItemIdField;
         
         private bool parentItemIdFieldSpecified;
         
@@ -2046,7 +2046,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool priceInclTaxFieldSpecified;
         
-        private int productIdField;
+        private string productIdField;
         
         private bool productIdFieldSpecified;
         
@@ -2080,7 +2080,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool qtyShippedFieldSpecified;
         
-        private int quoteItemIdField;
+        private string quoteItemIdField;
         
         private bool quoteItemIdFieldSpecified;
         
@@ -2102,7 +2102,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string skuField;
         
-        private int storeIdField;
+        private string storeIdField;
         
         private bool storeIdFieldSpecified;
         
@@ -2822,7 +2822,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=31)]
-        public int eventId {
+        public string eventId {
             get {
                 return this.eventIdField;
             }
@@ -2858,7 +2858,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=33)]
-        public int freeShipping {
+        public string freeShipping {
             get {
                 return this.freeShippingField;
             }
@@ -3026,7 +3026,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=40)]
-        public int gwId {
+        public string gwId {
             get {
                 return this.gwIdField;
             }
@@ -3242,7 +3242,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=51)]
-        public int isQtyDecimal {
+        public string isQtyDecimal {
             get {
                 return this.isQtyDecimalField;
             }
@@ -3266,7 +3266,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=52)]
-        public int isVirtual {
+        public string isVirtual {
             get {
                 return this.isVirtualField;
             }
@@ -3290,7 +3290,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=53)]
-        public int itemId {
+        public string itemId {
             get {
                 return this.itemIdField;
             }
@@ -3314,7 +3314,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=54)]
-        public int lockedDoInvoice {
+        public string lockedDoInvoice {
             get {
                 return this.lockedDoInvoiceField;
             }
@@ -3338,7 +3338,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=55)]
-        public int lockedDoShip {
+        public string lockedDoShip {
             get {
                 return this.lockedDoShipField;
             }
@@ -3374,7 +3374,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=57)]
-        public int noDiscount {
+        public string noDiscount {
             get {
                 return this.noDiscountField;
             }
@@ -3398,7 +3398,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=58)]
-        public int orderId {
+        public string orderId {
             get {
                 return this.orderIdField;
             }
@@ -3446,7 +3446,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=60)]
-        public int parentItemId {
+        public string parentItemId {
             get {
                 return this.parentItemIdField;
             }
@@ -3518,7 +3518,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=63)]
-        public int productId {
+        public string productId {
             get {
                 return this.productIdField;
             }
@@ -3722,7 +3722,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=72)]
-        public int quoteItemId {
+        public string quoteItemId {
             get {
                 return this.quoteItemIdField;
             }
@@ -3854,7 +3854,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=78)]
-        public int storeId {
+        public string storeId {
             get {
                 return this.storeIdField;
             }
@@ -5048,17 +5048,17 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string createdAtField;
         
-        private int entityIdField;
+        private string entityIdField;
         
         private bool entityIdFieldSpecified;
         
         private string entityNameField;
         
-        private int isCustomerNotifiedField;
+        private string isCustomerNotifiedField;
         
-        private int isVisibleOnFrontField;
+        private string isVisibleOnFrontField;
         
-        private int parentIdField;
+        private string parentIdField;
         
         private string statusField;
         
@@ -5090,7 +5090,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public int entityId {
+        public string entityId {
             get {
                 return this.entityIdField;
             }
@@ -5126,7 +5126,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public int isCustomerNotified {
+        public string isCustomerNotified {
             get {
                 return this.isCustomerNotifiedField;
             }
@@ -5138,7 +5138,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public int isVisibleOnFront {
+        public string isVisibleOnFront {
             get {
                 return this.isVisibleOnFrontField;
             }
@@ -5150,7 +5150,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public int parentId {
+        public string parentId {
             get {
                 return this.parentIdField;
             }
@@ -6679,15 +6679,15 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool baseToOrderRateFieldSpecified;
         
-        private int billingAddressIdField;
+        private string billingAddressIdField;
         
         private bool billingAddressIdFieldSpecified;
         
-        private int canShipPartiallyField;
+        private string canShipPartiallyField;
         
         private bool canShipPartiallyFieldSpecified;
         
-        private int canShipPartiallyItemField;
+        private string canShipPartiallyItemField;
         
         private bool canShipPartiallyItemFieldSpecified;
         
@@ -6701,19 +6701,19 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string customerFirstnameField;
         
-        private int customerGenderField;
+        private string customerGenderField;
         
         private bool customerGenderFieldSpecified;
         
-        private int customerGroupIdField;
+        private string customerGroupIdField;
         
         private bool customerGroupIdFieldSpecified;
         
-        private int customerIdField;
+        private string customerIdField;
         
         private bool customerIdFieldSpecified;
         
-        private int customerIsGuestField;
+        private string customerIsGuestField;
         
         private bool customerIsGuestFieldSpecified;
         
@@ -6723,7 +6723,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string customerNoteField;
         
-        private int customerNoteNotifyField;
+        private string customerNoteNotifyField;
         
         private bool customerNoteNotifyFieldSpecified;
         
@@ -6751,15 +6751,15 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool discountRefundedFieldSpecified;
         
-        private int editIncrementField;
+        private string editIncrementField;
         
         private bool editIncrementFieldSpecified;
         
-        private int emailSentField;
+        private string emailSentField;
         
         private bool emailSentFieldSpecified;
         
-        private int entityIdField;
+        private string entityIdField;
         
         private bool entityIdFieldSpecified;
         
@@ -6767,7 +6767,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string extOrderIdField;
         
-        private int forcedShipmentWithInvoiceField;
+        private string forcedShipmentWithInvoiceField;
         
         private bool forcedShipmentWithInvoiceFieldSpecified;
         
@@ -6787,7 +6787,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string incrementIdField;
         
-        private int isVirtualField;
+        private string isVirtualField;
         
         private bool isVirtualFieldSpecified;
         
@@ -6799,17 +6799,17 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool paymentAuthorizationAmountFieldSpecified;
         
-        private int paymentAuthExpirationField;
+        private string paymentAuthExpirationField;
         
         private bool paymentAuthExpirationFieldSpecified;
         
         private string protectCodeField;
         
-        private int quoteAddressIdField;
+        private string quoteAddressIdField;
         
         private bool quoteAddressIdFieldSpecified;
         
-        private int quoteIdField;
+        private string quoteIdField;
         
         private bool quoteIdFieldSpecified;
         
@@ -6865,7 +6865,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private string storeCurrencyCodeField;
         
-        private int storeIdField;
+        private string storeIdField;
         
         private bool storeIdFieldSpecified;
         
@@ -6927,7 +6927,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private bool totalInvoicedFieldSpecified;
         
-        private int totalItemCountField;
+        private string totalItemCountField;
         
         private bool totalItemCountFieldSpecified;
         
@@ -7919,7 +7919,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=43)]
-        public int billingAddressId {
+        public string billingAddressId {
             get {
                 return this.billingAddressIdField;
             }
@@ -7943,7 +7943,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=44)]
-        public int canShipPartially {
+        public string canShipPartially {
             get {
                 return this.canShipPartiallyField;
             }
@@ -7967,7 +7967,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=45)]
-        public int canShipPartiallyItem {
+        public string canShipPartiallyItem {
             get {
                 return this.canShipPartiallyItemField;
             }
@@ -8051,7 +8051,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=51)]
-        public int customerGender {
+        public string customerGender {
             get {
                 return this.customerGenderField;
             }
@@ -8075,7 +8075,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=52)]
-        public int customerGroupId {
+        public string customerGroupId {
             get {
                 return this.customerGroupIdField;
             }
@@ -8099,7 +8099,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=53)]
-        public int customerId {
+        public string customerId {
             get {
                 return this.customerIdField;
             }
@@ -8123,7 +8123,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=54)]
-        public int customerIsGuest {
+        public string customerIsGuest {
             get {
                 return this.customerIsGuestField;
             }
@@ -8183,7 +8183,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=58)]
-        public int customerNoteNotify {
+        public string customerNoteNotify {
             get {
                 return this.customerNoteNotifyField;
             }
@@ -8351,7 +8351,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=67)]
-        public int editIncrement {
+        public string editIncrement {
             get {
                 return this.editIncrementField;
             }
@@ -8375,7 +8375,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=68)]
-        public int emailSent {
+        public string emailSent {
             get {
                 return this.emailSentField;
             }
@@ -8399,7 +8399,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=69)]
-        public int entityId {
+        public string entityId {
             get {
                 return this.entityIdField;
             }
@@ -8447,7 +8447,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=72)]
-        public int forcedShipmentWithInvoice {
+        public string forcedShipmentWithInvoice {
             get {
                 return this.forcedShipmentWithInvoiceField;
             }
@@ -8567,7 +8567,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=81)]
-        public int isVirtual {
+        public string isVirtual {
             get {
                 return this.isVirtualField;
             }
@@ -8639,7 +8639,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=85)]
-        public int paymentAuthExpiration {
+        public string paymentAuthExpiration {
             get {
                 return this.paymentAuthExpirationField;
             }
@@ -8675,7 +8675,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=87)]
-        public int quoteAddressId {
+        public string quoteAddressId {
             get {
                 return this.quoteAddressIdField;
             }
@@ -8699,7 +8699,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=88)]
-        public int quoteId {
+        public string quoteId {
             get {
                 return this.quoteIdField;
             }
@@ -9035,7 +9035,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=107)]
-        public int storeId {
+        public string storeId {
             get {
                 return this.storeIdField;
             }
@@ -9407,7 +9407,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=123)]
-        public int totalItemCount {
+        public string totalItemCount {
             get {
                 return this.totalItemCountField;
             }
@@ -10130,7 +10130,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private FrameworkSearchCriteriaInterface searchCriteriaField;
         
-        private int totalCountField;
+        private string totalCountField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -10159,7 +10159,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public int totalCount {
+        public string totalCount {
             get {
                 return this.totalCountField;
             }
@@ -10192,11 +10192,11 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         private FrameworkSortOrder[] sortOrdersField;
         
-        private int pageSizeField;
+        private string pageSizeField;
         
         private bool pageSizeFieldSpecified;
         
-        private int currentPageField;
+        private string currentPageField;
         
         private bool currentPageFieldSpecified;
         
@@ -10228,7 +10228,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public int pageSize {
+        public string pageSize {
             get {
                 return this.pageSizeField;
             }
@@ -10252,7 +10252,7 @@ namespace MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public int currentPage {
+        public string currentPage {
             get {
                 return this.currentPageField;
             }
