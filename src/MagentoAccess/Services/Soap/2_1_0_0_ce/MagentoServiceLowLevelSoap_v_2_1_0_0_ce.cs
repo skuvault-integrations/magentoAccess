@@ -154,10 +154,22 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderRepositoryV1GetAsync( filters ).ConfigureAwait( false );
+						try
+						{
+							res = await privateClient.salesOrderRepositoryV1GetAsync( filters ).ConfigureAwait( false );
+						}
+						catch( Exception ex )
+						{
+							if( ex.Message.ToLower() == "requested entity doesn't exist" )
+							{
+								res = null;
+								return;
+							}
+							throw;
+						}
 				} ).ConfigureAwait( false );
 
-				return new OrderInfoResponse( res );
+				return res == null ? null : new OrderInfoResponse( res );
 			}
 			catch( Exception exc )
 			{

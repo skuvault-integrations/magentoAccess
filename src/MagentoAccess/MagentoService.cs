@@ -363,7 +363,7 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var salesOrderInfoResponsesList = salesOrderInfoResponses.ToList();
+				var salesOrderInfoResponsesList = salesOrderInfoResponses.Where( x => x != null ).ToList();
 
 				var resultOrders = new List< Order >();
 
@@ -438,7 +438,7 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var salesOrderInfoResponsesList = salesOrderInfoResponses.ToList();
+				var salesOrderInfoResponsesList = salesOrderInfoResponses.Where( x => x != null ).ToList();
 
 				var resultOrders = new List< Order >();
 

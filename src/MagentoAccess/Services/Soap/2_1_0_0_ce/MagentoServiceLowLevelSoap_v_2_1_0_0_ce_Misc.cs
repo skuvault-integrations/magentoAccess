@@ -47,6 +47,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		private readonly CustomBinding _customBinding;
 
+		private readonly CustomBinding _customBinding12;
+
 		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected const int SessionIdLifeTime = 3590;
@@ -96,6 +98,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
+			this._customBinding12 = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			this.PullSessionId = async () =>
 			{
 				if( !string.IsNullOrWhiteSpace( apiUser ) )
@@ -141,7 +144,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		private salesOrderRepositoryV1PortTypeClient CreateMagentoSalesOrderRepositoryServiceClient( string baseMagentoUrl )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
+			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding12, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
 

@@ -487,6 +487,9 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 		public OrderInfoResponse( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1GetResponse1 response )
 		{
+			if( response == null )
+				return;
+
 			var res = response.salesOrderRepositoryV1GetResponse.result;
 			var invariantCulture = CultureInfo.InvariantCulture;
 
