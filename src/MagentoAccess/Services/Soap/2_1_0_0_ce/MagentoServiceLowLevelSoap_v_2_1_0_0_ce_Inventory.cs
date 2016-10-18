@@ -342,14 +342,28 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
 							var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetStockItemBySkuRequest() { productSku = x };
-							res = await privateClient.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false );
+							try
+							{
+								res = await privateClient.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false );
+							}
+							catch( CommunicationException ex ) //crutch for magento 2.1
+							{
+								var exceptionMessge = ex.Message.ToLower();
+								if( exceptionMessge.Contains( @"(soap12 (http://www.w3.org/2003/05/soap-envelope))" ) &&
+								    exceptionMessge.Contains( @"(soap11 (http://schemas.xmlsoap.org/soap/envelope/))" ) )
+								{
+									res = null;
+									return;
+								}
+								throw;
+							}
 						}
 					} ).ConfigureAwait( false );
 
-					return Tuple.Create( x, res.catalogInventoryStockRegistryV1GetStockItemBySkuResponse.result );
+					return res == null ? null : Tuple.Create( x, res.catalogInventoryStockRegistryV1GetStockItemBySkuResponse.result );
 				} ).ConfigureAwait( false );
 
-				return new InventoryStockItemListResponse( responses );
+				return new InventoryStockItemListResponse( responses.Where( x => x != null ) );
 			}
 			catch( Exception exc )
 			{
