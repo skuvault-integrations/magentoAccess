@@ -263,7 +263,7 @@ namespace MagentoAccess.Services.Rest
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoRestException( string.Format( "An error occured during GetProductAsync{0}", id ), exc );
+				throw new MagentoRestException( $"An error occured during GetProductAsync{id}", exc );
 			}
 		}
 

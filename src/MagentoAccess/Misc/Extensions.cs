@@ -182,7 +182,7 @@ namespace MagentoAccess.Misc
 			var orders = source as IList< Order > ?? source.ToList();
 			var objects = orders.Skip( from ).Take( take ).AsParallel().Select( x => string.Format( "{{id:{0},createdAt:{1}}}", string.IsNullOrWhiteSpace( x.OrderIncrementalId ) ? PredefinedValues.NotAvailable : x.OrderIncrementalId, x.CreatedAt ) );
 			var items = string.Join( ",", objects );
-			var res = string.Format( "{{Count:{0}, Items:[{1}]}}", objects.Count(), items );
+			var res = $"{{Count:{objects.Count()}, Items:[{items}]}}";
 			return res;
 		}
 

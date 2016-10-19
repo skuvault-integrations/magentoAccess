@@ -46,7 +46,7 @@ namespace MagentoAccess
 	public class MagentoCommonException : MagentoException
 	{
 		public MagentoCommonException( string message, Exception exception, [ CallerMemberName ] string memberName = "" )
-			: base( string.Format( "{0}:{1}", memberName, message ), exception )
+			: base( $"{memberName}:{message}", exception )
 		{
 		}
 	}

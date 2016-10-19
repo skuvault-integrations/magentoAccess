@@ -11,7 +11,7 @@
 
 		public string ToJson()
 		{
-			return string.Format( "{{RestWorks:{0}}}", this.RestWorks );
+			return $"{{RestWorks:{this.RestWorks}}}";
 		}
 	}
 }

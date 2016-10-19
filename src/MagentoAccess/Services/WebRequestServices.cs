@@ -97,7 +97,7 @@ namespace MagentoAccess.Services
 					}
 				}
 
-				throw new MagentoRestException( string.Format( "Exception occured on PopulateRequestByBody(body:{0}, webRequest:{1})", body ?? "null", webrequestUrl ), exc );
+				throw new MagentoRestException( $"Exception occured on PopulateRequestByBody(body:{body ?? "null"}, webRequest:{webrequestUrl})", exc );
 			}
 		}
 		#endregion
@@ -130,7 +130,7 @@ namespace MagentoAccess.Services
 					}
 				}
 
-				throw new MagentoRestException( string.Format( "Exception occured on GetResponseStream( webRequest:{0})", webrequestUrl ), ex );
+				throw new MagentoRestException( $"Exception occured on GetResponseStream( webRequest:{webrequestUrl})", ex );
 			}
 		}
 
@@ -160,7 +160,7 @@ namespace MagentoAccess.Services
 					}
 				}
 
-				throw new MagentoRestException( string.Format( "Exception occured on GetResponseStreamAsync( webRequest:{0})", webrequestUrl ), ex );
+				throw new MagentoRestException( $"Exception occured on GetResponseStreamAsync( webRequest:{webrequestUrl})", ex );
 			}
 		}
 		#endregion

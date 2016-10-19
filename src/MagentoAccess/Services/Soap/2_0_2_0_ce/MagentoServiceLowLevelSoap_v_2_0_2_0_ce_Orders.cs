@@ -61,7 +61,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync(modifiedFrom:{0},modifiedTo{1})", modifiedFrom, modifiedTo ), exc );
+				throw new MagentoSoapException( $"An error occured during GetOrdersAsync(modifiedFrom:{modifiedFrom},modifiedTo{modifiedTo})", exc );
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync({0})", ordersIdsAgregated ), exc );
+				throw new MagentoSoapException( $"An error occured during GetOrdersAsync({ordersIdsAgregated})", exc );
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrderAsync(incrementId:{0})", incrementId ), exc );
+				throw new MagentoSoapException( $"An error occured during GetOrderAsync(incrementId:{incrementId})", exc );
 			}
 		}
 	}

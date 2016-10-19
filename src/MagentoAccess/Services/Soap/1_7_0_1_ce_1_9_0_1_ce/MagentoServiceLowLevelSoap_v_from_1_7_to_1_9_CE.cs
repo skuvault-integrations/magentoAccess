@@ -224,7 +224,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync(modifiedFrom:{0},modifiedTo{1})", modifiedFrom, modifiedTo ), exc );
+				throw new MagentoSoapException( $"An error occured during GetOrdersAsync(modifiedFrom:{modifiedFrom},modifiedTo{modifiedTo})", exc );
 			}
 		}
 
@@ -273,7 +273,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync({0})", ordersIdsAgregated ), exc );
+				throw new MagentoSoapException( $"An error occured during GetOrdersAsync({ordersIdsAgregated})", exc );
 			}
 		}
 
@@ -355,7 +355,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetCategoriesTree({0})", rootCategory ), exc );
+				throw new MagentoSoapException( $"An error occured during GetCategoriesTree({rootCategory})", exc );
 			}
 		}
 
@@ -389,7 +389,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", getProductAttributeMediaListRequest ), exc );
+				throw new MagentoSoapException( $"An error occured during GetProductAttributeMediaListAsync({getProductAttributeMediaListRequest})", exc );
 			}
 		}
 
@@ -473,7 +473,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductInfoAsync({0})", request.ToJson() ), exc );
+				throw new MagentoSoapException( $"An error occured during GetProductInfoAsync({request.ToJson()})", exc );
 			}
 		}
 
@@ -510,7 +510,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			catch( Exception exc )
 			{
 				var productsBriefInfo = string.Join( "|", skusOrIds );
-				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", productsBriefInfo ), exc );
+				throw new MagentoSoapException( $"An error occured during GetStockItemsAsync({productsBriefInfo})", exc );
 			}
 		}
 
@@ -562,7 +562,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", methodParameters ), exc );
+				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({methodParameters})", exc );
 			}
 		}
 
@@ -612,7 +612,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			catch( Exception exc )
 			{
 				var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
-				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
+				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({productsBriefInfo})", exc );
 			}
 		}
 
@@ -647,7 +647,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrderAsync(incrementId:{0})", incrementId ), exc );
+				throw new MagentoSoapException( $"An error occured during GetOrderAsync(incrementId:{incrementId})", exc );
 			}
 		}
 
@@ -700,7 +700,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync({0})", storeid ), exc );
+				throw new MagentoSoapException( $"An error occured during GetMagentoInfoAsync({storeid})", exc );
 			}
 		}
 
@@ -984,7 +984,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during CreateProduct({0})", storeId ), exc );
+				throw new MagentoSoapException( $"An error occured during CreateProduct({storeId})", exc );
 			}
 		}
 
@@ -1000,7 +1000,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during DeleteProduct({0})", storeId ), exc );
+				throw new MagentoSoapException( $"An error occured during DeleteProduct({storeId})", exc );
 			}
 		}
 		#endregion

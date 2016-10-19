@@ -119,7 +119,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", methodParameters ), exc );
+				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({methodParameters})", exc );
 			}
 		}
 
@@ -196,7 +196,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
+				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({productsBriefInfo})", exc );
 			}
 		}
 
@@ -387,7 +387,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			catch( Exception exc )
 			{
 				if( throwException )
-					throw new MagentoSoapException( string.Format( "An error occured during GetProductAttributeMediaListAsync({0})", getProductAttributeMediaListRequest ), exc );
+					throw new MagentoSoapException( $"An error occured during GetProductAttributeMediaListAsync({getProductAttributeMediaListRequest})", exc );
 				else
 					return new ProductAttributeMediaListResponse( exc );
 			}
@@ -424,7 +424,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetCategoriesTree({0})", rootCategory ), exc );
+				throw new MagentoSoapException( $"An error occured during GetCategoriesTree({rootCategory})", exc );
 			}
 		}
 
