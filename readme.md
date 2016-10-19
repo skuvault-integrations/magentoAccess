@@ -15,6 +15,7 @@ MagentoAccess tested with these Magento versions.
 * 2.0.7
 * 2.0.8
 * 2.1.0
+* 2.1.1
 
 **Enterprise Edition**
 * 1.14.1.0
