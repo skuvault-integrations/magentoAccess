@@ -493,7 +493,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
 
-				var productBriefInfo = res.ToJson();
+				var productBriefInfo = $"Count:{res.Count()},Product:{res.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
 
 				return res;
@@ -509,17 +509,17 @@ namespace MagentoAccess
 		public async Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null )
 		{
 			var mark = Mark.CreateNew();
+			var parameters = $"includeDetails:{includeDetails},productType:{productType},excludeProductByType:{excludeProductByType},updatedFrom:{updatedFrom}";
 			try
 			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters : parameters, mark : mark ) );
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, updatedFrom ).ConfigureAwait( false );
 
-				var resultProductsBriefInfo = resultProducts.ToJson();
-
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : resultProductsBriefInfo ) );
+				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
 
 				return resultProducts;
 			}
@@ -542,9 +542,8 @@ namespace MagentoAccess
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 				var resultProducts = ( await magentoServiceLowLevel.FillProductDetails( products.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Select( y => y.ToProduct() );
 
-				var resultProductsBriefInfo = resultProducts.ToJson();
-
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : resultProductsBriefInfo ) );
+				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
 
 				return resultProducts;
 			}
