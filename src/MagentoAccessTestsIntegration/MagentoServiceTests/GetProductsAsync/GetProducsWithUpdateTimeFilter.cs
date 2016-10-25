@@ -22,7 +22,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 
 			// ------------ Act
 			var getProductsTask1 = magentoService.GetProductsAsync( updatedFrom : updatedFrom, includeDetails : true );
-			var getProductsTask2 = magentoService.GetProductsAsync(includeDetails: true);
+			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true );
 			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
 
 			// ------------ Assert
