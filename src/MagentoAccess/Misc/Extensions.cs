@@ -5,14 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.GetOrders;
-using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Models.Services.Rest.PutStockItems;
-using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services;
-using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -45,12 +38,14 @@ namespace MagentoAccess.Misc
 		{
 			try
 			{
+				if( string.IsNullOrWhiteSpace( srcString ) )
+					return default(DateTime);
 				var dateTime = DateTime.Parse( srcString, CultureInfo.InvariantCulture );
 				return dateTime;
 			}
 			catch
 			{
-				return default( DateTime );
+				return default(DateTime);
 			}
 		}
 
@@ -63,16 +58,16 @@ namespace MagentoAccess.Misc
 			}
 			catch
 			{
-				return default( long );
+				return default(long);
 			}
 		}
 
 		public static decimal ToDecimalOrDefault( this string srcString )
 		{
 			if( string.IsNullOrWhiteSpace( srcString ) )
-				return default( decimal );
+				return default(decimal);
 
-			var parsedNumber = default( decimal );
+			var parsedNumber = default(decimal);
 
 			if( decimal.TryParse( srcString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsedNumber ) )
 				return parsedNumber;
@@ -84,7 +79,7 @@ namespace MagentoAccess.Misc
 
 		public static bool ToDecimalOrDefault( this string srcString, out decimal parsedNumber )
 		{
-			parsedNumber = default( decimal );
+			parsedNumber = default(decimal);
 			if( string.IsNullOrWhiteSpace( srcString ) )
 				return false;
 
@@ -99,7 +94,7 @@ namespace MagentoAccess.Misc
 		public static double ToDoubleOrDefault( this string srcString )
 		{
 			if( string.IsNullOrWhiteSpace( srcString ) )
-				return default( double );
+				return default(double);
 
 			double parsedNumber;
 
@@ -122,7 +117,7 @@ namespace MagentoAccess.Misc
 			}
 		}
 
-		public static string BuildUrl(this IEnumerable<string> urlParrts, bool escapeUrl = false, bool trimTailsSlash = false)
+		public static string BuildUrl( this IEnumerable< string > urlParrts, bool escapeUrl = false, bool trimTailsSlash = false )
 		{
 			var resultUrl = string.Empty;
 			try
@@ -153,7 +148,7 @@ namespace MagentoAccess.Misc
 					}
 
 					if( trimTailsSlash )
-						result = result.TrimEnd('/');
+						result = result.TrimEnd( '/' );
 					return result;
 				} );
 			}

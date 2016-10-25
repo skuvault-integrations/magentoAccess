@@ -24,7 +24,7 @@ namespace MagentoAccess.Services.Soap
 		string StoreVersion { get; set; }
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
-		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded );
+		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );

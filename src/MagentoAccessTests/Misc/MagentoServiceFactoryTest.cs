@@ -105,7 +105,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
+			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 			{
 				return null;
 			}

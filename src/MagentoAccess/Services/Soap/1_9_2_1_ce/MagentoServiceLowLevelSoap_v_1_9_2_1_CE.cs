@@ -199,14 +199,16 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			try
 			{
 				var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
 
 				if( productType != null )
-					AddFilter( filters, productType, "type", productTypeShouldBeExcluded );
+					AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq");
+				if( updatedFrom.HasValue )
+					AddFilter( filters, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
 
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
@@ -237,10 +239,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		private static void AddFilter( filters filters, string value, string key, bool excludeKey )
+		private static void AddFilter( filters filters, string value, string key, string valueKey )
 		{
 			var temp = filters.complex_filter.ToList();
-			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = excludeKey ? "neq" : "eq", value = value } } );
+			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = valueKey, value = value } } );
 			filters.complex_filter = temp.ToArray();
 		}
 

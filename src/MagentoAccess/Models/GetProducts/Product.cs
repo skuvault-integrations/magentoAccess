@@ -14,6 +14,7 @@ namespace MagentoAccess.Models.GetProducts
 			this.Sku = rp.Sku;
 			this.Name = rp.Name;
 			this.Qty = rp.Qty;
+			this.UpdatedAt = rp.UpdatedAt;
 			this.Categories = categories == null ? rp.Categories : categories.ToArray();
 
 			this.Images = images ?? rp.Images;
@@ -31,13 +32,14 @@ namespace MagentoAccess.Models.GetProducts
 			this.ProductType = productType ?? rp.ProductType;
 		}
 
-		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description, string productType )
+		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description, string productType, string updatedAt )
 		{
 			this.ProductId = productId;
 			this.EntityId = entityId;
 			this.Name = name;
 			this.Sku = sku;
 			this.Qty = qty;
+			this.UpdatedAt = updatedAt;
 			this.Price = price;
 			this.Description = description;
 			this.ProductType = productType;
@@ -59,6 +61,7 @@ namespace MagentoAccess.Models.GetProducts
 		public string ProductId{ get; set; } //id
 		public Category[] Categories{ get; set; }
 		public string ProductType{ get; set; }
+		public string UpdatedAt { get; set; }
 
 		//category_ids have many
 	}

@@ -35,13 +35,13 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 	{
 		public SoapProduct( catalogProductEntity catalogProductEntity )
 		{
-			CategoryIds = catalogProductEntity.category_ids.ToList();
-			Name = catalogProductEntity.name;
-			ProductId = catalogProductEntity.product_id;
-			Set = catalogProductEntity.set;
-			Sku = catalogProductEntity.sku;
+			this.CategoryIds = catalogProductEntity.category_ids.ToList();
+			this.Name = catalogProductEntity.name;
+			this.ProductId = catalogProductEntity.product_id;
+			this.Set = catalogProductEntity.set;
+			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.type;
-			WebsiteIds = catalogProductEntity.website_ids.ToList();
+			this.WebsiteIds = catalogProductEntity.website_ids.ToList();
 		}
 
 		public SoapProduct( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductEntity catalogProductEntity )

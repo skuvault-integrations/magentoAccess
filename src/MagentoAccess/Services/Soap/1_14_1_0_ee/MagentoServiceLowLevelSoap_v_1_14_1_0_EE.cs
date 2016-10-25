@@ -283,17 +283,18 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			Func< bool, Task< catalogProductListResponse > > call = async ( keepAlive ) =>
 			{
-				var associativeEntity = new associativeEntity() { key = "product_id", value = "46647" };
+				//var associativeEntity = new associativeEntity() { key = "product_id", value = "46647" };
 
-				var v1 = new filters { complex_filter = new complexFilter[ 1 ] };
-				//v1.complex_filter[1] = new MagentoSoapServiceReference_v_1_14_1_EE.complexFilter { key = "updated_at", value = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity { key = "from", value = DateTime.Now.AddYears(-1).ToSoapParameterString() } };
+				var filtersTemp = new filters { complex_filter = new complexFilter[ 1 ] };
+				if( updatedFrom.HasValue )
+					filtersTemp.complex_filter[ 1 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "from", value = updatedFrom.Value.ToSoapParameterString() } };
 				//v1.complex_filter[0] = new MagentoSoapServiceReference_v_1_14_1_EE.complexFilter { key = "updated_at", value = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity { key = "to", value = DateTime.Now.ToSoapParameterString() } };
-				v1.complex_filter[ 0 ] = new complexFilter { key = "type", value = new associativeEntity { key = "in", value = "simple,configurable" } };
-				var filters = v1;
+				filtersTemp.complex_filter[ 0 ] = new complexFilter { key = "type", value = new associativeEntity { key = "in", value = "simple,configurable" } };
+				var filters = filtersTemp;
 				//var filters = new MagentoSoapServiceReference_v_1_14_1_EE.filters { filter = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity[1]{associativeEntity} };
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 				var res = new catalogProductListResponse();

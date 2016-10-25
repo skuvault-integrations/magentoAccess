@@ -38,8 +38,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				this.Success = success;
 			}
 
-			public int Success{ get; set; }
-			public PutStockItem PutStockItem{ get; set; }
+			public int Success { get; set; }
+			public PutStockItem PutStockItem { get; set; }
 		}
 
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
@@ -201,12 +201,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
+		//TODO: remove redundant method wrapper
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
-			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded );
+			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom );
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded )
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			try
 			{
@@ -236,6 +237,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 							//var frameworkSearchFilterGroup2 = new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "lt", field = "created_at", value = "2100-01-01 01:01:01" } } };
 							//var frameworkSearchFilterGroups = new[] { frameworkSearchFilterGroup1, frameworkSearchFilterGroup2 };
 
+							var frameworkSearchFilterGroups = new List< FrameworkSearchFilterGroup >();
+
 							var frameworkSearchCriteriaInterface = new FrameworkSearchCriteriaInterface()
 							{
 								currentPage = currentPage,
@@ -244,6 +247,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 								pageSizeSpecified = true,
 								//filterGroups = frameworkSearchFilterGroups
 							};
+
+							if( updatedFrom.HasValue )
+							{
+								var filter = new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "gt", field = "updated_at", value = updatedFrom.Value.ToSoapParameterString() } } };
+								frameworkSearchFilterGroups.Add( filter );
+							}
 
 							// filtering by typeId doesn't works for magento2.0.2
 							//if( productType != null )
@@ -256,10 +265,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 							//	frameworkSearchCriteriaInterface.filterGroups = temp.ToArray();
 							//}
 
+							if( frameworkSearchFilterGroups.Any() )
+								frameworkSearchCriteriaInterface.filterGroups = frameworkSearchFilterGroups.ToArray();
+
 							var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
 							catalogProductRepositoryV1GetListResponse = await privateClient.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false );
 							var catalogDataProductInterfaces = catalogProductRepositoryV1GetListResponse == null ? new List< CatalogDataProductInterface >() : catalogProductRepositoryV1GetListResponse.catalogProductRepositoryV1GetListResponse.result.items.ToList();
-
 
 							res.AddRange( catalogDataProductInterfaces );
 							currentPage++;

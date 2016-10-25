@@ -249,7 +249,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				await this.GetSessionId().ConfigureAwait( false );
 				//var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
 				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
-				var getProductsRes = await this.GetProductsAsync( 1, null, false ).ConfigureAwait( false );
+				var getProductsRes = await this.GetProductsAsync( 1, null, false, null  ).ConfigureAwait( false );
 
 				//var saveMethodResult = await this.SaveOrderMethodExistAsync().ConfigureAwait( false );
 				return /*modules?.Modules != null && modules.Modules.Count > 0 &&*/ getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.0.2.0", "CE" ) : null;
