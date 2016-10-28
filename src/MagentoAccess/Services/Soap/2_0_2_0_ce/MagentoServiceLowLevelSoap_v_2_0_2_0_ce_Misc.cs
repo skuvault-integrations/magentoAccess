@@ -599,7 +599,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				//var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
 				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
 				var res = new List< UpdateRessult< CreatteProductModel > >();
@@ -615,7 +614,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 						if( privateClient.State != CommunicationState.Opened
 						    && privateClient.State != CommunicationState.Created
 						    && privateClient.State != CommunicationState.Opening )
-							//privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
 							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
 						var updateResult = new UpdateRessult< CreatteProductModel >( x, 0 );
