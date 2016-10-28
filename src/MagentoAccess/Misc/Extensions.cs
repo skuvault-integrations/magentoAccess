@@ -211,7 +211,7 @@ namespace MagentoAccess.Misc
 			using( var enumerator = source.GetEnumerator() )
 			{
 				while( enumerator.MoveNext() )
-					yield return YieldBatchElements( enumerator, batchSize - 1 );
+					yield return YieldBatchElements( enumerator, batchSize - 1 ).ToList();
 			}
 		}
 
