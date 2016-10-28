@@ -42,7 +42,7 @@ namespace MagentoAccessTests.Misc
 			var batchedList = someList.Batch( batchCase.BatchSize ).ToList();
 
 			//------------ Assert
-			var expected = batchCase.ListLength / batchCase.BatchSize + batchCase.ListLength % batchCase.BatchSize == 0 ? 0 : 1;
+			var expected = batchCase.ListLength / batchCase.BatchSize + (batchCase.ListLength % batchCase.BatchSize == 0 ? 0 : 1);
 			batchedList.Count().Should().Be( expected );
 			batchedList.Sum( x => x.Count() ).Should().Be( batchCase.ListLength );
 		}
