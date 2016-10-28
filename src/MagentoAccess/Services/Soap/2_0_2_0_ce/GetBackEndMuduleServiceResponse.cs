@@ -11,6 +11,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this.Modules = backendModuleServiceV1GetModulesResponse1.backendModuleServiceV1GetModulesResponse.result.ToList();
 		}
 
-		public List< string > Modules{ get; private set; }
+		public List< string > Modules { get; private set; }
 	}
 }

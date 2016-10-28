@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 {
-	internal class ClientMessageInspector: IClientMessageInspector
+	internal class ClientMessageInspector : IClientMessageInspector
 	{
 		private const string StandartNamespaceStub = "hereshouldbeyourmagentostoreurl.com";
 		public string AccessToken;

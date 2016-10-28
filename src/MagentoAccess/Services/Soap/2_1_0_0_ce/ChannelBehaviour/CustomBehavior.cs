@@ -33,7 +33,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 			try
 			{
 				//Add the inspector
-				behavior.MessageInspectors.Add(new ClientMessageInspector() { AccessToken = this.AccessToken });
+				behavior.MessageInspectors.Add( new ClientMessageInspector() { AccessToken = this.AccessToken } );
 				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
 				{
 					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );

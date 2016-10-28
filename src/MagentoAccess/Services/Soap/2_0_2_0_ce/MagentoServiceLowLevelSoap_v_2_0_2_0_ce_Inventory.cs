@@ -26,10 +26,11 @@ using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
-	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce : IMagentoServiceLowLevelSoap
 	{
 		public string StoreVersion { get; set; }
-		private class UpdateRessult<T1>
+
+		private class UpdateRessult< T1 >
 		{
 			public UpdateRessult( T1 putStockItem, int success )
 			{
@@ -37,8 +38,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				this.Success = success;
 			}
 
-			public int Success{ get; set; }
-			public T1 PutStockItem{ get; set; }
+			public int Success { get; set; }
+			public T1 PutStockItem { get; set; }
 		}
 
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
@@ -51,7 +52,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< UpdateRessult<PutStockItem> >();
+				var res = new List< UpdateRessult< PutStockItem > >();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{
@@ -65,7 +66,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 						    && privateClient.State != CommunicationState.Opening )
 							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-						var updateResult = new UpdateRessult<PutStockItem>( x, 0 );
+						var updateResult = new UpdateRessult< PutStockItem >( x, 0 );
 						res.Add( updateResult );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
@@ -203,7 +204,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		//TODO: refactor, remove redundant wrapper
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
-			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom);
+			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom );
 		}
 
 		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
