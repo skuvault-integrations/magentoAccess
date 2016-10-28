@@ -1014,28 +1014,33 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
-
-				var catalogProductCreateEntity = new catalogProductCreateEntity
+				var result = 0;
+				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					name = name,
-					description = "Product description",
-					short_description = "Product short description",
-					weight = "10",
-					status = "1",
-					visibility = "4",
-					price = "100",
-					tax_class_id = "1",
-					categories = new[] { res0.result.ToString() },
-					category_ids = new[] { res0.result.ToString() },
-					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
-				};
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
 
-				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+					var catalogProductCreateEntity = new catalogProductCreateEntity
+					{
+						name = name,
+						description = "Product description",
+						short_description = "Product short description",
+						weight = "10",
+						status = "1",
+						visibility = "4",
+						price = "100",
+						tax_class_id = "1",
+						categories = new[] { res0.result.ToString() },
+						category_ids = new[] { res0.result.ToString() },
+						stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
+					};
 
-				//product id
-				return res.result;
+					var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+
+					//product id
+					result = res.result;
+				} ).ConfigureAwait( false );
+				return result;
 			}
 			catch( Exception exc )
 			{
