@@ -639,6 +639,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 								weight = "1",
 								weightSpecified = true,
 							};
+							if( productType == "bundle" )
+							{
+								catalogInventoryDataStockItemInterface.customAttributes = new[]
+								{
+									new FrameworkAttributeInterface { value = "1", attributeCode = "price_view" },
+									new FrameworkAttributeInterface { value = "1", attributeCode = "price_type" }
+								};
+							}
 							var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogProductRepositoryV1SaveRequest()
 							{
 								product = catalogInventoryDataStockItemInterface
