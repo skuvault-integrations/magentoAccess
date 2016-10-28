@@ -61,6 +61,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
 			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.typeId;
+			this.UpdatedAt = catalogProductEntity.updatedAt;
 		}
 
 		public SoapProduct( Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductInterface catalogProductEntity )
@@ -69,7 +70,10 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
 			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.typeId;
+			this.UpdatedAt = catalogProductEntity.updatedAt;
 		}
+
+		public string UpdatedAt { get; set; }
 
 		public string Type{ get; set; }
 
