@@ -667,36 +667,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			{
 				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({methodParameters})", exc );
 			}
-			//try
-			//{
-			//	var sessionId = await this.GetSessionId().ConfigureAwait(false);
-			//	var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync(sessionId, storeId).ConfigureAwait(false);
-
-			//	var catalogProductCreateEntity = new catalogProductCreateEntity
-			//	{
-			//		name = name,
-			//		description = "Product description",
-			//		short_description = "Product short description",
-			//		weight = "10",
-			//		status = "1",
-			//		visibility = "4",
-			//		price = "100",
-			//		tax_class_id = "1",
-			//		categories = new[] { res0.result.ToString() },
-			//		category_ids = new[] { res0.result.ToString() },
-			//		stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
-			//	};
-
-			//	var res = await this._magentoSoapService.catalogProductCreateAsync(sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId).ConfigureAwait(false);
-
-			//	//product id
-			//	return res.result;
-			//}
-			//catch (Exception exc)
-			//{
-			//	throw new MagentoSoapException(string.Format("An error occured during CreateProduct({0})", storeId), exc);
-			//}
-			return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
