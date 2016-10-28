@@ -1010,7 +1010,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
 		{
 			try
 			{

@@ -17,6 +17,7 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
+using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
@@ -573,13 +574,96 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			//}
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
-
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
+		public class CreatteProductModel
 		{
+			public int IsInStock { get; }
+			public string Name { get; }
+			public string ProductType { get; }
+			public string Sku { get; }
+
+			public CreatteProductModel(string name, string sku, int isInStock, string productType)
+			{
+				this.Name = name;
+				this.Sku = sku;
+				this.IsInStock = isInStock;
+				this.ProductType = productType;
+			}
+		}
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
+		{
+			
+			var stockItem = new CreatteProductModel ( name,  sku,  isInStock,  productType );
+			var methodParameters = stockItem.ToJson();
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
+
+				//var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
+				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient(this.BaseMagentoUrl);
+
+				var res = new List<UpdateRessult<CreatteProductModel>>();
+				var stockItems = new List<CreatteProductModel> { stockItem };
+
+				await stockItems.DoInBatchAsync( 10, async x =>
+				{
+					await ActionPolicies.GetAsync.Do( async () =>
+					{
+						var statusChecker = new StatusChecker(maxCheckCount);
+						TimerCallback tcb = statusChecker.CheckStatus;
+
+						if (privateClient.State != CommunicationState.Opened
+							&& privateClient.State != CommunicationState.Created
+							&& privateClient.State != CommunicationState.Opening)
+							//privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
+							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient(this.BaseMagentoUrl);
+
+						var updateResult = new UpdateRessult<CreatteProductModel>(x, 0);
+						res.Add(updateResult);
+
+						using (var stateTimer = new Timer(tcb, privateClient, 1000, delayBeforeCheck))
+						{
+							MagentoLogger.LogTraceStarted(this.CreateMethodCallInfo(methodParameters, mark: markForLog));
+
+							var catalogInventoryDataStockItemInterface = new CatalogDataProductInterface()
+							{
+								sku = x.Sku,
+								name = x.Name,
+								price = "1",
+								priceSpecified = true,
+								status = 1,
+								statusSpecified = true,
+								typeId = productType,
+								attributeSetId = 4,
+								attributeSetIdSpecified = true,
+								weight = "1",
+								weightSpecified = true,
+							};
+							var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogProductRepositoryV1SaveRequest()
+							{
+								product = catalogInventoryDataStockItemInterface
+							};
+
+							var temp = await privateClient.catalogProductRepositoryV1SaveAsync(catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest).ConfigureAwait(false);
+
+							updateResult.Success = temp.catalogProductRepositoryV1SaveResponse.result.id ;
+						}
+					}).ConfigureAwait(false);
+				}).ConfigureAwait(false);
+
+				MagentoLogger.LogTraceEnded(this.CreateMethodCallInfo(methodParameters, mark: markForLog, methodResult: res.ToJson()));
+
+				return res.First().Success;
+			}
+			catch (Exception exc)
+			{
+				throw new MagentoSoapException($"An error occured during PutStockItemsAsync({methodParameters})", exc);
+			}
+
 			//try
 			//{
 			//	var sessionId = await this.GetSessionId().ConfigureAwait(false);
-			//	var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync(sessionId, storeId).ConfigureAwait(false);
+			//	var res0 = await this._magentoSoapService.(sessionId, storeId).ConfigureAwait(false);
 
 			//	var catalogProductCreateEntity = new catalogProductCreateEntity
 			//	{
@@ -605,7 +689,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			//{
 			//	throw new MagentoSoapException(string.Format("An error occured during CreateProduct({0})", storeId), exc);
 			//}
-			return await Task.FromResult( 0 ).ConfigureAwait( false );
+			//return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
 		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )

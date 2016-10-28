@@ -140,7 +140,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
+			public Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
 			{
 				return null;
 			}

@@ -30,16 +30,16 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 	{
 		public string StoreVersion { get; set; }
 
-		private class UpdateRessult
+		private class UpdateRessult<T1>
 		{
-			public UpdateRessult( PutStockItem putStockItem, int success )
+			public UpdateRessult( T1 putStockItem, int success )
 			{
 				this.PutStockItem = putStockItem;
 				this.Success = success;
 			}
 
 			public int Success { get; set; }
-			public PutStockItem PutStockItem { get; set; }
+			public T1 PutStockItem { get; set; }
 		}
 
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
@@ -52,7 +52,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< UpdateRessult >();
+				var res = new List< UpdateRessult<PutStockItem>>();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{
@@ -66,7 +66,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						    && privateClient.State != CommunicationState.Opening )
 							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-						var updateResult = new UpdateRessult( x, 0 );
+						var updateResult = new UpdateRessult<PutStockItem>( x, 0 );
 						res.Add( updateResult );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
