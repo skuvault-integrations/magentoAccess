@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
@@ -43,7 +42,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Sku = productDeepClone.Sku;
 			this.Name = productDeepClone.Name;
 			this.Qty = productDeepClone.Qty;
-			this.UpdatedAt = productDeepClone.UpdatedAt.ToString( CultureInfo.InvariantCulture );
+			this.UpdatedAt = productDeepClone.UpdatedAt;
 			this.Categories = ( productDeepClone.Categories ?? new Models.GetProducts.Category[] { } ).Select( x => new Category( x ) ).ToArray();
 			this.Images = ( productDeepClone.Images ?? new List< Models.GetProducts.MagentoUrl >() ).Select( x => new MagentoUrl( x ) ).ToArray();
 			this.Price = productDeepClone.Price;
