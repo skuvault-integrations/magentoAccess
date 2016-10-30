@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Models.Services.Rest;
+using MagentoAccess.Models.Services.Rest.v2x;
 using NUnit.Framework;
 
 namespace AbilityMagentoAccessTests
