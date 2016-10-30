@@ -10,7 +10,7 @@ using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Services.Rest;
+using MagentoAccess.Services.Rest.v1x;
 
 namespace MagentoAccess
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MagentoAccess.Models.Services.Rest.GetOrders
+namespace MagentoAccess.Models.Services.Rest.v1x.GetOrders
 {
 	[ Serializable ]
 	public class Item

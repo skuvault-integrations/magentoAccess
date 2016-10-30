@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.Rest.GetOrders;
+using MagentoAccess.Models.Services.Rest.v1x.GetOrders;
 
 namespace MagentoAccess.Services.Parsers
 {

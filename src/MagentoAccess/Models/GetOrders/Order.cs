@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.Rest.GetOrders;
+using MagentoAccess.Models.Services.Rest.v1x.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
@@ -125,7 +125,7 @@ namespace MagentoAccess.Models.GetOrders
 
 		public string ShippingAddressId { get; set; }
 
-		public Order( Services.Rest.GetOrders.Order order )
+		public Order( Services.Rest.v1x.GetOrders.Order order )
 		{
 			var clone = order.DeepClone();
 

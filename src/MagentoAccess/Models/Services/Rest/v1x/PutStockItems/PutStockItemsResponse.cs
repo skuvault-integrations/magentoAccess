@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MagentoAccess.Models.Services.Rest.PutStockItems
+namespace MagentoAccess.Models.Services.Rest.v1x.PutStockItems
 {
 	public class PutStockItemsResponse
 	{

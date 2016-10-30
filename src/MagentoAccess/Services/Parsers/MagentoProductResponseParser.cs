@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.Rest.GetProduct;
+using MagentoAccess.Models.Services.Rest.v1x.GetProduct;
 
 namespace MagentoAccess.Services.Parsers
 {

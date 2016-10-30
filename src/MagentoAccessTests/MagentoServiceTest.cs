@@ -6,7 +6,7 @@ using MagentoAccess;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Services.Rest;
+using MagentoAccess.Services.Rest.v1x;
 using MagentoAccess.Services.Soap;
 using MagentoAccessTests.TestEnvironment;
 using NUnit.Framework;

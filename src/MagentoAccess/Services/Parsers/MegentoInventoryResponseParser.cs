@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
-using MagentoAccess.Models.Services.Rest.GetStockItems;
+using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
 
 namespace MagentoAccess.Services.Parsers
 {

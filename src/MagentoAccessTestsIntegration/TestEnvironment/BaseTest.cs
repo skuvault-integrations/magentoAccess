@@ -12,7 +12,7 @@ using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Services.Rest;
+using MagentoAccess.Services.Rest.v1x;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;

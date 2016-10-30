@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MagentoAccess.Models.Services.Rest.GetOrders;
-using MagentoAccess.Models.Services.Rest.GetProduct;
-using MagentoAccess.Models.Services.Rest.GetProducts;
-using MagentoAccess.Models.Services.Rest.GetStockItems;
-using MagentoAccess.Models.Services.Rest.PutStockItems;
+using MagentoAccess.Models.Services.Rest.v1x.GetOrders;
+using MagentoAccess.Models.Services.Rest.v1x.GetProduct;
+using MagentoAccess.Models.Services.Rest.v1x.GetProducts;
+using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
+using MagentoAccess.Models.Services.Rest.v1x.PutStockItems;
 using MagentoAccess.Services;
-using MagentoAccess.Services.Rest;
-using StockItem = MagentoAccess.Models.Services.Rest.PutStockItems.StockItem;
+using MagentoAccess.Services.Rest.v1x;
+using StockItem = MagentoAccess.Models.Services.Rest.v1x.PutStockItems.StockItem;
 
 namespace MagentoAccessTests.TestEnvironment
 {

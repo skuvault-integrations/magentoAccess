@@ -15,11 +15,11 @@ using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Models.Services.Rest.GetStockItems;
+using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services.Rest;
+using MagentoAccess.Services.Rest.v1x;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
@@ -806,7 +806,7 @@ namespace MagentoAccess
 			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
 
-			var receivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
+			var receivedProducts = new List< Models.Services.Rest.v1x.GetProducts.Product >();
 
 			var lastReceiveProducts = productsChunk;
 
@@ -849,13 +849,13 @@ namespace MagentoAccess
 			if( productsChunk.Count() < itemsPerPage )
 				return productsChunk.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
 
-			var receivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
+			var receivedProducts = new List< Models.Services.Rest.v1x.GetProducts.Product >();
 
 			var lastReceiveProducts = productsChunk;
 
 			receivedProducts.AddRange( productsChunk );
 
-			var getProductsTasks = new List< Task< List< Models.Services.Rest.GetProducts.Product > > >
+			var getProductsTasks = new List< Task< List< Models.Services.Rest.v1x.GetProducts.Product > > > {
 			{
 				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
 				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
@@ -872,11 +872,11 @@ namespace MagentoAccess
 			return receivedProducts.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
 		}
 
-		private List< Models.Services.Rest.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.Rest.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
+		private List< Models.Services.Rest.v1x.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.Rest.v1x.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
 		{
 			var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
 			var localLastReceivedProducts = lastReceiveProducts;
-			var localReceivedProducts = new List< Models.Services.Rest.GetProducts.Product >();
+			var localReceivedProducts = new List< Models.Services.Rest.v1x.GetProducts.Product >();
 			do
 			{
 				Interlocked.Increment( ref page );
@@ -885,12 +885,12 @@ namespace MagentoAccess
 				getProductsTask.Wait();
 				var localProductsChunk = getProductsTask.Result.Products;
 
-				var lastProductsChunksList = localProductsChunk as IList< Models.Services.Rest.GetProducts.Product > ?? localProductsChunk.ToList();
+				var lastProductsChunksList = localProductsChunk as IList< Models.Services.Rest.v1x.GetProducts.Product > ?? localProductsChunk.ToList();
 				var repeatedItems = from c in lastProductsChunksList join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
 
 				localLastReceivedProducts = lastProductsChunksList;
 
-				var repeatedItemsList = repeatedItems as IList< Models.Services.Rest.GetProducts.Product > ?? repeatedItems.ToList();
+				var repeatedItemsList = repeatedItems as IList< Models.Services.Rest.v1x.GetProducts.Product > ?? repeatedItems.ToList();
 				localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItemsList.Any();
 
 				// try to get items that was added before last iteration
@@ -952,7 +952,7 @@ namespace MagentoAccess
 		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories, string markForLog = "" )
 		{
 			const int productsUpdateMaxChunkSize = 50;
-			var inventoryItems = inventories.Select( x => new Models.Services.Rest.PutStockItems.StockItem
+			var inventoryItems = inventories.Select( x => new Models.Services.Rest.v1x.PutStockItems.StockItem
 			{
 				ItemId = x.ItemId,
 				MinQty = x.MinQty,
@@ -1015,14 +1015,14 @@ namespace MagentoAccess
 		public const string Manufacturer = "manufacturer";
 	}
 
-	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.GetProducts.Product >
+	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.v1x.GetProducts.Product >
 	{
-		public bool Equals( Models.Services.Rest.GetProducts.Product x, Models.Services.Rest.GetProducts.Product y )
+		public bool Equals( Models.Services.Rest.v1x.GetProducts.Product x, Models.Services.Rest.v1x.GetProducts.Product y )
 		{
 			return x.EntityId == y.EntityId;
 		}
 
-		public int GetHashCode( Models.Services.Rest.GetProducts.Product obj )
+		public int GetHashCode( Models.Services.Rest.v1x.GetProducts.Product obj )
 		{
 			return obj.EntityId.GetHashCode();
 		}

@@ -1,4 +1,4 @@
-﻿namespace MagentoAccess.Models.Services.Rest.GetProduct
+﻿namespace MagentoAccess.Models.Services.Rest.v1x.GetProduct
 {
 	public class GetProductResponse
 	{
