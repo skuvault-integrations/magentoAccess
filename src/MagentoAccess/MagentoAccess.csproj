@@ -123,6 +123,7 @@
     <Compile Include="Models\Services\Rest\PutStockItems\PutStockItemsResponse.cs" />
     <Compile Include="Models\Services\Rest\PutStockItems\ResponseStockItem.cs" />
     <Compile Include="Models\Services\Rest\PutStockItems\StockItem.cs" />
+    <Compile Include="Models\Services\Rest\SearchCriteria.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\CategoryNode.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\GetCategoryTreeResponse.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeInfo\CatalogProductAttributeInfoResponse.cs" />
