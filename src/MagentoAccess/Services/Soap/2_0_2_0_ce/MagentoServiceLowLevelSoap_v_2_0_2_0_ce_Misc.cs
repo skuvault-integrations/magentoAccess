@@ -684,5 +684,17 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 		#endregion
+
+		private class UpdateRessult< T1 >
+		{
+			public UpdateRessult( T1 putStockItem, int success )
+			{
+				this.PutStockItem = putStockItem;
+				this.Success = success;
+			}
+
+			public int Success { get; set; }
+			public T1 PutStockItem { get; set; }
+		}
 	}
 }

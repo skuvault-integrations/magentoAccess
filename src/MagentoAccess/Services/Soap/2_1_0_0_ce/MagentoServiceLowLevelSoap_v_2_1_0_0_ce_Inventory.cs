@@ -30,18 +30,6 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 	{
 		public string StoreVersion { get; set; }
 
-		private class UpdateRessult< T1 >
-		{
-			public UpdateRessult( T1 putStockItem, int success )
-			{
-				this.PutStockItem = putStockItem;
-				this.Success = success;
-			}
-
-			public int Success { get; set; }
-			public T1 PutStockItem { get; set; }
-		}
-
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			var methodParameters = stockItems.ToJson();
