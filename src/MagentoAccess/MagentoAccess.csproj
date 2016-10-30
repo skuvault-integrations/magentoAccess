@@ -234,6 +234,10 @@
     <Compile Include="Services\Parsers\MegentoOrdersResponseParser.cs" />
     <Compile Include="Services\Rest\v1x\IMagentoServiceLowLevelRest.cs" />
     <Compile Include="Services\Rest\v1x\MagentoServiceLowLevelRestRest.cs" />
+    <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
+    <Compile Include="Services\Rest\v2x\WebRequester\MagentoServicePath.cs" />
+    <Compile Include="Services\Rest\v2x\WebRequester\MagentoWebRequestMethod.cs" />
+    <Compile Include="Services\Rest\v2x\WebRequester\WebRequest.cs" />
     <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE.cs" />
     <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory.cs" />
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Factory.cs" />
@@ -1965,6 +1969,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
