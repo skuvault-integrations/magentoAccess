@@ -7,7 +7,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 {
 	public static class SearchCriteriaExtensions
 	{
-		public static String StringValue( this SearchCriteria.FilterGroup.Filter.ConditionType type )
+		public static string StringValue( this SearchCriteria.FilterGroup.Filter.ConditionType type )
 		{
 			switch( type )
 			{
@@ -70,7 +70,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 
 		public void AddRange( IEnumerable< FilterGroup > filtergroups )
 		{
-			foreach( FilterGroup group in filtergroups )
+			foreach( var group in filtergroups )
 			{
 				this.Add( group );
 			}
@@ -78,27 +78,26 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 
 		public override string ToString()
 		{
-			FilterGroup[] groups = this.FilterGroups.ToArray();
+			var groups = this.FilterGroups.ToArray();
 			var sb = new StringBuilder();
 			for( var i = 0; i < groups.Length; i++ )
 			{
 				for( var j = 0; j < groups[ i ].Filters.Count(); j++ )
 				{
-					FilterGroup.Filter[] filters = groups[ i ].Filters.ToArray();
+					var filters = groups[ i ].Filters.ToArray();
 					if( sb.Length > 0 )
 						sb.Append( @"&" );
-					sb.Append( String.Format( @"searchCriteria[filter_groups][{0}][filters][{1}][field]={2}" +
-					                          @"&searchCriteria[filter_groups][{0}][filters][{1}][value]={3}", i, j, filters[ j ].Field, Uri.EscapeDataString( filters[ j ].Value ) ) );
+					sb.Append( $@"searchCriteria[filter_groups][{i}][filters][{j}][field]={filters[ j ].Field}" + $@"&searchCriteria[filter_groups][{i}][filters][{j}][value]={Uri.EscapeDataString( filters[ j ].Value )}" );
 					if( filters[ j ].Condition.HasValue )
-						sb.Append( String.Format( @"&searchCriteria[filter_groups][{0}][filters][{1}][condition_type]={2}", i, j, filters[ j ].Condition.Value.StringValue() ) );
+						sb.Append( $@"&searchCriteria[filter_groups][{i}][filters][{j}][condition_type]={filters[ j ].Condition.Value.StringValue()}" );
 				}
 			}
 			if( sb.Length == 0 )
 				sb.Append( @"searchCriteria=" );
 			if( this.CurrentPage > 0 )
-				sb.Append( String.Format( @"&searchCriteria[current_page]={0}", this.CurrentPage ) );
+				sb.Append( $@"&searchCriteria[current_page]={this.CurrentPage}" );
 			if( this.PageSize > 0 )
-				sb.Append( String.Format( @"&searchCriteria[page_size]={0}", this.PageSize ) );
+				sb.Append( $@"&searchCriteria[page_size]={this.PageSize}" );
 			return sb.ToString();
 		}
 
@@ -124,7 +123,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 
 			public void AddRange( IEnumerable< Filter > filters )
 			{
-				foreach( Filter filter in filters )
+				foreach( var filter in filters )
 				{
 					this.Add( filter );
 				}
@@ -132,7 +131,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 
 			public class Filter
 			{
-				public Filter( String field, String value, ConditionType? condition = null )
+				public Filter( string field, string value, ConditionType? condition = null )
 				{
 					this.Field = field;
 					this.Value = value;
@@ -160,8 +159,8 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 
 				public ConditionType? Condition { get; private set; }
 
-				public String Field { get; private set; }
-				public String Value { get; private set; }
+				public string Field { get; private set; }
+				public string Value { get; private set; }
 			}
 		}
 	}
