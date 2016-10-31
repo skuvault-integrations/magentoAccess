@@ -36,4 +36,5 @@ build
 log
 *Credentials*.csv
 BaseTestSecret.cs
+RepositoryTestCases.cs
 
