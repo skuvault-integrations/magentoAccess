@@ -2,10 +2,12 @@
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Models.Services.Rest.v1x.PutStockItems;
+using MagentoAccess.Models.Services.Rest.v2x;
+using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
-namespace MagentoAccessTestsIntegration.Services
+namespace MagentoAccessTestsIntegration.Services.Rest.v1x
 {
 	[ TestFixture ]
 	[ Ignore( "Since REST has no goo implementation yet" ) ]
@@ -22,6 +24,34 @@ namespace MagentoAccessTestsIntegration.Services
 
 			//------------ Assert
 			getOrdersTask.Result.Orders.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		public void GetOrders_StoreContainsOrders_ReceiveOrders2()
+		{
+			//------------ Arrange
+
+			//------------ Act
+			var sc = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			{
+				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				{
+					new SearchCriteria.FilterGroup.Filter( @"updated_at", @"2016-07-01 00:00:00", SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan ),
+				} )
+			} )
+			{ CurrentPage = 1, PageSize = 100 };
+
+			//------------ Assert
+			var qwe = ( WebRequest )WebRequest.Create()
+				.Method( MagentoWebRequestMethod.Get )
+				.Path( MagentoServicePath.Products )
+				.Parameters( sc )
+				.Url( MagentoUrl.Create( "http://xxx" ) )
+				;
+
+			;
+			var res = qwe.RunAsync();
+			res.Wait();
 		}
 
 		[ Test ]
