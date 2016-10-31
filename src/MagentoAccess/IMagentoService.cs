@@ -24,7 +24,7 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
-		Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false, string productType = null, bool excludeProductByType = false );
+		Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null );
 
 		VerificationData RequestVerificationUri();
 
@@ -48,11 +48,11 @@ namespace MagentoAccess
 
 		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null );
 
-		MagentoService.SaveAccessToken AfterGettingToken{ get; set; }
+		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
 
-		TransmitVerificationCodeDelegate TransmitVerificationCode{ get; set; }
+		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
-		Func< string > AdditionalLogInfo{ get; set; }
+		Func< string > AdditionalLogInfo { get; set; }
 
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null );
 	}

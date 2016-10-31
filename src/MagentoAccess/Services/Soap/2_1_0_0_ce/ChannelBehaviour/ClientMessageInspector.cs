@@ -8,10 +8,10 @@ using System.Xml;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 {
-	internal class ClientMessageInspector: IClientMessageInspector
+	internal class ClientMessageInspector : IClientMessageInspector
 	{
 		private const string StandartNamespaceStub = "hereshouldbeyourmagentostoreurl.com";
-		private const string StandartNamespaceStubWithProtocol = "http://"+ StandartNamespaceStub;
+		private const string StandartNamespaceStubWithProtocol = "http://" + StandartNamespaceStub;
 		public string AccessToken;
 		private readonly object lockObject = new object();
 		private string replacedUrl;

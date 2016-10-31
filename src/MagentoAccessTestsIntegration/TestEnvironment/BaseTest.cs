@@ -16,6 +16,7 @@ using MagentoAccess.Services.Rest;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;
+using Netco.Extensions;
 using Netco.Logging;
 using Netco.Logging.NLogIntegration;
 using NUnit.Framework;
@@ -104,7 +105,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected void CreateOrders()
 		{
 			var testStoresCredentials = this.GetTestStoresCredentials();
-			Parallel.ForEach( testStoresCredentials, credentials =>
+
+			Action< MagentoServiceSoapCredentials > createOrdersAction = credentials =>
 			{
 				try
 				{
@@ -132,7 +134,13 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				{
 					// ignored
 				}
-			} );
+			};
+
+			var magentoServiceSoapCredentialses = testStoresCredentials as IList< MagentoServiceSoapCredentials > ?? testStoresCredentials.ToList();
+			magentoServiceSoapCredentialses.DoInBatchAsync( magentoServiceSoapCredentialses.Count(), async x =>
+			{
+				await Task.Run( () => createOrdersAction( x ) );
+			} ).Wait();
 		}
 
 		protected void CreateProducts()
@@ -143,7 +151,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 				var testStoresCredentials = this.GetTestStoresCredentials();
 
-				Parallel.ForEach( testStoresCredentials, credentials =>
+				Action< MagentoServiceSoapCredentials > createProductAction = credentials =>
 				{
 					try
 					{
@@ -151,10 +159,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 						for( var i = 0; i < 5; i++ )
 						{
 							var tiks = DateTime.UtcNow.Ticks.ToString();
-							var sku = string.Format( "TddTestSku{0}_{1}", i, tiks );
-							var name = string.Format( "TddTestName{0}_{1}", i, tiks );
+							var sku = $"TddTestSku{i}_{tiks}";
+							var name = $"TddTestName{i}_{tiks}";
 
-							source.Add( new CreateProductModel( "0", sku, name, 1, ( i == 4 ) ? "bundle" : "simple" ) );
+							source.Add( new CreateProductModel( "0", sku, name, 1, i == 4 ? "bundle" : "simple" ) );
 						}
 						var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
 						var creationResult = magentoService.CreateProductAsync( source );
@@ -167,7 +175,13 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					{
 						// ignored
 					}
-				} );
+				};
+
+				var magentoServiceSoapCredentialses = testStoresCredentials as IList< MagentoServiceSoapCredentials > ?? testStoresCredentials.ToList();
+				magentoServiceSoapCredentialses.DoInBatchAsync( magentoServiceSoapCredentialses.Count(), async x =>
+				{
+					await Task.Run( () => createProductAction( x ) );
+				} ).Wait();
 			}
 			catch
 			{

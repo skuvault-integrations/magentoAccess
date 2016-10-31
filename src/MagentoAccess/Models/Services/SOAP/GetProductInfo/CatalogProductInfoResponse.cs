@@ -12,15 +12,16 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 	{
 		public CatalogProductInfoResponse( catalogProductInfoResponse catalogProductInfoResponse )
 		{
-			Description = catalogProductInfoResponse.result.description;
-			ShortDescription = catalogProductInfoResponse.result.short_description;
-			Price = catalogProductInfoResponse.result.price;
-			SpecialPrice = catalogProductInfoResponse.result.special_price;
-			Weight = catalogProductInfoResponse.result.weight;
-			ProductId = catalogProductInfoResponse.result.product_id;
-			CategoryIds = catalogProductInfoResponse.result.category_ids;
+			this.Description = catalogProductInfoResponse.result.description;
+			this.ShortDescription = catalogProductInfoResponse.result.short_description;
+			this.Price = catalogProductInfoResponse.result.price;
+			this.SpecialPrice = catalogProductInfoResponse.result.special_price;
+			this.Weight = catalogProductInfoResponse.result.weight;
+			this.ProductId = catalogProductInfoResponse.result.product_id;
+			this.CategoryIds = catalogProductInfoResponse.result.category_ids;
+			this.UpdatedAt = catalogProductInfoResponse.result.updated_at;
 
-			if( catalogProductInfoResponse.result.additional_attributes != null && catalogProductInfoResponse.result.additional_attributes.Any() )
+			if ( catalogProductInfoResponse.result.additional_attributes != null && catalogProductInfoResponse.result.additional_attributes.Any() )
 				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
 		}
 
@@ -30,16 +31,18 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 
 		public CatalogProductInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.catalogProductInfoResponse catalogProductInfoResponse )
 		{
-			Description = catalogProductInfoResponse.result.description;
-			ShortDescription = catalogProductInfoResponse.result.short_description;
-			Price = catalogProductInfoResponse.result.price;
-			SpecialPrice = catalogProductInfoResponse.result.special_price;
-			Weight = catalogProductInfoResponse.result.weight;
-			ProductId = catalogProductInfoResponse.result.product_id;
-			CategoryIds = catalogProductInfoResponse.result.category_ids;
+			this.Description = catalogProductInfoResponse.result.description;
+			this.ShortDescription = catalogProductInfoResponse.result.short_description;
+			this.Price = catalogProductInfoResponse.result.price;
+			this.SpecialPrice = catalogProductInfoResponse.result.special_price;
+			this.Weight = catalogProductInfoResponse.result.weight;
+			this.ProductId = catalogProductInfoResponse.result.product_id;
+			this.CategoryIds = catalogProductInfoResponse.result.category_ids;
 
-			if( catalogProductInfoResponse.result.additional_attributes != null && catalogProductInfoResponse.result.additional_attributes.Any() )
-				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
+			this.UpdatedAt = catalogProductInfoResponse.result.updated_at;
+
+			if ( catalogProductInfoResponse.result.additional_attributes != null && catalogProductInfoResponse.result.additional_attributes.Any() )
+				this.Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
 		}
 
 		public CatalogProductInfoResponse( catalogProductRepositoryV1GetResponse1 catalogProductInfoResponse )
@@ -58,7 +61,9 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 				this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
 			this.ProductId = catalogDataProductInterface.id.ToString( CultureInfo.InvariantCulture );
 
-			if( catalogDataProductInterface.customAttributes != null
+			this.UpdatedAt = catalogDataProductInterface.updatedAt;
+
+			if ( catalogDataProductInterface.customAttributes != null
 			    && catalogDataProductInterface.customAttributes.Any() )
 			{
 				this.Description = GetSimpleStringCustomAttribute( catalogDataProductInterface, "description" );
@@ -90,7 +95,9 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 				this.Weight = catalogDataProductInterface.weight.ToString( CultureInfo.InvariantCulture );
 			this.ProductId = catalogDataProductInterface.id.ToString( CultureInfo.InvariantCulture );
 
-			if( catalogDataProductInterface.customAttributes != null
+			this.UpdatedAt = catalogDataProductInterface.updatedAt;
+
+			if ( catalogDataProductInterface.customAttributes != null
 			    && catalogDataProductInterface.customAttributes.Any() )
 			{
 				this.Description = GetSimpleStringCustomAttribute( catalogDataProductInterface, "description" );
@@ -212,6 +219,8 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 		{
 			return GetAttributeValue( ProductAttributeCodes.Cost );
 		}
+
+		public string UpdatedAt { get; set; }
 
 		public string[] CategoryIds{ set; get; }
 

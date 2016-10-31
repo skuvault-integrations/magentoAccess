@@ -277,21 +277,16 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		private static void AddFilter( filters filters, string value, string key, bool excludeKey )
-		{
-			var temp = filters.complex_filter.ToList();
-			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = excludeKey ? "neq" : "eq", value = value } } );
-			filters.complex_filter = temp.ToArray();
-		}
-
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			try
 			{
 				var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
 
 				if( productType != null )
-					AddFilter( filters, productType, "type", productTypeShouldBeExcluded );
+					AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq");
+				if( updatedFrom.HasValue )
+					AddFilter( filters, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
 
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
@@ -323,6 +318,13 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
 			}
+		}
+
+		private static void AddFilter( filters filters, string value, string key, string valueKey )
+		{
+			var temp = filters.complex_filter.ToList();
+			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = valueKey, value = value } } );
+			filters.complex_filter = temp.ToArray();
 		}
 
 		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
@@ -955,32 +957,37 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
-				var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
-
-				var catalogProductCreateEntity = new catalogProductCreateEntity
+				var result = 0;
+				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					name = name,
-					description = "Product description",
-					short_description = "Product short description",
-					weight = "10",
-					status = "1",
-					visibility = "4",
-					price = "100",
-					tax_class_id = "1",
-					categories = new[] { res0.result.ToString() },
-					category_ids = new[] { res0.result.ToString() },
-					stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
-				};
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
 
-				var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+					var catalogProductCreateEntity = new catalogProductCreateEntity
+					{
+						name = name,
+						description = "Product description",
+						short_description = "Product short description",
+						weight = "10",
+						status = "1",
+						visibility = "4",
+						price = "100",
+						tax_class_id = "1",
+						categories = new[] { res0.result.ToString() },
+						category_ids = new[] { res0.result.ToString() },
+						stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
+					};
 
-				//product id
-				return res.result;
+					var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+
+					//product id
+					result = res.result;
+				} ).ConfigureAwait( false );
+				return result;
 			}
 			catch( Exception exc )
 			{

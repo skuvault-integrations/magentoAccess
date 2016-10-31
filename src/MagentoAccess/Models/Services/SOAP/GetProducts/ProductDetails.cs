@@ -9,12 +9,14 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 	[ Serializable ]
 	internal class ProductDetails
 	{
-		public ProductDetails( ProductDetails rp, IEnumerable< MagentoUrl > images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null )
+		public ProductDetails( ProductDetails rp, IEnumerable< MagentoUrl > images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null, string updatedAt = null )
 		{
 			this.EntityId = rp.EntityId;
 			this.Sku = rp.Sku;
 			this.Name = rp.Name;
 			this.Qty = rp.Qty;
+			var updatedAtParsed = updatedAt.ToDateTimeOrDefault();
+			this.UpdatedAt = updatedAtParsed == default(DateTime) ? rp.UpdatedAt : updatedAt;
 			this.Categories = categories == null ? rp.Categories : categories.ToArray();
 
 			this.Images = ( images ?? rp.Images ).ToArray();
@@ -40,6 +42,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Sku = productDeepClone.Sku;
 			this.Name = productDeepClone.Name;
 			this.Qty = productDeepClone.Qty;
+			this.UpdatedAt = productDeepClone.UpdatedAt;
 			this.Categories = ( productDeepClone.Categories ?? new Models.GetProducts.Category[] { } ).Select( x => new Category( x ) ).ToArray();
 			this.Images = ( productDeepClone.Images ?? new List< Models.GetProducts.MagentoUrl >() ).Select( x => new MagentoUrl( x ) ).ToArray();
 			this.Price = productDeepClone.Price;
@@ -55,28 +58,28 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.ProductType = productDeepClone.ProductType;
 		}
 
-		public string Upc{ get; set; }
-		public decimal SpecialPrice{ get; set; }
-		public decimal Cost{ get; set; }
-		public string Manufacturer{ get; set; }
-		public MagentoUrl[] Images{ get; set; } //imagento2
-		public string ShortDescription{ get; set; }
-		public string Weight{ get; set; } //imagento2
-		public string EntityId{ get; set; } //id
-		public string Sku{ get; set; } //imagento2
-		public decimal Price{ get; set; } //imagento2
-		public string Name{ get; set; } //imagento2
-		public string Description{ get; set; }
-		public string Qty{ get; set; }
-		public string ProductId{ get; set; } //id
-		public Category[] Categories{ get; set; } //category_ids have many
+		public string Upc { get; set; }
+		public decimal SpecialPrice { get; set; }
+		public decimal Cost { get; set; }
+		public string Manufacturer { get; set; }
+		public MagentoUrl[] Images { get; set; } //imagento2
+		public string ShortDescription { get; set; }
+		public string Weight { get; set; } //imagento2
+		public string EntityId { get; set; } //id
+		public string Sku { get; set; } //imagento2
+		public decimal Price { get; set; } //imagento2
+		public string Name { get; set; } //imagento2
+		public string Description { get; set; }
+		public string Qty { get; set; }
+		public string ProductId { get; set; } //id
+		public Category[] Categories { get; set; } //category_ids have many
 
-		public string ProductType{ get; set; }
+		public string ProductType { get; set; }
 
 		public Product ToProduct()
 		{
 			var productDeepClone = this.DeepClone();
-			var product = new Product( productDeepClone.ProductId, productDeepClone.EntityId, productDeepClone.Name, productDeepClone.Sku, productDeepClone.Qty, productDeepClone.Price, productDeepClone.Description, productDeepClone.ProductType );
+			var product = new Product( productDeepClone.ProductId, productDeepClone.EntityId, productDeepClone.Name, productDeepClone.Sku, productDeepClone.Qty, productDeepClone.Price, productDeepClone.Description, productDeepClone.ProductType, productDeepClone.UpdatedAt );
 
 			product.EntityId = productDeepClone.EntityId;
 			product.Categories = productDeepClone.Categories.Select( x => x.ToCategory() ).ToArray();
@@ -91,5 +94,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 
 			return product;
 		}
+
+		public string UpdatedAt { get; set; }
 	}
 }

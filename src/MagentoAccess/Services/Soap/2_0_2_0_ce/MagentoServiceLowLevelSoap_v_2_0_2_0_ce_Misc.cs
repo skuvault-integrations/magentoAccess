@@ -17,22 +17,23 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
+using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
-	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce: IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce : IMagentoServiceLowLevelSoap
 	{
-		public string ApiUser{ get; private set; }
+		public string ApiUser { get; private set; }
 
-		public string ApiKey{ get; private set; }
+		public string ApiKey { get; private set; }
 
 		public string TokenSecret { get; set; }
 
-		public string Store{ get; private set; }
+		public string Store { get; private set; }
 
-		public string BaseMagentoUrl{ get; set; }
+		public string BaseMagentoUrl { get; set; }
 
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";
@@ -249,7 +250,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				await this.GetSessionId().ConfigureAwait( false );
 				//var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
 				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
-				var getProductsRes = await this.GetProductsAsync( 1, null, false ).ConfigureAwait( false );
+				var getProductsRes = await this.GetProductsAsync( 1, null, false, null ).ConfigureAwait( false );
 
 				//var saveMethodResult = await this.SaveOrderMethodExistAsync().ConfigureAwait( false );
 				return /*modules?.Modules != null && modules.Modules.Count > 0 &&*/ getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.0.2.0", "CE" ) : null;
@@ -573,38 +574,97 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType )
+		public class CreatteProductModel
 		{
-			//try
-			//{
-			//	var sessionId = await this.GetSessionId().ConfigureAwait(false);
-			//	var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync(sessionId, storeId).ConfigureAwait(false);
+			public int IsInStock { get; }
+			public string Name { get; }
+			public string ProductType { get; }
+			public string Sku { get; }
 
-			//	var catalogProductCreateEntity = new catalogProductCreateEntity
-			//	{
-			//		name = name,
-			//		description = "Product description",
-			//		short_description = "Product short description",
-			//		weight = "10",
-			//		status = "1",
-			//		visibility = "4",
-			//		price = "100",
-			//		tax_class_id = "1",
-			//		categories = new[] { res0.result.ToString() },
-			//		category_ids = new[] { res0.result.ToString() },
-			//		stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
-			//	};
+			public CreatteProductModel( string name, string sku, int isInStock, string productType )
+			{
+				this.Name = name;
+				this.Sku = sku;
+				this.IsInStock = isInStock;
+				this.ProductType = productType;
+			}
+		}
 
-			//	var res = await this._magentoSoapService.catalogProductCreateAsync(sessionId, "simple", "4", sku, catalogProductCreateEntity, storeId).ConfigureAwait(false);
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
+		{
+			var stockItem = new CreatteProductModel( name, sku, isInStock, productType );
+			var methodParameters = stockItem.ToJson();
+			try
+			{
+				const int maxCheckCount = 2;
+				const int delayBeforeCheck = 1800000;
 
-			//	//product id
-			//	return res.result;
-			//}
-			//catch (Exception exc)
-			//{
-			//	throw new MagentoSoapException(string.Format("An error occured during CreateProduct({0})", storeId), exc);
-			//}
-			return await Task.FromResult( 0 ).ConfigureAwait( false );
+				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+
+				var res = new List< UpdateRessult< CreatteProductModel > >();
+				var stockItems = new List< CreatteProductModel > { stockItem };
+
+				await stockItems.DoInBatchAsync( 10, async x =>
+				{
+					await ActionPolicies.GetAsync.Do( async () =>
+					{
+						var statusChecker = new StatusChecker( maxCheckCount );
+						TimerCallback tcb = statusChecker.CheckStatus;
+
+						if( privateClient.State != CommunicationState.Opened
+						    && privateClient.State != CommunicationState.Created
+						    && privateClient.State != CommunicationState.Opening )
+							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+
+						var updateResult = new UpdateRessult< CreatteProductModel >( x, 0 );
+						res.Add( updateResult );
+
+						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+						{
+							MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark : markForLog ) );
+
+							var catalogInventoryDataStockItemInterface = new CatalogDataProductInterface()
+							{
+								sku = x.Sku,
+								name = x.Name,
+								price = "1",
+								priceSpecified = true,
+								status = 1,
+								statusSpecified = true,
+								typeId = productType,
+								attributeSetId = 4,
+								attributeSetIdSpecified = true,
+								weight = "1",
+								weightSpecified = true,
+							};
+							if( productType == "bundle" )
+							{
+								catalogInventoryDataStockItemInterface.customAttributes = new[]
+								{
+									new FrameworkAttributeInterface { value = "1", attributeCode = "price_view" },
+									new FrameworkAttributeInterface { value = "1", attributeCode = "price_type" }
+								};
+							}
+							var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogProductRepositoryV1SaveRequest()
+							{
+								product = catalogInventoryDataStockItemInterface
+							};
+
+							var temp = await privateClient.catalogProductRepositoryV1SaveAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
+
+							updateResult.Success = temp.catalogProductRepositoryV1SaveResponse.result.id;
+						}
+					} ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : markForLog, methodResult : res.ToJson() ) );
+
+				return res.First().Success;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({methodParameters})", exc );
+			}
 		}
 
 		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
@@ -624,5 +684,17 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 		#endregion
+
+		private class UpdateRessult< T1 >
+		{
+			public UpdateRessult( T1 itemToUpdate, int success )
+			{
+				this.ItemToUpdate = itemToUpdate;
+				this.Success = success;
+			}
+
+			public int Success { get; set; }
+			public T1 ItemToUpdate { get; set; }
+		}
 	}
 }
