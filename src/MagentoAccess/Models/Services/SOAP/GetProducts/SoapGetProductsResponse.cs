@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Models.Services.Rest.v2x.Products;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
 {
@@ -26,6 +27,11 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 		public SoapGetProductsResponse( List< Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductInterface > res )
 		{
 			this.Products = res.Select(x => new SoapProduct(x));
+		}
+
+		public SoapGetProductsResponse( List< Item > products )
+		{
+			this.Products = products.Select( x => new SoapProduct( x ) );
 		}
 
 		public IEnumerable< SoapProduct > Products{ get; set; }
@@ -68,6 +74,15 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 		{
 			this.Name = catalogProductEntity.name;
 			this.ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
+			this.Sku = catalogProductEntity.sku;
+			this.Type = catalogProductEntity.typeId;
+			this.UpdatedAt = catalogProductEntity.updatedAt;
+		}
+
+		public SoapProduct( Item catalogProductEntity )
+		{
+			this.Name = catalogProductEntity.name;
+			this.ProductId = catalogProductEntity.id.ToString(CultureInfo.InvariantCulture);
 			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.typeId;
 			this.UpdatedAt = catalogProductEntity.updatedAt;

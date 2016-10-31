@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class IntegrationAdminTokenRepository
+	public class IntegrationAdminTokenRepository : IIntegrationAdminTokenRepository
 	{
 		private MagentoUrl Url { get; }
 
