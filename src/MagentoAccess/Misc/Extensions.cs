@@ -34,6 +34,12 @@ namespace MagentoAccess.Misc
 			return result;
 		}
 
+		public static string ToRestParameterString( this DateTime dateTime )
+		{
+			var strRes = dateTime.ToString( "yyyy-MM-dd HH:mm:ss" );
+			return strRes;
+		}
+
 		public static DateTime ToDateTimeOrDefault( this string srcString )
 		{
 			try
@@ -225,4 +231,5 @@ namespace MagentoAccess.Misc
 			}
 		}
 	}
+
 }

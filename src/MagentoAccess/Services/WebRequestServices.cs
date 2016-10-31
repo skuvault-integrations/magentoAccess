@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using Netco.Extensions;
 
 namespace MagentoAccess.Services
 {
@@ -41,30 +42,42 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				var encoding = new UTF8Encoding();
-				var encodedBody = encoding.GetBytes( body );
+				return await CreateCustomRequestAsync( serviceUrl, body, rawHeaders ).ConfigureAwait( false );
+			}
+			catch( Exception exc )
+			{
+				var headers = rawHeaders == null ? "null" : rawHeaders.Aggregate( "", ( ac, x ) => $"[{x.Key ?? "null"}-{x.Value ?? "null"}]" );
+				throw new MagentoRestException( $"Exception occured on CreateServiceGetRequestAsync(serviceUrl:{serviceUrl ?? "null"},body:{body ?? "null"}, headers{headers})", exc );
+			}
+		}
 
-				var serviceRequest = ( HttpWebRequest )WebRequest.Create( serviceUrl );
-				serviceRequest.Method = WebRequestMethods.Http.Get;
+		public async Task< WebRequest > CreateCustomRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders, string method = WebRequestMethods.Http.Get, string parameters = null )
+		{
+			try
+			{
+				var compositeUrl = string.IsNullOrEmpty( parameters ) ? serviceUrl : $"{serviceUrl.TrimEnd( '/', '?' )}/?{parameters}";
+
+				var serviceRequest = ( HttpWebRequest )WebRequest.Create( compositeUrl );
+				serviceRequest.Method = method;
 				serviceRequest.ContentType = "application/json";
-				serviceRequest.ContentLength = encodedBody.Length;
 				serviceRequest.KeepAlive = true;
 
-				foreach( var rawHeadersKey in rawHeaders.Keys )
-				{
-					serviceRequest.Headers.Add( rawHeadersKey, rawHeaders[ rawHeadersKey ] );
-				}
+				rawHeaders?.ForEach( k => serviceRequest.Headers.Add( k.Key, k.Value ) );
 
-				using( var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait( false ) )
-					newStream.Write( encodedBody, 0, encodedBody.Length );
+				if( ( serviceRequest.Method == WebRequestMethods.Http.Post || serviceRequest.Method == WebRequestMethods.Http.Put ) && !string.IsNullOrWhiteSpace( body ) )
+				{
+					var encodedBody = new UTF8Encoding().GetBytes( body );
+					serviceRequest.ContentLength = encodedBody.Length;
+					using( var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait( false ) )
+						newStream.Write( encodedBody, 0, encodedBody.Length );
+				}
 
 				return serviceRequest;
 			}
 			catch( Exception exc )
 			{
-				string headers;
-				headers = rawHeaders == null ? "null" : rawHeaders.Aggregate( "", ( ac, x ) => string.Format( "[{0}-{1}]", x.Key ?? "null", x.Value ?? "null" ) );
-				throw new MagentoRestException( string.Format( "Exception occured on CreateServiceGetRequestAsync(serviceUrl:{0},body:{1}, headers{2})", serviceUrl ?? "null", body ?? "null", headers ), exc );
+				var methodParameters = $@"{{Url:'{serviceUrl}', Body:'{body}', Headers:{rawHeaders.ToJson()}}}";
+				throw new Exception( $"Exception occured. {this.CreateMethodCallInfo( methodParameters )}", exc );
 			}
 		}
 

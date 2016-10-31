@@ -9,7 +9,13 @@
 			this.Repository = repository;
 		}
 
+		public override string ToString()
+		{
+			return this.Repository;
+		}
+
 		public static MagentoServicePath Products { get; } = new MagentoServicePath( "products" );
+		public static MagentoServicePath IntegrationAdmin { get; } = new MagentoServicePath("integration/admin/token");
 		public static MagentoServicePath Orders { get; } = new MagentoServicePath( "orders" );
 	}
 }

@@ -11,7 +11,13 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			this.Method = method;
 		}
 
+		public override string ToString()
+		{
+			return this.Method.ToString();
+		}
+
 		public static MagentoWebRequestMethod Get { get; } = new MagentoWebRequestMethod( WebRequestMethods.Http.Get );
 		public static MagentoWebRequestMethod Put { get; } = new MagentoWebRequestMethod( WebRequestMethods.Http.Put );
+		public static MagentoWebRequestMethod Post { get; } = new MagentoWebRequestMethod( WebRequestMethods.Http.Post );
 	}
 }
