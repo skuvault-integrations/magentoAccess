@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess.Misc;
 using MagentoAccess.Services.Rest.v2x.Repository;
-using MagentoAccess.Services.Rest.v2x.WebRequester;
-using MagentoAccessTestsIntegration.Services.Rest.v2x.Repository;
 using NUnit.Framework;
 
-namespace MagentoAccessTestsIntegration.Services
+namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
 	[ TestFixture ]
 	internal class ProductRepositoryTest

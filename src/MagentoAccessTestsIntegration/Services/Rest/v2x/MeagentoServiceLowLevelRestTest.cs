@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using FluentAssertions;
 using MagentoAccess.Models.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
-namespace MagentoAccessTestsIntegration.Services
+namespace MagentoAccessTestsIntegration.Services.Rest.v2x
 {
 	[ TestFixture ]
 	internal class MeagentoServiceLowLevelRestTest2 : BaseTest
