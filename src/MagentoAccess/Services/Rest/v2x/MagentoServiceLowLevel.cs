@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
@@ -18,8 +18,9 @@ using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Rest.v2x.Repository;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccess.Services.Soap;
-using Newtonsoft.Json;
-using SearchCriteria = MagentoAccess.Models.Services.Rest.v2x.SearchCriteria;
+using Netco.ActionPolicyServices;
+using ActionPolicies = MagentoAccess.Services.Rest.v2x.Repository.ActionPolicies;
+using MagentoUrl = MagentoAccess.Services.Rest.v2x.WebRequester.MagentoUrl;
 
 namespace MagentoAccess.Services.Rest.v2x
 {
@@ -29,8 +30,49 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string ApiKey { get; }
 		public string Store { get; }
 		public string StoreVersion { get; set; }
-		protected IProductRepository ProductRepository { get;set;}
-		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get;set;}
+		protected IProductRepository ProductRepository { get; set; }
+		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
+		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
+
+		public MagentoServiceLowLevel()
+		{
+			this.RepeatOnAuthProblemAsync = ActionPolicyAsync.From( ( exception =>
+			{
+				var webException = ( exception as MagentoWebException )?.InnerException as WebException;
+				if( webException == null )
+					return false;
+
+				switch( webException.Status )
+				{
+					case WebExceptionStatus.ProtocolError:
+						var response = webException.Response as HttpWebResponse;
+						if( response == null )
+							return false;
+						switch( response.StatusCode )
+						{
+							case HttpStatusCode.Unauthorized:
+								return true;
+							default:
+								return false;
+						}
+					default:
+						return false;
+				}
+			} ) )
+				.RetryAsync( 3, async ( ex, i ) =>
+				{
+					MagentoLogger.Log().Trace( ex, "Retrying Magento API call due to authorization problem for the {0} time", i );
+					await this.ReauthorizeAsync().ConfigureAwait( false );
+					await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
+				} );
+		}
+
+		protected async Task ReauthorizeAsync()
+		{
+			var newToken = await this.IntegrationAdminTokenRepository.GetToken( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) );
+			var magentoUrl = MagentoUrl.Create( this.Store );
+			this.ProductRepository = new ProductRepository( newToken, magentoUrl );
+		}
 
 		public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
@@ -44,8 +86,11 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
-			var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded ).ConfigureAwait(false);
-			return new SoapGetProductsResponse(products.SelectMany(x=>x.items).ToList());
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded ).ConfigureAwait( false );
+				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
+			} );
 		}
 
 		public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
