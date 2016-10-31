@@ -687,14 +687,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		private class UpdateRessult< T1 >
 		{
-			public UpdateRessult( T1 putStockItem, int success )
+			public UpdateRessult( T1 itemToUpdate, int success )
 			{
-				this.PutStockItem = putStockItem;
+				this.ItemToUpdate = itemToUpdate;
 				this.Success = success;
 			}
 
 			public int Success { get; set; }
-			public T1 PutStockItem { get; set; }
+			public T1 ItemToUpdate { get; set; }
 		}
 	}
 }
