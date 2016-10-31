@@ -40,15 +40,7 @@ namespace MagentoAccess.Services
 
 		public async Task< WebRequest > CreateServiceGetRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders )
 		{
-			try
-			{
-				return await CreateCustomRequestAsync( serviceUrl, body, rawHeaders ).ConfigureAwait( false );
-			}
-			catch( Exception exc )
-			{
-				var headers = rawHeaders == null ? "null" : rawHeaders.Aggregate( "", ( ac, x ) => $"[{x.Key ?? "null"}-{x.Value ?? "null"}]" );
-				throw new MagentoRestException( $"Exception occured on CreateServiceGetRequestAsync(serviceUrl:{serviceUrl ?? "null"},body:{body ?? "null"}, headers{headers})", exc );
-			}
+			return await this.CreateCustomRequestAsync( serviceUrl, body, rawHeaders ).ConfigureAwait( false );
 		}
 
 		public async Task< WebRequest > CreateCustomRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders, string method = WebRequestMethods.Http.Get, string parameters = null )
@@ -77,7 +69,7 @@ namespace MagentoAccess.Services
 			catch( Exception exc )
 			{
 				var methodParameters = $@"{{Url:'{serviceUrl}', Body:'{body}', Headers:{rawHeaders.ToJson()}}}";
-				throw new Exception( $"Exception occured. {this.CreateMethodCallInfo( methodParameters )}", exc );
+				throw new MagentoWebException( $"Exception occured. {this.CreateMethodCallInfo( methodParameters )}", exc );
 			}
 		}
 
@@ -110,7 +102,7 @@ namespace MagentoAccess.Services
 					}
 				}
 
-				throw new MagentoRestException( $"Exception occured on PopulateRequestByBody(body:{body ?? "null"}, webRequest:{webrequestUrl})", exc );
+				throw new MagentoWebException( $"Exception occured on PopulateRequestByBody(body:{body ?? "null"}, webRequest:{webrequestUrl})", exc );
 			}
 		}
 		#endregion
@@ -143,7 +135,7 @@ namespace MagentoAccess.Services
 					}
 				}
 
-				throw new MagentoRestException( $"Exception occured on GetResponseStream( webRequest:{webrequestUrl})", ex );
+				throw new MagentoWebException( $"Exception occured on GetResponseStream( webRequest:{webrequestUrl})", ex );
 			}
 		}
 
@@ -173,7 +165,7 @@ namespace MagentoAccess.Services
 					}
 				}
 
-				throw new MagentoRestException( $"Exception occured on GetResponseStreamAsync( webRequest:{webrequestUrl})", ex );
+				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{webrequestUrl})", ex );
 			}
 		}
 		#endregion

@@ -40,12 +40,15 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			RootObject response;
-			using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd(), new JsonSerializerSettings() { } );
-			}
-			return response;
+				using( var responseStream = await webRequest.RunAsync().ConfigureAwait( false ) )
+				{
+					var readToEnd = new StreamReader( responseStream, Encoding.UTF8 ).ReadToEnd();
+
+					return JsonConvert.DeserializeObject< RootObject >( readToEnd, new JsonSerializerSettings() { } );
+				}
+			} );
 		}
 
 		public async Task< List< RootObject > > GetProductsAsync()

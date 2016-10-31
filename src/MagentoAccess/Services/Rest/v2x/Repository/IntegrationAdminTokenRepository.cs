@@ -17,18 +17,19 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< AuthorizationToken > GetToken( MagentoLogin token, MagentoPass url )
 		{
-			AuthorizationToken response;
-			using( var v = await ( ( WebRequest )
-				WebRequest.Create()
-					.Method( MagentoWebRequestMethod.Post )
-					.Url( this.Url )
-					.Path( MagentoServicePath.IntegrationAdmin )
-					.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = url.Password } ) ) )
-				.RunAsync().ConfigureAwait( false ) )
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				response = AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-			}
-			return response;
+				using( var v = await ( ( WebRequest )
+					WebRequest.Create()
+						.Method( MagentoWebRequestMethod.Post )
+						.Url( this.Url )
+						.Path( MagentoServicePath.IntegrationAdmin )
+						.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = url.Password } ) ) )
+					.RunAsync().ConfigureAwait( false ) )
+				{
+					return AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
 		}
 
 		private class CredentialsModel

@@ -42,6 +42,13 @@ namespace MagentoAccess
 		{
 		}
 	}
+	public class MagentoWebException : MagentoException
+	{
+		public MagentoWebException(string message, Exception exception)
+			: base(message, exception)
+		{
+		}
+	}
 
 	public class MagentoCommonException : MagentoException
 	{
