@@ -855,7 +855,7 @@ namespace MagentoAccess
 
 			receivedProducts.AddRange( productsChunk );
 
-			var getProductsTasks = new List< Task< List< Models.Services.Rest.v1x.GetProducts.Product > > > {
+			var getProductsTasks = new List< Task< List< Models.Services.Rest.v1x.GetProducts.Product > > >
 			{
 				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
 				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
