@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
@@ -20,6 +21,7 @@ using MagentoAccess.Services.Rest.v2x.Repository;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccess.Services.Soap;
 using Netco.ActionPolicyServices;
+using Netco.Extensions;
 using MagentoUrl = MagentoAccess.Services.Rest.v2x.WebRequester.MagentoUrl;
 
 namespace MagentoAccess.Services.Rest.v2x
@@ -32,6 +34,7 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string StoreVersion { get; set; }
 		protected IProductRepository ProductRepository { get; set; }
 		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
+		protected ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
 		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
 
 		protected SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
@@ -90,6 +93,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			var newToken = await this.IntegrationAdminTokenRepository.GetToken( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) );
 			var magentoUrl = MagentoUrl.Create( this.Store );
 			this.ProductRepository = new ProductRepository( newToken, magentoUrl );
+			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
 		}
 
 		public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -121,9 +125,14 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog )
+		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog )
 		{
-			return null;
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				var products = await this.CatalogStockItemRepository.PutStockItemsAsync(
+					stockItems.Select( x => Tuple.Create( x.Sku, x.ItemId, new RootObject() { stockItem = new StockItem { qty = x.Qty, minQty = x.MinQty } } ) ) ).ConfigureAwait( false );
+				return products.All( x => x );
+			} );
 		}
 
 		public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )

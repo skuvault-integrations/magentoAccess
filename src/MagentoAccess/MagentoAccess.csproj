@@ -109,6 +109,7 @@
     <Compile Include="Models\GetProducts\Product.cs" />
     <Compile Include="Models\PingRest\MagentoCoreInfo.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
+    <Compile Include="Models\Services\Rest\v2x\CatalogStockItemRepository\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\product.cs" />
     <Compile Include="Models\Services\Rest\v2x\SearchCriteria.cs" />
     <Compile Include="Models\Services\Rest\v1x\BaseResponse\ResponseError.cs" />
@@ -241,7 +242,9 @@
     <Compile Include="Services\Rest\v2x\Repository\ActionPolicies.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IIntegrationAdminTokenRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IntegrationAdminTokenRepository.cs" />
+    <Compile Include="Services\Rest\v2x\Repository\ICatalogStockItemRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IProductRepository.cs" />
+    <Compile Include="Services\Rest\v2x\Repository\CatalogStockItemRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ProductRepository.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoPass.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoLogin.cs" />
