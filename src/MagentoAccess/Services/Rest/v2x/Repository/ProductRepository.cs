@@ -44,9 +44,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				using( var responseStream = await webRequest.RunAsync().ConfigureAwait( false ) )
 				{
-					var readToEnd = new StreamReader( responseStream, Encoding.UTF8 ).ReadToEnd();
-
-					return JsonConvert.DeserializeObject< RootObject >( readToEnd, new JsonSerializerSettings() { } );
+					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( responseStream, Encoding.UTF8 ).ReadToEnd(), new JsonSerializerSettings() { } );
 				}
 			} );
 		}
@@ -81,12 +79,13 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			RootObject response;
-			using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-			}
-			return response;
+				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				{
+					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
 		}
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, PagingModel page )
@@ -111,12 +110,13 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			RootObject response;
-			using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-			}
-			return response;
+				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				{
+					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
 		}
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page )
@@ -141,12 +141,13 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			RootObject response;
-			using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-			}
-			return response;
+				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				{
+					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
 		}
 
 		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt )
