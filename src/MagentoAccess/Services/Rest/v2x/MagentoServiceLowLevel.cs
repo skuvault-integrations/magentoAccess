@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
@@ -19,7 +20,6 @@ using MagentoAccess.Services.Rest.v2x.Repository;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccess.Services.Soap;
 using Netco.ActionPolicyServices;
-using ActionPolicies = MagentoAccess.Services.Rest.v2x.Repository.ActionPolicies;
 using MagentoUrl = MagentoAccess.Services.Rest.v2x.WebRequester.MagentoUrl;
 
 namespace MagentoAccess.Services.Rest.v2x
@@ -33,6 +33,10 @@ namespace MagentoAccess.Services.Rest.v2x
 		protected IProductRepository ProductRepository { get; set; }
 		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
 		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
+
+		protected SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
+
+		protected int reauthorizationsCount = 0;
 
 		public MagentoServiceLowLevel()
 		{
@@ -61,9 +65,23 @@ namespace MagentoAccess.Services.Rest.v2x
 			} ) )
 				.RetryAsync( 3, async ( ex, i ) =>
 				{
-					MagentoLogger.Log().Trace( ex, "Retrying Magento API call due to authorization problem for the {0} time", i );
-					await this.ReauthorizeAsync().ConfigureAwait( false );
-					await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
+					await this._reauthorizeLock.WaitAsync();
+					var reauthorizationsCountPropagation = this.reauthorizationsCount;
+					this._reauthorizeLock.Release();
+					await this._reauthorizeLock.WaitAsync();
+					try
+					{
+						if( reauthorizationsCountPropagation != this.reauthorizationsCount )
+							return;
+						Interlocked.Increment( ref this.reauthorizationsCount );
+						MagentoLogger.Log().Trace( ex, "Retrying Magento API call due to authorization problem for the {0} time", i );
+						await this.ReauthorizeAsync().ConfigureAwait( false );
+						await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
+					}
+					finally
+					{
+						this._reauthorizeLock.Release();
+					}
 				} );
 		}
 
