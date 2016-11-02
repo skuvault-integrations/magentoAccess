@@ -246,8 +246,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
-
-				await this.GetSessionId().ConfigureAwait( false );
+				
+				var sessionIdRespnse = await this.GetSessionId( !suppressException ).ConfigureAwait( false );
+				if( sessionIdRespnse == null )
+				{
+					MagentoLogger.LogTrace( "Can't get session id. Possible reasons: incorrect credentials, user was blocked." );
+					return null;
+				}
 				//var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
 				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
 				var getProductsRes = await this.GetProductsAsync( 1, null, false, null ).ConfigureAwait( false );
