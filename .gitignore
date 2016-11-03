@@ -31,6 +31,7 @@ _NCrunch*/
 [Tt]est[Rr]esult*
 *.ReSharper
 *.docstates
+*.ncrunchproject
 
 #Ignore common build files
 build
