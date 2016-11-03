@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
+using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_0_2_0_CE;
-using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
+using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
@@ -20,7 +20,7 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using Netco.Extensions;
-using CatalogInventoryDataStockItemInterface = MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryDataStockItemInterface;
+using CatalogInventoryDataStockItemInterface = MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryDataStockItemInterface;
 using Category = MagentoAccess.Models.Services.Soap.GetProducts.Category;
 using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;
 
