@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="rMfIREfdKL4HUxySmC/OPBjxO0A=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="NenLlsJ7oYSXl1x0wrEzaLqChKg=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="catalogInventoryStockRegistryV1Binding1">
       <properties>
@@ -154,7 +154,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="catalogInventoryStockRegistryV1Port1" contract="Magento2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType" bindingType="customBinding" address="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventoryStockRegistryV1" bindingConfiguration="catalogInventoryStockRegistryV1Binding1">
+    <endpoint name="catalogInventoryStockRegistryV1Port1" contract="M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType" bindingType="customBinding" address="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventoryStockRegistryV1" bindingConfiguration="catalogInventoryStockRegistryV1Binding1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventoryStockRegistryV1</serializedValue>
@@ -169,7 +169,7 @@
           <serializedValue>catalogInventoryStockRegistryV1Binding1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>Magento2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType</serializedValue>
+          <serializedValue>M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
