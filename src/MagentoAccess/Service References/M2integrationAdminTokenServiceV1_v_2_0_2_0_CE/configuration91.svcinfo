@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="tURg8aTAlAk8u0KvhFclQu5Ah9Y=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="AbWqEfFw5WaZv50rgu81LqvN0gA=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="integrationAdminTokenServiceV1Binding">
       <properties>
@@ -154,7 +154,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="integrationAdminTokenServiceV1Port" contract="Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType" bindingType="customBinding" address="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" bindingConfiguration="integrationAdminTokenServiceV1Binding">
+    <endpoint name="integrationAdminTokenServiceV1Port" contract="M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType" bindingType="customBinding" address="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1" bindingConfiguration="integrationAdminTokenServiceV1Binding">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdminTokenServiceV1</serializedValue>
@@ -169,7 +169,7 @@
           <serializedValue>integrationAdminTokenServiceV1Binding</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType</serializedValue>
+          <serializedValue>M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>

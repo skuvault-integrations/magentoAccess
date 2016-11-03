@@ -45,10 +45,10 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x
 
 			//------------ Act
 
-			var er = new MagentoServiceLowLevel();
-			var res =er.GetProductsAsync();
-			res.Wait();
-			res.Result.items.Count.Should().BeGreaterThan(0);
+			//var er = new MagentoServiceLowLevel();
+			//var res =er.GetProductsAsync();
+			//res.Wait();
+			//res.Result.items.Count.Should().BeGreaterThan(0);
 		}
 	}
 }
