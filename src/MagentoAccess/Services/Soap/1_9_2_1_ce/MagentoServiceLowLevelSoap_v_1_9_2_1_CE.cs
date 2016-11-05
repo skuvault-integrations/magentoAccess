@@ -1017,8 +1017,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		private async Task< TResult > GetWithAsync< TResult, TServerResponse >(
 			Func< TServerResponse, TResult > converter,
-			Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, 
-			int abortAfter ) where TServerResponse : new()
+			Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action,
+			int abortAfter,
+			[ CallerMemberName ] string callerName = null
+			) where TServerResponse : new()
 		{
 			try
 			{
@@ -1043,7 +1045,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( "An error occured during " + nameof( this.GetManufacturersInfoAsync ), exc );
+				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetManufacturersInfoAsync )}", exc );
 			}
 		}
 	}
