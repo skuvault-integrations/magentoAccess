@@ -998,5 +998,55 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 		#endregion
+
+		private static class ClientBaseActionRunner
+		{
+			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class
+			{
+				var statusChecker = new StatusChecker( 2 );
+				TimerCallback tcb = statusChecker.CheckStatus3< TClient >;
+
+				using( var stateTimer = new Timer( tcb, cleintBase, 1000, delayBeforeCheck ) )
+				{
+					var clientResponse = await func().ConfigureAwait( false );
+					stateTimer.Change( Timeout.Infinite, Timeout.Infinite );
+					return Tuple.Create( clientResponse, statusChecker.IsAborted );
+				}
+			}
+		}
+
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse >(
+			Func< TServerResponse, TResult > converter,
+			Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action
+			) where TServerResponse : new()
+		{
+			try
+			{
+				const int abortAfter = 3000;
+
+				var res = new TServerResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
+						abortAfter,
+						async () => await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
+						privateClient );
+
+					if( temp.Item2 )
+						throw new TaskCanceledException();
+				} ).ConfigureAwait( false );
+
+				return converter( res );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( "An error occured during " + nameof( this.GetManufacturersInfoAsync ), exc );
+			}
+		}
 	}
 }
