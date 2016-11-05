@@ -1017,13 +1017,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		private async Task< TResult > GetWithAsync< TResult, TServerResponse >(
 			Func< TServerResponse, TResult > converter,
-			Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action
-			) where TServerResponse : new()
+			Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, 
+			int abortAfter ) where TServerResponse : new()
 		{
 			try
 			{
-				const int abortAfter = 3000;
-
 				var res = new TServerResponse();
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
