@@ -25,20 +25,20 @@ using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
-	internal class MagentoServiceLowLevelSoap_v_1_9_2_1_ce: IMagentoServiceLowLevelSoap
+	internal class MagentoServiceLowLevelSoap_v_1_9_2_1_ce : IMagentoServiceLowLevelSoap
 	{
-		public string ApiUser{ get; private set; }
+		public string ApiUser { get; private set; }
 
-		public string ApiKey{ get; private set; }
+		public string ApiKey { get; private set; }
 
-		public string Store{ get; private set; }
+		public string Store { get; private set; }
 
-		public string BaseMagentoUrl{ get; set; }
+		public string BaseMagentoUrl { get; set; }
 		public string StoreVersion { get; set; }
 
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
-		protected IMagento1XxxHelper Magento1xxxHelper{ get; set; }
+		protected IMagento1XxxHelper Magento1xxxHelper { get; set; }
 
 		protected const string SoapApiUrl = "index.php/api/v2_soap/index/";
 
@@ -206,7 +206,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
 
 				if( productType != null )
-					AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq");
+					AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq" );
 				if( updatedFrom.HasValue )
 					AddFilter( filters, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
 
@@ -580,29 +580,29 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				);
 		}
 
-		protected void LogTraceGetResponseException(Exception exception)
+		protected void LogTraceGetResponseException( Exception exception )
 		{
-			MagentoLogger.Log().Trace(exception, "[magento] SOAP throw an exception.");
+			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient(string baseMagentoUrl)
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
 		{
-			var endPoint = new List<string> { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient(_customBinding, new EndpointAddress(endPoint));
+			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add(new CustomBehavior());
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
 
 			return magentoSoapService;
 		}
 
-		protected async Task<Mage_Api_Model_Server_Wsi_HandlerPortTypeClient> CreateMagentoServiceClientAsync(string baseMagentoUrl)
+		protected async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
 		{
-			var task = Task.Factory.StartNew(() => CreateMagentoServiceClient(baseMagentoUrl));
-			await Task.WhenAll(task).ConfigureAwait(false);
+			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl ) );
+			await Task.WhenAll( task ).ConfigureAwait( false );
 			return task.Result;
 		}
 
-		protected static CustomBinding CustomBinding(string baseMagentoUrl)
+		protected static CustomBinding CustomBinding( string baseMagentoUrl )
 		{
 			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
 			{
@@ -611,7 +611,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			};
 
 			BindingElement httpTransportBindingElement;
-			if (baseMagentoUrl.StartsWith("https"))
+			if( baseMagentoUrl.StartsWith( "https" ) )
 			{
 				httpTransportBindingElement = new HttpsTransportBindingElement
 				{
@@ -636,18 +636,18 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				};
 			}
 
-			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement(textMessageEncodingBindingElement, "qwe")
+			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
 			{
 				MessageVersion = MessageVersion.Soap11,
 			};
 
-			ICollection<BindingElement> bindingElements = new List<BindingElement>();
+			ICollection< BindingElement > bindingElements = new List< BindingElement >();
 			var httpBindingElement = httpTransportBindingElement;
 			var textBindingElement = myTextMessageEncodingBindingElement;
-			bindingElements.Add(textBindingElement);
-			bindingElements.Add(httpBindingElement);
+			bindingElements.Add( textBindingElement );
+			bindingElements.Add( httpBindingElement );
 
-			var customBinding = new CustomBinding(bindingElements) { ReceiveTimeout = new TimeSpan(0, 2, 30, 0), SendTimeout = new TimeSpan(0, 2, 30, 0), OpenTimeout = new TimeSpan(0, 2, 30, 0), CloseTimeout = new TimeSpan(0, 2, 30, 0), Name = "CustomHttpBinding" };
+			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
 			return customBinding;
 		}
 
@@ -658,7 +658,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return privateClient;
 		}
 
-		protected string CreateMethodCallInfo(string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [CallerMemberName] string memberName = "", string notes = "")
+		protected string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
 		{
 			mark = mark ?? Mark.Blank();
 			var connectionInfo = this.ToJsonSoapInfo();
