@@ -263,7 +263,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
 		{
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
+			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
 			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
 
@@ -272,7 +272,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
 		{
-			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl ) );
+			var task = Task.Factory.StartNew( () => this.CreateMagentoServiceClient( baseMagentoUrl ) );
 			await Task.WhenAll( task ).ConfigureAwait( false );
 			return task.Result;
 		}
