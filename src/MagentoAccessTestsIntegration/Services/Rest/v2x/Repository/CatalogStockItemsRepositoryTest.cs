@@ -15,6 +15,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		[ Ignore( "Because there is multiple update tests" ) ]
 		public async Task PutStockItemAsync_StoreContainsProducts_ProductsUpdated( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
@@ -38,12 +39,45 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			var stockItem3Updated = stockRepository.GetStockItemAsync( products.Result.items.First().sku );
 			stockItem3Updated.Wait();
 			//------------ Assert
-			stockItem2.Result.Should().Be(true);
-			stockItem3.Result.Should().Be(true);
+			stockItem2.Result.Should().Be( true );
+			stockItem3.Result.Should().Be( true );
 			stockItem2Updated.Result.qty.Value.Should().Be( 100 );
 			stockItem2Updated.Result.isInStock.Value.Should().Be( true );
 			stockItem3Updated.Result.qty.Value.Should().Be( 100500 );
 			stockItem3Updated.Result.isInStock.Value.Should().Be( false );
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public async Task PutStockItemsAsync_StoreContainsProducts_ProductsUpdated( RepositoryTestCase testCase )
+		{
+			//------------ Arrange
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
+			tokenTask.Wait();
+			var productRepository = new ProductRepository( tokenTask.Result, testCase.Url );
+			var products = productRepository.GetProductsAsync( DateTime.MinValue, "simple", new PagingModel( 5, 1 ) );
+			products.Wait();
+
+			var stockRepository = new CatalogStockItemRepository( tokenTask.Result, testCase.Url );
+			var stockItem = stockRepository.GetStockItemsAsync( products.Result.items.Select( x => x.sku ) );
+			stockItem.Wait();
+			//------------ Act
+			var stockItem2 = stockRepository.PutStockItemsAsync( products.Result.items.Select( x => Tuple.Create( x.sku, x.id.ToString(), new RootObject { stockItem = new StockItem { qty = 100, isInStock = true } } ) ) );
+			stockItem2.Wait();
+			var stockItem2Updated = stockRepository.GetStockItemsAsync( products.Result.items.Select( x => x.sku ) );
+			stockItem2Updated.Wait();
+			var stockItem3 = stockRepository.PutStockItemsAsync( products.Result.items.Select( x => Tuple.Create( x.sku, x.id.ToString(), new RootObject { stockItem = new StockItem { qty = 100500, isInStock = false } } ) ) );
+			stockItem3.Wait();
+			var stockItem3Updated = stockRepository.GetStockItemsAsync( products.Result.items.Select( x => x.sku ) );
+			stockItem3Updated.Wait();
+			//------------ Assert
+			stockItem2.Result.Should().OnlyContain( x => x );
+			stockItem3.Result.Should().OnlyContain( x => x );
+			stockItem2Updated.Result.Should().OnlyContain( x => x.qty == 100 );
+			stockItem2Updated.Result.Should().OnlyContain( x => x.isInStock == true );
+			stockItem3Updated.Result.Should().OnlyContain( x => x.qty == 100500 );
+			stockItem3Updated.Result.Should().OnlyContain( x => x.isInStock == false );
 		}
 	}
 }
