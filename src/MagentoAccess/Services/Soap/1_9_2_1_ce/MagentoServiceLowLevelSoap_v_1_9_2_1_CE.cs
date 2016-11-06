@@ -106,18 +106,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
-			filters filters;
-
-			if( string.IsNullOrWhiteSpace( this.Store ) )
-				filters = new filters { complex_filter = new complexFilter[ 2 ] };
-			else
-			{
-				filters = new filters { complex_filter = new complexFilter[ 3 ] };
-				filters.complex_filter[ 2 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
-			}
-
-			filters.complex_filter[ 1 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-			filters.complex_filter[ 0 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "to", value = modifiedTo.ToSoapParameterString() } };
+			var filters = new filters();
+			AddFilter( filters, modifiedFrom.ToSoapParameterString(), "updated_at", "from" );
+			AddFilter( filters, modifiedTo.ToSoapParameterString(), "updated_at", "to" );
+			if( !string.IsNullOrWhiteSpace( this.Store ) )
+				AddFilter( filters, this.Store, "store_id", "in" );
 
 			return await this.GetWithAsync(
 				res =>
@@ -133,16 +126,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			var ordersIdsAgregated = string.Join( ",", ordersIds );
 
-			filters filters;
-			if( string.IsNullOrWhiteSpace( this.Store ) )
-				filters = new filters { complex_filter = new complexFilter[ 1 ] };
-			else
-			{
-				filters = new filters { complex_filter = new complexFilter[ 2 ] };
-				filters.complex_filter[ 1 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
-			}
+			var filters = new filters();
+			AddFilter( filters, ordersIdsAgregated, "increment_id", "in" );
 
-			filters.complex_filter[ 0 ] = new complexFilter { key = "increment_id", value = new associativeEntity { key = "in", value = ordersIdsAgregated } };
+			if( !string.IsNullOrWhiteSpace( this.Store ) )
+				AddFilter( filters, this.Store, "store_id", "in" );
 
 			return await this.GetWithAsync(
 				res => new GetOrdersResponse( res ),
@@ -167,6 +155,9 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
 		{
+			if( filters.complex_filter == null )
+				filters.complex_filter = new complexFilter[ 0 ];
+
 			var temp = filters.complex_filter.ToList();
 			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = valueKey, value = value } } );
 			filters.complex_filter = temp.ToArray();
