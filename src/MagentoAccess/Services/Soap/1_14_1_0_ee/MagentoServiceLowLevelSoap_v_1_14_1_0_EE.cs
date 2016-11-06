@@ -283,17 +283,27 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
+		private static void AddFilter( filters filters, string value, string key, string valueKey )
+		{
+			if( filters.complex_filter == null )
+				filters.complex_filter = new complexFilter[ 0 ];
+
+			var temp = filters.complex_filter.ToList();
+			temp.Add( new complexFilter() { key = key, value = new associativeEntity() { key = valueKey, value = value } } );
+			filters.complex_filter = temp.ToArray();
+		}
+
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			Func< bool, Task< catalogProductListResponse > > call = async ( keepAlive ) =>
 			{
-				//var associativeEntity = new associativeEntity() { key = "product_id", value = "46647" };
+				var filtersTemp = new filters();
 
-				var filtersTemp = new filters { complex_filter = new complexFilter[ 1 ] };
+				if( productType != null )
+					AddFilter( filtersTemp, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq" );
 				if( updatedFrom.HasValue )
-					filtersTemp.complex_filter[ 1 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "from", value = updatedFrom.Value.ToSoapParameterString() } };
-				//v1.complex_filter[0] = new MagentoSoapServiceReference_v_1_14_1_EE.complexFilter { key = "updated_at", value = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity { key = "to", value = DateTime.Now.ToSoapParameterString() } };
-				filtersTemp.complex_filter[ 0 ] = new complexFilter { key = "type", value = new associativeEntity { key = "in", value = "simple,configurable" } };
+					AddFilter( filtersTemp, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
+
 				var filters = filtersTemp;
 				//var filters = new MagentoSoapServiceReference_v_1_14_1_EE.filters { filter = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity[1]{associativeEntity} };
 				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
