@@ -21,7 +21,7 @@
 
 		public static MagentoServicePath Products { get; } = new MagentoServicePath( "products" );
 		public static MagentoServicePath CatalogStockItems { get; } = new MagentoServicePath("stockItems");
+		public static MagentoServicePath SalesOrder { get; } = new MagentoServicePath("orders");
 		public static MagentoServicePath IntegrationAdmin { get; } = new MagentoServicePath( "integration/admin/token" );
-		public static MagentoServicePath Orders { get; } = new MagentoServicePath( "orders" );
 	}
 }
