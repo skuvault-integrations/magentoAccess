@@ -32,14 +32,16 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v1x
 			//------------ Arrange
 
 			//------------ Act
-			var sc = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			var sc = new SearchCriteria()
 			{
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				filter_groups = new List< FilterGroup >()
 				{
-					new SearchCriteria.FilterGroup.Filter( @"updated_at", @"2016-07-01 00:00:00", SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan ),
-				} )
-			} )
-			{ CurrentPage = 1, PageSize = 100 };
+					new FilterGroup()
+					{
+						filters = new List< Filter > { new Filter( @"updated_at", @"2016-07-01 00:00:00", Filter.ConditionType.GreaterThan ) }
+					}
+				},
+			};
 
 			//------------ Assert
 			var qwe = ( WebRequest )WebRequest.Create()

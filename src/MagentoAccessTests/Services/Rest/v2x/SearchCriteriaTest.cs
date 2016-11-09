@@ -40,14 +40,20 @@ namespace MagentoAccessTests.Services.Rest.v2x
 						           @"searchCriteria[filter_groups][0][filters][1][field]=color&" +
 						           @"searchCriteria[filter_groups][0][filters][1][value]=Red&" +
 						           @"searchCriteria[filter_groups][0][filters][1][condition_type]=eq",
-						SearchCriteria = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+						SearchCriteria = new SearchCriteria()
 						{
-							new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+							filter_groups = new List< FilterGroup >()
 							{
-								new SearchCriteria.FilterGroup.Filter( @"size", @"Large", SearchCriteria.FilterGroup.Filter.ConditionType.Equals ),
-								new SearchCriteria.FilterGroup.Filter( @"color", @"Red", SearchCriteria.FilterGroup.Filter.ConditionType.Equals )
-							} )
-						} )
+								new FilterGroup()
+								{
+									filters = new List< Filter >
+									{
+										new Filter( @"size", @"Large", Filter.ConditionType.GreaterThan ),
+										new Filter( @"color", @"Red", Filter.ConditionType.GreaterThan ),
+									}
+								}
+							}
+						}
 					} ).SetName( "SearchCriteria{FilterGroup{Filter{Field,Value,Condition},Filter{Field,Value,Condition}}}" );
 
 					yield return new TestCaseData( new SearchCriteriaTestCase()
@@ -56,14 +62,20 @@ namespace MagentoAccessTests.Services.Rest.v2x
 						           "searchCriteria[filter_groups][0][filters][0][value]=Large&" +
 						           @"searchCriteria[filter_groups][0][filters][1][field]=color&" +
 						           @"searchCriteria[filter_groups][0][filters][1][value]=Red",
-						SearchCriteria = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+						SearchCriteria = new SearchCriteria()
 						{
-							new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+							filter_groups = new List< FilterGroup >()
 							{
-								new SearchCriteria.FilterGroup.Filter( @"size", @"Large" ),
-								new SearchCriteria.FilterGroup.Filter( @"color", @"Red" )
-							} )
-						} )
+								new FilterGroup()
+								{
+									filters = new List< Filter >
+									{
+										new Filter( @"size", @"Large" ),
+										new Filter( @"color", @"Red" ),
+									}
+								}
+							}
+						}
 					} ).SetName( "SearchCriteria{FilterGroup{Filter{Field,Value},Filter{Field,Value}}}" );
 
 					yield return new TestCaseData( new SearchCriteriaTestCase()
@@ -85,48 +97,36 @@ namespace MagentoAccessTests.Services.Rest.v2x
 						           "&searchCriteria[filter_groups][2][filters][0][condition_type]=neq" +
 						           "&searchCriteria[current_page]=1" +
 						           "&searchCriteria[page_size]=100",
-						SearchCriteria = new SearchCriteria(
-							new List< SearchCriteria.FilterGroup >
+						SearchCriteria = new SearchCriteria()
+						{
+							filter_groups = new List< FilterGroup >()
 							{
-								new SearchCriteria.FilterGroup(
-									new List< SearchCriteria.FilterGroup.Filter >
+								new FilterGroup()
+								{
+									filters = new List< Filter >
 									{
-										new SearchCriteria.FilterGroup.Filter(
-											@"price",
-											@"20",
-											SearchCriteria.FilterGroup.Filter.ConditionType.LessThan
-											),
-										new SearchCriteria.FilterGroup.Filter(
-											@"price",
-											@"50",
-											SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan
-											)
-									} ),
-								new SearchCriteria.FilterGroup(
-									new List< SearchCriteria.FilterGroup.Filter >
+										new Filter( @"price", @"20", Filter.ConditionType.LessThan ),
+										new Filter( @"price", @"50", Filter.ConditionType.GreaterThan ),
+									}
+								},
+								new FilterGroup()
+								{
+									filters = new List< Filter >
 									{
-										new SearchCriteria.FilterGroup.Filter(
-											@"price",
-											@"1",
-											SearchCriteria.FilterGroup.Filter.ConditionType.From
-											),
-										new SearchCriteria.FilterGroup.Filter(
-											@"price",
-											@"100",
-											SearchCriteria.FilterGroup.Filter.ConditionType.To
-											)
-									} ),
-								new SearchCriteria.FilterGroup(
-									new List< SearchCriteria.FilterGroup.Filter >
+										new Filter( @"price", @"1", Filter.ConditionType.From ),
+										new Filter( @"price", @"100", Filter.ConditionType.To ),
+									}
+								},
+								new FilterGroup()
+								{
+									filters = new List< Filter >
 									{
-										new SearchCriteria.FilterGroup.Filter(
-											@"price",
-											@"0",
-											SearchCriteria.FilterGroup.Filter.ConditionType.NotEqual
-											)
-									} )
-							} )
-						{ CurrentPage = 1, PageSize = 100 }
+										new Filter( @"price", @"0", Filter.ConditionType.NotEqual )
+									}
+								},
+							},
+							current_page = 1, page_size = 100
+						}
 					} ).SetName( "SearchCriteria{FilterGroup{Filter{Field,Value,Condition},Filter{Field,Value,Condition}}Pages" );
 				}
 			}

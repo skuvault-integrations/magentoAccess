@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using MagentoAccess.Models.Services.Rest.v2x;
-using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -16,29 +15,33 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x
 			//------------ Arrange
 
 			//------------ Act
-			var sc = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			var sc = new SearchCriteria()
 			{
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				filter_groups = new List< FilterGroup >()
 				{
-					new SearchCriteria.FilterGroup.Filter( @"updated_at", @"2016-07-01 00:00:00", SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan ),
-				} )
-			} )
-			{ CurrentPage = 1, PageSize = 100 };
+					new FilterGroup()
+					{
+						filters = new List< Filter >
+						{
+							new Filter( @"updated_at", @"2016-07-01 00:00:00", Filter.ConditionType.GreaterThan ),
+						}
+					}
+				},
+				page_size = 100, current_page = 1
+			};
 
 			//------------ Assert
 			var qwe = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.Products )
 				.Parameters( sc )
-				.Url( MagentoUrl.Create("http://xxx") )
+				.Url( MagentoUrl.Create( "http://xxx" ) )
 				;
 			var res = qwe.RunAsync();
 			res.Wait();
-
-
 		}
 
-		[Test]
+		[ Test ]
 		public void GetOrders_StoreContainsOrders_ReceiveOrders3()
 		{
 			//------------ Arrange
