@@ -22,7 +22,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			var productRepository = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
 			//------------ Act
 
-			var products = productRepository.GetOrdersAsync( DateTime.MinValue, DateTime.MaxValue, new PagingModel( 5, 1 ) );
+			var products = productRepository.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow, new PagingModel( 5, 1 ) );
 			products.Wait();
 
 			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
@@ -41,7 +41,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
 			//------------ Act
 
-			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.MaxValue );
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow );
 			items.Wait();
 
 			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
@@ -59,7 +59,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
 			//------------ Act
 
-			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.MaxValue, new PagingModel( 5, 1 ) );
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow, new PagingModel( 5, 1 ) );
 			items.Wait();
 
 			var items2 = salesOrderRepositoryV1.GetOrdersAsync( items.Result.items.Select( x => x.increment_id ), new PagingModel( 5, 1 ) );
