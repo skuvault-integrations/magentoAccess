@@ -8,6 +8,8 @@ using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Netco.Extensions;
 using Newtonsoft.Json;
+using Filter = MagentoAccess.Models.Services.Rest.v2x.Filter;
+using FilterGroup = MagentoAccess.Models.Services.Rest.v2x.FilterGroup;
 using SearchCriteria = MagentoAccess.Models.Services.Rest.v2x.SearchCriteria;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
@@ -25,13 +27,18 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( PagingModel page )
 		{
-			var parameters = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			var parameters = new SearchCriteria()
 			{
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				filter_groups = new List< FilterGroup >()
 				{
-				} )
-			} )
-			{ CurrentPage = page.CurrentPage, PageSize = page.ItemsPerPage };
+					new FilterGroup()
+					{
+						filters = new List< Filter > { }
+					}
+				},
+				current_page = page.CurrentPage,
+				page_size = page.ItemsPerPage
+			};
 
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
@@ -63,14 +70,18 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page )
 		{
-			var parameters = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			var parameters = new SearchCriteria()
 			{
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				filter_groups = new List< FilterGroup >()
 				{
-					new SearchCriteria.FilterGroup.Filter( @"updated_at", updatedAt.ToRestParameterString(), SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan ),
-				} )
-			} )
-			{ CurrentPage = page.CurrentPage, PageSize = page.ItemsPerPage };
+					new FilterGroup()
+					{
+						filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
+					}
+				},
+				current_page = page.CurrentPage,
+				page_size = page.ItemsPerPage
+			};
 
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
@@ -90,18 +101,22 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, PagingModel page )
 		{
-			var parameters = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			var parameters = new SearchCriteria()
 			{
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				filter_groups = new List< FilterGroup >()
 				{
-					new SearchCriteria.FilterGroup.Filter( @"updated_at", updatedAt.ToRestParameterString(), SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan ),
-				} ),
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
-				{
-					new SearchCriteria.FilterGroup.Filter( @"type_id", type, SearchCriteria.FilterGroup.Filter.ConditionType.Equals ),
-				} )
-			} )
-			{ CurrentPage = page.CurrentPage, PageSize = page.ItemsPerPage };
+					new FilterGroup()
+					{
+						filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
+					},
+					new FilterGroup()
+					{
+						filters = new List< Filter > { new Filter( @"type_id", type, Filter.ConditionType.Equals ) }
+					},
+				},
+				current_page = page.CurrentPage,
+				page_size = page.ItemsPerPage
+			};
 
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
@@ -121,19 +136,22 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page )
 		{
-			var parameters = new SearchCriteria( new List< SearchCriteria.FilterGroup >()
+			var parameters = new SearchCriteria()
 			{
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
+				filter_groups = new List< FilterGroup >()
 				{
-					new SearchCriteria.FilterGroup.Filter( @"updated_at", updatedAt.ToRestParameterString(), SearchCriteria.FilterGroup.Filter.ConditionType.GreaterThan ),
-				} ),
-				new SearchCriteria.FilterGroup( new List< SearchCriteria.FilterGroup.Filter >()
-				{
-					new SearchCriteria.FilterGroup.Filter( @"type_id", type, SearchCriteria.FilterGroup.Filter.ConditionType.NotEqual ),
-				} )
-			} )
-			{ CurrentPage = page.CurrentPage, PageSize = page.ItemsPerPage };
-
+					new FilterGroup()
+					{
+						filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
+					},
+					new FilterGroup()
+					{
+						filters = new List< Filter > { new Filter( @"type_id", type, Filter.ConditionType.NotEqual ) }
+					},
+				},
+				current_page = page.CurrentPage,
+				page_size = page.ItemsPerPage
+			};
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.Products )
