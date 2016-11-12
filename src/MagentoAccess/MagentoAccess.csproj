@@ -243,12 +243,14 @@
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Rest\v2x\PagingModel.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ActionPolicies.cs" />
+    <Compile Include="Services\Rest\v2x\Repository\ISalesOrderRepositoryV1.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IIntegrationAdminTokenRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IntegrationAdminTokenRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ICatalogStockItemRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IProductRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\CatalogStockItemRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ProductRepository.cs" />
+    <Compile Include="Services\Rest\v2x\Repository\SalesOrderRepositoryV1.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoPass.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoLogin.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\AuthorizationToken.cs" />
