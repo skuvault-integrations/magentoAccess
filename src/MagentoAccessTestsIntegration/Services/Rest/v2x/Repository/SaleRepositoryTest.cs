@@ -69,5 +69,27 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			items2.Result.items.Count.Should().BeGreaterOrEqualTo( 0 );
 			items2.Result.items.Count.Should().Be( items.Result.items.Count );
 		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public async Task GetOrdersAsync_StoreContainsOrders_ReceiveOrdersByIdReceive( RepositoryTestCase testCase )
+		{
+			//------------ Arrange
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
+			tokenTask.Wait();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
+			//------------ Act
+
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow );
+			items.Wait();
+
+			var items2 = salesOrderRepositoryV1.GetOrdersAsync( items.Result.SelectMany( y => y.items ).Select( x => x.increment_id ) );
+			items2.Wait();
+
+			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
+			items2.Result.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 0 );
+			items2.Result.SelectMany( y => y.items ).Count().Should().Be( items.Result.SelectMany( y => y.items ).Count() );
+		}
 	}
 }
