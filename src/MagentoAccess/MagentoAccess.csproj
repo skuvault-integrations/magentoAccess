@@ -110,7 +110,7 @@
     <Compile Include="Models\PingRest\MagentoCoreInfo.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
     <Compile Include="Models\Services\Rest\v2x\CatalogStockItemRepository\RootObject.cs" />
-    <Compile Include="Models\Services\Rest\v2x\Products\product.cs" />
+    <Compile Include="Models\Services\Rest\v2x\Products\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SearchCriteria.cs" />
     <Compile Include="Models\Services\Rest\v1x\BaseResponse\ResponseError.cs" />
     <Compile Include="Models\Services\Rest\v1x\GetOrders\Address.cs" />
