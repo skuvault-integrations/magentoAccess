@@ -8,16 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
+namespace MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string traceField;
@@ -75,12 +75,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string keyField;
@@ -122,12 +122,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string messageField;
@@ -170,12 +170,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryDataStockItemExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -189,12 +189,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryDataStockItemInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         private int itemIdField;
@@ -628,12 +628,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockItemBySkuResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
         private CatalogInventoryDataStockItemInterface resultField;
@@ -661,12 +661,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockItemBySkuRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string productSkuField;
@@ -722,46 +722,46 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1", ConfigurationName="Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistr" +
-        "yV1PortType")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1", ConfigurationName="M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1Por" +
+        "tType")]
     public interface catalogInventoryStockRegistryV1PortType {
         
         // CODEGEN: Generating message contract since the operation catalogInventoryStockRegistryV1GetStockItemBySku is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1GetStockItemBySku", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1GetStockItemBySku", Name="GenericFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1GetStockItemBySku", Name="GenericFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 catalogInventoryStockRegistryV1GetStockItemBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request);
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 catalogInventoryStockRegistryV1GetStockItemBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1GetStockItemBySku", ReplyAction="*")]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1> catalogInventoryStockRegistryV1GetStockItemBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request);
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1> catalogInventoryStockRegistryV1GetStockItemBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request);
         
         // CODEGEN: Generating message contract since the operation catalogInventoryStockRegistryV1UpdateStockItemBySku is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1UpdateStockItemBySku", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1UpdateStockItemBySku", Name="GenericFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1UpdateStockItemBySku", Name="GenericFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 catalogInventoryStockRegistryV1UpdateStockItemBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request);
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 catalogInventoryStockRegistryV1UpdateStockItemBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1UpdateStockItemBySku", ReplyAction="*")]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1> catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request);
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1> catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request);
         
         // CODEGEN: Generating message contract since the operation catalogInventoryStockRegistryV1GetLowStockItems is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1GetLowStockItems", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1GetLowStockItems", Name="GenericFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1GetLowStockItems", Name="GenericFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1 catalogInventoryStockRegistryV1GetLowStockItems(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request);
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1 catalogInventoryStockRegistryV1GetLowStockItems(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1GetLowStockItems", ReplyAction="*")]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1> catalogInventoryStockRegistryV1GetLowStockItemsAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request);
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1> catalogInventoryStockRegistryV1GetLowStockItemsAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request);
         
         // CODEGEN: Generating message contract since the operation catalogInventoryStockRegistryV1GetStockStatusBySku is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1GetStockStatusBySku", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1GetStockStatusBySku", Name="GenericFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.GenericFault), Action="catalogInventoryStockRegistryV1GetStockStatusBySku", Name="GenericFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 catalogInventoryStockRegistryV1GetStockStatusBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request);
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 catalogInventoryStockRegistryV1GetStockStatusBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="catalogInventoryStockRegistryV1GetStockStatusBySku", ReplyAction="*")]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1> catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request);
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1> catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -770,14 +770,14 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest;
         
         public catalogInventoryStockRegistryV1GetStockItemBySkuRequest1() {
         }
         
-        public catalogInventoryStockRegistryV1GetStockItemBySkuRequest1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest) {
+        public catalogInventoryStockRegistryV1GetStockItemBySkuRequest1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest) {
             this.catalogInventoryStockRegistryV1GetStockItemBySkuRequest = catalogInventoryStockRegistryV1GetStockItemBySkuRequest;
         }
     }
@@ -788,25 +788,25 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySkuResponse;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySkuResponse;
         
         public catalogInventoryStockRegistryV1GetStockItemBySkuResponse1() {
         }
         
-        public catalogInventoryStockRegistryV1GetStockItemBySkuResponse1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySkuResponse) {
+        public catalogInventoryStockRegistryV1GetStockItemBySkuResponse1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySkuResponse) {
             this.catalogInventoryStockRegistryV1GetStockItemBySkuResponse = catalogInventoryStockRegistryV1GetStockItemBySkuResponse;
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string productSkuField;
@@ -848,12 +848,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
         private int resultField;
@@ -886,14 +886,14 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest;
         
         public catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1() {
         }
         
-        public catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest) {
+        public catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest) {
             this.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest;
         }
     }
@@ -904,25 +904,25 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse;
         
         public catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1() {
         }
         
-        public catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse) {
+        public catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse) {
             this.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse = catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse;
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetLowStockItemsRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
         private int scopeIdField;
@@ -1020,12 +1020,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetLowStockItemsResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
         private CatalogInventoryDataStockStatusCollectionInterface resultField;
@@ -1053,12 +1053,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusCollectionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         private CatalogInventoryDataStockStatusInterface[] itemsField;
@@ -1115,12 +1115,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         private int productIdField;
@@ -1218,12 +1218,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusExtensionInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -1237,12 +1237,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockStatusCriteriaInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string mapperInterfaceNameField;
@@ -1330,12 +1330,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class FrameworkCriteriaInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string mapperInterfaceNameField;
@@ -1428,14 +1428,14 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetLowStockItemsRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest;
         
         public catalogInventoryStockRegistryV1GetLowStockItemsRequest1() {
         }
         
-        public catalogInventoryStockRegistryV1GetLowStockItemsRequest1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest) {
+        public catalogInventoryStockRegistryV1GetLowStockItemsRequest1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest) {
             this.catalogInventoryStockRegistryV1GetLowStockItemsRequest = catalogInventoryStockRegistryV1GetLowStockItemsRequest;
         }
     }
@@ -1446,25 +1446,25 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetLowStockItemsResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItemsResponse;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItemsResponse;
         
         public catalogInventoryStockRegistryV1GetLowStockItemsResponse1() {
         }
         
-        public catalogInventoryStockRegistryV1GetLowStockItemsResponse1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItemsResponse) {
+        public catalogInventoryStockRegistryV1GetLowStockItemsResponse1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItemsResponse) {
             this.catalogInventoryStockRegistryV1GetLowStockItemsResponse = catalogInventoryStockRegistryV1GetLowStockItemsResponse;
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string productSkuField;
@@ -1520,12 +1520,12 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-        "ryStockRegistryV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+        "StockRegistryV1")]
     public partial class CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
         private CatalogInventoryDataStockStatusInterface resultField;
@@ -1558,14 +1558,14 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest;
         
         public catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1() {
         }
         
-        public catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest) {
+        public catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest) {
             this.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest = catalogInventoryStockRegistryV1GetStockStatusBySkuRequest;
         }
     }
@@ -1576,25 +1576,25 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInvento" +
-            "ryStockRegistryV1", Order=0)]
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySkuResponse;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=catalogInventory" +
+            "StockRegistryV1", Order=0)]
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySkuResponse;
         
         public catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1() {
         }
         
-        public catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySkuResponse) {
+        public catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySkuResponse) {
             this.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse = catalogInventoryStockRegistryV1GetStockStatusBySkuResponse;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface catalogInventoryStockRegistryV1PortTypeChannel : MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType, System.ServiceModel.IClientChannel {
+    public interface catalogInventoryStockRegistryV1PortTypeChannel : MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class catalogInventoryStockRegistryV1PortTypeClient : System.ServiceModel.ClientBase<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType>, MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType {
+    public partial class catalogInventoryStockRegistryV1PortTypeClient : System.ServiceModel.ClientBase<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType>, MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType {
         
         public catalogInventoryStockRegistryV1PortTypeClient() {
         }
@@ -1616,95 +1616,95 @@ namespace MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockItemBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request) {
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockItemBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1GetStockItemBySku(request);
         }
         
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1();
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuResponse catalogInventoryStockRegistryV1GetStockItemBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1();
             inValue.catalogInventoryStockRegistryV1GetStockItemBySkuRequest = catalogInventoryStockRegistryV1GetStockItemBySkuRequest;
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 retVal = ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockItemBySku(inValue);
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 retVal = ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockItemBySku(inValue);
             return retVal.catalogInventoryStockRegistryV1GetStockItemBySkuResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1> MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockItemBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request) {
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1> MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockItemBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1GetStockItemBySkuAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1> catalogInventoryStockRegistryV1GetStockItemBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1();
+        public System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuResponse1> catalogInventoryStockRegistryV1GetStockItemBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockItemBySkuRequest catalogInventoryStockRegistryV1GetStockItemBySkuRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockItemBySkuRequest1();
             inValue.catalogInventoryStockRegistryV1GetStockItemBySkuRequest = catalogInventoryStockRegistryV1GetStockItemBySkuRequest;
-            return ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockItemBySkuAsync(inValue);
+            return ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockItemBySkuAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1UpdateStockItemBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request) {
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1UpdateStockItemBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1UpdateStockItemBySku(request);
         }
         
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1();
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuResponse catalogInventoryStockRegistryV1UpdateStockItemBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1();
             inValue.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest;
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 retVal = ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1UpdateStockItemBySku(inValue);
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 retVal = ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1UpdateStockItemBySku(inValue);
             return retVal.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1> MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request) {
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1> MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1> catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1();
+        public System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1> catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest1();
             inValue.catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest;
-            return ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(inValue);
+            return ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1 MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetLowStockItems(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request) {
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1 MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetLowStockItems(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1GetLowStockItems(request);
         }
         
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItems(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1();
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsResponse catalogInventoryStockRegistryV1GetLowStockItems(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1();
             inValue.catalogInventoryStockRegistryV1GetLowStockItemsRequest = catalogInventoryStockRegistryV1GetLowStockItemsRequest;
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1 retVal = ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetLowStockItems(inValue);
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1 retVal = ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetLowStockItems(inValue);
             return retVal.catalogInventoryStockRegistryV1GetLowStockItemsResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1> MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetLowStockItemsAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request) {
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1> MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetLowStockItemsAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1GetLowStockItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1> catalogInventoryStockRegistryV1GetLowStockItemsAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1();
+        public System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1> catalogInventoryStockRegistryV1GetLowStockItemsAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetLowStockItemsRequest catalogInventoryStockRegistryV1GetLowStockItemsRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsRequest1();
             inValue.catalogInventoryStockRegistryV1GetLowStockItemsRequest = catalogInventoryStockRegistryV1GetLowStockItemsRequest;
-            return ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetLowStockItemsAsync(inValue);
+            return ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetLowStockItemsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockStatusBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request) {
+        MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockStatusBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1GetStockStatusBySku(request);
         }
         
-        public MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySku(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1();
+        public MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuResponse catalogInventoryStockRegistryV1GetStockStatusBySku(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1();
             inValue.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest = catalogInventoryStockRegistryV1GetStockStatusBySkuRequest;
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 retVal = ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockStatusBySku(inValue);
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1 retVal = ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockStatusBySku(inValue);
             return retVal.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1> MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request) {
+        System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1> MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType.catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 request) {
             return base.Channel.catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1> catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest) {
-            MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 inValue = new MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1();
+        public System.Threading.Tasks.Task<MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuResponse1> catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryStockRegistryV1GetStockStatusBySkuRequest catalogInventoryStockRegistryV1GetStockStatusBySkuRequest) {
+            MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1 inValue = new MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest1();
             inValue.catalogInventoryStockRegistryV1GetStockStatusBySkuRequest = catalogInventoryStockRegistryV1GetStockStatusBySkuRequest;
-            return ((MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(inValue);
+            return ((MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1PortType)(this)).catalogInventoryStockRegistryV1GetStockStatusBySkuAsync(inValue);
         }
     }
 }

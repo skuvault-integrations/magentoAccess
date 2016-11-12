@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="catalogInventoryStockRegistryV1GetLowStockItemsResponse1" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1, Service References.Magento2catalogInventoryStockRegistryV1_v_2_0_2_0_CE.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.catalogInventoryStockRegistryV1GetLowStockItemsResponse1, Service References.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.Reference.cs.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

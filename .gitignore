@@ -27,9 +27,11 @@ _ReSharper*/
 _dotCover*/
 _dotMemory*/
 _dotTrace*/
+_NCrunch*/
 [Tt]est[Rr]esult*
 *.ReSharper
 *.docstates
+*.ncrunchproject
 
 #Ignore common build files
 build

@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE;
-using MagentoAccess.Magento2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
+using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE;
@@ -258,7 +258,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
 
-				await this.GetSessionId().ConfigureAwait( false );
+				var sessionIdRespnse = await this.GetSessionId( !suppressException ).ConfigureAwait( false );
+				if( sessionIdRespnse == null )
+				{
+					MagentoLogger.LogTrace( "Can't get session id. Possible reasons: incorrect credentials, user was blocked." );
+					return null;
+				}
 				var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
 				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
 				var getProductsRes = await this.GetProductsAsync( 1, null, false, null ).ConfigureAwait( false );

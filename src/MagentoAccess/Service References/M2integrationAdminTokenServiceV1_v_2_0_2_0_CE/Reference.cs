@@ -8,16 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
+namespace MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-        "inTokenServiceV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+        "TokenServiceV1")]
     public partial class GenericFault : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string traceField;
@@ -75,12 +75,12 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-        "inTokenServiceV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+        "TokenServiceV1")]
     public partial class GenericFaultParameter : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string keyField;
@@ -122,12 +122,12 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-        "inTokenServiceV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+        "TokenServiceV1")]
     public partial class WrappedError : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string messageField;
@@ -170,12 +170,12 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-        "inTokenServiceV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+        "TokenServiceV1")]
     public partial class IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string resultField;
@@ -203,12 +203,12 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1586.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-        "inTokenServiceV1")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+        "TokenServiceV1")]
     public partial class IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string usernameField;
@@ -250,19 +250,19 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-        "inTokenServiceV1", ConfigurationName="Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV" +
-        "1PortType")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+        "TokenServiceV1", ConfigurationName="M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortT" +
+        "ype")]
     public interface integrationAdminTokenServiceV1PortType {
         
         // CODEGEN: Generating message contract since the operation integrationAdminTokenServiceV1CreateAdminAccessToken is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="integrationAdminTokenServiceV1CreateAdminAccessToken", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.GenericFault), Action="integrationAdminTokenServiceV1CreateAdminAccessToken", Name="GenericFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.GenericFault), Action="integrationAdminTokenServiceV1CreateAdminAccessToken", Name="GenericFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 integrationAdminTokenServiceV1CreateAdminAccessToken(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request);
+        MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 integrationAdminTokenServiceV1CreateAdminAccessToken(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request);
         
         [System.ServiceModel.OperationContractAttribute(Action="integrationAdminTokenServiceV1CreateAdminAccessToken", ReplyAction="*")]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1> integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request);
+        System.Threading.Tasks.Task<MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1> integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -271,14 +271,14 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-            "inTokenServiceV1", Order=0)]
-        public MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+            "TokenServiceV1", Order=0)]
+        public MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest;
         
         public integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1() {
         }
         
-        public integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest) {
+        public integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest) {
             this.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = integrationAdminTokenServiceV1CreateAdminAccessTokenRequest;
         }
     }
@@ -289,25 +289,25 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdm" +
-            "inTokenServiceV1", Order=0)]
-        public MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessTokenResponse;
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://hereshouldbeyourmagentostoreurl.com/soap/default?services=integrationAdmin" +
+            "TokenServiceV1", Order=0)]
+        public MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessTokenResponse;
         
         public integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1() {
         }
         
-        public integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessTokenResponse) {
+        public integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessTokenResponse) {
             this.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse = integrationAdminTokenServiceV1CreateAdminAccessTokenResponse;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface integrationAdminTokenServiceV1PortTypeChannel : MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType, System.ServiceModel.IClientChannel {
+    public interface integrationAdminTokenServiceV1PortTypeChannel : MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class integrationAdminTokenServiceV1PortTypeClient : System.ServiceModel.ClientBase<MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType>, MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType {
+    public partial class integrationAdminTokenServiceV1PortTypeClient : System.ServiceModel.ClientBase<MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType>, MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType {
         
         public integrationAdminTokenServiceV1PortTypeClient() {
         }
@@ -329,26 +329,26 @@ namespace MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType.integrationAdminTokenServiceV1CreateAdminAccessToken(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request) {
+        MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType.integrationAdminTokenServiceV1CreateAdminAccessToken(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request) {
             return base.Channel.integrationAdminTokenServiceV1CreateAdminAccessToken(request);
         }
         
-        public MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessToken(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest) {
-            MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 inValue = new MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1();
+        public MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenResponse integrationAdminTokenServiceV1CreateAdminAccessToken(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest) {
+            MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 inValue = new MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1();
             inValue.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = integrationAdminTokenServiceV1CreateAdminAccessTokenRequest;
-            MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 retVal = ((MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType)(this)).integrationAdminTokenServiceV1CreateAdminAccessToken(inValue);
+            MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 retVal = ((MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType)(this)).integrationAdminTokenServiceV1CreateAdminAccessToken(inValue);
             return retVal.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1> MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request) {
+        System.Threading.Tasks.Task<MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1> MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 request) {
             return base.Channel.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1> integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest) {
-            MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 inValue = new MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1();
+        public System.Threading.Tasks.Task<MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1> integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest integrationAdminTokenServiceV1CreateAdminAccessTokenRequest) {
+            MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1 inValue = new MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest1();
             inValue.integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = integrationAdminTokenServiceV1CreateAdminAccessTokenRequest;
-            return ((MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType)(this)).integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(inValue);
+            return ((MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE.integrationAdminTokenServiceV1PortType)(this)).integrationAdminTokenServiceV1CreateAdminAccessTokenAsync(inValue);
         }
     }
 }
