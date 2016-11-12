@@ -21,6 +21,7 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
@@ -139,12 +140,40 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
+			try
+			{
+				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
+				{
+					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 );
+					var productsResponses = await sourceList.ProcessInBatchAsync( 4, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
+					return prods;
+				};
+
+				//10..99(9)
+				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ) ).ConfigureAwait( false ) ).ToList();
+				//0..9
+				productsMainPart.AddRange( await productsSelector( 0, 10, x => x.ToString( "D1" ) ).ConfigureAwait( false ) );
+				var soapGetProductsResponse = new SoapGetProductsResponse { Products = productsMainPart };
+
+				return soapGetProductsResponse;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
+			}
+		}
+
+		protected virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, string productIdLike, DateTime? updatedFrom )
+		{
 			var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
 
 			if( productType != null )
 				AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq" );
 			if( updatedFrom.HasValue )
 				AddFilter( filters, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
+			if( !string.IsNullOrWhiteSpace( productIdLike ) )
+				AddFilter( filters, productIdLike, "product_id", "like" );
 
 			var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
 
@@ -628,7 +657,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				{
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 					var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
-
 					var catalogProductCreateEntity = new catalogProductCreateEntity
 					{
 						name = name,
@@ -643,8 +671,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 						category_ids = new[] { res0.result.ToString() },
 						stock_data = new catalogInventoryStockItemUpdateEntity { qty = "100", is_in_stockSpecified = true, is_in_stock = isInStock, manage_stock = 1, use_config_manage_stock = 0, use_config_min_qty = 0, use_config_min_sale_qty = 0, is_qty_decimal = 0 }
 					};
-
-					var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "bundle", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
+					var res = await this._magentoSoapService.catalogProductCreateAsync( sessionId.SessionId, "simple", "4", sku, catalogProductCreateEntity, storeId ).ConfigureAwait( false );
 
 					//product id
 					result = res.result;
