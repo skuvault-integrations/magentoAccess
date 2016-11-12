@@ -30,7 +30,23 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			products.Result.items.Count.Should().BeLessOrEqualTo( 5 );
 		}
 
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public async Task GetOrdersAsync_StoreContainsOrders_ReceiveOrders( RepositoryTestCase testCase )
+		{
+			//------------ Arrange
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
+			tokenTask.Wait();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
+			//------------ Act
 
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.MaxValue );
+			items.Wait();
+
+			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
+			items.Result.SelectMany( x => x.items ).Count().Should().Be( items.Result.First().total_count );
+		}
 
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
