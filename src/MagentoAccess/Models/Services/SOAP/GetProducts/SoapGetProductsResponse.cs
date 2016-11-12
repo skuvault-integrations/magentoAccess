@@ -26,7 +26,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 
 		public SoapGetProductsResponse( List< Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductInterface > res )
 		{
-			this.Products = res.Select(x => new SoapProduct(x));
+			this.Products = res.Select( x => new SoapProduct( x ) );
 		}
 
 		public SoapGetProductsResponse( List< Item > products )
@@ -34,7 +34,12 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Products = products.Select( x => new SoapProduct( x ) );
 		}
 
-		public IEnumerable< SoapProduct > Products{ get; set; }
+		public SoapGetProductsResponse()
+		{
+			this.Products = new List< SoapProduct >();
+		}
+
+		public IEnumerable< SoapProduct > Products { get; set; }
 	}
 
 	internal class SoapProduct
