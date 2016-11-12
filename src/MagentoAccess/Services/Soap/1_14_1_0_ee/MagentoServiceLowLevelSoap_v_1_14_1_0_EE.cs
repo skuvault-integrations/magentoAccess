@@ -22,6 +22,7 @@ using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;
+using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 {
@@ -295,6 +296,31 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
+			try
+			{
+				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
+				{
+					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 );
+					var productsResponses = await sourceList.ProcessInBatchAsync( 4, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
+					return prods;
+				};
+
+				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ) ).ConfigureAwait( false ) ).ToList();
+				productsMainPart.AddRange( await productsSelector( 0, 9, x => x.ToString( "D1" ) ).ConfigureAwait( false ) );
+				var soapGetProductsResponse = new SoapGetProductsResponse { Products = productsMainPart };
+
+				return soapGetProductsResponse;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
+			}
+		}
+
+		protected virtual async Task<SoapGetProductsResponse> GetProductsAsync(string productType, bool productTypeShouldBeExcluded, string productIdLike, DateTime? updatedFrom)
+
+		{
 			Func< bool, Task< catalogProductListResponse > > call = async ( keepAlive ) =>
 			{
 				var filtersTemp = new filters();
@@ -303,6 +329,8 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					AddFilter( filtersTemp, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq" );
 				if( updatedFrom.HasValue )
 					AddFilter( filtersTemp, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
+				if( !string.IsNullOrWhiteSpace( productIdLike ) )
+					AddFilter( filtersTemp, productIdLike, "product_id", "like" );
 
 				var filters = filtersTemp;
 				//var filters = new MagentoSoapServiceReference_v_1_14_1_EE.filters { filter = new MagentoSoapServiceReference_v_1_14_1_EE.associativeEntity[1]{associativeEntity} };
