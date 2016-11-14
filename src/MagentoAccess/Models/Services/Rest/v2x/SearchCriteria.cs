@@ -93,7 +93,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 		{
 			this.field = field;
 			this.value = value;
-			this.condition_type = condition != null ? condition.ToString() : null;
+			this.condition_type = condition?.StringValue();
 		}
 
 		public enum ConditionType
