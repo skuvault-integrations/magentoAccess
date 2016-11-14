@@ -63,17 +63,17 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 					var filters = groups[ i ].filters.ToArray();
 					if( sb.Length > 0 )
 						sb.Append( @"&" );
-					sb.Append( $@"searchCriteria[filter_groups][{i}][filters][{j}][field]={filters[ j ].field}" + $@"&searchCriteria[filter_groups][{i}][filters][{j}][value]={Uri.EscapeDataString( filters[ j ].value )}" );
+					sb.Append( $@"searchCriteria[filterGroups][{i}][filters][{j}][field]={filters[ j ].field}" + $@"&searchCriteria[filterGroups][{i}][filters][{j}][value]={Uri.EscapeDataString( filters[ j ].value )}" );
 					if( !string.IsNullOrWhiteSpace( filters[ j ].condition_type ) )
-						sb.Append( $@"&searchCriteria[filter_groups][{i}][filters][{j}][condition_type]={filters[ j ].condition_type}" );
+						sb.Append( $@"&searchCriteria[filterGroups][{i}][filters][{j}][conditionType]={filters[ j ].condition_type}" );
 				}
 			}
 			if( sb.Length == 0 )
 				sb.Append( @"searchCriteria=" );
 			if( this.current_page > 0 )
-				sb.Append( $@"&searchCriteria[current_page]={this.current_page}" );
+				sb.Append( $@"&searchCriteria[currentPage]={this.current_page}" );
 			if( this.page_size > 0 )
-				sb.Append( $@"&searchCriteria[page_size]={this.page_size}" );
+				sb.Append( $@"&searchCriteria[pageSize]={this.page_size}" );
 			return sb.ToString();
 		}
 	}

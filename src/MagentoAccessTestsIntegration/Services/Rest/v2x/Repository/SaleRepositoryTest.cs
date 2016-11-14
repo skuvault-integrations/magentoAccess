@@ -22,11 +22,11 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			var productRepository = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
 			//------------ Act
 
-			var products = productRepository.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow, new PagingModel( 5, 1 ) );
+			var products = productRepository.GetOrdersAsync( new DateTime( 2012, 1, 1 ), DateTime.UtcNow.AddDays( 1 ), new PagingModel( 5, 1 ) );
 			products.Wait();
 
 			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			products.Result.items.Count.Should().BeGreaterOrEqualTo( 0 );
+			products.Result.items.Count.Should().BeGreaterOrEqualTo( 1 );
 			products.Result.items.Count.Should().BeLessOrEqualTo( 5 );
 		}
 
@@ -66,7 +66,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			items2.Wait();
 
 			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			items2.Result.items.Count.Should().BeGreaterOrEqualTo( 0 );
+			items2.Result.items.Count.Should().BeGreaterOrEqualTo( 1 );
 			items2.Result.items.Count.Should().Be( items.Result.items.Count );
 		}
 
@@ -88,7 +88,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			items2.Wait();
 
 			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			items2.Result.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 0 );
+			items2.Result.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 1 );
 			items2.Result.SelectMany( y => y.items ).Count().Should().Be( items.Result.SelectMany( y => y.items ).Count() );
 		}
 	}
