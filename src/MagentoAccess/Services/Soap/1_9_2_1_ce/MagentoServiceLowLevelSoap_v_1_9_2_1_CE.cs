@@ -52,7 +52,9 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected SemaphoreSlim getSessionIdSemaphore;
 
-		protected const int SessionIdLifeTimeMs = 3590;
+		protected int _getProductsMaxThreads;
+
+		protected int SessionIdLifeTimeMs;
 
 		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
 		{
@@ -62,6 +64,13 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
+#if DEBUG
+			this._getProductsMaxThreads = 30;
+			this.SessionIdLifeTimeMs = 300000;
+#else
+			this.SessionIdLifeTimeMs = 3590;
+			this._getProductsMaxThreads = 4;
+#endif
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
@@ -145,7 +154,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
 				{
 					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 );
-					var productsResponses = await sourceList.ProcessInBatchAsync( 4, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
 					return prods;
 				};

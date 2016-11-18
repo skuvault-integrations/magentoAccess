@@ -53,7 +53,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		protected SemaphoreSlim getSessionIdSemaphore;
 
-		protected const int SessionIdLifeTime = 3590;
+		protected int _getProductsMaxThreads;
+
+		protected int SessionIdLifeTime;
+
 
 		private void LogTraceGetResponseException( Exception exception )
 		{
@@ -108,6 +111,13 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
+#if DEBUG
+			this._getProductsMaxThreads = 30;
+			this.SessionIdLifeTime = 300000;
+#else
+			this.SessionIdLifeTime = 3590;
+			this._getProductsMaxThreads = 4;
+#endif
 		}
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl, bool keepAlive = true )
@@ -301,7 +311,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
 				{
 					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 );
-					var productsResponses = await sourceList.ProcessInBatchAsync( 4, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
 					return prods;
 				};
