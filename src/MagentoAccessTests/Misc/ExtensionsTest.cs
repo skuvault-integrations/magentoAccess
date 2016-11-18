@@ -42,29 +42,28 @@ namespace MagentoAccessTests.Misc
 			var batchedList = someList.Batch( batchCase.BatchSize ).ToList();
 
 			//------------ Assert
-			var expected = batchCase.ListLength / batchCase.BatchSize + (batchCase.ListLength % batchCase.BatchSize == 0 ? 0 : 1);
+			var expected = batchCase.ListLength / batchCase.BatchSize + ( batchCase.ListLength % batchCase.BatchSize == 0 ? 0 : 1 );
 			batchedList.Count().Should().Be( expected );
 			batchedList.Sum( x => x.Count() ).Should().Be( batchCase.ListLength );
 		}
 
-		[Test]
-		[TestCaseSource(typeof(BatchTestCases), "Cases")]
-		public void SplitToChunks(BatchTestCase batchCase)
+		[ Test ]
+		[ TestCaseSource( typeof( BatchTestCases ), "Cases" ) ]
+		public void SplitToChunks( BatchTestCase batchCase )
 		{
 			//------------ Arrange
-			var someList = new List<int>();
-			for (var i = 0; i < batchCase.ListLength; i++)
+			var someList = new List< int >();
+			for( var i = 0; i < batchCase.ListLength; i++ )
 			{
-				someList.Add(i);
+				someList.Add( i );
 			}
 
 			//------------ Act
-			var batchedList = someList.SplitToChunks(batchCase.BatchSize).ToList();
+			var batchedList = someList.SplitToChunks( batchCase.BatchSize ).ToList();
 
 			//------------ Assert
-			var expected = batchCase.ListLength / batchCase.BatchSize + batchCase.ListLength % batchCase.BatchSize == 0 ? 0 : 1;
-			batchedList.Count().Should().Be(expected);
-			batchedList.Sum(x => x.Count()).Should().Be(batchCase.ListLength);
+			batchedList.Count().Should().Be( batchCase.ExpectedBatches );
+			batchedList.Sum( x => x.Count() ).Should().Be( batchCase.ListLength );
 		}
 
 		public static class BatchTestCases
@@ -77,11 +76,14 @@ namespace MagentoAccessTests.Misc
 			{
 				get
 				{
-					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1, ListLength = 1000 } ).SetName( "BatchSize = 1, ListLength =	1000" );
-					yield return new TestCaseData( new BatchTestCase() { BatchSize = 999, ListLength = 1000 } ).SetName( "BatchSize = 999, ListLength =	1000" );
-					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1000, ListLength = 1000 } ).SetName( "BatchSize = 1000, ListLength =	1000" );
-					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1001, ListLength = 1000 } ).SetName( "BatchSize = 1001, ListLength =	1000" );
-					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1000, ListLength = 0 } ).SetName( "BatchSize = 1000, ListLength =	0" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1, ListLength = 1000, ExpectedBatches = 1000 } ).SetName( "BatchSize = 1, ListLength =	1000" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1000, ListLength = 1, ExpectedBatches = 1 } ).SetName( "BatchSize = 1000, ListLength =	1" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 999, ListLength = 1000, ExpectedBatches = 2 } ).SetName( "BatchSize = 999, ListLength =	1000" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1000, ListLength = 999, ExpectedBatches = 1 } ).SetName( "BatchSize = 1000, ListLength =	999" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1000, ListLength = 1000, ExpectedBatches = 1 } ).SetName( "BatchSize = 1000, ListLength =	1000" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 1000, ListLength = 0, ExpectedBatches = 0 } ).SetName( "BatchSize = 1000, ListLength =	0" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 50, ListLength = 12, ExpectedBatches = 1 } ).SetName( "BatchSize = 50, ListLength =	12" );
+					yield return new TestCaseData( new BatchTestCase() { BatchSize = 12, ListLength = 50, ExpectedBatches = 5 } ).SetName( "BatchSize = 12, ListLength =	50" );
 				}
 			}
 		}
@@ -91,5 +93,6 @@ namespace MagentoAccessTests.Misc
 	{
 		public int BatchSize { get; set; }
 		public int ListLength { get; set; }
+		public int ExpectedBatches { get; set; }
 	}
 }
