@@ -364,7 +364,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			{
 				var pageSize = 500;
 				var res = await this.GetStockItemsPage( 1, pageSize ).ConfigureAwait( false );
-				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount < pageSize )
+				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
 					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
 
 				var pagingModel = new PagingModel( pageSize, 1 );
