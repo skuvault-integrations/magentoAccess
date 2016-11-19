@@ -14,11 +14,11 @@ namespace MagentoAccess.Services.Rest.v2x
 			this.CurrentPage = currentPage;
 		}
 
-		public IEnumerable<int> GetPages(int itemsTotal)
+		public IEnumerable< int > GetPages( int itemsTotal )
 		{
 			var fullPagesCount = itemsTotal / this.ItemsPerPage;
-			var diff = (itemsTotal - fullPagesCount * this.ItemsPerPage);
-			return Enumerable.Range(this.CurrentPage + 1, fullPagesCount + diff > 0 ? 1 : 0);
+			var diff = ( itemsTotal - fullPagesCount * this.ItemsPerPage );
+			return Enumerable.Range( this.CurrentPage + 1, fullPagesCount + ( diff > 0 ? 1 : 0 ) );
 		}
 	}
 }
