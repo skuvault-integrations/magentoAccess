@@ -94,14 +94,14 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl, string store )
+		public MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, int getProductsMaxThreads )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
-			_customBinding = CustomBinding( baseMagentoUrl );
+			this._customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
@@ -112,13 +112,8 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			};
 
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
-#if DEBUG
-			this._getProductsMaxThreads = 30;
-			this.SessionIdLifeTime = 300000;
-#else
-			this.SessionIdLifeTime = 3590;
-			this._getProductsMaxThreads = 4;
-#endif
+			this._getProductsMaxThreads = getProductsMaxThreads;
+			this.SessionIdLifeTime = sessionIdLifeTime;
 		}
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )

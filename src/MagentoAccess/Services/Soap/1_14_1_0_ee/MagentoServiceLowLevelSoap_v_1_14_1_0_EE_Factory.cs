@@ -10,8 +10,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				credentials.SoapApiUser,
 				credentials.SoapApiKey,
 				credentials.BaseMagentoUrl,
-				null
-				);
+				null, 300000, 30 );
 		}
 	}
 }

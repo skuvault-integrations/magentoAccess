@@ -56,7 +56,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected int SessionIdLifeTimeMs;
 
-		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
+		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, int sessionIdLifeTimeMs )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
@@ -64,13 +64,8 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
-#if DEBUG
-			this._getProductsMaxThreads = 30;
-			this.SessionIdLifeTimeMs = 300000;
-#else
-			this.SessionIdLifeTimeMs = 3590;
-			this._getProductsMaxThreads = 4;
-#endif
+			this._getProductsMaxThreads = getProductsMaxThreads;
+			this.SessionIdLifeTimeMs = sessionIdLifeTimeMs;
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
