@@ -10,7 +10,7 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 {
 	internal class InventoryStockItemListResponse
 	{
-		public IEnumerable< InventoryStockItem > InventoryStockItems{ get; set; }
+		public IEnumerable< InventoryStockItem > InventoryStockItems { get; set; }
 
 		public InventoryStockItemListResponse( catalogInventoryStockItemListResponse res )
 		{
@@ -29,19 +29,24 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 
 		public InventoryStockItemListResponse( IEnumerable< Tuple< string, M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryDataStockItemInterface > > responses )
 		{
-			this.InventoryStockItems = responses.Select(x => new InventoryStockItem(x.Item1, x.Item2));
+			this.InventoryStockItems = responses.Select( x => new InventoryStockItem( x.Item1, x.Item2 ) );
+		}
+
+		public InventoryStockItemListResponse( IEnumerable< Tuple< int, CatalogInventoryDataStockStatusCollectionInterface > > responses )
+		{
+			this.InventoryStockItems = responses.SelectMany( x => x.Item2.items ).Select( x => new InventoryStockItem( x ) );
 		}
 	}
 
 	internal class InventoryStockItem
 	{
-		public string Sku{ get; set; }
+		public string Sku { get; set; }
 
-		public string Qty{ get; set; }
+		public string Qty { get; set; }
 
-		public string ProductId{ get; set; }
+		public string ProductId { get; set; }
 
-		public string IsInStock{ get; set; }
+		public string IsInStock { get; set; }
 
 		public InventoryStockItem( catalogInventoryStockItemEntity catalogInventoryStockItemEntity )
 		{
@@ -73,6 +78,21 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 			this.ProductId = catalogInventoryStockItemEntity.productId.ToString( CultureInfo.InvariantCulture );
 			this.Qty = catalogInventoryStockItemEntity.qty.ToString( CultureInfo.InvariantCulture );
 			this.Sku = sku;
+		}
+
+		public InventoryStockItem( CatalogInventoryDataStockStatusInterface catalogInventoryStockItemEntity )
+		{
+			this.IsInStock = catalogInventoryStockItemEntity.stockStatus.ToString( CultureInfo.InvariantCulture );
+			this.ProductId = catalogInventoryStockItemEntity.productId.ToString( CultureInfo.InvariantCulture );
+			this.Qty = catalogInventoryStockItemEntity.qty.ToString( CultureInfo.InvariantCulture );
+		}
+
+		public InventoryStockItem( InventoryStockItem catalogInventoryStockItemEntity )
+		{
+			this.IsInStock = catalogInventoryStockItemEntity.IsInStock;
+			this.ProductId = catalogInventoryStockItemEntity.ProductId;
+			this.Qty = catalogInventoryStockItemEntity.Qty;
+			this.Sku = catalogInventoryStockItemEntity.Sku;
 		}
 	}
 }
