@@ -15,7 +15,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 		public void ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion );
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs );
 
 			// ------------ Act
 			var getProductsTask1 = magentoService.GetProductsAsync( includeDetails : true, productType : "simple", excludeProductByType : true );
