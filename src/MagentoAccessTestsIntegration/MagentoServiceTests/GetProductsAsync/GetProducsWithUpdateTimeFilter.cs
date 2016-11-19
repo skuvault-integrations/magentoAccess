@@ -9,6 +9,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 {
 	[ TestFixture ]
+	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
 	internal class GetProducsWithUpdateTimeFilter : BaseTest
 	{

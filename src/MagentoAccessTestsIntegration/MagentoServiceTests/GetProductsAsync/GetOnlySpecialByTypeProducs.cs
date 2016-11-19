@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 {
 	[ TestFixture ]
+	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
 	internal class GetOnlySpecialByTypeProducs : BaseTest
 	{

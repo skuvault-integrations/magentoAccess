@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 {
 	[ TestFixture ]
+	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
 	internal class UserAlreadyHasAccessTokens : BaseTest
 	{

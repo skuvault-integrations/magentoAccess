@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 {
 	[ TestFixture ]
+	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
 	internal class UserAlreadyHasAccessTokens : BaseTest
 	{

@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVersion
 {
 	[ TestFixture ]
+	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
 	internal class InCorrectApiKey : BaseTest
 	{
