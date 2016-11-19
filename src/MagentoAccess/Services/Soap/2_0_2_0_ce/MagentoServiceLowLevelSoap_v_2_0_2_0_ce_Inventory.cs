@@ -317,7 +317,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsOldAsync( List< string > skusOrIds )
 		{
 			try
 			{
@@ -358,14 +358,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync()
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
 			try
 			{
-				var pageSize = 200;
+				var pageSize = 500;
 				var res = await this.GetStockItemsPage( 1, pageSize ).ConfigureAwait( false );
 				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount < pageSize )
-					return new InventoryStockItemListResponse( Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) );
+					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
 
 				var pagingModel = new PagingModel( pageSize, 1 );
 				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
@@ -374,7 +374,19 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
 				} ).ConfigureAwait( false );
 
-				return new InventoryStockItemListResponse( responses );
+				var inventoryStockItemListResponse = new InventoryStockItemListResponse( responses );
+				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
+
+				var productsFiltered = from pr in products.Products
+					join inv in skusOrIds on pr.Sku equals inv
+					select pr;
+
+				var resultInventoryWithSku = from pr in productsFiltered
+					join inv in inventoryStockItemListResponse.InventoryStockItems on pr.ProductId equals inv.ProductId
+					select new InventoryStockItem( inv ) { Sku = pr.Sku };
+
+				inventoryStockItemListResponse.InventoryStockItems = resultInventoryWithSku;
+				return inventoryStockItemListResponse;
 			}
 			catch( Exception exc )
 			{
