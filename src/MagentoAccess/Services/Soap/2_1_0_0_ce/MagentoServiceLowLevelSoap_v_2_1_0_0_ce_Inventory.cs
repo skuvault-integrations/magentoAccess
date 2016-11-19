@@ -4,9 +4,9 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
+using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE;
-using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
@@ -371,72 +371,73 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				throw new MagentoSoapException( $"An error occured during GetStockItemsAsync({productsBriefInfo})", exc );
 			}
 		}
-		public virtual async Task<InventoryStockItemListResponse> GetStockItemsAsync(List<string> skusOrIds)
+
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
 		{
 			try
 			{
 				var pageSize = 500;
-				var res = await this.GetStockItemsPage(1, pageSize).ConfigureAwait(false);
-				if (res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize)
-					return new InventoryStockItemListResponse(new[] { Tuple.Create(1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result) });
+				var res = await this.GetStockItemsPage( 1, pageSize ).ConfigureAwait( false );
+				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
+					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
 
-				var pagingModel = new PagingModel(pageSize, 1);
-				var responses = await pagingModel.GetPages(res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount).ProcessInBatchAsync(10, async x =>
+				var pagingModel = new PagingModel( pageSize, 1 );
+				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
 				{
-					var pageResp = await this.GetStockItemsPage(x, pageSize).ConfigureAwait(false);
-					return Tuple.Create(x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result);
-				}).ConfigureAwait(false);
+					var pageResp = await this.GetStockItemsPage( x, pageSize ).ConfigureAwait( false );
+					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
+				} ).ConfigureAwait( false );
 
-				var inventoryStockItemListResponse = new InventoryStockItemListResponse(responses);
-				var products = await this.GetProductsAsync(null, false, null).ConfigureAwait(false);
+				var inventoryStockItemListResponse = new InventoryStockItemListResponse( responses );
+				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
 
 				var productsFiltered = from pr in products.Products
-									   join inv in skusOrIds on pr.Sku equals inv
-									   select pr;
+					join inv in skusOrIds on pr.Sku equals inv
+					select pr;
 
 				var resultInventoryWithSku = from pr in productsFiltered
-											 join inv in inventoryStockItemListResponse.InventoryStockItems on pr.ProductId equals inv.ProductId
-											 select new InventoryStockItem(inv) { Sku = pr.Sku };
+					join inv in inventoryStockItemListResponse.InventoryStockItems on pr.ProductId equals inv.ProductId
+					select new InventoryStockItem( inv ) { Sku = pr.Sku };
 
 				inventoryStockItemListResponse.InventoryStockItems = resultInventoryWithSku;
 				return inventoryStockItemListResponse;
 			}
-			catch (Exception exc)
+			catch( Exception exc )
 			{
-				throw new MagentoSoapException(string.Format("An error occured during GetStockItemsAsync({0})", ""), exc);
+				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", "" ), exc );
 			}
 		}
 
-		private async Task<catalogInventoryStockRegistryV1GetLowStockItemsResponse1> GetStockItemsPage(int currentPage, int pageSize)
+		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPage( int currentPage, int pageSize )
 		{
 			try
 			{
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
+				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 				var res = new catalogInventoryStockRegistryV1GetLowStockItemsResponse1();
-				await ActionPolicies.GetAsync.Do(async () =>
+				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var statusChecker = new StatusChecker(maxCheckCount);
+					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if (privateClient.State != CommunicationState.Opened
-						&& privateClient.State != CommunicationState.Created
-						&& privateClient.State != CommunicationState.Opening)
-						privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
+					if( privateClient.State != CommunicationState.Opened
+					    && privateClient.State != CommunicationState.Created
+					    && privateClient.State != CommunicationState.Opening )
+						privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-					using (var stateTimer = new Timer(tcb, privateClient, 1000, delayBeforeCheck))
+					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
 						var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetLowStockItemsRequest() { currentPage = currentPage, currentPageSpecified = true, pageSize = pageSize, pageSizeSpecified = true, qty = 999999999999, scopeId = 1 };
-						res = await privateClient.catalogInventoryStockRegistryV1GetLowStockItemsAsync(catalogInventoryStockRegistryV1GetStockItemBySkuRequest).ConfigureAwait(false);
+						res = await privateClient.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false );
 					}
-				}).ConfigureAwait(false);
+				} ).ConfigureAwait( false );
 				return res;
 			}
-			catch (Exception exc)
+			catch( Exception exc )
 			{
-				throw new MagentoSoapException(string.Format("An error occured during GetStockItemsAsync({0})", ""), exc);
+				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", "" ), exc );
 			}
 		}
 
