@@ -36,6 +36,11 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 		{
 			this.InventoryStockItems = responses.SelectMany( x => x.Item2.items ).Select( x => new InventoryStockItem( x ) );
 		}
+
+		public InventoryStockItemListResponse( IEnumerable< Tuple< int, M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryDataStockStatusCollectionInterface > > responses )
+		{
+			this.InventoryStockItems = responses.SelectMany( x => x.Item2.items ).Select( x => new InventoryStockItem( x ) );
+		}
 	}
 
 	internal class InventoryStockItem
@@ -93,6 +98,13 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 			this.ProductId = catalogInventoryStockItemEntity.ProductId;
 			this.Qty = catalogInventoryStockItemEntity.Qty;
 			this.Sku = catalogInventoryStockItemEntity.Sku;
+		}
+
+		public InventoryStockItem( M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryDataStockStatusInterface catalogInventoryStockItemEntity )
+		{
+			this.IsInStock = catalogInventoryStockItemEntity.stockStatus.ToString( CultureInfo.InvariantCulture );
+			this.ProductId = catalogInventoryStockItemEntity.productId.ToString( CultureInfo.InvariantCulture );
+			this.Qty = catalogInventoryStockItemEntity.qty.ToString( CultureInfo.InvariantCulture );
 		}
 	}
 }
