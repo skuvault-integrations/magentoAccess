@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -408,7 +409,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPage( int currentPage, int pageSize )
+		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageOld( int currentPage, int pageSize )
 		{
 			try
 			{
@@ -439,6 +440,71 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", "" ), exc );
 			}
+		}
+
+		protected catalogInventoryStockRegistryV1PortTypeClient RecreateMagentoServiceClientIfItNeed(catalogInventoryStockRegistryV1PortTypeClient privateClient)
+		{
+			if (privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening)
+				privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
+			return privateClient;
+		}
+
+		private static class ClientBaseActionRunner
+		{
+			public static async Task<Tuple<TClientResponse, bool>> RunWithAbortAsync<TClientResponse, TClient>(int delayBeforeCheck, Func<Task<TClientResponse>> func, ClientBase<TClient> cleintBase) where TClient : class
+			{
+				var statusChecker = new StatusChecker(2);
+				TimerCallback tcb = statusChecker.CheckStatus3<TClient>;
+
+				using (var stateTimer = new Timer(tcb, cleintBase, 1000, delayBeforeCheck))
+				{
+					var clientResponse = await func().ConfigureAwait(false);
+					stateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+					return Tuple.Create(clientResponse, statusChecker.IsAborted);
+				}
+			}
+		}
+
+		private async Task<TResult> GetWithAsync<TResult, TServerResponse>(Func<TServerResponse, TResult> converter, Func< catalogInventoryStockRegistryV1PortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [CallerMemberName] string callerName = null) where TServerResponse : new()
+		{
+			try
+			{
+				var res = new TServerResponse();
+				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient(this.BaseMagentoUrl);
+
+				await ActionPolicies.GetAsync.Do(async () =>
+				{
+					privateClient = this.RecreateMagentoServiceClientIfItNeed(privateClient);
+					var sessionId = await this.GetSessionId().ConfigureAwait(false);
+
+					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
+						abortAfter,
+						async () => res = await action(privateClient, sessionId.SessionId).ConfigureAwait(false),
+						privateClient);
+
+					if (temp.Item2)
+						throw new TaskCanceledException();
+				}).ConfigureAwait(false);
+
+				return converter(res);
+			}
+			catch (Exception exc)
+			{
+				if (suppressException)
+				{
+					return default(TResult);
+				}
+				throw new MagentoSoapException($"An error occured during{callerName}->{nameof(this.GetWithAsync)}", exc);
+			}
+		}
+
+		private async Task<catalogInventoryStockRegistryV1GetLowStockItemsResponse1> GetStockItemsPage(int currentPage, int pageSize)
+		{
+			var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetLowStockItemsRequest() { currentPage = currentPage, currentPageSpecified = true, pageSize = pageSize, pageSizeSpecified = true, qty = 999999999999, scopeId = 1 };
+
+			return await this.GetWithAsync(
+				res => res,
+				async (client, session) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync(catalogInventoryStockRegistryV1GetStockItemBySkuRequest).ConfigureAwait(false), 600000);
 		}
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
