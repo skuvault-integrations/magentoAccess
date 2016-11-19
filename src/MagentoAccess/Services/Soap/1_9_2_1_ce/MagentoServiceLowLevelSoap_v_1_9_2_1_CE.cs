@@ -52,9 +52,9 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected SemaphoreSlim getSessionIdSemaphore;
 
-		protected int _getProductsMaxThreads;
+		protected readonly int _getProductsMaxThreads;
 
-		protected int SessionIdLifeTimeMs;
+		protected readonly int SessionIdLifeTimeMs;
 
 		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, int sessionIdLifeTimeMs )
 		{

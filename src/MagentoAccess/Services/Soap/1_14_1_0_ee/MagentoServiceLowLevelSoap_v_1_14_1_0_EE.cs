@@ -53,9 +53,9 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		protected SemaphoreSlim getSessionIdSemaphore;
 
-		protected int _getProductsMaxThreads;
+		protected readonly int _getProductsMaxThreads;
 
-		protected int SessionIdLifeTime;
+		protected readonly int SessionIdLifeTime;
 
 
 		private void LogTraceGetResponseException( Exception exception )

@@ -13,7 +13,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				credentials.BaseMagentoUrl,
 				null,
 				credentials.GetProductsThreadsLimit,
-				credentials.GetProductsThreadsLimit );
+				credentials.SessionLifeTimeMs );
 		}
 	}
 }

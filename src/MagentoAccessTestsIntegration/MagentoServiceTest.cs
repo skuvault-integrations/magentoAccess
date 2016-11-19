@@ -15,9 +15,6 @@ namespace MagentoAccessTestsIntegration
 	[ TestFixture ]
 	internal class MagentoServiceTest : BaseTest
 	{
-		protected int GetProductsThreadsLimit = 30;
-		protected int SessionLifeTimeMs = 3600000;
-
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
@@ -165,8 +162,8 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
-					this.GetProductsThreadsLimit,
-					this.SessionLifeTimeMs )
+					777,
+					888 )
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -195,8 +192,8 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
-					this.GetProductsThreadsLimit,
-					this.SessionLifeTimeMs )
+					777,
+					888 )
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -225,8 +222,8 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
-					this.GetProductsThreadsLimit,
-					this.SessionLifeTimeMs )
+					777,
+					888 )
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -255,8 +252,8 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
-					this.GetProductsThreadsLimit,
-					this.SessionLifeTimeMs )
+					777,
+					888 )
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -285,8 +282,8 @@ namespace MagentoAccessTestsIntegration
 					"incorrect consumer key",
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
-					this.GetProductsThreadsLimit,
-					this.SessionLifeTimeMs )
+					777,
+					888 )
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();

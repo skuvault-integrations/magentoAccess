@@ -43,8 +43,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl, string magentoVersionByDefault, int getProductsMaxThreads, int sessionLifeTime )
 		{
-			return ( string.IsNullOrWhiteSpace( accessToken ) || string.IsNullOrWhiteSpace( accessTokenSecret ) ) ?
-				new MagentoService( new MagentoNonAuthenticatedUserCredentials(
+			if( string.IsNullOrWhiteSpace( accessToken ) || string.IsNullOrWhiteSpace( accessTokenSecret ) )
+				return new MagentoService( new MagentoNonAuthenticatedUserCredentials(
 					consumerKey,
 					consumerSecret,
 					magentoBaseUrl,
@@ -52,15 +52,16 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					authorizeUrl,
 					accessTokenUrl
 					)
-					) :
-				new MagentoService( new MagentoAuthenticatedUserCredentials(
+					);
+			else
+				return new MagentoService( new MagentoAuthenticatedUserCredentials(
 					accessToken,
 					accessTokenSecret,
 					magentoBaseUrl,
 					consumerSecret,
 					consumerKey,
-					apiUser, 
-					apiKey, 
+					apiUser,
+					apiKey,
 					getProductsMaxThreads,
 					sessionLifeTime ), string.IsNullOrWhiteSpace( magentoVersionByDefault ) ? null : new MagentoConfig() { VersionByDefault = magentoVersionByDefault } );
 		}
