@@ -10,7 +10,9 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				credentials.SoapApiUser,
 				credentials.SoapApiKey,
 				credentials.BaseMagentoUrl,
-				null, 300000, 30 );
+				null,
+				credentials.GetProductsThreadsLimit,
+				credentials.GetProductsThreadsLimit);
 		}
 	}
 }

@@ -12,9 +12,12 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration
 {
-    [ TestFixture ]
-	internal class MagentoServiceTest: BaseTest
+	[ TestFixture ]
+	internal class MagentoServiceTest : BaseTest
 	{
+		protected int GetProductsThreadsLimit = 30;
+		protected int SessionLifeTimeMs = 3600000;
+
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
 		public void UpdateInventoryAsync_UserAlreadyHasAccessTokens_ReceiveProducts( MagentoServiceSoapCredentials credentials )
@@ -161,7 +164,10 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ), null );
+					this._testData.GetMagentoSoapUser().ApiKey,
+					this.GetProductsThreadsLimit,
+					this.SessionLifeTimeMs )
+					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -188,7 +194,10 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ), null );
+					this._testData.GetMagentoSoapUser().ApiKey,
+					this.GetProductsThreadsLimit,
+					this.SessionLifeTimeMs )
+					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -215,7 +224,10 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ), null );
+					this._testData.GetMagentoSoapUser().ApiKey,
+					this.GetProductsThreadsLimit,
+					this.SessionLifeTimeMs )
+					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -242,7 +254,10 @@ namespace MagentoAccessTestsIntegration
 					"incorrect consumer secret",
 					this._testData.GetMagentoConsumerCredentials().Key,
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ), null );
+					this._testData.GetMagentoSoapUser().ApiKey,
+					this.GetProductsThreadsLimit,
+					this.SessionLifeTimeMs )
+					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();
@@ -269,7 +284,10 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoConsumerCredentials().Secret,
 					"incorrect consumer key",
 					this._testData.GetMagentoSoapUser().ApiUser,
-					this._testData.GetMagentoSoapUser().ApiKey ), null );
+					this._testData.GetMagentoSoapUser().ApiKey,
+					this.GetProductsThreadsLimit,
+					this.SessionLifeTimeMs )
+					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
 				magentoInfoAsyncTask.Wait();

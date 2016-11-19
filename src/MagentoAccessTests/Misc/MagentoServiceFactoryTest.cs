@@ -29,7 +29,7 @@ namespace MagentoAccessTests.Misc
 		public string GetMagentoSubVersion_InputIsCorrectVersion_SubversionReturned( int deep, string magentoVer )
 		{
 			//------------ Arrange
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null, null, null );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null );
 
 			//------------ Act
 			var version = magentoServiceLowLevelSoapFactory.GetSubVersion( deep, magentoVer );
@@ -67,7 +67,7 @@ namespace MagentoAccessTests.Misc
 				{ s7.Store, s7 },
 				{ s8.Store, s8 },
 			};
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null, null, factories );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, factories );
 
 			//------------ Act
 			var magentoServiceLowLevelSoap = magentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( magentoVer, true, false );

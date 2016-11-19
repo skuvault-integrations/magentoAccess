@@ -194,10 +194,7 @@ namespace MagentoAccess
 				);
 
 			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
-			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null,
-				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
-				magentoAuthenticatedUserCredentials.SoapApiKey,
-				magentoAuthenticatedUserCredentials.SoapApiUser,
+			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials,
 				new Dictionary< string, IMagentoServiceLowLevelSoap >
 				{
 					{ MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
