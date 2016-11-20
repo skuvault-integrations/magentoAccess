@@ -80,6 +80,7 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Misc\Cache.cs" />
     <Compile Include="Misc\ICreateCallInfoExtensions.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModel.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModelResult.cs" />
