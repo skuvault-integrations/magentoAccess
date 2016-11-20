@@ -109,6 +109,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return false; }
+		}
+
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			var filters = new filters();

@@ -96,6 +96,11 @@ namespace MagentoAccess.Services.Rest.v2x
 			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
 		}
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return false; }
+		}
+
 		public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			return null;

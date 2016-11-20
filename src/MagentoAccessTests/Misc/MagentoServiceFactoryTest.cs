@@ -95,6 +95,11 @@ namespace MagentoAccessTests.Misc
 				this.Store = store;
 			}
 
+			public bool GetStockItemsWithoutSkuImplementedWithPages
+			{
+				get { return false; }
+			}
+
 			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 			{
 				return null;

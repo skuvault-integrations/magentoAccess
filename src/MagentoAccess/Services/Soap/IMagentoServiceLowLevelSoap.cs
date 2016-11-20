@@ -22,6 +22,7 @@ namespace MagentoAccess.Services.Soap
 		string ApiKey { get; }
 		string Store { get; }
 		string StoreVersion { get; set; }
+		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom );

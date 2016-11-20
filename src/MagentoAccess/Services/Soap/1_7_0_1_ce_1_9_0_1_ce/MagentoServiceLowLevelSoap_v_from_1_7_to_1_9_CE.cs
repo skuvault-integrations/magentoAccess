@@ -182,6 +182,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			return customBinding;
 		}
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return false; }
+		}
+
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			try

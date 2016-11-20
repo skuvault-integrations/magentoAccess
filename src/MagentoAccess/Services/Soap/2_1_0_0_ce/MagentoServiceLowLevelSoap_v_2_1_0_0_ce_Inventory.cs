@@ -33,6 +33,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 	{
 		public string StoreVersion { get; set; }
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return true; }
+		}
+
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			var methodParameters = stockItems.ToJson();
@@ -552,6 +557,31 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			catch( Exception exc )
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", "" ), exc );
+			}
+		}
+
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		{
+			try
+			{
+				var pageSize = 500;
+				var res = await this.GetStockItemsPageAsync( 1, pageSize ).ConfigureAwait( false );
+				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
+					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
+
+				var pagingModel = new PagingModel( pageSize, 0 );
+				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
+				{
+					var pageResp = await this.GetStockItemsPageAsync( x, pageSize ).ConfigureAwait( false );
+					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
+				} ).ConfigureAwait( false );
+				var inventory = new InventoryStockItemListResponse( responses );
+
+				return inventory;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsWithoutSkuAsync({0})", "" ), exc );
 			}
 		}
 
