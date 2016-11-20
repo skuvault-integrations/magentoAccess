@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
@@ -287,7 +288,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			try
 			{
-				var pagingModel = new PagingModel( 200, 1 );
+				var pagingModel = new PagingModel( 200, 0 );
 				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false );
 				if( firstPage == null )
 					return new SoapGetProductsResponse( new List< CatalogDataProductInterface >() );
@@ -295,13 +296,16 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				var pagesNumbers = pagingModel.GetPages( firstPage.totalCount, limit );
 				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var pagesWithLimits = pages.SelectMany( x => x.items );
+				var pagesWithLimitsDistinct = pagesWithLimits.GroupBy( x => x.sku ).Select( x => x.First() );
 
 				if( !string.IsNullOrWhiteSpace( productType ) )
-					pagesWithLimits = productTypeShouldBeExcluded
-						? pagesWithLimits.Where( x => !string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList()
-						: pagesWithLimits.Where( x => string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
+					pagesWithLimitsDistinct = productTypeShouldBeExcluded
+						? pagesWithLimitsDistinct.Where( x => !string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList()
+						: pagesWithLimitsDistinct.Where( x => string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
 
-				return new SoapGetProductsResponse( pagesWithLimits.TakeWhile( ( x, i ) => i < limit ).ToList() );
+				var catalogDataProductInterfaces = pagesWithLimitsDistinct.TakeWhile( ( x, i ) => i < limit ).OrderBy( x => x.sku ).ToList();
+
+				return new SoapGetProductsResponse( catalogDataProductInterfaces );
 			}
 			catch( Exception exc )
 			{
