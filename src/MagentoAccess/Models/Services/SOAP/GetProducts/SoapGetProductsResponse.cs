@@ -4,6 +4,7 @@ using System.Linq;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
+using CatalogDataProductSearchResultsInterface = MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductSearchResultsInterface;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
 {

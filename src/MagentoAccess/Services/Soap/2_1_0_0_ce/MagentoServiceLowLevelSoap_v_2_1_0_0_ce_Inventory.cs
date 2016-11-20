@@ -309,6 +309,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
+
 		private static void AddFilter( FrameworkSearchCriteriaInterface filters, string value, string key, string valueKey )
 		{
 			if( filters.filterGroups == null )
@@ -319,8 +320,78 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			filters.filterGroups = temp.ToArray();
 		}
 
+		public class CacheRecord<T>
+		{
+			public T Value { get; }
+
+			public DateTime Born { get; }
+			public TimeSpan Life { get; }
+
+			public CacheRecord(T value, TimeSpan life)
+			{
+				this.Value = value;
+				this.Born = DateTime.UtcNow;
+				this.Life = life;
+			}
+			protected CacheRecord(T value, DateTime born, TimeSpan life)
+			{
+				this.Value = value;
+				this.Born = born;
+				this.Life = life;
+			}
+
+			public bool IsActual()
+			{
+				return (DateTime.UtcNow - this.Born) < this.Life;
+			}
+		}
+
+		public class Cache<TKey,TVal  > where TVal : class
+		{
+			private readonly int cacheMaxLength;
+			protected IDictionary< TKey, CacheRecord< TVal > > CachedDic { get; }
+
+			public Cache( int maxLength = 1000 )
+			{
+				this.CachedDic = new Dictionary< TKey, CacheRecord< TVal > >();
+				this.cacheMaxLength = maxLength;
+			}
+
+			public bool Add( TVal value, TKey key, TimeSpan lt )
+			{
+				if( this.CachedDic.Count < this.cacheMaxLength )
+				{
+					var cr = new CacheRecord< TVal >( value, lt );
+					this.CachedDic[ key ] = cr;
+					return true;
+				}
+				return false;
+			}
+
+			public TVal Get( TKey key )
+			{
+				if( this.CachedDic.ContainsKey( key ) )
+				{
+					var cacheRecord = this.CachedDic[ key ];
+					if( cacheRecord.IsActual() )
+						return cacheRecord.Value;
+					else
+					{
+						this.CachedDic.Remove( key );
+						return null;
+					}
+				}
+				return null;
+			}
+		}
+
 		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom )
 		{
+			var parameters = Tuple.Create( currentPage, pageSize, updatedFrom );
+			var cachedR = this.getProductsPageCache.Get( parameters );
+			if( cachedR != null )
+				return cachedR;
+
 			var frameworkSearchCriteriaInterface = new FrameworkSearchCriteriaInterface()
 			{
 				currentPage = currentPage,
@@ -346,10 +417,17 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 			var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
 
-			return await this.GetWithAsync(
+			//return await this.GetWithAsync(
+			var result = await this.GetWithAsync(
 				res => res?.catalogProductRepositoryV1GetListResponse.result,
+				//res => new SoapGetProductsResponse(res == null? new List<CatalogDataProductSearchResultsInterface>(): new List<CatalogDataProductSearchResultsInterface>() { res.catalogProductRepositoryV1GetListResponse }),
+				//res => new SoapGetProductsResponse(  res.catalogProductRepositoryV1GetListResponse.result ),
 				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this.CreateMagentoCatalogProductRepositoryServiceClient, this.RecreateMagentoServiceClientIfItNeed2 );
+			this.getProductsPageCache.Add( result, parameters, TimeSpan.FromSeconds( 300 ) );
+			return result;
 		}
+
+		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface> getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface>();
 
 		private async Task< GetBackEndMuduleServiceResponse > GetBackEndModulesAsync()
 		{
@@ -450,7 +528,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
 					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
 
-				var pagingModel = new PagingModel( pageSize, 1 );
+				var pagingModel = new PagingModel( pageSize, 0 );
 				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
 				{
 					var pageResp = await this.GetStockItemsPageAsync( x, pageSize ).ConfigureAwait( false );
@@ -458,17 +536,25 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				} ).ConfigureAwait( false );
 
 				var inventoryStockItemListResponse = new InventoryStockItemListResponse( responses );
+				//
 				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
+				//
+				//var productsFiltered = from pr in products.Products
+				//	join inv in skusOrIds on pr.Sku equals inv
+				//	select pr;
 
-				var productsFiltered = from pr in products.Products
-					join inv in skusOrIds on pr.Sku equals inv
-					select pr;
-
-				var resultInventoryWithSku = from pr in productsFiltered
-					join inv in inventoryStockItemListResponse.InventoryStockItems on pr.ProductId equals inv.ProductId
+				var resultInventoryWithSku = from pr in products.Products
+											 join inv in inventoryStockItemListResponse.InventoryStockItems on pr.ProductId equals inv.ProductId
 					select new InventoryStockItem( inv ) { Sku = pr.Sku };
 
-				inventoryStockItemListResponse.InventoryStockItems = resultInventoryWithSku;
+				var resultInventoryWithSkuFiltered = from i in resultInventoryWithSku join s in skusOrIds on i.Sku equals s select i;
+				/////var notExist1 = inventoryStockItemListResponse.InventoryStockItems.Where(x => !products.Products.Any(y => y.ProductId == x.ProductId)).ToList();
+				//var notExist1Count = notExist1.Count;
+				//var notExist2 = inventoryStockItemListResponse.InventoryStockItems.Where(x => !productsFiltered.Any(y => y.ProductId == x.ProductId)).ToList();
+				//var notExist3 = productsFiltered.Where(x => resultInventoryWithSku.Any(y => y.ProductId != x.ProductId)).ToList();
+
+				///
+				inventoryStockItemListResponse.InventoryStockItems = resultInventoryWithSkuFiltered;
 				return inventoryStockItemListResponse;
 			}
 			catch( Exception exc )
