@@ -33,11 +33,6 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 	{
 		public string StoreVersion { get; set; }
 
-		public bool GetStockItemsWithoutSkuImplementedWithPages
-		{
-			get { return true; }
-		}
-
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			var methodParameters = stockItems.ToJson();

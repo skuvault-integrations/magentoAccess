@@ -31,10 +31,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		public string TokenSecret { get; set; }
 
 		public string Store { get; private set; }
-		public bool GetStockItemsWithoutSkuImplementedWithPages
-		{
-			get { return false; }
-		}
 
 		public string BaseMagentoUrl { get; set; }
 
@@ -56,6 +52,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected const int SessionIdLifeTime = 3590;
+
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return false; }
+		}
 
 		private void LogTraceGetResponseException( Exception exception )
 		{

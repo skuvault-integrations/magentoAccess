@@ -54,6 +54,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		protected const int SessionIdLifeTime = 3590;
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return true; }
+		}
+
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
