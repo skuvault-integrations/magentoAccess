@@ -20,5 +20,11 @@ namespace MagentoAccess.Services.Rest.v2x
 			var diff = ( itemsTotal - fullPagesCount * this.ItemsPerPage );
 			return Enumerable.Range( this.CurrentPage + 1, fullPagesCount + ( diff > 0 ? 1 : 0 ) );
 		}
+
+		public IEnumerable< int > GetPages( int itemsTotal, int limit )
+		{
+			var minValues = itemsTotal < limit ? itemsTotal : limit;
+			return this.GetPages( minValues );
+		}
 	}
 }

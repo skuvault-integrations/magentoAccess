@@ -197,7 +197,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom );
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
+		private async Task< SoapGetProductsResponse > GetProductsOldAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			try
 			{
@@ -281,6 +281,74 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
 			}
+		}
+
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
+		{
+			try
+			{
+				var pagingModel = new PagingModel( 200, 1 );
+				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false );
+				if( firstPage == null )
+					return new SoapGetProductsResponse( new List< CatalogDataProductInterface >() );
+
+				var pagesNumbers = pagingModel.GetPages( firstPage.totalCount, limit );
+				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var pagesWithLimits = pages.SelectMany( x => x.items );
+
+				if( !string.IsNullOrWhiteSpace( productType ) )
+					pagesWithLimits = productTypeShouldBeExcluded
+						? pagesWithLimits.Where( x => !string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList()
+						: pagesWithLimits.Where( x => string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
+
+				return new SoapGetProductsResponse( pagesWithLimits.TakeWhile( ( x, i ) => i < limit ).ToList() );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
+			}
+		}
+
+		private static void AddFilter( FrameworkSearchCriteriaInterface filters, string value, string key, string valueKey )
+		{
+			if( filters.filterGroups == null )
+				filters.filterGroups = new FrameworkSearchFilterGroup[ 0 ];
+
+			var temp = filters.filterGroups.ToList();
+			temp.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = valueKey, field = key, value = value } } } );
+			filters.filterGroups = temp.ToArray();
+		}
+
+		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom )
+		{
+			var frameworkSearchCriteriaInterface = new FrameworkSearchCriteriaInterface()
+			{
+				currentPage = currentPage,
+				currentPageSpecified = true,
+				pageSize = pageSize,
+				pageSizeSpecified = true,
+				//filterGroups = frameworkSearchFilterGroups
+			};
+
+			if( updatedFrom.HasValue )
+				AddFilter( frameworkSearchCriteriaInterface, updatedFrom.Value.ToSoapParameterString(), "updated_at", "gt" );
+
+			// filtering by typeId doesn't works for magento2.0.2
+			//if( productType != null )
+			//{
+			//	if( frameworkSearchCriteriaInterface.filterGroups == null )
+			//		frameworkSearchCriteriaInterface.filterGroups = new FrameworkSearchFilterGroup[] { };
+
+			//	var temp = frameworkSearchCriteriaInterface.filterGroups.ToList();
+			//	temp.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { conditionType = "like", field = "type", value = productType } } } );
+			//	frameworkSearchCriteriaInterface.filterGroups = temp.ToArray();
+			//}
+
+			var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
+
+			return await this.GetWithAsync(
+				res => res?.catalogProductRepositoryV1GetListResponse.result,
+				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this.CreateMagentoCatalogProductRepositoryServiceClient, this.RecreateMagentoServiceClientIfItNeed2 );
 		}
 
 		private async Task< GetBackEndMuduleServiceResponse > GetBackEndModulesAsync()
@@ -448,7 +516,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 			return await this.GetWithAsync(
 				res => res,
-				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed );
 		}
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
@@ -600,8 +668,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
+#if DEBUG
+			var batchSize = 30;
+#else
 			var batchSize = 10;
-
+#endif
 			//var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			//productAttributes.Wait();
 
@@ -657,12 +728,19 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
 				privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+			return privateClient; 
+		}
+
+		protected catalogProductRepositoryV1PortTypeClient RecreateMagentoServiceClientIfItNeed2( catalogProductRepositoryV1PortTypeClient privateClient )
+		{
+			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
+				privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 			return privateClient;
 		}
 
 		private static class ClientBaseActionRunner
 		{
-			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class
+			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, TClient cleintBase ) where TClient : class
 			{
 				var statusChecker = new StatusChecker( 2 );
 				TimerCallback tcb = statusChecker.CheckStatus3< TClient >;
@@ -676,16 +754,15 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< catalogInventoryStockRegistryV1PortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func<TClient, string, Task< TServerResponse > > action, int abortAfter, Func< string, TClient> clientFactory, Func<TClient, TClient> clientRecreateFactory, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
 		{
 			try
 			{
 				var res = new TServerResponse();
-				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
-
+				var privateClient = clientFactory( this.BaseMagentoUrl );
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
+					privateClient = clientRecreateFactory( privateClient );
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
