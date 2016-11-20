@@ -532,18 +532,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			try
 			{
-				var pageSize = 500;
-				var res = await this.GetStockItemsPageAsync( 1, pageSize ).ConfigureAwait( false );
-				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
-					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
-
-				var pagingModel = new PagingModel( pageSize, 0 );
-				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
-				{
-					var pageResp = await this.GetStockItemsPageAsync( x, pageSize ).ConfigureAwait( false );
-					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
-				} ).ConfigureAwait( false );
-				var inventory = new InventoryStockItemListResponse( responses );
+				var inventory = await this.GetStockItemsWithoutSkuAsync().ConfigureAwait( false );
 
 				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
 
