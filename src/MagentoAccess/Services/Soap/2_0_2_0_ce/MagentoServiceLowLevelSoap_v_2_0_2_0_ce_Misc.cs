@@ -17,6 +17,7 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
+using MagentoAccess.Models.Services.Soap.GetStockItems;
 using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
@@ -302,6 +303,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			{
 				this.getSessionIdSemaphore.Release();
 			}
+		}
+
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		{
+			throw new NotImplementedException();
 		}
 		#endregion
 

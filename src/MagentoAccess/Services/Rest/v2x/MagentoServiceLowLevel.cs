@@ -229,5 +229,10 @@ namespace MagentoAccess.Services.Rest.v2x
 		{
 			return null;
 		}
+
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

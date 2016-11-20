@@ -242,6 +242,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		{
+			throw new NotImplementedException();
+		}
+
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			var methodParameters = stockItems.ToJson();

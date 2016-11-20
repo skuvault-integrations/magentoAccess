@@ -218,6 +218,11 @@ namespace MagentoAccessTests.Misc
 			{
 				return null;
 			}
+
+			public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+			{
+				throw new NotImplementedException();
+			}
 		}
 	}
 }
