@@ -538,28 +538,16 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					var pageResp = await this.GetStockItemsPageAsync( x, pageSize ).ConfigureAwait( false );
 					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
 				} ).ConfigureAwait( false );
+				var inventory = new InventoryStockItemListResponse( responses );
 
-				var inventoryStockItemListResponse = new InventoryStockItemListResponse( responses );
-				//
 				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
-				//
-				//var productsFiltered = from pr in products.Products
-				//	join inv in skusOrIds on pr.Sku equals inv
-				//	select pr;
 
-				var resultInventoryWithSku = from pr in products.Products
-											 join inv in inventoryStockItemListResponse.InventoryStockItems on pr.ProductId equals inv.ProductId
-					select new InventoryStockItem( inv ) { Sku = pr.Sku };
+				var inventoryWithSku = ( from pr in products.Products
+					join inv in inventory.InventoryStockItems on pr.ProductId equals inv.ProductId
+					select new InventoryStockItem( inv ) { Sku = pr.Sku } ).OrderBy( x => x.Sku ).ToList();
 
-				var resultInventoryWithSkuFiltered = from i in resultInventoryWithSku join s in skusOrIds on i.Sku equals s select i;
-				/////var notExist1 = inventoryStockItemListResponse.InventoryStockItems.Where(x => !products.Products.Any(y => y.ProductId == x.ProductId)).ToList();
-				//var notExist1Count = notExist1.Count;
-				//var notExist2 = inventoryStockItemListResponse.InventoryStockItems.Where(x => !productsFiltered.Any(y => y.ProductId == x.ProductId)).ToList();
-				//var notExist3 = productsFiltered.Where(x => resultInventoryWithSku.Any(y => y.ProductId != x.ProductId)).ToList();
-
-				///
-				inventoryStockItemListResponse.InventoryStockItems = resultInventoryWithSkuFiltered;
-				return inventoryStockItemListResponse;
+				inventory.InventoryStockItems = ( from i in inventoryWithSku join s in skusOrIds on i.Sku equals s select i ).OrderBy( x => x.Sku ).ToList();
+				return inventory;
 			}
 			catch( Exception exc )
 			{
