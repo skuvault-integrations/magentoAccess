@@ -55,7 +55,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages
 		{
-			get { return false; }
+			get { return true; }
 		}
 
 		private void LogTraceGetResponseException( Exception exception )
@@ -304,11 +304,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			{
 				this.getSessionIdSemaphore.Release();
 			}
-		}
-
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
-		{
-			throw new NotImplementedException();
 		}
 		#endregion
 
