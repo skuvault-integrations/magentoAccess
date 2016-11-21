@@ -27,14 +27,20 @@ namespace MagentoAccess.Services.Rest.v2x
 			var fullPagesCount = sourceList.Count() / this.ItemsPerPage;
 			var diff = ( sourceList.Count() - fullPagesCount * this.ItemsPerPage );
 			var pages = Enumerable.Range( this.CurrentPage + 1, fullPagesCount + ( diff > 0 ? 1 : 0 ) ).ToList();
-
+			var exit = false;
 			var j = 0;
-			for( var i = 0; i < pages.Count(); i++ )
+			for( var i = 0; i < pages.Count() && !exit; i++ )
 			{
 				var chunk = new List< T >();
-				for( ; j < sourceList.Count(); j++ )
+				for( var k = 0; k < this.ItemsPerPage; k++ )
 				{
-					chunk.Add( sourceList[ j ] );
+					if( j < sourceList.Count() )
+						chunk.Add( sourceList[ j++ ] );
+					else
+					{
+						exit = true;
+						break;
+					}
 				}
 				yield return chunk;
 			}
