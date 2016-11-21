@@ -33,6 +33,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 	{
 		public string StoreVersion { get; set; }
 
+		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface > getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface >();
+
 		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
 		{
 			var methodParameters = stockItems.ToJson();
@@ -365,8 +367,6 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.getProductsPageCache.Add( result, parameters, TimeSpan.FromSeconds( 300 ) );
 			return result;
 		}
-
-		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface> getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface>();
 
 		private async Task< GetBackEndMuduleServiceResponse > GetBackEndModulesAsync()
 		{
