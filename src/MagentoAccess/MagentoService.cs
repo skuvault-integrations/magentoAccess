@@ -270,7 +270,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
-				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, kvp => kvp.Value.GetMagentoInfoAsync( true ) ).ConfigureAwait( false );
+				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp => await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var workingStore = storesVersions.Where( x => x != null && !string.IsNullOrWhiteSpace( x.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
 				var pingSoapInfo = workingStore.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
 
@@ -786,7 +786,7 @@ namespace MagentoAccess
 		{
 			var productToUpdate = inventories.Select( x => new PutStockItem( x ) ).ToList();
 
-			var batchResponses = await productToUpdate.ProcessInBatchAsync( 5, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemAsync( x, mark ).ConfigureAwait( false ), new List< PutStockItem > { x } ) );
+			var batchResponses = await productToUpdate.ProcessInBatchAsync( 5, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemAsync( x, mark ).ConfigureAwait( false ), new List< PutStockItem > { x } ) ).ConfigureAwait( false );
 
 			var updateBriefInfo = batchResponses.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
 
@@ -991,7 +991,7 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, markForLog ).ConfigureAwait( false ), x ) );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, markForLog ).ConfigureAwait( false ), x ) ).ConfigureAwait( false );
 
 			var updateBriefInfo = batchResponses.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
 

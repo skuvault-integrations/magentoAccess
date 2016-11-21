@@ -142,7 +142,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			var magentoServiceSoapCredentialses = testStoresCredentials as IList< MagentoServiceSoapCredentials > ?? testStoresCredentials.ToList();
 			magentoServiceSoapCredentialses.DoInBatchAsync( magentoServiceSoapCredentialses.Count(), async x =>
 			{
-				await Task.Run( () => createOrdersAction( x ) );
+				await Task.Run( () => createOrdersAction( x ) ).ConfigureAwait(false);
 			} ).Wait();
 		}
 
@@ -183,7 +183,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				var magentoServiceSoapCredentialses = testStoresCredentials as IList< MagentoServiceSoapCredentials > ?? testStoresCredentials.ToList();
 				magentoServiceSoapCredentialses.DoInBatchAsync( magentoServiceSoapCredentialses.Count(), async x =>
 				{
-					await Task.Run( () => createProductAction( x ) );
+					await Task.Run( () => createProductAction( x ) ).ConfigureAwait(false);
 				} ).Wait();
 			}
 			catch

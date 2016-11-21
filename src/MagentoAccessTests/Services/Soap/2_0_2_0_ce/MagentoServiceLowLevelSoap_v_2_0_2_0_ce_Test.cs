@@ -21,7 +21,7 @@ namespace MagentoAccessTests.Services.Soap._2_0_2_0_ce
 			{
 				PullSessionId = async () =>
 				{
-					await Task.Delay( 1000 );
+					await Task.Delay( 1000 ).ConfigureAwait(false);
 					Interlocked.Increment( ref apiCallsCount );
 					return Tuple.Create( "qwe", DateTime.UtcNow );
 				}

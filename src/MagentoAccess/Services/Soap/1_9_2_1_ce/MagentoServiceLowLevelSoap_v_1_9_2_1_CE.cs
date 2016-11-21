@@ -130,7 +130,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					res.result = res.result.Where( x => Extensions.ToDateTimeOrDefault( x.updated_at ) >= modifiedFrom && Extensions.ToDateTimeOrDefault( x.updated_at ) <= modifiedTo ).ToArray();
 					return new GetOrdersResponse( res );
 				},
-				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
@@ -145,7 +145,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			return await this.GetWithAsync(
 				res => new GetOrdersResponse( res ),
-				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
@@ -189,7 +189,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			return await this.GetWithAsync(
 				res => new SoapGetProductsResponse( res ),
-				async ( client, session ) => await client.catalogProductListAsync( session, filters, store ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.catalogProductListAsync( session, filters, store ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
@@ -206,21 +206,21 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			return await this.GetWithAsync(
 				x => new InventoryStockItemListResponse( x ),
-				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000 );
+				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000 ).ConfigureAwait(false);
 		}
 		
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest request, bool throwException = true )
 		{
 			return await this.GetWithAsync(
 				x => new ProductAttributeMediaListResponse( x, request.ProductId, request.Sku ),
-				async ( client, session ) => await client.catalogProductAttributeMediaListAsync( session, request.ProductId, "0", "1" ).ConfigureAwait( false ), 25000 );
+				async ( client, session ) => await client.catalogProductAttributeMediaListAsync( session, request.ProductId, "0", "1" ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
 		{
 			return await this.GetWithAsync(
 				x => new GetCategoryTreeResponse( x ),
-				async ( client, session ) => await client.catalogCategoryTreeAsync( session, rootCategory, "0" ).ConfigureAwait( false ), 25000 );
+				async ( client, session ) => await client.catalogCategoryTreeAsync( session, rootCategory, "0" ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request, bool throwException = true )
@@ -228,14 +228,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			var attributes = new catalogProductRequestAttributes { additional_attributes = request.custAttributes ?? new string[ 0 ] };
 			return await this.GetWithAsync(
 				x => new CatalogProductInfoResponse( x ),
-				async ( client, session ) => await client.catalogProductInfoAsync( session, request.ProductId, "0", attributes, "1" ).ConfigureAwait( false ), 25000 );
+				async ( client, session ) => await client.catalogProductInfoAsync( session, request.ProductId, "0", attributes, "1" ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
 		{
 			return await this.GetWithAsync(
 				x => new CatalogProductAttributeInfoResponse( x ),
-				async ( client, session ) => await client.catalogProductAttributeInfoAsync( session, attribute ).ConfigureAwait( false ), 25000 );
+				async ( client, session ) => await client.catalogProductAttributeInfoAsync( session, attribute ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
@@ -265,7 +265,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			return await this.GetWithAsync(
 				res => res.result,
-				async ( client, session ) => await client.catalogInventoryStockItemMultiUpdateAsync( session, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.catalogInventoryStockItemMultiUpdateAsync( session, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
@@ -276,21 +276,21 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			return await this.GetWithAsync(
 				res => res.result > 0,
-				async ( client, session ) => await client.catalogInventoryStockItemUpdateAsync( session, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.catalogInventoryStockItemUpdateAsync( session, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
 		{
 			return await this.GetWithAsync(
 				res => new OrderInfoResponse( res ),
-				async ( client, session ) => await client.salesOrderInfoAsync( session, incrementId ).ConfigureAwait( false ), 600000 );
+				async ( client, session ) => await client.salesOrderInfoAsync( session, incrementId ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
 		{
 			return await this.GetWithAsync(
 				res => new GetMagentoInfoResponse( res ),
-				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException );
+				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException ).ConfigureAwait(false);
 		}
 
 		public string ToJsonSoapInfo()
@@ -751,7 +751,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
 						abortAfter,
 						async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
-						privateClient );
+						privateClient ).ConfigureAwait( false );
 
 					if( temp.Item2 )
 						throw new TaskCanceledException();

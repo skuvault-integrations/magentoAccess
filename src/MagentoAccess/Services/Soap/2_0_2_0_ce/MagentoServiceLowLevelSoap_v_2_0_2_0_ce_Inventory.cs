@@ -196,7 +196,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		//TODO: refactor, remove redundant wrapper
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
-			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom );
+			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait(false);
 		}
 
 		private async Task< SoapGetProductsResponse > GetProductsOldAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
@@ -357,12 +357,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			var catalogProductRepositoryV1GetListRequest = new CatalogProductRepositoryV1GetListRequest() { searchCriteria = frameworkSearchCriteriaInterface };
 
-			//return await this.GetWithAsync(
 			var result = await this.GetWithAsync(
 				res => res?.catalogProductRepositoryV1GetListResponse.result,
 				//res => new SoapGetProductsResponse(res == null? new List<CatalogDataProductSearchResultsInterface>(): new List<CatalogDataProductSearchResultsInterface>() { res.catalogProductRepositoryV1GetListResponse }),
 				//res => new SoapGetProductsResponse(  res.catalogProductRepositoryV1GetListResponse.result ),
-				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this.CreateMagentoCatalogProductRepositoryServiceClient, this.RecreateMagentoServiceClientIfItNeed2 );
+				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this.CreateMagentoCatalogProductRepositoryServiceClient, this.RecreateMagentoServiceClientIfItNeed2 ).ConfigureAwait(false);
 			this.getProductsPageCache.Add( result, parameters, TimeSpan.FromSeconds( 300 ) );
 			return result;
 		}
@@ -528,7 +527,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			return await this.GetWithAsync(
 				res => res,
-				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed );
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed ).ConfigureAwait(false);
 		}
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
@@ -665,7 +664,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						//res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
-						res = await Task.FromResult< catalogProductAttributeInfoResponse >( null ); //TODO: Implement
+						res = await Task.FromResult< catalogProductAttributeInfoResponse >( null ).ConfigureAwait(false); //TODO: Implement
 				} ).ConfigureAwait( false );
 
 				return new CatalogProductAttributeInfoResponse( res );
@@ -780,7 +779,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
 						abortAfter,
 						async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
-						privateClient );
+						privateClient ).ConfigureAwait(false);
 
 					if( temp.Item2 )
 						throw new TaskCanceledException();
