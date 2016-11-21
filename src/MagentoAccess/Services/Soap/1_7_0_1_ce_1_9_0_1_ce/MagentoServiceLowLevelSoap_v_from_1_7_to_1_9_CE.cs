@@ -480,7 +480,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
 		{
 			throw new NotImplementedException();
 		}

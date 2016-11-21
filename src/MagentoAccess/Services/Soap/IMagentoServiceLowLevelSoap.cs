@@ -55,6 +55,6 @@ namespace MagentoAccess.Services.Soap
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );
-		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync();
+		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds );
 	}
 }

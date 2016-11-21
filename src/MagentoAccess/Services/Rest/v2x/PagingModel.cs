@@ -21,6 +21,25 @@ namespace MagentoAccess.Services.Rest.v2x
 			return Enumerable.Range( this.CurrentPage + 1, fullPagesCount + ( diff > 0 ? 1 : 0 ) );
 		}
 
+		public IEnumerable< List< T > > GetPages< T >( IEnumerable< T > source )
+		{
+			var sourceList = source as IList< T > ?? source.ToList();
+			var fullPagesCount = sourceList.Count() / this.ItemsPerPage;
+			var diff = ( sourceList.Count() - fullPagesCount * this.ItemsPerPage );
+			var pages = Enumerable.Range( this.CurrentPage + 1, fullPagesCount + ( diff > 0 ? 1 : 0 ) ).ToList();
+
+			var j = 0;
+			for( var i = 0; i < pages.Count(); i++ )
+			{
+				var chunk = new List< T >();
+				for( ; j < sourceList.Count(); j++ )
+				{
+					chunk.Add( sourceList[ j ] );
+				}
+				yield return chunk;
+			}
+		}
+
 		public IEnumerable< int > GetPages( int itemsTotal, int limit )
 		{
 			var minValues = itemsTotal < limit ? itemsTotal : limit;

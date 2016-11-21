@@ -230,7 +230,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
 		{
 			throw new NotImplementedException();
 		}

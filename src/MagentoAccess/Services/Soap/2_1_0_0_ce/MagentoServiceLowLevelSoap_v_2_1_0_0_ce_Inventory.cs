@@ -462,7 +462,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		{
 			try
 			{
-				var inventory = await this.GetStockItemsWithoutSkuAsync().ConfigureAwait( false );
+				var inventory = await this.GetStockItemsWithoutSkuAsync( skusOrIds ).ConfigureAwait( false );
 
 				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
 
@@ -479,7 +479,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
 		{
 			try
 			{

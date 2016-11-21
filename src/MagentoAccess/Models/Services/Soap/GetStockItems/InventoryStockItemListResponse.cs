@@ -41,6 +41,11 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 		{
 			this.InventoryStockItems = responses.SelectMany( x => x.Item2.items ).Select( x => new InventoryStockItem( x ) );
 		}
+
+		public InventoryStockItemListResponse( IEnumerable< InventoryStockItem > toList )
+		{
+			this.InventoryStockItems = toList.Select( x => new InventoryStockItem( x ) );
+		}
 	}
 
 	internal class InventoryStockItem

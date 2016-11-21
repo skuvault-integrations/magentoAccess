@@ -21,6 +21,7 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using MagentoAccess.Services.Rest.v2x;
 using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
@@ -111,7 +112,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages
 		{
-			get { return false; }
+			get { return true; }
 		}
 
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -208,6 +209,15 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000 );
 		}
 
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( List< string > skusOrIds )
+		{
+			var pages = new PagingModel( 1000, 0 ).GetPages( skusOrIds );
+
+			var pagesResult = await pages.ProcessInBatchAsync( 4, async x => await this.GetStockItemsAsync( x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var result = new InventoryStockItemListResponse( pagesResult.SelectMany( x => x.InventoryStockItems ).ToList() );
+			return result;
+		}
+
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest request, bool throwException = true )
 		{
 			return await this.GetWithAsync(
@@ -242,7 +252,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync()
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
 		{
 			throw new NotImplementedException();
 		}
@@ -287,7 +297,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				res => new GetMagentoInfoResponse( res ),
 				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException );
 		}
-		
+
 		public string ToJsonSoapInfo()
 		{
 			return string.Format( "{{BaseMagentoUrl:{0}, ApiUser:{1},ApiKey:{2},Store:{3}}}",
@@ -731,7 +741,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [CallerMemberName] string callerName = null ) where TServerResponse : new()
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
 		{
 			try
 			{
@@ -760,7 +770,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				{
 					return default(TResult);
 				}
-				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetWithAsync)}", exc );
+				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetWithAsync )}", exc );
 			}
 		}
 	}

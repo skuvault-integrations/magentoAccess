@@ -727,7 +727,7 @@ namespace MagentoAccess
 			List< InventoryStockItem > stockItems;
 			if( magentoServiceLowLevelSoap.GetStockItemsWithoutSkuImplementedWithPages )
 			{
-				var inventory = await magentoServiceLowLevelSoap.GetStockItemsWithoutSkuAsync().ConfigureAwait( false );
+				var inventory = await magentoServiceLowLevelSoap.GetStockItemsWithoutSkuAsync( products.Select( x => x.Sku ) ).ConfigureAwait( false );
 				stockItems = inventory.InventoryStockItems.ToList();
 			}
 			else
