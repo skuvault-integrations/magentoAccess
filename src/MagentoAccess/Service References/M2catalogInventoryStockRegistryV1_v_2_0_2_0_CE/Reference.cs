@@ -1123,13 +1123,13 @@ namespace MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
         "StockRegistryV1")]
     public partial class CatalogInventoryDataStockStatusInterface : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private int productIdField;
+        private string productIdField;
         
-        private int stockIdField;
+        private string stockIdField;
         
         private int qtyField;
         
-        private int stockStatusField;
+        private string stockStatusField;
         
         private CatalogInventoryDataStockItemInterface stockItemField;
         
@@ -1137,7 +1137,7 @@ namespace MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int productId {
+        public string productId {
             get {
                 return this.productIdField;
             }
@@ -1149,7 +1149,7 @@ namespace MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public int stockId {
+        public string stockId {
             get {
                 return this.stockIdField;
             }
@@ -1173,7 +1173,7 @@ namespace MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public int stockStatus {
+        public string stockStatus {
             get {
                 return this.stockStatusField;
             }
