@@ -483,14 +483,21 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			try
 			{
 				var pageSize = 500;
-				var res = await this.GetStockItemsPageAsync( 1, pageSize ).ConfigureAwait( false );
+				var scope = 1;
+				var res = await this.GetStockItemsPageAsync( 1, pageSize, scope ).ConfigureAwait( false );
+				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount == 0 )//crutch for sandbox
+				{
+					scope = 0;
+					res = await this.GetStockItemsPageAsync( 1, pageSize, scope ).ConfigureAwait( false );
+				}
+
 				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
 					return new InventoryStockItemListResponse( new[] { Tuple.Create( 1, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
 
 				var pagingModel = new PagingModel( pageSize, 0 );
 				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
 				{
-					var pageResp = await this.GetStockItemsPageAsync( x, pageSize ).ConfigureAwait( false );
+					var pageResp = await this.GetStockItemsPageAsync( x, pageSize, scope ).ConfigureAwait( false );
 					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
 				} ).ConfigureAwait( false );
 				var inventory = new InventoryStockItemListResponse( responses );
@@ -536,13 +543,22 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageAsync( int currentPage, int pageSize )
+		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageAsync( int currentPage, int pageSize, int scopeId )
 		{
-			var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetLowStockItemsRequest() { currentPage = currentPage, currentPageSpecified = true, pageSize = pageSize, pageSizeSpecified = true, qty = 999999999999, scopeId = 1 };
+			var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetLowStockItemsRequest() { currentPage = currentPage, currentPageSpecified = true, pageSize = pageSize, pageSizeSpecified = true, qty = 999999999999, scopeId = scopeId };
 
 			return await this.GetWithAsync(
 				res => res,
 				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed ).ConfigureAwait(false);
+		}
+
+		private async Task< catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 > GetStockItemBySkuAsync( string sku )
+		{
+			var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetStockItemBySkuRequest() { productSku = sku };
+
+			return await this.GetWithAsync(
+				res => res,
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed ).ConfigureAwait( false );
 		}
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
