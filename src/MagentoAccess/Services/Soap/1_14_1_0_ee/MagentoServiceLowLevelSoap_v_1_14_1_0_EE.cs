@@ -368,7 +368,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			try
 			{
-				// keep alive is a crunch for 1 client, which has server that sloses connection after few minutes.
+				// keep alive is a crutch for 1 client, which has server that sloses connection after few minutes.
 				var keepAlive = false;
 				var res = new catalogProductListResponse();
 				await ActionPolicies.GetAsync.Do( async () =>
@@ -378,18 +378,29 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 						res = await call( keepAlive ).ConfigureAwait( false );
 						return;
 					}
-					catch( CommunicationException )
+					catch( CommunicationException exc)
 					{
 						keepAlive = !keepAlive;
 					}
 					res = await call( keepAlive ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new SoapGetProductsResponse( res );
+			    return new SoapGetProductsResponse( res );
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
+			    if( exc is CommunicationException )//crunch for fbeauty
+			    {
+			        var r = exc as CommunicationException;
+			        if( r.InnerException.Message.Contains( "403" ) )
+			        {
+			            if( productIdLike.Contains( "00" ) )
+			            {
+			                return null;
+			            }
+			        }
+			    }
+			    throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
 			}
 		}
 
