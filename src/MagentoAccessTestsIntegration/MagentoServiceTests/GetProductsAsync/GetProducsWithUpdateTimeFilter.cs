@@ -31,7 +31,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			getProductsTask2.Result.Should().NotBeNullOrEmpty();
 
 			getProductsTask1.Result.All( x => x.UpdatedAt.ToDateTimeOrDefault() >= updatedFrom ).Should().BeTrue();
-			getProductsTask2.Result.Count().Should().BeGreaterThan( getProductsTask1.Result.Count() );
+			getProductsTask2.Result.Count().Should().BeGreaterOrEqualTo( getProductsTask1.Result.Count() );
 		}
 	}
 }
