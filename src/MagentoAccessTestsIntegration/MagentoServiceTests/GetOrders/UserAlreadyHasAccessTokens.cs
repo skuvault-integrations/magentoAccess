@@ -25,7 +25,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 			// var modifiedFrom = new DateTime( ( firstCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
 			// var modifiedTo = new DateTime( ( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
 			var modifiedFrom = new DateTime( 2016, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
-			var modifiedTo = new DateTime( 2016, 12, 2, 23, 30, 39 ).AddSeconds( -1 );
+			var modifiedTo = new DateTime( 2017, 2, 2, 23, 30, 39 ).AddSeconds( -1 );
 			var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
 			getOrdersTask.Wait();
 
