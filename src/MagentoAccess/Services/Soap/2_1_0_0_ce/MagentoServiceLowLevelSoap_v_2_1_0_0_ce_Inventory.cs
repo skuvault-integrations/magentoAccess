@@ -552,7 +552,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						var resultItem = result.FirstOrDefault( x => x.Sku == scItem.Sku && x.ProductId == scItem.ProductId );
 						if( resultItem != null )
 						{
-							if( resultItem.Qty.ToLongOrDefault() > scItem.Qty.ToLongOrDefault() )
+							if( resultItem.Qty.ToLongOrDefault() < scItem.Qty.ToLongOrDefault() )
 							{
 								resultItem.Qty = scItem.Qty;
 								resultItem.IsInStock = scItem.IsInStock;
