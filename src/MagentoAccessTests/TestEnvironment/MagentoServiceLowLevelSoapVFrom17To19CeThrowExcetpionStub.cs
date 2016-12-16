@@ -43,7 +43,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public override Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
 		{
 			throw new Exception();
 		}

@@ -120,7 +120,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable<int> scopes )
 		{
 			return null;
 		}
@@ -230,7 +230,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
 		{
 			throw new NotImplementedException();
 		}

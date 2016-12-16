@@ -457,11 +457,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
 		{
 			try
 			{
-				var inventory = await this.GetStockItemsWithoutSkuAsync( skusOrIds ).ConfigureAwait( false );
+				var inventory = await this.GetStockItemsWithoutSkuAsync( skusOrIds, scopes ).ConfigureAwait( false );
 
 				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
 
@@ -478,7 +478,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuOldAsync( IEnumerable< string > skusOrIds )
 		{
 			try
 			{
@@ -503,6 +503,68 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				var inventory = new InventoryStockItemListResponse( responses );
 
 				return inventory;
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsWithoutSkuAsync({0})", "" ), exc );
+			}
+		}
+
+		/// <summary>
+		/// Get Items from scopes
+		/// </summary>
+		/// <param name="skusOrIds"></param>
+		/// <param name="scopes"></param>
+		/// <returns>Union of scope items (the minimal qty item will be in the union)</returns>
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
+		{
+			try
+			{
+				Func< int, int, Task< InventoryStockItemListResponse > > getInventoryFromStock = async ( ps, sc ) =>
+				{
+					const int currentPage = 1;
+					var res = await this.GetStockItemsPageAsync( currentPage, ps, sc ).ConfigureAwait( false );
+					if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= ps )
+						return new InventoryStockItemListResponse( new[] { Tuple.Create( currentPage, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
+
+					var pagingModel = new PagingModel( ps, 0 );
+					var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x => Tuple.Create( x, ( await this.GetStockItemsPageAsync( x, ps, sc ).ConfigureAwait( false ) ).catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) ).ConfigureAwait( false );
+					return new InventoryStockItemListResponse( responses );
+				};
+
+				const int pageSize = 500;
+				var result = new List< InventoryStockItem >();
+				foreach( var i in scopes )
+				{
+					var addAllFlag = result.Count == 0;
+					var scInventory = await getInventoryFromStock( pageSize, i ).ConfigureAwait( false );
+					var scInventoryOrEmpty = scInventory?.InventoryStockItems ?? Enumerable.Empty< InventoryStockItem >();
+					var scInventoryOrEmptyList = scInventoryOrEmpty as IList< InventoryStockItem > ?? scInventoryOrEmpty.ToList();
+
+					if( addAllFlag )
+					{
+						result.AddRange( scInventoryOrEmptyList );
+						continue;
+					}
+
+					foreach( var scItem in scInventoryOrEmptyList )
+					{
+						var resultItem = result.FirstOrDefault( x => x.Sku == scItem.Sku && x.ProductId == scItem.ProductId );
+						if( resultItem != null )
+						{
+							if( resultItem.Qty.ToLongOrDefault() > scItem.Qty.ToLongOrDefault() )
+							{
+								resultItem.Qty = scItem.Qty;
+								resultItem.IsInStock = scItem.IsInStock;
+							}
+						}
+						else
+						{
+							result.Add( scItem );
+						}
+					}
+				}
+				return new InventoryStockItemListResponse( result );
 			}
 			catch( Exception exc )
 			{

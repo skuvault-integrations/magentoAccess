@@ -24,7 +24,7 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
-		Task< IEnumerable< Product > > GetProductsAsync( bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null );
+		Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null );
 
 		VerificationData RequestVerificationUri();
 
@@ -34,7 +34,7 @@ namespace MagentoAccess
 
 		Task< PingRestInfo > PingRestAsync();
 
-		Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory );
+		Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory, IEnumerable< int > scopes );
 
 		Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models );
 

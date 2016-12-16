@@ -26,7 +26,7 @@ namespace MagentoAccess.Services.Soap
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom );
-		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds );
+		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException );
@@ -55,6 +55,6 @@ namespace MagentoAccess.Services.Soap
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );
-		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds );
+		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes );
 	}
 }

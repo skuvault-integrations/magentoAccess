@@ -52,7 +52,7 @@ namespace MagentoAccessTestsIntegration
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs );
 
 			//------------ Act
-			var getProductsTask = magentoService.GetProductsAsync();
+			var getProductsTask = magentoService.GetProductsAsync( new[] { 0, 1 } );
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -60,12 +60,12 @@ namespace MagentoAccessTestsIntegration
 
 			var itemsToUpdate = onlyProductsCreatedForThisTests.Select( x => new InventoryBySku() { Sku = x.Sku, Qty = 123 } );
 
-			var updateInventoryTask = magentoService.UpdateInventoryBySkuAsync( itemsToUpdate );
+			var updateInventoryTask = magentoService.UpdateInventoryBySkuAsync( itemsToUpdate, new[] { 0, 1 } );
 			updateInventoryTask.Wait();
 
 			/////
 
-			var getProductsTask2 = magentoService.GetProductsAsync();
+			var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 } );
 			getProductsTask2.Wait();
 
 			var allProductsinMagent2 = getProductsTask2.Result.ToList();
@@ -73,11 +73,11 @@ namespace MagentoAccessTestsIntegration
 
 			var itemsToUpdate2 = onlyProductsCreatedForThisTests2.Select( x => new InventoryBySku() { Sku = x.Sku, Qty = 100500 } );
 
-			var updateInventoryTask2 = magentoService.UpdateInventoryBySkuAsync( itemsToUpdate2 );
+			var updateInventoryTask2 = magentoService.UpdateInventoryBySkuAsync( itemsToUpdate2, new[] { 0, 1 } );
 			updateInventoryTask2.Wait();
 
 			//------------ Assert
-			var getProductsTask3 = magentoService.GetProductsAsync();
+			var getProductsTask3 = magentoService.GetProductsAsync( new[] { 0, 1 } );
 			getProductsTask3.Wait();
 
 			var allProductsinMagent3 = getProductsTask3.Result.ToList();

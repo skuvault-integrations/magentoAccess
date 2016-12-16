@@ -115,7 +115,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+			public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable<int> scopes )
 			{
 				return null;
 			}
@@ -219,7 +219,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
+			public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
 			{
 				throw new NotImplementedException();
 			}

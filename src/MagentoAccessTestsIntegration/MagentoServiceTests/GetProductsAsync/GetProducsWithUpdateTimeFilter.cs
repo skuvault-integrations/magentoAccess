@@ -22,8 +22,8 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			var updatedFrom = DateTime.UtcNow.AddMonths( -1 );
 
 			// ------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync( updatedFrom : updatedFrom, includeDetails : true );
-			var getProductsTask2 = magentoService.GetProductsAsync( includeDetails : true );
+			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, updatedFrom : updatedFrom );
+			var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true );
 			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
 
 			// ------------ Assert

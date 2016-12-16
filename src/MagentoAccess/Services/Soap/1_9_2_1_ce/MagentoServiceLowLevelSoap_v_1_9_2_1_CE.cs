@@ -202,11 +202,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			filters.complex_filter = temp.ToArray();
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
 		{
 			return await this.GetWithAsync(
 				x => new InventoryStockItemListResponse( x ),
-				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000 ).ConfigureAwait( false );
 		}
 		
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest request, bool throwException = true )
@@ -243,11 +243,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
-		public async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds )
+		public async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
 		{
 			var pages = new PagingModel( 1000, 0 ).GetPages( skusOrIds ).ToList();
 
-			var pagesResult = await pages.ProcessInBatchAsync( 4, async x => await this.GetStockItemsAsync( x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var pagesResult = await pages.ProcessInBatchAsync( 4, async x => await this.GetStockItemsAsync( x, scopes ).ConfigureAwait( false ) ).ConfigureAwait( false );
 			var result = new InventoryStockItemListResponse( pagesResult.SelectMany( x => x.InventoryStockItems ).ToList() );
 			return result;
 		}
