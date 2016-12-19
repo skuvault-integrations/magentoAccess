@@ -311,17 +311,9 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
 				{
 					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
-					//Action< string, string, bool > hideInject = ( sh, st, hideInj ) =>
-					//{
-					//	if( sourceList.RemoveAll( x => x == sh + st ) > 0 )
-					//		sourceList.AddRange( Enumerable.Range( hideInj ? 1 : 0, 9 ).Select( x => sh + x + st ) );
-					//};
-					//hideInject( "%", "00", false );
-					//hideInject( "%", "000", false );
-					//hideInject( "%", "0000", true );
 
-					if (sourceList.RemoveAll(x => x == "%00") > 0)
-						sourceList.Add("%*00");
+					if( sourceList.RemoveAll( x => x == "%00" ) > 0 )
+						sourceList.Add( "%*00" );
 
 					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
