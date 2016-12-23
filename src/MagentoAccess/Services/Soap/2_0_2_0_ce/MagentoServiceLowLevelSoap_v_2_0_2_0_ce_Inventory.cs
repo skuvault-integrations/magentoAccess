@@ -438,7 +438,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			catch( Exception exc )
 			{
 				var productsBriefInfo = string.Join( "|", skusOrIds );
-				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsAsync({0})", productsBriefInfo ), exc );
+				throw new MagentoSoapException( $"An error occured during GetStockItemsAsync({productsBriefInfo})", exc );
 			}
 		}
 
