@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE;
 using MagentoAccess.Misc;
@@ -11,6 +12,7 @@ using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using Netco.Extensions;
+using Newtonsoft.Json;
 using Category = MagentoAccess.Models.Services.Soap.GetProducts.Category;
 using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;
 
@@ -18,6 +20,8 @@ namespace MagentoAccess.Services.Soap
 {
 	internal class Magento1xxxHelper: IMagento1XxxHelper
 	{
+		[ JsonIgnore ]
+		[ IgnoreDataMember ]
 		private readonly IMagentoServiceLowLevelSoap _magentoServiceLowLevelSoap;
 
 		public Magento1xxxHelper( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap )

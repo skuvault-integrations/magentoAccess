@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -23,6 +24,7 @@ using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Rest.v2x;
 using Netco.Extensions;
+using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
@@ -37,6 +39,8 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public string BaseMagentoUrl { get; set; }
 		public string StoreVersion { get; set; }
 
+		[ JsonIgnore ]
+		[ IgnoreDataMember ]
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
 		protected IMagento1XxxHelper Magento1xxxHelper { get; set; }

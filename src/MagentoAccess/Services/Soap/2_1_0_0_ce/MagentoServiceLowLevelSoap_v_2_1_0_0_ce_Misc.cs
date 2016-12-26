@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -18,6 +19,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using Netco.Extensions;
+using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
@@ -33,7 +35,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		public string TokenSecret { get; set; }
 
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
+		[ JsonIgnore ]
+		[ IgnoreDataMember ]
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
 
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";

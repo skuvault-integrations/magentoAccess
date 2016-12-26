@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -19,6 +20,7 @@ using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using Netco.Extensions;
+using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
@@ -34,7 +36,9 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public string BaseMagentoUrl { get; set; }
 
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
+		[ JsonIgnore ]
+		[ IgnoreDataMember ]
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
 
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";

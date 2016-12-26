@@ -205,9 +205,9 @@ namespace MagentoAccess.Misc
 					}
 				}
 			}
-			catch( Exception )
+			catch( Exception ex)
 			{
-				return PredefinedValues.EmptyJsonObject;
+				return $"{{can't serialize to Json {ex} }}";
 			}
 		}
 
