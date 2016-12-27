@@ -63,12 +63,13 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected readonly int SessionIdLifeTimeMs;
 
-		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, int sessionIdLifeTimeMs )
+		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, bool idLifeTimeMs, int sessionIdLifeTimeMs )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
+			this.LogRawMessages = idLifeTimeMs;
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
 			this._getProductsMaxThreads = getProductsMaxThreads;

@@ -99,12 +99,13 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, int getProductsMaxThreads )
+		public MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, int getProductsMaxThreads, bool logRawMessages )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
+			this.LogRawMessages = logRawMessages;
 
 			this._customBinding = CustomBinding( baseMagentoUrl );
 			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
