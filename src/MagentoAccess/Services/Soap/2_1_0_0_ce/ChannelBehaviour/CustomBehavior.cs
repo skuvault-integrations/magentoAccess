@@ -35,7 +35,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 			try
 			{
 				//Add the inspector
-				behavior.MessageInspectors.Add( new ClientMessageInspector() { AccessToken = this.AccessToken,LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages} );
+				behavior.MessageInspectors.Add( new ClientMessageInspector() { AccessToken = this.AccessToken, LogRawMessages = this.LogRawMessages} );
 				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
 				{
 					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
@@ -45,7 +45,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 
 				//behavior.CallbackDispatchRuntime.MessageInspectors.Add(new MessageInspector2());
 
-				var inspector = new ClientMessageInspector() { AccessToken = this.AccessToken, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages };
+				var inspector = new ClientMessageInspector() { AccessToken = this.AccessToken, LogRawMessages = this.LogRawMessages };
 				behavior.MessageInspectors.Add( inspector );
 			}
 			catch( Exception )

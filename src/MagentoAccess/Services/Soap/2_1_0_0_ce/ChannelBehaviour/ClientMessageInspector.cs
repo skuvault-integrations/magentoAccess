@@ -5,6 +5,8 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.Xml;
+using MagentoAccess.Misc;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 {
@@ -14,20 +16,19 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		private const string StandartNamespaceStubWithProtocol = "http://" + StandartNamespaceStub;
 		public string AccessToken;
 		public bool LogRawMessages = false;
-		public Action< string > LogFunc = null;
 		private readonly object lockObject = new object();
 		private string replacedUrl;
 
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
 			//trace
-			if( this.LogRawMessages && this.LogFunc != null )
+			if( this.LogRawMessages )
 			{
 				var buffer = request.CreateBufferedCopy( int.MaxValue );
 				request = buffer.CreateMessage();
 				var originalMessage = buffer.CreateMessage();
 				var messageSerialized = originalMessage.ToString();
-				this.LogFunc( messageSerialized );
+				MagentoLogger.LogTraceRequestMessage( messageSerialized );
 			}
 
 			//legacy behaviour
@@ -96,13 +97,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		public void AfterReceiveReply( ref Message reply, object correlationState )
 		{
 			//trace
-			if( this.LogRawMessages && this.LogFunc != null )
+			if( this.LogRawMessages )
 			{
 				var buffer = reply.CreateBufferedCopy( int.MaxValue );
 				reply = buffer.CreateMessage();
 				var originalMessage = buffer.CreateMessage();
 				var messageSerialized = originalMessage.ToString();
-				this.LogFunc( messageSerialized );
+				MagentoLogger.LogTraceResponseMessage( messageSerialized );
 			}
 
 			var prop =

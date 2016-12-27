@@ -19,6 +19,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
@@ -35,12 +36,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		public string TokenSecret { get; set; }
 
-		public bool LogRawMessages { get; set; }
-		public Action< string > LogFunc { get; set; }
+		public bool LogRawMessages { get; private set; }
 
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
+
+		protected Action< string > LogFunc { get; set; }
 
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";
@@ -103,12 +105,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_2_1_0_0_ce( string apiUser, string apiKey, string baseMagentoUrl, string store )
+		public MagentoServiceLowLevelSoap_v_2_1_0_0_ce( string apiUser, string apiKey, string baseMagentoUrl, bool logRawMessages, string store )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
+			this.LogRawMessages = logRawMessages;
 
 			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
 			this._customBinding12 = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
