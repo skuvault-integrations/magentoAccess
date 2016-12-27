@@ -15,7 +15,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		private const string StandartNamespaceStub = "hereshouldbeyourmagentostoreurl.com";
 		private const string StandartNamespaceStubWithProtocol = "http://" + StandartNamespaceStub;
 		public string AccessToken;
-		public bool LogRawMessages = false;
+		public bool LogRawMessages { get; set; } = false;
 		private readonly object lockObject = new object();
 		private string replacedUrl;
 
@@ -103,6 +103,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 				reply = buffer.CreateMessage();
 				var originalMessage = buffer.CreateMessage();
 				var messageSerialized = originalMessage.ToString();
+				var property = originalMessage.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
+				if( property != null )
+					messageSerialized = "HttpStatusCode: " + property.StatusCode.ToString() + ", message:" + messageSerialized;
 				MagentoLogger.LogTraceResponseMessage( messageSerialized );
 			}
 

@@ -10,6 +10,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				credentials.SoapApiUser,
 				credentials.SoapApiKey,
 				credentials.BaseMagentoUrl,
+				credentials.LogRawMessages,
 				null
 				);
 		}

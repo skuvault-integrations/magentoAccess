@@ -9,8 +9,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 	internal class CustomBehavior : IEndpointBehavior
 	{
 		public string AccessToken;
-		public Action< string > LogFunc;
-		public bool LogRawMessages;
+		public bool LogRawMessages { get; set; } = false;
 
 		public void AddBindingParameters( ServiceEndpoint serviceEndpoint,
 			BindingParameterCollection bindingParameters )

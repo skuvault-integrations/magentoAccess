@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.Xml;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 {
@@ -12,11 +13,22 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 	{
 		private const string StandartNamespaceStub = "hereshouldbeyourmagentostoreurl.com";
 		public string AccessToken;
+		public bool LogRawMessages { get; set; } = false;
 		private readonly object lockObject = new object();
 		private string replacedUrl;
 
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
+			//trace
+			if( this.LogRawMessages )
+			{
+				var buffer = request.CreateBufferedCopy( int.MaxValue );
+				request = buffer.CreateMessage();
+				var originalMessage = buffer.CreateMessage();
+				var messageSerialized = originalMessage.ToString();
+				MagentoLogger.LogTraceRequestMessage( messageSerialized );
+			}
+
 			//legacy behaviour
 			HttpRequestMessageProperty httpRequestMessage;
 			object httpRequestMessageObject;
@@ -82,6 +94,19 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 
 		public void AfterReceiveReply( ref Message reply, object correlationState )
 		{
+			//trace
+			if( this.LogRawMessages )
+			{
+				var buffer = reply.CreateBufferedCopy( int.MaxValue );
+				reply = buffer.CreateMessage();
+				var originalMessage = buffer.CreateMessage();
+				var messageSerialized = originalMessage.ToString();
+				var property = originalMessage.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
+				if( property != null )
+					messageSerialized = "HttpStatusCode: " + property.StatusCode.ToString() + ", message:" + messageSerialized;
+				MagentoLogger.LogTraceResponseMessage( messageSerialized );
+			}
+
 			var prop =
 				reply.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
 

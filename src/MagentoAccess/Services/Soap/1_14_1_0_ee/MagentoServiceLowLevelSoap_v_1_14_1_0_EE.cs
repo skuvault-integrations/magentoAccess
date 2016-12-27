@@ -134,7 +134,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}

@@ -1,49 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
 namespace MagentoAccess.Services.Soap
 {
-	internal class ClientMessageInspector : IClientMessageInspector
-	{
-		public object BeforeSendRequest( ref Message request, IClientChannel channel )
-		{
-			HttpRequestMessageProperty httpRequestMessage;
-			object httpRequestMessageObject;
-			if( request.Properties.TryGetValue( HttpRequestMessageProperty.Name, out httpRequestMessageObject ) )
-			{
-				httpRequestMessage = httpRequestMessageObject as HttpRequestMessageProperty;
-				if( string.IsNullOrEmpty( httpRequestMessage.Headers[ "Accept-Encoding" ] ) )
-					httpRequestMessage.Headers.Remove( "Accept-Encoding" );
-			}
-			else
-			{
-				httpRequestMessage = new HttpRequestMessageProperty();
-				httpRequestMessage.Headers.Add( "Accept-Encoding", "" );
-				request.Properties.Add( HttpRequestMessageProperty.Name, httpRequestMessage );
-			}
-
-			return null;
-		}
-
-		public void AfterReceiveReply( ref Message reply, object correlationState )
-		{
-			var prop =
-				reply.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
-
-			if( prop != null )
-			{
-				// get the content type headers
-				var contentType = prop.Headers[ "Content-Type" ];
-			}
-		}
-	}
-
 	internal class CustomBehavior : IEndpointBehavior
 	{
+		public bool LogRawMessages { get; set; } = false;
 		public void AddBindingParameters( ServiceEndpoint serviceEndpoint,
 			BindingParameterCollection bindingParameters )
 		{
@@ -67,7 +32,7 @@ namespace MagentoAccess.Services.Soap
 			try
 			{
 				//Add the inspector
-				behavior.MessageInspectors.Add( new ClientMessageInspector() );
+				behavior.MessageInspectors.Add( new ClientMessageInspector() { LogRawMessages = this.LogRawMessages} );
 				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
 				{
 					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
@@ -77,7 +42,7 @@ namespace MagentoAccess.Services.Soap
 
 				//behavior.CallbackDispatchRuntime.MessageInspectors.Add(new MessageInspector2());
 
-				var inspector = new ClientMessageInspector();
+				var inspector = new ClientMessageInspector() { LogRawMessages = this.LogRawMessages };
 				behavior.MessageInspectors.Add( inspector );
 			}
 			catch( Exception )

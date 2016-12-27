@@ -39,6 +39,8 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public string BaseMagentoUrl { get; set; }
 		public string StoreVersion { get; set; }
 
+		public bool LogRawMessages { get; private set; }
+
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
@@ -321,7 +323,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
 			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() );
+			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}

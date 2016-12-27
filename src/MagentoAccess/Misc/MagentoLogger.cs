@@ -45,9 +45,9 @@ namespace MagentoAccess.Misc
 			Log().Trace( "[magento] [Request] info:{0}. {1}", info, _fvi.FileVersion );
 		}
 
-		public static void LogTraceResponseMessage(string info)
+		public static void LogTraceResponseMessage( string info )
 		{
-			Log().Trace("[magento] [Response] info:{0}. {1}", info, _fvi.FileVersion);
+			Log().Trace( "[magento] [Response] info:{0}. {1}", info, _fvi.FileVersion );
 		}
 	}
 }
