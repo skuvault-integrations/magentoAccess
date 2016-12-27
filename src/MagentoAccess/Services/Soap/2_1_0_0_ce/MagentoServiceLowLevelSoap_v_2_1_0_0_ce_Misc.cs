@@ -8,9 +8,9 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE;
-using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE;
@@ -35,9 +35,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		public string TokenSecret { get; set; }
 
+		public bool LogRawMessages { get; set; }
+		public Action< string > LogFunc { get; set; }
+
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
+		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
 		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
 		protected const string SoapApiUrl = "soap/default?services=";
@@ -136,7 +139,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
@@ -146,7 +149,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
@@ -156,7 +159,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding12, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
@@ -166,7 +169,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogCategoryManagementV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogCategoryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
@@ -178,7 +181,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			var magentoSoapService = new catalogProductRepositoryV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
@@ -190,7 +193,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
 			var magentoSoapService = new backendModuleServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
@@ -200,7 +203,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogInventoryStockRegistryV1" }.BuildUrl( trimTailsSlash : true );
 			var magentoSoapService = new catalogInventoryStockRegistryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
 
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId } );
+			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogFunc = this.LogFunc, LogRawMessages = this.LogRawMessages } );
 
 			return magentoSoapService;
 		}
