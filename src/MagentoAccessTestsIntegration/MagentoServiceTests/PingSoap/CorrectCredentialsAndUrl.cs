@@ -8,11 +8,11 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
-	internal class PingSoapTest : BaseTest
+	internal class CorrectCredentialsAndUrl : BaseTest
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void PingSoapAsync_CorrectCredentials_NoExceptionThrow( MagentoServiceSoapCredentials credentials )
+		public void NoExceptionThrow( MagentoServiceSoapCredentials credentials )
 		{
 			// ------------ Arrange
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs );
