@@ -38,6 +38,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		public string BaseMagentoUrl{ get; set; }
 		public string StoreVersion { get; set; }
+		public bool LogRawMessages { get; private set; }
 
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
@@ -98,7 +99,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_1_14_1_0_EE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, bool productsMaxThreads, int getProductsMaxThreads )
+		public MagentoServiceLowLevelSoap_v_1_14_1_0_EE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, bool logMessages, int getProductsMaxThreads )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
@@ -117,7 +118,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 			this._getProductsMaxThreads = getProductsMaxThreads;
 			this.SessionIdLifeTime = sessionIdLifeTime;
+			this.LogRawMessages = logMessages;
+
 		}
+
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl, bool keepAlive = true )
 		{
