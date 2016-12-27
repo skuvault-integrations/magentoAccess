@@ -11,8 +11,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				credentials.SoapApiKey,
 				credentials.BaseMagentoUrl,
 				null,
-				credentials.SessionLifeTimeMs ,
-				credentials.GetProductsThreadsLimit);
+				credentials.SessionLifeTimeMs,
+				credentials.LogRawMessages,
+				credentials.GetProductsThreadsLimit
+				);
 		}
 	}
 }

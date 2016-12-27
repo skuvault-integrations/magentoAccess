@@ -163,7 +163,9 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
 					777,
-					888 )
+					888,
+					true
+					)
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -193,7 +195,9 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
 					777,
-					888 )
+					888, 
+					true 
+					)
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -223,7 +227,9 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
 					777,
-					888 )
+					888, 
+					true 
+					)
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -253,7 +259,9 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
 					777,
-					888 )
+					888, 
+					true 
+					)
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();
@@ -283,7 +291,8 @@ namespace MagentoAccessTestsIntegration
 					this._testData.GetMagentoSoapUser().ApiUser,
 					this._testData.GetMagentoSoapUser().ApiKey,
 					777,
-					888 )
+					888, 
+					true )
 					, null );
 
 				var magentoInfoAsyncTask = service.PingRestAsync();

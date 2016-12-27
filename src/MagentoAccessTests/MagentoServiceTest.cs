@@ -25,7 +25,9 @@ namespace MagentoAccessTests
 			SoapApiUser,
 			SoapApiKey,
 			GetProductsThreadsLimit,
-			SessionLifeTime );
+			SessionLifeTime,
+			LogRawMessages
+			);
 
 		private IMagentoServiceLowLevelSoap _magentoServiceLowLevelSoapThrowExceptionsStub;
 		private IMagentoServiceLowLevelRest _magentoServiceLowLevelRestThrowExceptionStub;
@@ -39,6 +41,7 @@ namespace MagentoAccessTests
 		private const string SoapApiKey = "soapApiKey";
 		private const int GetProductsThreadsLimit = 4;
 		private const int SessionLifeTime = 3590;
+		private const bool LogRawMessages = true;
 
 		[ TestFixtureSetUp ]
 		public void Setup()
