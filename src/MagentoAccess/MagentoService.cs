@@ -198,8 +198,8 @@ namespace MagentoAccess
 				new Dictionary< string, IMagentoServiceLowLevelSoap >
 				{
 					{ MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
-					{ MagentoVersions.M_1_9_2_1, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
-					{ MagentoVersions.M_1_9_2_2, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					//{ MagentoVersions.M_1_9_2_1, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					//{ MagentoVersions.M_1_9_2_2, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
