@@ -78,13 +78,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 
 				try
 				{
-					if( logOriginalMessage && this.LogRawMessages )
-					{
-						var logStr = content;
-						logStr += request.Properties.Select( x => $"{{{x.Key};{x.Value.ToString()}}}" ).Aggregate( "", ( acc, x ) => acc + x );
-						logStr += request.Headers.Select( x => $"{{'{x.Actor};{x.Name.ToString()}}}" ).Aggregate( "", ( acc, x ) => acc + x );
-						MagentoLogger.LogTraceRequestMessage( logStr );
-					}
+					//if( logOriginalMessage && this.LogRawMessages )
+					//{
+					//	var logStr = content;
+					//	logStr += request.Properties.Select( x => $"{{{x.Key};{x.Value.ToString()}}}" ).Aggregate( "", ( acc, x ) => acc + x );
+					//	logStr += request.Headers.Select( x => $"{{'{x.Actor};{x.Name.ToString()}}}" ).Aggregate( "", ( acc, x ) => acc + x );
+					//	MagentoLogger.LogTraceRequestMessage( logStr );
+					//}
 				}
 				catch
 				{
