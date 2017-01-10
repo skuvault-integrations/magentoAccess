@@ -22,14 +22,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
 			//trace
-			if( this.LogRawMessages )
-			{
-				var buffer = request.CreateBufferedCopy( int.MaxValue );
-				request = buffer.CreateMessage();
-				var originalMessage = buffer.CreateMessage();
-				var messageSerialized = originalMessage.ToString();
-				MagentoLogger.LogTraceRequestMessage( messageSerialized );
-			}
+			var logSucceed = this.TryToLogMessage( ref request );
 
 			//legacy behaviour
 			HttpRequestMessageProperty httpRequestMessage;
@@ -64,16 +57,17 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 				if( string.IsNullOrWhiteSpace( this.replacedUrl ) )
 					this.replacedUrl = storeUrlWithoutProtocol;
 			}
-			this.ReplaceInMessageBody( ref request, StandartNamespaceStubWithProtocol, storeUrlWithoutProtocol );
+			this.ReplaceInMessageBody( ref request, StandartNamespaceStubWithProtocol, storeUrlWithoutProtocol, !logSucceed);
 
 			return null;
 		}
 
-		private void ReplaceInMessageBody( ref Message request, string magentoCe, string newValue )
+		private void ReplaceInMessageBody( ref Message request, string magentoCe, string newValue, bool logOriginalMessage )
 		{
 			using( var reader = request.GetReaderAtBodyContents() )
 			{
 				var content = reader.ReadOuterXml();
+
 				var contentWithChanges = content.Replace( magentoCe, newValue );
 				var xmlReader = XmlReader.Create( this.GenerateStreamFromString( contentWithChanges ) );
 				var newMessage = Message.CreateMessage( request.Version, null, xmlReader );
@@ -81,6 +75,20 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 				if( request.Headers != null && request.Headers.Count > 0 )
 					newMessage.Headers.CopyHeaderFrom( request, 0 );
 				request = newMessage;
+
+				try
+				{
+					if( logOriginalMessage && this.LogRawMessages )
+					{
+						var logStr = content;
+						logStr += request.Properties.Select( x => $"{{{x.Key};{x.Value.ToString()}}}" ).Aggregate( "", ( acc, x ) => acc + x );
+						logStr += request.Headers.Select( x => $"{{'{x.Actor};{x.Name.ToString()}}}" ).Aggregate( "", ( acc, x ) => acc + x );
+						MagentoLogger.LogTraceRequestMessage( logStr );
+					}
+				}
+				catch
+				{
+				}
 			}
 		}
 
@@ -97,17 +105,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		public void AfterReceiveReply( ref Message reply, object correlationState )
 		{
 			//trace
-			if( this.LogRawMessages )
-			{
-				var buffer = reply.CreateBufferedCopy( int.MaxValue );
-				reply = buffer.CreateMessage();
-				var originalMessage = buffer.CreateMessage();
-				var messageSerialized = originalMessage.ToString();
-				var property = originalMessage.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
-				if( property != null )
-					messageSerialized = "HttpStatusCode: " + property.StatusCode.ToString() + ", message:" + messageSerialized;
-				MagentoLogger.LogTraceResponseMessage( messageSerialized );
-			}
+			var logSucceed = this.TryToLogMessage( ref reply );
 
 			var prop =
 				reply.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
@@ -118,7 +116,30 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 				var contentType = prop.Headers[ "Content-Type" ];
 			}
 
-			this.ReplaceInMessageBody( ref reply, this.replacedUrl, StandartNamespaceStubWithProtocol );
+			this.ReplaceInMessageBody( ref reply, this.replacedUrl, StandartNamespaceStubWithProtocol, !logSucceed );
+		}
+
+		private bool TryToLogMessage( ref Message reply )
+		{
+			try
+			{
+				if( this.LogRawMessages )
+				{
+					var buffer = reply.CreateBufferedCopy( int.MaxValue );
+					reply = buffer.CreateMessage();
+					var originalMessage = buffer.CreateMessage();
+					var messageSerialized = originalMessage.ToString();
+					var property = originalMessage.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
+					if( property != null )
+						messageSerialized = "HttpStatusCode: " + property.StatusCode.ToString() + ", message:" + messageSerialized;
+					MagentoLogger.LogTraceResponseMessage( messageSerialized );
+					return true;
+				}
+			}
+			catch
+			{
+			}
+			return false;
 		}
 	}
 }
