@@ -629,7 +629,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string typeField;
         
-        private int positionField;
+        private string positionField;
         
         private bool positionFieldSpecified;
         
@@ -713,7 +713,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public int position {
+        public string position {
             get {
                 return this.positionField;
             }
