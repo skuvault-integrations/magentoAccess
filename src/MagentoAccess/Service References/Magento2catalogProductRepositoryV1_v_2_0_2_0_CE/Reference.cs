@@ -803,7 +803,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool qtyFieldSpecified;
         
-        private int positionField;
+        private string positionField;
         
         private bool positionFieldSpecified;
         
@@ -813,7 +813,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string priceTypeField;
         
-        private int canChangeQuantityField;
+        private string canChangeQuantityField;
         
         private bool canChangeQuantityFieldSpecified;
         
@@ -893,7 +893,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public int position {
+        public string position {
             get {
                 return this.positionField;
             }
@@ -953,7 +953,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public int canChangeQuantity {
+        public string canChangeQuantity {
             get {
                 return this.canChangeQuantityField;
             }
@@ -1050,13 +1050,13 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string titleField;
         
-        private int sortOrderField;
+        private string sortOrderField;
         
-        private int isShareableField;
+        private string isShareableField;
         
         private string priceField;
         
-        private int numberOfDownloadsField;
+        private string numberOfDownloadsField;
         
         private bool numberOfDownloadsFieldSpecified;
         
@@ -1116,7 +1116,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public int sortOrder {
+        public string sortOrder {
             get {
                 return this.sortOrderField;
             }
@@ -1128,7 +1128,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public int isShareable {
+        public string isShareable {
             get {
                 return this.isShareableField;
             }
@@ -1152,7 +1152,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public int numberOfDownloads {
+        public string numberOfDownloads {
             get {
                 return this.numberOfDownloadsField;
             }
@@ -1406,7 +1406,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string titleField;
         
-        private int sortOrderField;
+        private string sortOrderField;
         
         private string sampleTypeField;
         
@@ -1456,7 +1456,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public int sortOrder {
+        public string sortOrder {
             get {
                 return this.sortOrderField;
             }
@@ -1588,7 +1588,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string minQtyField;
         
-        private int useConfigMinSaleQtyField;
+        private string useConfigMinSaleQtyField;
         
         private string minSaleQtyField;
         
@@ -1598,7 +1598,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool useConfigBackordersField;
         
-        private int backordersField;
+        private string backordersField;
         
         private bool useConfigNotifyStockQtyField;
         
@@ -1620,7 +1620,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private bool isDecimalDividedField;
         
-        private int stockStatusChangedAutoField;
+        private string stockStatusChangedAutoField;
         
         private CatalogInventoryDataStockItemExtensionInterface extensionAttributesField;
         
@@ -1770,7 +1770,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public int useConfigMinSaleQty {
+        public string useConfigMinSaleQty {
             get {
                 return this.useConfigMinSaleQtyField;
             }
@@ -1830,7 +1830,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
-        public int backorders {
+        public string backorders {
             get {
                 return this.backordersField;
             }
@@ -1962,7 +1962,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=25)]
-        public int stockStatusChangedAuto {
+        public string stockStatusChangedAuto {
             get {
                 return this.stockStatusChangedAutoField;
             }
@@ -2030,7 +2030,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string labelField;
         
-        private int positionField;
+        private string positionField;
         
         private bool positionFieldSpecified;
         
@@ -2096,7 +2096,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public int position {
+        public string position {
             get {
                 return this.positionField;
             }
@@ -2303,7 +2303,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string linkedProductTypeField;
         
-        private int positionField;
+        private string positionField;
         
         private CatalogDataProductLinkExtensionInterface extensionAttributesField;
         
@@ -2357,7 +2357,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public int position {
+        public string position {
             get {
                 return this.positionField;
             }
@@ -2455,7 +2455,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string typeField;
         
-        private int sortOrderField;
+        private string sortOrderField;
         
         private bool isRequireField;
         
@@ -2469,15 +2469,15 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string fileExtensionField;
         
-        private int maxCharactersField;
+        private string maxCharactersField;
         
         private bool maxCharactersFieldSpecified;
         
-        private int imageSizeXField;
+        private string imageSizeXField;
         
         private bool imageSizeXFieldSpecified;
         
-        private int imageSizeYField;
+        private string imageSizeYField;
         
         private bool imageSizeYFieldSpecified;
         
@@ -2547,7 +2547,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public int sortOrder {
+        public string sortOrder {
             get {
                 return this.sortOrderField;
             }
@@ -2631,7 +2631,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public int maxCharacters {
+        public string maxCharacters {
             get {
                 return this.maxCharactersField;
             }
@@ -2655,7 +2655,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
-        public int imageSizeX {
+        public string imageSizeX {
             get {
                 return this.imageSizeXField;
             }
@@ -2679,7 +2679,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
-        public int imageSizeY {
+        public string imageSizeY {
             get {
                 return this.imageSizeYField;
             }
@@ -2747,7 +2747,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         private string titleField;
         
-        private int sortOrderField;
+        private string sortOrderField;
         
         private string priceField;
         
@@ -2773,7 +2773,7 @@ namespace MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public int sortOrder {
+        public string sortOrder {
             get {
                 return this.sortOrderField;
             }
