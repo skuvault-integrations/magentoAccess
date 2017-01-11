@@ -129,9 +129,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 					reply = buffer.CreateMessage();
 					var originalMessage = buffer.CreateMessage();
 					var messageSerialized = originalMessage.ToString();
-					var property = originalMessage.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
-					if( property != null )
-						messageSerialized = "HttpStatusCode: " + property.StatusCode.ToString() + ", message:" + messageSerialized;
+
+					var httpPropertyName = HttpResponseMessageProperty.Name.ToString();
+					if( originalMessage.Properties.ContainsKey( httpPropertyName ) )
+					{
+						var property = originalMessage.Properties[ httpPropertyName ] as HttpResponseMessageProperty;
+						if( property != null )
+							messageSerialized = "HttpStatusCode: " + property.StatusCode.ToString() + ", message:" + messageSerialized;
+					}
 					MagentoLogger.LogTraceResponseMessage( messageSerialized );
 					return true;
 				}
