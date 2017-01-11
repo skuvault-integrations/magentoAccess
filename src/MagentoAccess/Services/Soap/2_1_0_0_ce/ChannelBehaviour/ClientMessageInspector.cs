@@ -22,7 +22,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
 			//trace
-			var logSucceed = this.TryToLogMessage( ref request );
+			var logSucceed = true;// this.TryToLogMessage( ref request );
 
 			//legacy behaviour
 			HttpRequestMessageProperty httpRequestMessage;
@@ -105,7 +105,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		public void AfterReceiveReply( ref Message reply, object correlationState )
 		{
 			//trace
-			var logSucceed = this.TryToLogMessage( ref reply );
+			var logSucceed = true;// this.TryToLogMessage( ref reply );
 
 			var prop =
 				reply.Properties[ HttpResponseMessageProperty.Name.ToString() ] as HttpResponseMessageProperty;
