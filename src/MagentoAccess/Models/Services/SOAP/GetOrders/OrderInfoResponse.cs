@@ -291,37 +291,37 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 					UpdatedAt = res.result.shipping_address.updated_at,
 				};
 			}
-			ShippingAddressId = res.result.shipping_address_id;
-			ShippingAmount = res.result.shipping_amount;
-			ShippingDescription = res.result.shipping_description;
-			ShippingFirstname = res.result.shipping_firstname;
-			ShippingLastname = res.result.shipping_lastname;
-			ShippingMethod = res.result.shipping_method;
-			ShippingName = res.result.shipping_name;
-			State = res.result.state;
-			Status = res.result.status;
+			this.ShippingAddressId = res.result.shipping_address_id;
+			this.ShippingAmount = res.result.shipping_amount;
+			this.ShippingDescription = res.result.shipping_description;
+			this.ShippingFirstname = res.result.shipping_firstname;
+			this.ShippingLastname = res.result.shipping_lastname;
+			this.ShippingMethod = res.result.shipping_method;
+			this.ShippingName = res.result.shipping_name;
+			this.State = res.result.state;
+			this.Status = res.result.status;
 
 			if( res.result.status_history != null )
 			{
-				StatusHistory = new List< StatusHistoryRecord >(
+				this.StatusHistory = new List< StatusHistoryRecord >(
 					res.result.status_history.Select( x => new StatusHistoryRecord( x ) ) );
 			}
-			StoreCurrencyCode = res.result.store_currency_code;
-			StoreId = res.result.store_id;
-			StoreName = res.result.store_name;
-			StoreToBaseRate = res.result.store_to_base_rate;
-			StoreToOrderRate = res.result.store_to_order_rate;
-			Subtotal = res.result.subtotal;
-			TaxAmount = res.result.tax_amount;
-			TotalCanceled = res.result.total_canceled;
-			TotalInvoiced = res.result.total_invoiced;
-			TotalOfflineRefunded = res.result.total_offline_refunded;
-			TotalOnlineRefunded = res.result.total_online_refunded;
-			TotalPaid = res.result.total_paid;
-			TotalQtyOrdered = res.result.total_qty_ordered;
-			TotalRefunded = res.result.total_refunded;
-			UpdatedAT = res.result.updated_at;
-			Weight = res.result.weight;
+			this.StoreCurrencyCode = res.result.store_currency_code;
+			this.StoreId = res.result.store_id;
+			this.StoreName = res.result.store_name;
+			this.StoreToBaseRate = res.result.store_to_base_rate;
+			this.StoreToOrderRate = res.result.store_to_order_rate;
+			this.Subtotal = res.result.subtotal;
+			this.TaxAmount = res.result.tax_amount;
+			this.TotalCanceled = res.result.total_canceled;
+			this.TotalInvoiced = res.result.total_invoiced;
+			this.TotalOfflineRefunded = res.result.total_offline_refunded;
+			this.TotalOnlineRefunded = res.result.total_online_refunded;
+			this.TotalPaid = res.result.total_paid;
+			this.TotalQtyOrdered = res.result.total_qty_ordered;
+			this.TotalRefunded = res.result.total_refunded;
+			this.UpdatedAT = res.result.updated_at;
+			this.Weight = res.result.weight;
 		}
 
 		public OrderInfoResponse( salesOrderRepositoryV1GetResponse1 response )
@@ -370,34 +370,34 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 				};
 				this.BillingAddress = billingAddress;
 			}
-			BillingAddressId = res.billingAddressId.ToString( CultureInfo.InvariantCulture );
+			this.BillingAddressId = res.billingAddressId.ToString( CultureInfo.InvariantCulture );
 			//BillingFirstname = res.billingFirstname;
 			//BillingLastname = res.billingLastname;
 			//BillingName = res.billingName;
-			CreatedAt = res.createdAt;
-			CustomerEmail = res.customerEmail;
-			CustomerFirstname = res.customerFirstname;
-			CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
-			CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
-			CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
-			CustomerLastname = res.customerLastname;
-			CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
-			DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
-			EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
+			this.CreatedAt = res.createdAt;
+			this.CustomerEmail = res.customerEmail;
+			this.CustomerFirstname = res.customerFirstname;
+			this.CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
+			this.CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
+			this.CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
+			this.CustomerLastname = res.customerLastname;
+			this.CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
+			this.DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
+			this.EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
 			//GiftMessage = res.giftMessage;
 			//GiftMessageId = res.giftMessageId;
-			GlobalCurrencyCode = res.globalCurrencyCode;
-			GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
-			IncrementId = res.incrementId;
+			this.GlobalCurrencyCode = res.globalCurrencyCode;
+			this.GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
+			this.IncrementId = res.incrementId;
 			//IsActive = res.isActive;
-			IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
 
 			if( res.items != null )
-				Items = res.items.Select( x => new OrderItemEntity( x ) );
+				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
 
-			OrderCurrencyCode = res.orderCurrencyCode;
-			OrderId = ( res.extOrderId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			ParentId = res.relationParentId;
+			this.OrderCurrencyCode = res.orderCurrencyCode;
+			this.OrderId = ( res.extOrderId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ParentId = res.relationParentId;
 
 			if( res.payment != null )
 			{
@@ -424,10 +424,10 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 					ShippingAmount = res.payment.shippingAmount.ToString( CultureInfo.InvariantCulture ),
 					//UpdatedAt = res.payment.updatedAt,
 				};
-				Payment = payment;
+				this.Payment = payment;
 			}
-			QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
-			RemoteIp = res.remoteIp;
+			this.QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
+			this.RemoteIp = res.remoteIp;
 			//if (res.shippingAddress != null)
 			//{
 			//	ShippingAddress = new ShippingAddress()
@@ -453,36 +453,36 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//	};
 			//}
 			//ShippingAddressId = res.shippingAddressId;
-			ShippingAmount = res.shippingAmount.ToString( CultureInfo.InvariantCulture );
-			ShippingDescription = res.shippingDescription;
+			this.ShippingAmount = (res.shippingAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ShippingDescription = res.shippingDescription;
 			//ShippingFirstname = res.shippingFirstname;
 			//ShippingLastname = res.shippingLastname;
 			//ShippingMethod = res.shippingMethod;
 			//ShippingName = res.shippingName;
-			State = res.state;
-			Status = res.status;
+			this.State = res.state;
+			this.Status = res.status;
 
 			if( res.statusHistories != null )
 			{
-				StatusHistory = new List< StatusHistoryRecord >(
+				this.StatusHistory = new List< StatusHistoryRecord >(
 					res.statusHistories.Select( x => new StatusHistoryRecord( x ) ) );
 			}
-			StoreCurrencyCode = res.storeCurrencyCode;
-			StoreId = res.storeId.ToString( CultureInfo.InvariantCulture );
-			StoreName = res.storeName;
-			StoreToBaseRate = ( res.storeToBaseRate ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			StoreToOrderRate = ( res.storeToOrderRate ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Subtotal = ( res.subtotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxAmount = ( res.taxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalCanceled = ( res.totalCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalInvoiced = ( res.totalInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalOfflineRefunded = ( res.totalOfflineRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalOnlineRefunded = ( res.totalOnlineRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalPaid = ( res.totalPaid ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalQtyOrdered = ( res.totalQtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TotalRefunded = ( res.totalRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			UpdatedAT = res.updatedAt;
-			Weight = ( res.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.StoreCurrencyCode = res.storeCurrencyCode;
+			this.StoreId = res.storeId.ToString( CultureInfo.InvariantCulture );
+			this.StoreName = res.storeName;
+			this.StoreToBaseRate = ( res.storeToBaseRate ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.StoreToOrderRate = ( res.storeToOrderRate ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Subtotal = ( res.subtotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxAmount = ( res.taxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalCanceled = ( res.totalCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalInvoiced = ( res.totalInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalOfflineRefunded = ( res.totalOfflineRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalOnlineRefunded = ( res.totalOnlineRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalPaid = ( res.totalPaid ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalQtyOrdered = ( res.totalQtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TotalRefunded = ( res.totalRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.UpdatedAT = res.updatedAt;
+			this.Weight = ( res.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 		}
 
 		public OrderInfoResponse( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1GetResponse1 response )
@@ -557,7 +557,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.IsVirtual = ( res.isVirtual ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 
 			if( res.items != null )
-				Items = res.items.Select( x => new OrderItemEntity( x ) );
+				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
 
 			this.OrderCurrencyCode = res.orderCurrencyCode;
 			this.OrderId = ( res.extOrderId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
@@ -628,7 +628,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 			if( res.statusHistories != null )
 			{
-				StatusHistory = new List< StatusHistoryRecord >(
+				this.StatusHistory = new List< StatusHistoryRecord >(
 					res.statusHistories.Select( x => new StatusHistoryRecord( x ) ) );
 			}
 			this.StoreCurrencyCode = res.storeCurrencyCode;
@@ -849,28 +849,28 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 		public OrderItemEntity( SalesDataOrderItemInterface salesOrderItemEntity )
 		{
-			AmountRefunded = ( salesOrderItemEntity.amountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			AppliedRuleIds = ( salesOrderItemEntity.appliedRuleIds ?? string.Empty );
-			BaseAmountRefunded = ( salesOrderItemEntity.baseAmountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseDiscountAmount = ( salesOrderItemEntity.baseDiscountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseDiscountInvoiced = ( salesOrderItemEntity.baseDiscountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseOriginalPrice = ( salesOrderItemEntity.baseOriginalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BasePrice = ( salesOrderItemEntity.basePrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseRowInvoiced = ( salesOrderItemEntity.baseRowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseRowTotal = ( salesOrderItemEntity.baseRowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseTaxAmount = ( salesOrderItemEntity.baseTaxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseTaxBeforeDiscount = ( salesOrderItemEntity.baseTaxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseTaxInvoiced = ( salesOrderItemEntity.baseTaxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxAppliedAmount = ( salesOrderItemEntity.baseWeeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxDisposition = ( salesOrderItemEntity.baseWeeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxRowDisposition = ( salesOrderItemEntity.baseWeeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Cost = ( salesOrderItemEntity.baseCost ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			CreatedAt = ( salesOrderItemEntity.createdAt ?? string.Empty );
-			DiscountAmount = ( salesOrderItemEntity.discountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			DiscountInvoiced = ( salesOrderItemEntity.discountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			DiscountPercent = ( salesOrderItemEntity.discountPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			FreeShipping = salesOrderItemEntity.freeShipping.ToString( CultureInfo.InvariantCulture );
+			this.AmountRefunded = ( salesOrderItemEntity.amountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.AppliedRuleIds = ( salesOrderItemEntity.appliedRuleIds ?? string.Empty );
+			this.BaseAmountRefunded = ( salesOrderItemEntity.baseAmountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseDiscountAmount = ( salesOrderItemEntity.baseDiscountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseDiscountInvoiced = ( salesOrderItemEntity.baseDiscountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseOriginalPrice = ( salesOrderItemEntity.baseOriginalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BasePrice = ( salesOrderItemEntity.basePrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseRowInvoiced = ( salesOrderItemEntity.baseRowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseRowTotal = ( salesOrderItemEntity.baseRowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxAmount = ( salesOrderItemEntity.baseTaxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxBeforeDiscount = ( salesOrderItemEntity.baseTaxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxInvoiced = ( salesOrderItemEntity.baseTaxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxAppliedAmount = ( salesOrderItemEntity.baseWeeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxDisposition = ( salesOrderItemEntity.baseWeeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxRowDisposition = ( salesOrderItemEntity.baseWeeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Cost = ( salesOrderItemEntity.baseCost ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.CreatedAt = ( salesOrderItemEntity.createdAt ?? string.Empty );
+			this.DiscountAmount = ( salesOrderItemEntity.discountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.DiscountInvoiced = ( salesOrderItemEntity.discountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.DiscountPercent = ( salesOrderItemEntity.discountPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.FreeShipping = salesOrderItemEntity.freeShipping.ToString( CultureInfo.InvariantCulture );
 			//GiftMessage = salesOrderItemEntity.giftMessage;
 			//GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
 			//GiftMessageId = salesOrderItemEntity.giftMessageId;
@@ -880,93 +880,93 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Name = ( salesOrderItemEntity.name ?? string.Empty );
 			this.NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
 			this.OrderId = salesOrderItemEntity.orderId.ToString( CultureInfo.InvariantCulture );
-			OriginalPrice = ( salesOrderItemEntity.originalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Price = ( salesOrderItemEntity.price ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			ProductId = salesOrderItemEntity.productId.ToString( CultureInfo.InvariantCulture );
+			this.OriginalPrice = ( salesOrderItemEntity.originalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Price = ( salesOrderItemEntity.price ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ProductId = salesOrderItemEntity.productId.ToString( CultureInfo.InvariantCulture );
 			//ProductOptions = salesOrderItemEntity.productOptions;
-			ProductType = ( salesOrderItemEntity.productType ?? string.Empty );
-			QtyCanceled = ( salesOrderItemEntity.qtyCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyInvoiced = ( salesOrderItemEntity.qtyInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyOrdered = ( salesOrderItemEntity.qtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyRefunded = ( salesOrderItemEntity.qtyRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyShipped = ( salesOrderItemEntity.qtyShipped ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
-			RowInvoiced = ( salesOrderItemEntity.rowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			RowTotal = ( salesOrderItemEntity.rowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			RowWeight = ( salesOrderItemEntity.rowWeight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Sku = ( salesOrderItemEntity.sku ?? string.Empty );
-			TaxAmount = ( salesOrderItemEntity.taxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxBeforeDiscount = ( salesOrderItemEntity.taxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxInvoiced = ( salesOrderItemEntity.taxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxPercent = ( salesOrderItemEntity.taxPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			UpdatedAt = ( salesOrderItemEntity.updatedAt ?? string.Empty );
-			WeeeTaxApplied = ( salesOrderItemEntity.weeeTaxApplied ?? string.Empty );
-			WeeeTaxAppliedAmount = ( salesOrderItemEntity.weeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			WeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			WeeeTaxDisposition = ( salesOrderItemEntity.weeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			WeeeTaxRowDisposition = ( salesOrderItemEntity.weeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Weight = ( salesOrderItemEntity.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ProductType = ( salesOrderItemEntity.productType ?? string.Empty );
+			this.QtyCanceled = ( salesOrderItemEntity.qtyCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyInvoiced = ( salesOrderItemEntity.qtyInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyOrdered = ( salesOrderItemEntity.qtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyRefunded = ( salesOrderItemEntity.qtyRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyShipped = ( salesOrderItemEntity.qtyShipped ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
+			this.RowInvoiced = ( salesOrderItemEntity.rowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.RowTotal = ( salesOrderItemEntity.rowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.RowWeight = ( salesOrderItemEntity.rowWeight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Sku = ( salesOrderItemEntity.sku ?? string.Empty );
+			this.TaxAmount = ( salesOrderItemEntity.taxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxBeforeDiscount = ( salesOrderItemEntity.taxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxInvoiced = ( salesOrderItemEntity.taxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxPercent = ( salesOrderItemEntity.taxPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.UpdatedAt = ( salesOrderItemEntity.updatedAt ?? string.Empty );
+			this.WeeeTaxApplied = ( salesOrderItemEntity.weeeTaxApplied ?? string.Empty );
+			this.WeeeTaxAppliedAmount = ( salesOrderItemEntity.weeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.WeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.WeeeTaxDisposition = ( salesOrderItemEntity.weeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.WeeeTaxRowDisposition = ( salesOrderItemEntity.weeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Weight = ( salesOrderItemEntity.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 		}
 
 		public OrderItemEntity( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesDataOrderItemInterface salesOrderItemEntity )
 		{
-			AmountRefunded = ( salesOrderItemEntity.amountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			AppliedRuleIds = ( salesOrderItemEntity.appliedRuleIds ?? string.Empty );
-			BaseAmountRefunded = ( salesOrderItemEntity.baseAmountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseDiscountAmount = ( salesOrderItemEntity.baseDiscountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseDiscountInvoiced = ( salesOrderItemEntity.baseDiscountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseOriginalPrice = ( salesOrderItemEntity.baseOriginalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BasePrice = ( salesOrderItemEntity.basePrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseRowInvoiced = ( salesOrderItemEntity.baseRowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseRowTotal = ( salesOrderItemEntity.baseRowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseTaxAmount = ( salesOrderItemEntity.baseTaxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseTaxBeforeDiscount = ( salesOrderItemEntity.baseTaxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseTaxInvoiced = ( salesOrderItemEntity.baseTaxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxAppliedAmount = ( salesOrderItemEntity.baseWeeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxDisposition = ( salesOrderItemEntity.baseWeeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			BaseWeeeTaxRowDisposition = ( salesOrderItemEntity.baseWeeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Cost = ( salesOrderItemEntity.baseCost ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			CreatedAt = ( salesOrderItemEntity.createdAt ?? string.Empty );
-			DiscountAmount = ( salesOrderItemEntity.discountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			DiscountInvoiced = ( salesOrderItemEntity.discountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			DiscountPercent = ( salesOrderItemEntity.discountPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			FreeShipping = salesOrderItemEntity.freeShipping.ToString( CultureInfo.InvariantCulture );
-			//GiftMessage = salesOrderItemEntity.giftMessage;
-			//GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
-			//GiftMessageId = salesOrderItemEntity.giftMessageId;
-			IsQtyDecimal = salesOrderItemEntity.isQtyDecimal.ToString( CultureInfo.InvariantCulture );
-			IsVirtual = salesOrderItemEntity.isVirtual.ToString( CultureInfo.InvariantCulture );
-			ItemId = salesOrderItemEntity.itemId.ToString( CultureInfo.InvariantCulture );
-			Name = ( salesOrderItemEntity.name ?? string.Empty );
-			NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
-			this.OrderId = salesOrderItemEntity.orderId.ToString( CultureInfo.InvariantCulture );
-			OriginalPrice = ( salesOrderItemEntity.originalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Price = ( salesOrderItemEntity.price ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			ProductId = salesOrderItemEntity.productId.ToString( CultureInfo.InvariantCulture );
-			//ProductOptions = salesOrderItemEntity.productOptions;
-			ProductType = ( salesOrderItemEntity.productType ?? string.Empty );
-			QtyCanceled = ( salesOrderItemEntity.qtyCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyInvoiced = ( salesOrderItemEntity.qtyInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyOrdered = ( salesOrderItemEntity.qtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyRefunded = ( salesOrderItemEntity.qtyRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QtyShipped = ( salesOrderItemEntity.qtyShipped ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
-			RowInvoiced = ( salesOrderItemEntity.rowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			RowTotal = ( salesOrderItemEntity.rowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			RowWeight = ( salesOrderItemEntity.rowWeight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Sku = ( salesOrderItemEntity.sku ?? string.Empty );
-			TaxAmount = ( salesOrderItemEntity.taxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxBeforeDiscount = ( salesOrderItemEntity.taxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxInvoiced = ( salesOrderItemEntity.taxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			TaxPercent = ( salesOrderItemEntity.taxPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			UpdatedAt = ( salesOrderItemEntity.updatedAt ?? string.Empty );
-			WeeeTaxApplied = ( salesOrderItemEntity.weeeTaxApplied ?? string.Empty );
-			WeeeTaxAppliedAmount = ( salesOrderItemEntity.weeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			WeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			WeeeTaxDisposition = ( salesOrderItemEntity.weeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			WeeeTaxRowDisposition = ( salesOrderItemEntity.weeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			Weight = ( salesOrderItemEntity.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.AmountRefunded = ( salesOrderItemEntity.amountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.AppliedRuleIds = ( salesOrderItemEntity.appliedRuleIds ?? string.Empty );
+			this.BaseAmountRefunded = ( salesOrderItemEntity.baseAmountRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseDiscountAmount = ( salesOrderItemEntity.baseDiscountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseDiscountInvoiced = ( salesOrderItemEntity.baseDiscountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseOriginalPrice = ( salesOrderItemEntity.baseOriginalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BasePrice = ( salesOrderItemEntity.basePrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseRowInvoiced = ( salesOrderItemEntity.baseRowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseRowTotal = ( salesOrderItemEntity.baseRowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxAmount = ( salesOrderItemEntity.baseTaxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxBeforeDiscount = ( salesOrderItemEntity.baseTaxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseTaxInvoiced = ( salesOrderItemEntity.baseTaxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxAppliedAmount = ( salesOrderItemEntity.baseWeeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxDisposition = ( salesOrderItemEntity.baseWeeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxRowDisposition = ( salesOrderItemEntity.baseWeeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Cost = ( salesOrderItemEntity.baseCost ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.CreatedAt = ( salesOrderItemEntity.createdAt ?? string.Empty );
+			this.DiscountAmount = ( salesOrderItemEntity.discountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.DiscountInvoiced = ( salesOrderItemEntity.discountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.DiscountPercent = ( salesOrderItemEntity.discountPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.FreeShipping = ( salesOrderItemEntity.freeShipping ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			//this.GiftMessage = salesOrderItemEntity.giftMessage;
+			//this.GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
+			//this.GiftMessageId = salesOrderItemEntity.giftMessageId;
+			this.IsQtyDecimal = ( salesOrderItemEntity.isQtyDecimal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = ( salesOrderItemEntity.isVirtual ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ItemId = ( salesOrderItemEntity.itemId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Name = ( salesOrderItemEntity.name ?? string.Empty );
+			this.NoDiscount = ( salesOrderItemEntity.noDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.OrderId = ( salesOrderItemEntity.orderId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.OriginalPrice = ( salesOrderItemEntity.originalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Price = ( salesOrderItemEntity.price ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ProductId = ( salesOrderItemEntity.productId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			//this.ProductOptions = salesOrderItemEntity.productOptions;
+			this.ProductType = ( salesOrderItemEntity.productType ?? string.Empty );
+			this.QtyCanceled = ( salesOrderItemEntity.qtyCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyInvoiced = ( salesOrderItemEntity.qtyInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyOrdered = ( salesOrderItemEntity.qtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyRefunded = ( salesOrderItemEntity.qtyRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QtyShipped = ( salesOrderItemEntity.qtyShipped ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
+			this.RowInvoiced = ( salesOrderItemEntity.rowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.RowTotal = ( salesOrderItemEntity.rowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.RowWeight = ( salesOrderItemEntity.rowWeight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Sku = ( salesOrderItemEntity.sku ?? string.Empty );
+			this.TaxAmount = ( salesOrderItemEntity.taxAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxBeforeDiscount = ( salesOrderItemEntity.taxBeforeDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxInvoiced = ( salesOrderItemEntity.taxInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.TaxPercent = ( salesOrderItemEntity.taxPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.UpdatedAt = ( salesOrderItemEntity.updatedAt ?? string.Empty );
+			this.WeeeTaxApplied = ( salesOrderItemEntity.weeeTaxApplied ?? string.Empty );
+			this.WeeeTaxAppliedAmount = ( salesOrderItemEntity.weeeTaxAppliedAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.WeeeTaxAppliedRowAmount = ( salesOrderItemEntity.weeeTaxAppliedRowAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.WeeeTaxDisposition = ( salesOrderItemEntity.weeeTaxDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.WeeeTaxRowDisposition = ( salesOrderItemEntity.weeeTaxRowDisposition ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.Weight = ( salesOrderItemEntity.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 		}
 
 		public string OrderId { get; set; }
