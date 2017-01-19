@@ -13,6 +13,10 @@ namespace MagentoAccess.Misc
 {
 	internal static class Extensions
 	{
+		public static string ToStringEmptyOnNull( this string str, CultureInfo culture )
+		{
+			return ( str ?? string.Empty ).ToString( culture );
+		}
 		public static string ToStringUtcIso8601( this DateTime dateTime )
 		{
 			var universalTime = dateTime.ToUniversalTime();

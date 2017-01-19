@@ -451,7 +451,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			}
 			//this.BillingName = salesOrderListEntity.billingName;
 			this.CanShipPartially = salesOrderListEntity.canShipPartially.ToString( cultureToString );
-			this.CanShipPartiallyItem = salesOrderListEntity.canShipPartiallyItem.ToString( cultureToString );
+			this.CanShipPartiallyItem = ( salesOrderListEntity.canShipPartiallyItem ?? string.Empty ).ToString( cultureToString );
 			this.CouponCode = salesOrderListEntity.couponCode;
 			this.CreatedAt = salesOrderListEntity.createdAt;
 			//this.CustomerBalanceAmount = salesOrderListEntity.customerBalanceAmount;
@@ -461,14 +461,14 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.CustomerDob = salesOrderListEntity.customerDob;
 			this.CustomerEmail = salesOrderListEntity.customerEmail;
 			this.CustomerFirstname = salesOrderListEntity.customerFirstname;
-			this.CustomerGender = salesOrderListEntity.customerGender.ToString( cultureToString );
-			this.CustomerGroupId = salesOrderListEntity.customerGroupId.ToString( cultureToString );
-			this.CustomerId = salesOrderListEntity.customerId.ToString( cultureToString );
-			this.CustomerIsGuest = salesOrderListEntity.customerIsGuest.ToString( cultureToString );
+			this.CustomerGender = ( salesOrderListEntity.customerGender ?? string.Empty ).ToString( cultureToString );
+			this.CustomerGroupId = ( salesOrderListEntity.customerGroupId ?? string.Empty ).ToString( cultureToString );
+			this.CustomerId = ( salesOrderListEntity.customerId ?? string.Empty ).ToString( cultureToString );
+			this.CustomerIsGuest = ( salesOrderListEntity.customerIsGuest ?? string.Empty ).ToString( cultureToString );
 			this.CustomerLastname = salesOrderListEntity.customerLastname;
 			this.CustomerMiddlename = salesOrderListEntity.customerMiddlename;
 			this.CustomerNote = salesOrderListEntity.customerNote;
-			this.CustomerNoteNotify = salesOrderListEntity.customerNoteNotify.ToString( cultureToString );
+			this.CustomerNoteNotify = ( salesOrderListEntity.customerNoteNotify ?? string.Empty ).ToString( cultureToString );
 			this.CustomerPrefix = salesOrderListEntity.customerPrefix;
 			this.CustomerSuffix = salesOrderListEntity.customerSuffix;
 			this.CustomerTaxvat = salesOrderListEntity.customerTaxvat;
@@ -477,8 +477,8 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.DiscountDescription = salesOrderListEntity.discountDescription;
 			this.DiscountInvoiced = ( salesOrderListEntity.discountInvoiced ?? string.Empty ).ToString( cultureToString );
 			this.DiscountRefunded = ( salesOrderListEntity.discountRefunded ?? string.Empty ).ToString( cultureToString );
-			this.EditIncrement = salesOrderListEntity.editIncrement.ToString( cultureToString );
-			this.EmailSent = salesOrderListEntity.emailSent.ToString( cultureToString );
+			this.EditIncrement = ( salesOrderListEntity.editIncrement ?? string.Empty ).ToString( cultureToString );
+			this.EmailSent = ( salesOrderListEntity.emailSent ?? string.Empty ).ToString( cultureToString );
 			this.ExtCustomerId = salesOrderListEntity.extCustomerId;
 			this.ExtOrderId = salesOrderListEntity.extOrderId;
 			//this.Firstname = salesOrderListEntity.firstname;
@@ -495,7 +495,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.HoldBeforeState = salesOrderListEntity.holdBeforeState;
 			this.HoldBeforeStatus = salesOrderListEntity.holdBeforeStatus;
 			this.incrementId = salesOrderListEntity.incrementId;
-			this.IsVirtual = salesOrderListEntity.isVirtual.ToString( cultureToString );
+			this.IsVirtual = ( salesOrderListEntity.isVirtual ?? string.Empty ).ToString( cultureToString );
 			//this.Lastname = salesOrderListEntity.lastName;
 			this.OrderCurrencyCode = salesOrderListEntity.orderCurrencyCode;
 			this.OrderId = salesOrderListEntity.extOrderId;
@@ -505,8 +505,8 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//this.PaypalIpnCustomerNotified = salesOrderListEntity.paypalIpnCustomerNotified;
 			//this.Postcode = salesOrderListEntity.postcode;
 			this.ProtectCode = salesOrderListEntity.protectCode;
-			this.QuoteAddressId = salesOrderListEntity.quoteAddressId.ToString( cultureToString );
-			this.QuoteId = salesOrderListEntity.quoteId.ToString( cultureToString );
+			this.QuoteAddressId = ( salesOrderListEntity.quoteAddressId ?? string.Empty ).ToString( cultureToString );
+			this.QuoteId = ( salesOrderListEntity.quoteId ?? string.Empty ).ToString( cultureToString );
 			this.RelationChildId = salesOrderListEntity.relationChildId;
 			this.RelationChildRealId = salesOrderListEntity.relationChildRealId;
 			this.RelationParentId = salesOrderListEntity.relationParentId;
@@ -563,7 +563,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.UpdatedAt = ( salesOrderListEntity.updatedAt ?? string.Empty ).ToString( cultureToString );
 			this.Weight = ( salesOrderListEntity.weight ?? string.Empty ).ToString( cultureToString );
 			this.XForwardedFOR = salesOrderListEntity.xForwardedFor;
-			this.OrderId = salesOrderListEntity.entityId.ToString();
+			this.OrderId = ( salesOrderListEntity.entityId ?? string.Empty ).ToString();
 		}
 
 		public Order( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesDataOrderInterface salesOrderListEntity )

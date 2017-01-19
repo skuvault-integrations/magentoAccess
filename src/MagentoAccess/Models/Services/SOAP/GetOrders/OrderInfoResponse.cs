@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
@@ -377,20 +378,20 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.CreatedAt = res.createdAt;
 			this.CustomerEmail = res.customerEmail;
 			this.CustomerFirstname = res.customerFirstname;
-			this.CustomerGroupId = res.customerGroupId.ToString( CultureInfo.InvariantCulture );
-			this.CustomerId = res.customerId.ToString( CultureInfo.InvariantCulture );
-			this.CustomerIsGuest = res.customerIsGuest.ToString( CultureInfo.InvariantCulture );
+			this.CustomerGroupId = ( res.customerGroupId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.CustomerId = ( res.customerId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.CustomerIsGuest = ( res.customerIsGuest ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.CustomerLastname = res.customerLastname;
 			this.CustomerNoteNotify = res.customerNoteNotify.ToString( CultureInfo.InvariantCulture );
 			this.DiscountAmount = res.discountAmount.ToString( CultureInfo.InvariantCulture );
-			this.EmailSent = res.emailSent.ToString( CultureInfo.InvariantCulture );
+			this.EmailSent = ( res.emailSent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			//GiftMessage = res.giftMessage;
 			//GiftMessageId = res.giftMessageId;
 			this.GlobalCurrencyCode = res.globalCurrencyCode;
 			this.GrandTotal = res.grandTotal.ToString( CultureInfo.InvariantCulture );
 			this.IncrementId = res.incrementId;
 			//IsActive = res.isActive;
-			this.IsVirtual = res.isVirtual.ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = ( res.isVirtual ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 
 			if( res.items != null )
 				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
@@ -426,7 +427,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 				};
 				this.Payment = payment;
 			}
-			this.QuoteId = res.quoteId.ToString( CultureInfo.InvariantCulture );
+			this.QuoteId = ( res.quoteId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RemoteIp = res.remoteIp;
 			//if (res.shippingAddress != null)
 			//{
@@ -554,7 +555,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.GrandTotal = ( res.grandTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.IncrementId = res.incrementId;
 			//IsActive = res.isActive;
-			this.IsVirtual = ( res.isVirtual ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = ( res.isVirtual.ToStringEmptyOnNull( CultureInfo.InvariantCulture ) ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 
 			if( res.items != null )
 				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
@@ -870,19 +871,19 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.DiscountAmount = ( salesOrderItemEntity.discountAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.DiscountInvoiced = ( salesOrderItemEntity.discountInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.DiscountPercent = ( salesOrderItemEntity.discountPercent ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			this.FreeShipping = salesOrderItemEntity.freeShipping.ToString( CultureInfo.InvariantCulture );
+			this.FreeShipping = ( salesOrderItemEntity.freeShipping ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			//GiftMessage = salesOrderItemEntity.giftMessage;
 			//GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
 			//GiftMessageId = salesOrderItemEntity.giftMessageId;
-			this.IsQtyDecimal = salesOrderItemEntity.isQtyDecimal.ToString( CultureInfo.InvariantCulture );
-			this.IsVirtual = salesOrderItemEntity.isVirtual.ToString( CultureInfo.InvariantCulture );
-			this.ItemId = salesOrderItemEntity.itemId.ToString( CultureInfo.InvariantCulture );
+			this.IsQtyDecimal = ( salesOrderItemEntity.isQtyDecimal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = ( salesOrderItemEntity.isVirtual ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ItemId = ( salesOrderItemEntity.itemId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.Name = ( salesOrderItemEntity.name ?? string.Empty );
-			this.NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
-			this.OrderId = salesOrderItemEntity.orderId.ToString( CultureInfo.InvariantCulture );
+			this.NoDiscount = ( salesOrderItemEntity.noDiscount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.OrderId = ( salesOrderItemEntity.orderId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.OriginalPrice = ( salesOrderItemEntity.originalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.Price = ( salesOrderItemEntity.price ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			this.ProductId = salesOrderItemEntity.productId.ToString( CultureInfo.InvariantCulture );
+			this.ProductId = ( salesOrderItemEntity.productId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			//ProductOptions = salesOrderItemEntity.productOptions;
 			this.ProductType = ( salesOrderItemEntity.productType ?? string.Empty );
 			this.QtyCanceled = ( salesOrderItemEntity.qtyCanceled ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
@@ -890,7 +891,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.QtyOrdered = ( salesOrderItemEntity.qtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.QtyRefunded = ( salesOrderItemEntity.qtyRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.QtyShipped = ( salesOrderItemEntity.qtyShipped ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			this.QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
+			this.QuoteItemId = ( salesOrderItemEntity.quoteItemId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RowInvoiced = ( salesOrderItemEntity.rowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RowTotal = ( salesOrderItemEntity.rowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RowWeight = ( salesOrderItemEntity.rowWeight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
@@ -951,7 +952,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.QtyOrdered = ( salesOrderItemEntity.qtyOrdered ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.QtyRefunded = ( salesOrderItemEntity.qtyRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.QtyShipped = ( salesOrderItemEntity.qtyShipped ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
-			this.QuoteItemId = salesOrderItemEntity.quoteItemId.ToString( CultureInfo.InvariantCulture );
+			this.QuoteItemId = salesOrderItemEntity.quoteItemId.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
 			this.RowInvoiced = ( salesOrderItemEntity.rowInvoiced ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RowTotal = ( salesOrderItemEntity.rowTotal ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RowWeight = ( salesOrderItemEntity.rowWeight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
