@@ -874,11 +874,11 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//GiftMessage = salesOrderItemEntity.giftMessage;
 			//GiftMessageAvailable = salesOrderItemEntity.giftMessageAvailable;
 			//GiftMessageId = salesOrderItemEntity.giftMessageId;
-			IsQtyDecimal = salesOrderItemEntity.isQtyDecimal.ToString( CultureInfo.InvariantCulture );
-			IsVirtual = salesOrderItemEntity.isVirtual.ToString( CultureInfo.InvariantCulture );
-			ItemId = salesOrderItemEntity.itemId.ToString( CultureInfo.InvariantCulture );
-			Name = ( salesOrderItemEntity.name ?? string.Empty );
-			NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
+			this.IsQtyDecimal = salesOrderItemEntity.isQtyDecimal.ToString( CultureInfo.InvariantCulture );
+			this.IsVirtual = salesOrderItemEntity.isVirtual.ToString( CultureInfo.InvariantCulture );
+			this.ItemId = salesOrderItemEntity.itemId.ToString( CultureInfo.InvariantCulture );
+			this.Name = ( salesOrderItemEntity.name ?? string.Empty );
+			this.NoDiscount = salesOrderItemEntity.noDiscount.ToString( CultureInfo.InvariantCulture );
 			this.OrderId = salesOrderItemEntity.orderId.ToString( CultureInfo.InvariantCulture );
 			OriginalPrice = ( salesOrderItemEntity.originalPrice ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			Price = ( salesOrderItemEntity.price ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
