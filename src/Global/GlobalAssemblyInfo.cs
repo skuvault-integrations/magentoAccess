@@ -26,5 +26,6 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 // Keep in track with CA API version
+// 2.4.8.0 - magento 2 supported, 8 build, 4 subversion (includes significant features and codechanges)
 
-[ assembly : AssemblyVersion( "2.4.7.0" ) ]
+[ assembly : AssemblyVersion( "2.4.8.0" ) ]
