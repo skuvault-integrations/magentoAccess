@@ -322,16 +322,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException ).ConfigureAwait(false);
 		}
 
-		public string ToJsonSoapInfo()
-		{
-			return string.Format( "{{BaseMagentoUrl:{0}, ApiUser:{1},ApiKey:{2},Store:{3}}}",
-				string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl,
-				string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser,
-				string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey,
-				string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store
-				);
-		}
-
 		protected void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
@@ -408,24 +398,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
 				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 			return privateClient;
-		}
-
-		protected string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
-		{
-			mark = mark ?? Mark.Blank();
-			var connectionInfo = this.ToJsonSoapInfo();
-			var str = string.Format(
-				"{{MethodName:{0}, ConnectionInfo:{1}, MethodParameters:{2}, Mark:\"{3}\"{4}{5}{6}{7}}}",
-				memberName,
-				connectionInfo,
-				methodParameters,
-				mark,
-				string.IsNullOrWhiteSpace( errors ) ? string.Empty : ", Errors:" + errors,
-				string.IsNullOrWhiteSpace( methodResult ) ? string.Empty : ", Result:" + methodResult,
-				string.IsNullOrWhiteSpace( notes ) ? string.Empty : ", Notes:" + notes,
-				string.IsNullOrWhiteSpace( additionalInfo ) ? string.Empty : ", AdditionalInfo: " + additionalInfo
-				);
-			return str;
 		}
 
 		#region JustForTesting
@@ -796,6 +768,34 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				}
 				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetWithAsync )}", exc );
 			}
+		}
+
+		public string ToJsonSoapInfo()
+		{
+			return string.Format( "{{BaseMagentoUrl:{0}, ApiUser:{1},ApiKey:{2},Store:{3}}}",
+				string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl,
+				string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser,
+				string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey,
+				string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store
+				);
+		}
+
+		private string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
+		{
+			mark = mark ?? Mark.Blank();
+			var connectionInfo = this.ToJsonSoapInfo();
+			var str = string.Format(
+				"{{MethodName:{0}, ConnectionInfo:{1}, MethodParameters:{2}, Mark:\"{3}\"{4}{5}{6}{7}}}",
+				memberName,
+				connectionInfo,
+				methodParameters,
+				mark,
+				string.IsNullOrWhiteSpace( errors ) ? string.Empty : ", Errors:" + errors,
+				string.IsNullOrWhiteSpace( methodResult ) ? string.Empty : ", Result:" + methodResult,
+				string.IsNullOrWhiteSpace( notes ) ? string.Empty : ", Notes:" + notes,
+				string.IsNullOrWhiteSpace( additionalInfo ) ? string.Empty : ", AdditionalInfo: " + additionalInfo
+				);
+			return str;
 		}
 	}
 }
