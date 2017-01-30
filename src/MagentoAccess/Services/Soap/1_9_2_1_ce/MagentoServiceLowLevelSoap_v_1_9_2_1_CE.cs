@@ -159,22 +159,40 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			try
 			{
-				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
+				Func< int, int, Func< int, string >, bool,bool, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1, removeSpecialSymbols,skipExceptions ) =>
 				{
-					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
+					try
+					{
+						var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
+						if( removeSpecialSymbols )
+							sourceList.RemoveAll( x => x == "%00" );
+						var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+						var prods = productsResponses.SelectMany( x => x.Products ).ToList();
 
-					if( sourceList.RemoveAll( x => x == "%00" ) > 0 )
-						sourceList.Add( "%*00" );
-
-					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
-					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
-					return prods;
+						return prods;
+					}
+					catch( Exception e )
+					{
+						if( skipExceptions )
+						{
+							this.LogTraceGetResponseException( e );
+							return new List< SoapProduct >();
+						}
+						else
+							throw;
+					}
 				};
 
 				//10..99(9)
-				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ) ).ConfigureAwait( false ) ).ToList();
+				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ), true, false ).ConfigureAwait( false ) ).ToList();
 				//0..9
-				productsMainPart.AddRange( await productsSelector( 0, 10, x => x.ToString( "D1" ) ).ConfigureAwait( false ) );
+				productsMainPart.AddRange( await productsSelector( 0, 10, x => x.ToString( "D1" ), true, false ).ConfigureAwait( false ) );
+				//special symbols
+				var productsWithSpecialSymbols = await productsSelector( 0, 1, x => "%*00", false, true ).ConfigureAwait( false );
+				productsWithSpecialSymbols.AddRange( await productsSelector( 0, 1, x => "%00", false, true ).ConfigureAwait( false ) );
+				productsWithSpecialSymbols = productsWithSpecialSymbols.GroupBy( x => x.Sku ).Select( x => x.First() ).ToList();
+
+				productsMainPart.AddRange( productsWithSpecialSymbols );
 				var soapGetProductsResponse = new SoapGetProductsResponse { Products = productsMainPart };
 
 				return soapGetProductsResponse;
