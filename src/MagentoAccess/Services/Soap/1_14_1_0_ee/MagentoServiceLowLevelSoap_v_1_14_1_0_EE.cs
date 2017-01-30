@@ -28,7 +28,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 {
-	internal class MagentoServiceLowLevelSoap_v_1_14_1_0_EE : IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevelSoap_v_1_14_1_0_EE : IMagentoServiceLowLevelSoap
 	{
 		public string ApiUser { get; private set; }
 
@@ -201,107 +201,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			get { return false; }
 		}
-
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
-		{
-			try
-			{
-				filters filters;
-
-				if( string.IsNullOrWhiteSpace( this.Store ) )
-					filters = new filters { complex_filter = new complexFilter[ 2 ] };
-				else
-				{
-					filters = new filters { complex_filter = new complexFilter[ 3 ] };
-					filters.complex_filter[ 2 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
-				}
-
-				filters.complex_filter[ 1 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "from", value = modifiedFrom.ToSoapParameterString() } };
-				filters.complex_filter[ 0 ] = new complexFilter { key = "updated_at", value = new associativeEntity { key = "to", value = modifiedTo.ToSoapParameterString() } };
-
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
-
-				var res = new salesOrderListResponse();
-
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderListAsync( sessionId.SessionId, filters ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				//crutch for magento 1.7 
-				res.result = res.result.Where( x => Extensions.ToDateTimeOrDefault( x.updated_at ) >= modifiedFrom && Extensions.ToDateTimeOrDefault( x.updated_at ) <= modifiedTo ).ToArray();
-
-				return new GetOrdersResponse( res );
-			}
-			catch( Exception exc )
-			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync(modifiedFrom:{0},modifiedTo{1})", modifiedFrom, modifiedTo ), exc );
-			}
-		}
-
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
-		{
-			var ordersIdsAgregated = string.Empty;
-			try
-			{
-				ordersIdsAgregated = string.Join( ",", ordersIds );
-
-				filters filters;
-				if( string.IsNullOrWhiteSpace( this.Store ) )
-					filters = new filters { complex_filter = new complexFilter[ 1 ] };
-				else
-				{
-					filters = new filters { complex_filter = new complexFilter[ 2 ] };
-					filters.complex_filter[ 1 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
-				}
-
-				filters.complex_filter[ 0 ] = new complexFilter { key = "increment_id", value = new associativeEntity { key = "in", value = ordersIdsAgregated } };
-
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
-
-				var res = new salesOrderListResponse();
-
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderListAsync( sessionId.SessionId, filters ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				return new GetOrdersResponse( res );
-			}
-			catch( Exception exc )
-			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrdersAsync({0})", ordersIdsAgregated ), exc );
-			}
-		}
-
+		
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
 		{
 			if( filters.complex_filter == null )
@@ -716,41 +616,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			catch( Exception exc )
 			{
 				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
-			}
-		}
-
-		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
-		{
-			try
-			{
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 300000;
-
-				var res = new salesOrderInfoResponse();
-
-				var privateClient = await this.CreateMagentoServiceClientAsync( this.BaseMagentoUrl ).ConfigureAwait( false );
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderInfoAsync( sessionId.SessionId, incrementId ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				return new OrderInfoResponse( res );
-			}
-			catch( Exception exc )
-			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetOrderAsync(incrementId:{0})", incrementId ), exc );
 			}
 		}
 
