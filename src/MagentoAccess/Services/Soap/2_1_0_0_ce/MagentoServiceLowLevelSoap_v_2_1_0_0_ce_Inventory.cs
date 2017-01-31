@@ -572,6 +572,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
+		public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+		{
+			throw new NotImplementedException();
+		}
+
 		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageOld( int currentPage, int pageSize )
 		{
 			try

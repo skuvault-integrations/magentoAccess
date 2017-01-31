@@ -57,4 +57,9 @@ namespace MagentoAccess.Services.Soap
 		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );
 		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes );
 	}
+
+	internal interface IMagentoServiceLowLevelSoapGetProductsBySku
+	{
+		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus );
+	}
 }

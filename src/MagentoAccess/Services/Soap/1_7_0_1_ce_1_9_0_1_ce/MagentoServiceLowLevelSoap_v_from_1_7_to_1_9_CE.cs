@@ -62,6 +62,10 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 		protected readonly int SessionIdLifeTime;
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return false; }
+		}
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
@@ -186,84 +190,6 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
 			return customBinding;
-		}
-
-		public bool GetStockItemsWithoutSkuImplementedWithPages
-		{
-			get { return false; }
-		}
-		
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
-		{
-			try
-			{
-				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
-				{
-					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
-
-					if( sourceList.RemoveAll( x => x == "%00" ) > 0 )
-						sourceList.Add( "%*00" );
-
-					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
-					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
-					return prods;
-				};
-
-				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ) ).ConfigureAwait( false ) ).ToList();
-				productsMainPart.AddRange( await productsSelector( 0, 9, x => x.ToString( "D1" ) ).ConfigureAwait( false ) );
-				var soapGetProductsResponse = new SoapGetProductsResponse { Products = productsMainPart };
-
-				return soapGetProductsResponse;
-			}
-			catch( Exception exc )
-			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
-			}
-		}
-
-		protected virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, string productIdLike, DateTime? updatedFrom )
-		{
-			try
-			{
-				var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
-
-				if( productType != null )
-					AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq" );
-				if( updatedFrom.HasValue )
-					AddFilter( filters, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
-				if( !string.IsNullOrWhiteSpace( productIdLike ) )
-					AddFilter( filters, productIdLike, "product_id", "like" );
-
-				var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
-
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
-
-				var res = new catalogProductListResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.catalogProductListAsync( sessionId.SessionId, filters, store ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				return new SoapGetProductsResponse( res );
-			}
-			catch( Exception exc )
-			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
-			}
 		}
 
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
@@ -927,6 +853,62 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 		#endregion
+
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient )
+		{
+			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
+				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+			return privateClient;
+		}
+
+		private static class ClientBaseActionRunner
+		{
+			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class
+			{
+				var statusChecker = new StatusChecker( 2 );
+				TimerCallback tcb = statusChecker.CheckStatus3< TClient >;
+
+				using( var stateTimer = new Timer( tcb, cleintBase, 1000, delayBeforeCheck ) )
+				{
+					var clientResponse = await func().ConfigureAwait( false );
+					stateTimer.Change( Timeout.Infinite, Timeout.Infinite );
+					return Tuple.Create( clientResponse, statusChecker.IsAborted );
+				}
+			}
+		}
+
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
+		{
+			try
+			{
+				var res = new TServerResponse();
+				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+				await ActionPolicies.GetAsync.Do( async () =>
+				{
+					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
+					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
+						abortAfter,
+						async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
+						privateClient ).ConfigureAwait( false );
+
+					if( temp.Item2 )
+						throw new TaskCanceledException();
+				} ).ConfigureAwait( false );
+
+				return converter( res );
+			}
+			catch( Exception exc )
+			{
+				if( suppressException )
+				{
+					return default(TResult);
+				}
+				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetWithAsync )}", exc );
+			}
+		}
 
 		public string ToJsonSoapInfo()
 		{

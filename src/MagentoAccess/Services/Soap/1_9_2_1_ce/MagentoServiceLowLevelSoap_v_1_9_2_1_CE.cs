@@ -63,6 +63,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected readonly int SessionIdLifeTimeMs;
 
+		public bool GetStockItemsWithoutSkuImplementedWithPages
+		{
+			get { return true; }
+		}
 		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, bool idLifeTimeMs, int sessionIdLifeTimeMs )
 		{
 			this.ApiUser = apiUser;
@@ -117,76 +121,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public bool GetStockItemsWithoutSkuImplementedWithPages
-		{
-			get { return true; }
-		}
-		
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
-		{
-			try
-			{
-				Func< int, int, Func< int, string >, bool,bool, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1, removeSpecialSymbols,skipExceptions ) =>
-				{
-					try
-					{
-						var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
-						if( removeSpecialSymbols )
-							sourceList.RemoveAll( x => x == "%00" );
-						var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
-						var prods = productsResponses.SelectMany( x => x.Products ).ToList();
-
-						return prods;
-					}
-					catch( Exception e )
-					{
-						if( skipExceptions )
-						{
-							this.LogTraceGetResponseException( e );
-							return new List< SoapProduct >();
-						}
-						else
-							throw;
-					}
-				};
-
-				//10..99(9)
-				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ), true, false ).ConfigureAwait( false ) ).ToList();
-				//0..9
-				productsMainPart.AddRange( await productsSelector( 0, 10, x => x.ToString( "D1" ), true, false ).ConfigureAwait( false ) );
-				//special symbols
-				var productsWithSpecialSymbols = await productsSelector( 0, 1, x => "%*00", false, true ).ConfigureAwait( false );
-				productsWithSpecialSymbols.AddRange( await productsSelector( 0, 1, x => "%00", false, true ).ConfigureAwait( false ) );
-				productsWithSpecialSymbols = productsWithSpecialSymbols.GroupBy( x => x.Sku ).Select( x => x.First() ).ToList();
-
-				productsMainPart.AddRange( productsWithSpecialSymbols );
-				var soapGetProductsResponse = new SoapGetProductsResponse { Products = productsMainPart };
-
-				return soapGetProductsResponse;
-			}
-			catch( Exception exc )
-			{
-				throw new MagentoSoapException( string.Format( "An error occured during GetProductsAsync()" ), exc );
-			}
-		}
-
-		protected virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, string productIdLike, DateTime? updatedFrom )
-		{
-			var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
-
-			if( productType != null )
-				AddFilter( filters, productType, "type", productTypeShouldBeExcluded ? "neq" : "eq" );
-			if( updatedFrom.HasValue )
-				AddFilter( filters, updatedFrom.Value.ToSoapParameterString(), "updated_at", "from" );
-			if( !string.IsNullOrWhiteSpace( productIdLike ) )
-				AddFilter( filters, productIdLike, "product_id", "like" );
-
-			var store = string.IsNullOrWhiteSpace( this.Store ) ? null : this.Store;
-
-			return await this.GetWithAsync(
-				res => new SoapGetProductsResponse( res ),
-				async ( client, session ) => await client.catalogProductListAsync( session, filters, store ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
-		}
 
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
 		{
@@ -353,12 +287,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return customBinding;
 		}
 
-		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient )
-		{
-			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-			return privateClient;
-		}
 
 		#region JustForTesting
 		public async Task< int > CreateCart( string storeid )
@@ -681,6 +609,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		}
 		#endregion
 
+		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed(Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient)
+		{
+			if (privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening)
+				privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
+			return privateClient;
+		}
 		private static class ClientBaseActionRunner
 		{
 			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class

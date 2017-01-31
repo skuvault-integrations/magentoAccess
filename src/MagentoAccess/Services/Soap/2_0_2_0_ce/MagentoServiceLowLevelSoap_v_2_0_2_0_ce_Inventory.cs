@@ -199,6 +199,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait(false);
 		}
 
+		
+		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+		{
+			//TODO: filtering by skudoesn't work
+			return await this.GetProductsInSkusAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom, skus ).ConfigureAwait( false );
+		}
+
 		private async Task< SoapGetProductsResponse > GetProductsOldAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{
 			try
@@ -290,12 +297,12 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			try
 			{
 				var pagingModel = new PagingModel( 200, 0 );
-				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false );
+				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom, null ).ConfigureAwait( false );
 				if( firstPage == null )
 					return new SoapGetProductsResponse( new List< CatalogDataProductInterface >() );
 
 				var pagesNumbers = pagingModel.GetPages( firstPage.totalCount, limit );
-				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom, null ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var pagesWithLimits = pages.SelectMany( x => x.items );
 				var pagesWithLimitsDistinct = pagesWithLimits.GroupBy( x => x.sku ).Select( x => x.First() );
 
@@ -314,6 +321,31 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
+		private async Task< SoapGetProductsResponse > GetProductsInSkusAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+		{
+			try
+			{
+				var pagingModel = new PagingModel( 20, 0 );
+				var pagesNumbers = pagingModel.GetPages( skus );
+				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( 1, pagingModel.ItemsPerPage, updatedFrom, x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var pagesWithLimits = pages.SelectMany( x => x.items );
+				var pagesWithLimitsDistinct = pagesWithLimits.GroupBy( x => x.sku ).Select( x => x.First() );
+
+				if( !string.IsNullOrWhiteSpace( productType ) )
+					pagesWithLimitsDistinct = productTypeShouldBeExcluded
+						? pagesWithLimitsDistinct.Where( x => !string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList()
+						: pagesWithLimitsDistinct.Where( x => string.Equals( x.typeId, productType, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
+
+				var catalogDataProductInterfaces = pagesWithLimitsDistinct.TakeWhile( ( x, i ) => i < limit ).OrderBy( x => x.sku ).ToList();
+
+				return new SoapGetProductsResponse( catalogDataProductInterfaces );
+			}
+			catch( Exception exc )
+			{
+				throw new MagentoSoapException( string.Format( "An error occured during" + nameof( this.GetProductsInSkusAsync ) ), exc );
+			}
+		}
+
 
 		private static void AddFilter( FrameworkSearchCriteriaInterface filters, string value, string key, string valueKey )
 		{
@@ -325,7 +357,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			filters.filterGroups = temp.ToArray();
 		}
 
-		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom )
+		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
 		{
 			var parameters = Tuple.Create( currentPage, pageSize, updatedFrom );
 			var cachedR = this.getProductsPageCache.Get( parameters );
@@ -343,6 +375,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			if( updatedFrom.HasValue )
 				AddFilter( frameworkSearchCriteriaInterface, updatedFrom.Value.ToSoapParameterString(), "updated_at", "gt" );
+			if( skus != null && skus.Any() )
+				AddFilter( frameworkSearchCriteriaInterface, string.Join( ",", skus ), "sku", "in" );
 
 			// filtering by typeId doesn't works for magento2.0.2
 			//if( productType != null )
@@ -487,6 +521,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				throw new MagentoSoapException( string.Format( "An error occured during GetStockItemsWithoutSkuAsync({0})", "" ), exc );
 			}
 		}
+
 
 		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageOld( int currentPage, int pageSize )
 		{

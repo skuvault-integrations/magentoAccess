@@ -260,11 +260,17 @@
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoWebRequestBody.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoWebRequestMethod.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\WebRequest.cs" />
+    <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Products.cs" />
+    <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Orders.cs" />
     <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE.cs" />
     <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Products.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Orders.cs" />
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Factory.cs" />
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
     <Compile Include="Models\GetProducts\CatalogProductInfoRequest.cs" />
+    <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE_Products.cs" />
+    <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE_Orders.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory.cs" />
     <Compile Include="Services\Soap\2_1_0_0_ce\ChannelBehaviour\ClientMessageInspector.cs" />
     <Compile Include="Services\Soap\2_1_0_0_ce\ChannelBehaviour\CustomBehavior.cs" />

@@ -223,6 +223,11 @@ namespace MagentoAccessTests.Misc
 			{
 				throw new NotImplementedException();
 			}
+
+			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+			{
+				throw new NotImplementedException();
+			}
 		}
 	}
 }

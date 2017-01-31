@@ -20,15 +20,16 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 
 			// ------------ Act
 			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false );
-			var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "bundle", excludeProductByType : false );
-			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
+			//var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "bundle", excludeProductByType : false );
+			Task.WhenAll( getProductsTask1/*, getProductsTask2*/ ).Wait();
 
 			// ------------ Assert
 			getProductsTask1.Result.Should().NotBeNullOrEmpty();
-			getProductsTask2.Result.Should().NotBeNullOrEmpty();
+			//getProductsTask2.Result.Should().NotBeNullOrEmpty();
 
+			var wer = getProductsTask1.Result.FirstOrDefault(x => x.Sku == "BBB GC");
 			getProductsTask1.Result.All( x => x.ProductType == "simple" ).Should().BeTrue();
-			getProductsTask2.Result.All( x => x.ProductType == "bundle" ).Should().BeTrue();
+			//getProductsTask2.Result.All( x => x.ProductType == "bundle" ).Should().BeTrue();
 		}
 	}
 }
