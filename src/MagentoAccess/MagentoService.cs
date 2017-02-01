@@ -719,12 +719,23 @@ namespace MagentoAccess
 			IEnumerable< Product > resultProducts = new List< Product >();
 
 			SoapGetProductsResponse catalogProductListResponse;
-			if( skus != null && skus.Any() && magentoServiceLowLevelSoap is IMagentoServiceLowLevelSoapGetProductsBySku )
-				catalogProductListResponse = await ( ( IMagentoServiceLowLevelSoapGetProductsBySku )magentoServiceLowLevelSoap ).GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, skus as IReadOnlyCollection< string > ).ConfigureAwait( false );
+			if( skus != null && skus.Any() )
+			{
+				var magentoServiceLowLevelSoapGetProductsBySku = magentoServiceLowLevelSoap as IMagentoServiceLowLevelSoapGetProductsBySku;
+				if( magentoServiceLowLevelSoapGetProductsBySku != null )
+				{
+					catalogProductListResponse = await magentoServiceLowLevelSoapGetProductsBySku.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, skus as IReadOnlyCollection< string > ).ConfigureAwait( false );
+				}
+				else
+				{
+					catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait( false );
+					var soapProducts = ( from p in catalogProductListResponse.Products join s in skus on p.Sku equals s select p ).ToList();
+					catalogProductListResponse.Products = soapProducts;
+				}
+			}
 			else
 			{
 				catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait( false );
-				catalogProductListResponse.Products = from p in catalogProductListResponse.Products join s in skus on p.Sku equals s select p;
 			}
 
 			if( catalogProductListResponse?.Products == null )

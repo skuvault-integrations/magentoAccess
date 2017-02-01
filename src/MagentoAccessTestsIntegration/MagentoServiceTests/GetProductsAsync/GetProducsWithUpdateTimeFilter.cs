@@ -19,7 +19,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 		{
 			// ------------ Arrange
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs );
-			var updatedFrom = DateTime.UtcNow.AddMonths( -1 );
+			var updatedFrom = DateTime.UtcNow.AddMonths( -15 );
 
 			// ------------ Act
 			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, updatedFrom : updatedFrom );
