@@ -66,6 +66,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 		{
 			get { return false; }
 		}
+		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );

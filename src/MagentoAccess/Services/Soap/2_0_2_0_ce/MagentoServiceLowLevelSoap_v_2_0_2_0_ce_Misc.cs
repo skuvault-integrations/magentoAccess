@@ -61,6 +61,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			get { return true; }
 		}
+		public bool GetOrdersUsesEntityInsteadOfIncrementId => true;
 
 		private void LogTraceGetResponseException( Exception exception )
 		{

@@ -11,11 +11,11 @@ using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
-using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
+using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
@@ -27,6 +27,7 @@ using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using MagentoAccess.Services.Soap._2_0_2_0_ce;
 using MagentoAccess.Services.Soap._2_1_0_0_ce;
 using Netco.Extensions;
+using Order = MagentoAccess.Models.GetOrders.Order;
 
 namespace MagentoAccess
 {
@@ -419,20 +420,17 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var getOrdersResponses = ordersBriefInfos.Where( x => x != null && x.Orders != null ).ToList();
-				var ordersBriefInfo = getOrdersResponses.SelectMany( x => x.Orders ).ToList();
+				var orders = ordersBriefInfos.Where(x => x?.Orders != null).SelectMany(x => x.Orders).Distinct( new SalesOrderByOrderIdComparer() ).ToList();
 
-				ordersBriefInfo = ordersBriefInfo.Distinct( new SalesOrderByOrderIdComparer() ).ToList();
-
-				var ordersBriefInfoString = ordersBriefInfo.ToJson();
+				var ordersBriefInfoString = orders.ToJson();
 
 				MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ) );
 
-				var salesOrderInfoResponses = await ordersBriefInfo.ProcessInBatchAsync( 16, async x =>
+				var salesOrderInfoResponses = await orders.ProcessInBatchAsync( 16, async x =>
 				{
-					MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.incrementId )}" );
-					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x.incrementId ).ConfigureAwait( false );
-					MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.incrementId )}" );
+					MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToStringIds() )}" );
+					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
+					MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}" );
 					return res;
 				} ).ConfigureAwait( false );
 

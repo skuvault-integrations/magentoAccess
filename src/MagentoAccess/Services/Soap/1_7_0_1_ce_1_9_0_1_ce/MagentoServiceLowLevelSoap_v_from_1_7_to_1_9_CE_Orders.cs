@@ -146,5 +146,10 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				throw new MagentoSoapException( $"An error occured during GetOrderAsync(incrementId:{incrementId})", exc );
 			}
 		}
+
+		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order )
+		{
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
+		}
 	}
 }

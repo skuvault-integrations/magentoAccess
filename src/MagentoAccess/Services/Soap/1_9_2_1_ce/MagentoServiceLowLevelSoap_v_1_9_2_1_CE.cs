@@ -67,6 +67,9 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			get { return true; }
 		}
+
+		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
+
 		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, bool idLifeTimeMs, int sessionIdLifeTimeMs )
 		{
 			this.ApiUser = apiUser;

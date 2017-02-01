@@ -49,5 +49,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				res => new OrderInfoResponse( res ),
 				async ( client, session ) => await client.salesOrderInfoAsync( session, incrementId ).ConfigureAwait( false ), 600000 ).ConfigureAwait( false );
 		}
+
+		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order )
+		{
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
+		}
 	}
 }

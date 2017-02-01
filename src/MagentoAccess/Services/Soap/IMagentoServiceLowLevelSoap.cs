@@ -23,11 +23,13 @@ namespace MagentoAccess.Services.Soap
 		string Store { get; }
 		string StoreVersion { get; set; }
 		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
+		bool GetOrdersUsesEntityInsteadOfIncrementId { get; }
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
+		Task< OrderInfoResponse > GetOrderAsync( Order order );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException );
 		string ToJsonSoapInfo();

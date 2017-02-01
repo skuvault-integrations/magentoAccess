@@ -101,6 +101,8 @@ namespace MagentoAccess.Services.Rest.v2x
 			get { return false; }
 		}
 
+		public bool GetOrdersUsesEntityInsteadOfIncrementId => true;
+
 		public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
 			return null;
@@ -126,6 +128,11 @@ namespace MagentoAccess.Services.Rest.v2x
 		}
 
 		public Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		{
+			return null;
+		}
+
+		public Task< OrderInfoResponse > GetOrderAsync( Order order )
 		{
 			return null;
 		}

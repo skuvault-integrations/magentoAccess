@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
@@ -916,5 +917,17 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public string UpdatedAt { get; private set; }
 		public string Weight { get; private set; }
 		public string XForwardedFOR { get; private set; }
+
+		public string ToStringIds()
+		{
+			try
+			{
+				return $"incrementId:{this?.incrementId ?? string.Empty}, OrderId:{this?.OrderId ?? string.Empty}";
+			}
+			catch
+			{
+				return "incrementId:, OrderId:";
+			}
+		}
 	}
 }
