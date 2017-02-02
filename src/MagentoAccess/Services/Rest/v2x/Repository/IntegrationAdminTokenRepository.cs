@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
@@ -15,7 +16,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			this.Url = url;
 		}
 
-		public async Task< AuthorizationToken > GetToken( MagentoLogin token, MagentoPass url )
+		public async Task< AuthorizationToken > GetTokenAsync( MagentoLogin token, MagentoPass url )
 		{
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
