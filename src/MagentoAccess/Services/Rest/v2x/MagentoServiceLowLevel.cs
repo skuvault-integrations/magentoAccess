@@ -90,7 +90,7 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		protected async Task ReauthorizeAsync()
 		{
-			var newToken = await this.IntegrationAdminTokenRepository.GetToken( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) );
+			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) );
 			var magentoUrl = MagentoUrl.Create( this.Store );
 			this.ProductRepository = new ProductRepository( newToken, magentoUrl );
 			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );

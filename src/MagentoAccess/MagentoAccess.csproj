@@ -244,6 +244,7 @@
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Rest\v2x\PagingModel.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ActionPolicies.cs" />
+    <Compile Include="Services\Rest\v2x\Repository\Extension.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ISalesOrderRepositoryV1.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IIntegrationAdminTokenRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IntegrationAdminTokenRepository.cs" />

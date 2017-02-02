@@ -13,83 +13,77 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		public async Task GetOrdersAsync_StoreContainsOrders_ReceivPage( RepositoryTestCase testCase )
+		public void GetOrdersAsync_StoreContainsOrders_ReceivPage( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
 			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
-			tokenTask.Wait();
-			var productRepository = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( token, testCase.Url );
+			var itemsPerPage = 5;
+
 			//------------ Act
+			var orders = salesOrderRepositoryV1.GetOrdersAsync( new DateTime( 2012, 1, 1 ), DateTime.UtcNow.AddDays( 1 ), new PagingModel( itemsPerPage, 1 ) ).WaitResult();
 
-			var products = productRepository.GetOrdersAsync( new DateTime( 2012, 1, 1 ), DateTime.UtcNow.AddDays( 1 ), new PagingModel( 5, 1 ) );
-			products.Wait();
-
-			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			products.Result.items.Count.Should().BeGreaterOrEqualTo( 1 );
-			products.Result.items.Count.Should().BeLessOrEqualTo( 5 );
+			//------------ Assert
+			token.Token.Should().NotBeNullOrWhiteSpace();
+			orders.items.Count.Should().BeGreaterOrEqualTo( 1 );
+			orders.items.Count.Should().BeLessOrEqualTo( itemsPerPage );
 		}
 
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		public async Task GetOrdersAsync_StoreContainsOrders_ReceiveOrders( RepositoryTestCase testCase )
+		public void GetOrdersAsync_StoreContainsOrders_ReceiveOrders( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
 			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
-			tokenTask.Wait();
-			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
+			var tokenTask = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask, testCase.Url );
+
 			//------------ Act
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow ).WaitResult();
 
-			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow );
-			items.Wait();
-
-			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			items.Result.SelectMany( x => x.items ).Count().Should().Be( items.Result.First().total_count );
+			//------------ Assert
+			tokenTask.Token.Should().NotBeNullOrWhiteSpace();
+			items.SelectMany( x => x.items ).Count().Should().Be( items.First().total_count );
 		}
 
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		public async Task GetOrdersAsync_StoreContainsOrders_ReceiveOrdersByIdReceivePage( RepositoryTestCase testCase )
+		public void GetOrdersAsync_StoreContainsOrders_ReceiveOrdersByIdReceivePage( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
 			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
-			tokenTask.Wait();
-			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
+			var tokenTask = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask, testCase.Url );
+			var itemsPerPage = 5;
+
 			//------------ Act
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow, new PagingModel( itemsPerPage, 1 ) ).WaitResult();
+			var items2 = salesOrderRepositoryV1.GetOrdersAsync( items.items.Select( x => x.increment_id ), new PagingModel( itemsPerPage, 1 ) ).WaitResult();
 
-			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow, new PagingModel( 5, 1 ) );
-			items.Wait();
-
-			var items2 = salesOrderRepositoryV1.GetOrdersAsync( items.Result.items.Select( x => x.increment_id ), new PagingModel( 5, 1 ) );
-			items2.Wait();
-
-			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			items2.Result.items.Count.Should().BeGreaterOrEqualTo( 1 );
-			items2.Result.items.Count.Should().Be( items.Result.items.Count );
+			//------------ Assert
+			tokenTask.Token.Should().NotBeNullOrWhiteSpace();
+			items2.items.Count.Should().BeGreaterOrEqualTo( 1 );
+			items2.items.Count.Should().Be( items.items.Count );
 		}
 
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		public async Task GetOrdersAsync_StoreContainsOrders_ReceiveOrdersByIdReceive( RepositoryTestCase testCase )
+		public void GetOrdersAsync_StoreContainsOrders_ReceiveOrdersByIdReceive( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
 			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var tokenTask = adminRepository.GetToken( testCase.MagentoLogin, testCase.MagentoPass );
-			tokenTask.Wait();
-			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask.Result, testCase.Url );
+			var tokenTask = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( tokenTask, testCase.Url );
+
 			//------------ Act
+			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow ).WaitResult();
+			var items2 = salesOrderRepositoryV1.GetOrdersAsync( items.SelectMany( y => y.items ).Select( x => x.increment_id ) ).WaitResult();
 
-			var items = salesOrderRepositoryV1.GetOrdersAsync( DateTime.MinValue, DateTime.UtcNow );
-			items.Wait();
-
-			var items2 = salesOrderRepositoryV1.GetOrdersAsync( items.Result.SelectMany( y => y.items ).Select( x => x.increment_id ) );
-			items2.Wait();
-
-			tokenTask.Result.Token.Should().NotBeNullOrWhiteSpace();
-			items2.Result.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 1 );
-			items2.Result.SelectMany( y => y.items ).Count().Should().Be( items.Result.SelectMany( y => y.items ).Count() );
+			//------------ Assert
+			tokenTask.Token.Should().NotBeNullOrWhiteSpace();
+			items2.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 1 );
+			items2.SelectMany( y => y.items ).Count().Should().Be( items.SelectMany( y => y.items ).Count() );
 		}
 	}
 }

@@ -5,6 +5,6 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 {
 	public interface IIntegrationAdminTokenRepository
 	{
-		Task< AuthorizationToken > GetToken( MagentoLogin token, MagentoPass url );
+		Task< AuthorizationToken > GetTokenAsync( MagentoLogin token, MagentoPass url );
 	}
 }
