@@ -14,10 +14,22 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		{
 			get
 			{
-				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create("MaxKitsenko"), MagentoLogin = MagentoLogin.Create("MaxKitsenko"), Url = MagentoUrl.Create("http://yourmagentostore") } ).SetName( "magento-2-0-2-0-ce" );
-				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create("MaxKitsenko"), MagentoLogin = MagentoLogin.Create("MaxKitsenko"), Url = MagentoUrl.Create("http://yourmagentostore") } ).SetName( "magento-2-1-0-0-ce" );
-				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create("MaxKitsenko"), MagentoLogin = MagentoLogin.Create("MaxKitsenko"), Url = MagentoUrl.Create("http://yourmagentostore") } ).SetName( "magento-2-0-7-0-ce" );
+				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create( "MaxKitsenko" ), MagentoLogin = MagentoLogin.Create( "MaxKitsenko" ), Url = MagentoUrl.Create( "http://yourmagentostore" ) } ).SetName( "magento-2-0-2-0-ce" );
+				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create( "MaxKitsenko" ), MagentoLogin = MagentoLogin.Create( "MaxKitsenko" ), Url = MagentoUrl.Create( "http://yourmagentostore" ) } ).SetName( "magento-2-1-0-0-ce" );
+				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create( "MaxKitsenko" ), MagentoLogin = MagentoLogin.Create( "MaxKitsenko" ), Url = MagentoUrl.Create( "http://yourmagentostore" ) } ).SetName( "magento-2-0-7-0-ce" );
 				yield break;
+			}
+		}
+	}
+
+	public class MyFixtureData
+	{
+		public static IEnumerable FixtureParms
+		{
+			get
+			{
+				yield return new TestFixtureData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create( "MaxKitsenko" ), MagentoLogin = MagentoLogin.Create( "MaxKitsenko" ), Url = MagentoUrl.Create( "http://yourmangentourl" ) } );
+				yield return new TestFixtureData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create( "MaxKitsenko" ), MagentoLogin = MagentoLogin.Create( "MaxKitsenko" ), Url = MagentoUrl.Create( "http://yourmangentourl" ) } );
 			}
 		}
 	}
