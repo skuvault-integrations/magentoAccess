@@ -502,7 +502,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null )
+		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true )
 		{
 			var mark = Mark.CreateNew();
 			var parameters = $"includeDetails:{includeDetails},productType:{productType},excludeProductByType:{excludeProductByType},updatedFrom:{updatedFrom}";
@@ -512,7 +512,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
-				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus ).ConfigureAwait( false );
+				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly ).ConfigureAwait( false );
 
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
@@ -713,7 +713,7 @@ namespace MagentoAccess
 			return dates;
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded, IEnumerable< int > scopes, DateTime? updatedFrom, IEnumerable< string > skus )
+		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded, IEnumerable< int > scopes, DateTime? updatedFrom, IEnumerable< string > skus, bool stockItemsOnly )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
 			IEnumerable< Product > resultProducts = new List< Product >();
@@ -769,7 +769,10 @@ namespace MagentoAccess
 				stockItems = getStockItemsAsync.ToList();
 			}
 
-			resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) ).ToList();
+			if( stockItemsOnly )
+				resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) ).ToList();
+			else
+				resultProducts = ( from productEntity in products join stockItemEntity in stockItems on productEntity.ProductId equals stockItemEntity.ProductId into productsList from stockItemEntity in productsList.DefaultIfEmpty() select new Product( productEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity == null? "0" : stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) ).ToList();
 
 			if( includeDetails )
 				resultProducts = ( await magentoServiceLowLevelSoap.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
