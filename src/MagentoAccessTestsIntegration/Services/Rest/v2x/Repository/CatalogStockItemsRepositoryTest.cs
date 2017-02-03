@@ -1,37 +1,28 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.Repository;
-using MagentoAccess.Services.Rest.v2x.WebRequester;
+using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
 	[ TestFixture ]
-	[ Category( "V2LLRReadSmokeTests" ) ]
-	[ TestFixtureSource( typeof( MyFixtureData ), nameof( MyFixtureData.FixtureParms ) ) ]
-	internal class CatalogStockItemsRepositoryTest
+	internal class CatalogStockItemsRepositoryTest : BaseTest
 	{
-		public CatalogStockItemsRepositoryTest( RepositoryTestCase repositoryTestCase )
-		{
-			this.RepositoryTestCase = repositoryTestCase;
-			var adminRepository = new IntegrationAdminTokenRepository( this.RepositoryTestCase.Url );
-			this.Token = adminRepository.GetTokenAsync( this.RepositoryTestCase.MagentoLogin, this.RepositoryTestCase.MagentoPass ).WaitResult();
-		}
-
-		public RepositoryTestCase RepositoryTestCase { get; set; }
-		public AuthorizationToken Token { get; set; }
-
 		[ Test ]
-		//[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		//[ Ignore( "Because there is multiple update tests" ) ]
-		public void PutStockItemAsync_StoreContainsProducts_ProductsUpdated( /*RepositoryTestCase testCase*/ )
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		[ Ignore( "Because there is multiple update tests" ) ]
+		public void PutStockItemAsync_StoreContainsProducts_ProductsUpdated( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var productRepository = new ProductRepository( this.Token, this.RepositoryTestCase.Url );
-			var stockRepository = new CatalogStockItemRepository( this.Token, this.RepositoryTestCase.Url );
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var productRepository = new ProductRepository( token, testCase.Url );
+			var stockRepository = new CatalogStockItemRepository( token, testCase.Url );
 
 			var products = productRepository.GetProductsAsync( DateTime.MinValue, new PagingModel( 5, 1 ) ).WaitResult();
 			var stockItem = stockRepository.GetStockItemAsync( products.items.First().sku ).WaitResult();
@@ -51,13 +42,15 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		}
 
 		[ Test ]
-		//[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		//[Ignore( "Because there is multiple update tests" ) ]
-		public void PutStockItemsAsync_StoreContainsProducts_ProductsUpdated( /*RepositoryTestCase testCase*/ )
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" )]
+		[ Ignore( "Because there is multiple update tests" ) ]
+		public void PutStockItemsAsync_StoreContainsProducts_ProductsUpdated( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var productRepository = new ProductRepository( this.Token, this.RepositoryTestCase.Url );
-			var stockRepository = new CatalogStockItemRepository( this.Token, this.RepositoryTestCase.Url );
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var productRepository = new ProductRepository( token, testCase.Url );
+			var stockRepository = new CatalogStockItemRepository( token, testCase.Url );
 
 			var products = productRepository.GetProductsAsync( DateTime.MinValue, "simple", new PagingModel( 5, 1 ) ).WaitResult();
 			var stockItems = stockRepository.GetStockItemsAsync( products.items.Select( x => x.sku ) ).WaitResult();
@@ -76,13 +69,5 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			stockItem3Updated.Should().OnlyContain( x => x.isInStock == false );
 			products.items.Should().OnlyContain( x => x.typeId == "simple" );
 		}
-
-		//[ SetUp ]
-		//[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
-		//public void Init()
-		//{
-		//	var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-		//	this.Token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
-		//}
 	}
 }
