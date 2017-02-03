@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.Repository;
@@ -9,6 +8,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
 	[ TestFixture ]
+	[ Category( "v2LowLevelReadSmoke" ) ]
 	internal class SaleRepositoryTest
 	{
 		[ Test ]
