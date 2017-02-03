@@ -31,15 +31,26 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string ApiUser { get; }
 		public string ApiKey { get; }
 		public string Store { get; }
+		public bool LogRawMessages { get; }
 		public string StoreVersion { get; set; }
 		protected IProductRepository ProductRepository { get; set; }
 		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
 		protected ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
+		protected ISalesOrderRepositoryV1 SalesOrderRepository { get; set; }
 		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
 
 		protected SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
 
 		protected int reauthorizationsCount = 0;
+
+		public async Task InitAsync()
+		{
+			if( this.IntegrationAdminTokenRepository != null )
+				return;
+
+			this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( MagentoUrl.Create( this.Store ) );
+			await this.ReauthorizeAsync().ConfigureAwait( false );
+		}
 
 		public MagentoServiceLowLevel()
 		{
@@ -88,12 +99,21 @@ namespace MagentoAccess.Services.Rest.v2x
 				} );
 		}
 
+		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, bool logRawMessages ):this()
+		{
+			this.ApiUser = soapApiUser;
+			this.ApiKey = soapApiKey;
+			this.Store = baseMagentoUrl;
+			this.LogRawMessages = logRawMessages;
+		}
+
 		protected async Task ReauthorizeAsync()
 		{
 			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) );
 			var magentoUrl = MagentoUrl.Create( this.Store );
 			this.ProductRepository = new ProductRepository( newToken, magentoUrl );
 			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
+			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl );
 		}
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages
@@ -103,9 +123,21 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => true;
 
-		public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 		{
-			return null;
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				const int itemsPerPage = 100;
+				var page = new PagingModel( itemsPerPage, 1 );
+				var sale = await this.SalesOrderRepository.GetOrdersAsync( modifiedFrom, modifiedTo, page ).ConfigureAwait( false );
+				var pages = page.GetPages( sale.total_count ).Select( x => new PagingModel( itemsPerPage, x ) );
+				var sales = await pages.ProcessInBatchAsync( 4, async x => await this.SalesOrderRepository.GetOrdersAsync( modifiedFrom, modifiedTo, x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+
+				var result = sales.ToList();
+				result.Add( sale );
+
+				return new GetOrdersResponse( result.ToArray() );
+			} );
 		}
 
 		public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
@@ -122,7 +154,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable<int> scopes )
+		public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
 		{
 			return null;
 		}
@@ -147,9 +179,22 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
+		public async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
 		{
-			return null;
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				try
+				{
+					await this.ProductRepository.GetProductsAsync( DateTime.UtcNow ).ConfigureAwait( false );
+					return new GetMagentoInfoResponse( "R2.0.0", "ce" );
+				}
+				catch( Exception )
+				{
+					if( suppressException )
+						return null;
+					throw;
+				}
+			} );
 		}
 
 		public string ToJsonSoapInfo()

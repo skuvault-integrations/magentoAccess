@@ -13,6 +13,10 @@ namespace MagentoAccess.Misc
 {
 	internal static class Extensions
 	{
+		public static string ToStringEmptyOnNull( this int? integer, CultureInfo culture )
+		{
+			return integer?.ToString( culture ) ?? string.Empty;
+		}
 		public static string ToStringEmptyOnNull( this string str, CultureInfo culture )
 		{
 			return ( str ?? string.Empty ).ToString( culture );

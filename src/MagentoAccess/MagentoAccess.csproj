@@ -242,6 +242,7 @@
     <Compile Include="Services\Rest\v1x\IMagentoServiceLowLevelRest.cs" />
     <Compile Include="Services\Rest\v1x\MagentoServiceLowLevelRestRest.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
+    <Compile Include="Services\Rest\v2x\MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory.cs" />
     <Compile Include="Services\Rest\v2x\PagingModel.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ActionPolicies.cs" />
     <Compile Include="Services\Rest\v2x\Repository\Extension.cs" />
