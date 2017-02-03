@@ -20,6 +20,7 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Rest.v1x;
+using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
@@ -208,6 +209,7 @@ namespace MagentoAccess
 					{ MagentoVersions.M_1_14_3_1, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
+					{ MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 				}
 				);
 

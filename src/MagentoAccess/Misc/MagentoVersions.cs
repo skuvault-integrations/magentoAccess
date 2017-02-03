@@ -12,6 +12,7 @@
 		public const string M_1_14_3_1 = "1.14.3.1";
 		public const string M_2_0_2_0 = "2.0.2.0";
 		public const string M_2_1_0_0 = "2.1.0.0";
+		public const string MR_2_0_0_0 = "R2.0.0.0";
 	}
 
 	public static class MagentoEdition

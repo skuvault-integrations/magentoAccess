@@ -96,6 +96,7 @@
     <Compile Include="Misc\MagentoServiceFactoryTest.cs" />
     <Compile Include="Models\Services\Credentials\MagentoNonAuthenticatedUserCredentialsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Rest\v2x\PagingModelTest.cs" />
     <Compile Include="Services\Rest\v2x\SearchCriteriaTest.cs" />
     <Compile Include="Services\Soap\1_14_1_0_ee\MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Test.cs" />
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Test.cs" />

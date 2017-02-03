@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x
 {
 	[ TestFixture ]
+	[ Ignore( "Not implemented" ) ]
 	internal class MeagentoServiceLowLevelRestTest2 : BaseTest
 	{
 		[ Test ]
