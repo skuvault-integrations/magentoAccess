@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
 	[ TestFixture ]
+	[ Category( "v2LowLevelReadSmoke" ) ]
 	internal class ProductRepositoryTest
 	{
 		[ Test ]
@@ -60,8 +61,8 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			var productRepository = new ProductRepository( token, testCase.Url );
 
 			//------------ Act
-			var simpleProducts = productRepository.GetProductsAsync( DateTime.MinValue, "simple").WaitResult();
-			var bundleProducts = productRepository.GetProductsAsync( DateTime.MinValue, "bundle").WaitResult();
+			var simpleProducts = productRepository.GetProductsAsync( DateTime.MinValue, "simple" ).WaitResult();
+			var bundleProducts = productRepository.GetProductsAsync( DateTime.MinValue, "bundle" ).WaitResult();
 
 			//------------ Assert
 			token.Token.Should().NotBeNullOrWhiteSpace();
