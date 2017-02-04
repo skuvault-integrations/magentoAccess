@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
 
 namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
@@ -454,7 +456,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//	};
 			//}
 			//ShippingAddressId = res.shippingAddressId;
-			this.ShippingAmount = (res.shippingAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+			this.ShippingAmount = ( res.shippingAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.ShippingDescription = res.shippingDescription;
 			//ShippingFirstname = res.shippingFirstname;
 			//ShippingLastname = res.shippingLastname;
@@ -648,6 +650,195 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.TotalRefunded = ( res.totalRefunded ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.UpdatedAT = res.updatedAt;
 			this.Weight = ( res.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
+		}
+
+		public OrderInfoResponse( Item res )
+		{
+			if( res == null )
+				return;
+
+			var invariantCulture = CultureInfo.InvariantCulture;
+
+			this.AppliedRuleIds = res.applied_rule_ids;
+			this.BaseCurrencyCode = res.base_currency_code;
+			this.BaseDiscountAmount = res.base_discount_amount.ToStringEmptyOnNull( invariantCulture );
+			this.BaseGrandTotal = res.base_grand_total.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseShippingAmount = res.base_shipping_amount.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseSubtotal = res.base_subtotal.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTaxAmount = res.base_tax_amount.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseToGlobalRate = res.base_to_global_rate.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseToOrderRate = res.base_to_order_rate.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalCanceled = res.base_total_canceled.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalInvoiced = res.base_total_invoiced.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalOfflineRefunded = res.base_total_offline_refunded.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalOnlineRefunded = res.base_total_online_refunded.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalPaid = res.base_total_paid.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalQtyOrdered = res.base_total_qty_ordered.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.BaseTotalRefunded = res.base_total_refunded.ToStringEmptyOnNull( invariantCulture );
+			;
+			if( res.billing_address != null )
+			{
+				var billingAddress = new BillingAddress
+				{
+					AddressId = res.billing_address.customer_address_id.ToStringEmptyOnNull( invariantCulture ), //address_id,
+					AddressType = res.billing_address.address_type,
+					City = res.billing_address.city,
+					Company = res.billing_address.company,
+					CountryId = res.billing_address.country_id,
+					//CreatedAt = res.billing_address.created_at,
+					Fax = res.billing_address.fax,
+					Firstname = res.billing_address.firstname,
+					//IncrementId = res.billing_address.increment_id,
+					//IsActive = res.billing_address.is_active,
+					Lastname = res.billing_address.lastname,
+					ParentId = res.billing_address.parent_id.ToStringEmptyOnNull( invariantCulture ),
+					Postcode = res.billing_address.postcode,
+					Region = res.billing_address.region,
+					RegionId = res.billing_address.region_id.ToStringEmptyOnNull( invariantCulture ),
+					Street = string.Join( ",", res.billing_address.street ),
+					Telephone = res.billing_address.telephone,
+					//UpdatedAt = res.billing_address.updated_at,
+				};
+				this.BillingAddress = billingAddress;
+			}
+			this.BillingAddressId = res.billing_address_id.ToStringEmptyOnNull( invariantCulture );
+			this.BillingFirstname = res.customer_firstname; //.billing_firstname;
+			this.BillingLastname = res.customer_lastname; // billing_lastname;
+			//this.BillingName = res.billing_name;
+			this.CreatedAt = res.created_at;
+			this.CustomerEmail = res.customer_email;
+			this.CustomerFirstname = res.customer_firstname;
+			this.CustomerGroupId = res.customer_group_id.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.CustomerId = res.customer_id.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.CustomerIsGuest = res.customer_is_guest.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.CustomerLastname = res.customer_lastname;
+			this.CustomerNoteNotify = res.customer_note_notify.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.DiscountAmount = res.discount_amount.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.EmailSent = res.email_sent.ToStringEmptyOnNull( invariantCulture );
+			;
+			//this.GiftMessage = res.gift_message;
+			//this.GiftMessageId = res.gift_message_id;
+			this.GlobalCurrencyCode = res.global_currency_code;
+			this.GrandTotal = res.grand_total.ToStringEmptyOnNull( invariantCulture );
+			;
+			this.IncrementId = res.increment_id;
+			//this.IsActive = res.is_active;
+			this.IsVirtual = res.is_virtual.ToStringEmptyOnNull( invariantCulture );
+			;
+
+			if( res.items != null )
+				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
+
+			this.OrderCurrencyCode = res.order_currency_code;
+			this.OrderId = res.ext_order_id; // order_id;
+			this.ParentId = res.relation_parent_id; // parent_id;
+
+			if( res.payment != null )
+			{
+				var payment = new Payment()
+				{
+					AmountOrdered = res.payment.amount_ordered.ToStringEmptyOnNull( invariantCulture ),
+					BaseAmountOrdered = res.payment.base_amount_ordered.ToStringEmptyOnNull( invariantCulture ),
+					BaseShippingAmount = res.payment.base_shipping_amount.ToStringEmptyOnNull( invariantCulture ),
+					CcExpMonth = res.payment.cc_exp_month,
+					CcExpYear = res.payment.cc_exp_year,
+					CcLast4 = res.payment.cc_last4,
+					CcNumberEnc = res.payment.cc_number_enc,
+					CcOwner = res.payment.cc_owner,
+					CcSsStartMonth = res.payment.cc_ss_start_month,
+					CcSsStartYear = res.payment.cc_ss_start_year,
+					CcType = res.payment.cc_type,
+					//CreatedAt = res.payment.created_at,
+					//IncrementId = res.payment.increment_id,
+					//IsActive = res.payment.is_active,
+					Method = res.payment.method,
+					ParentId = res.payment.parent_id.ToStringEmptyOnNull( invariantCulture ),
+					//PaymentId = res.payment.payment_id,
+					PoNumber = res.payment.po_number,
+					ShippingAmount = res.payment.shipping_amount.ToStringEmptyOnNull( invariantCulture ),
+					//UpdatedAt = res.payment.updated_at,
+				};
+				this.Payment = payment;
+			}
+			this.QuoteId = res.quote_id.ToStringEmptyOnNull( invariantCulture );
+			this.RemoteIp = res.remote_ip;
+			//if (res.shipping_address != null)
+			//{
+			//	ShippingAddress = new ShippingAddress()
+			//	{
+			//		AddressId = res.shipping_address.address_id,
+			//		AddressType = res.shipping_address.address_type,
+			//		City = res.shipping_address.city,
+			//		Company = res.shipping_address.company,
+			//		CountryId = res.shipping_address.country_id,
+			//		CreatedAt = res.shipping_address.created_at,
+			//		Fax = res.shipping_address.fax,
+			//		Firstname = res.shipping_address.firstname,
+			//		IncrementId = res.shipping_address.increment_id,
+			//		IsActive = res.shipping_address.is_active,
+			//		Lastname = res.shipping_address.lastname,
+			//		ParentId = res.shipping_address.parent_id,
+			//		Postcode = res.shipping_address.postcode,
+			//		Region = res.shipping_address.region,
+			//		RegionId = res.shipping_address.region_id,
+			//		Street = res.shipping_address.street,
+			//		Telephone = res.shipping_address.telephone,
+			//		UpdatedAt = res.shipping_address.updated_at,
+			//	};
+			//}
+			//ShippingAddressId = res.shipping_address_id;
+			//ShippingAmount = res.shipping_amount;
+			//ShippingDescription = res.shipping_description;
+			//ShippingFirstname = res.shipping_firstname;
+			//ShippingLastname = res.shipping_lastname;
+			//ShippingMethod = res.shipping_method;
+			//ShippingName = res.shipping_name;
+			this.State = res.state;
+			this.Status = res.status;
+
+			if( res.status_histories != null )
+			{
+				this.StatusHistory = new List< StatusHistoryRecord >(
+					res.status_histories.Select( x => new StatusHistoryRecord( x ) ) );
+			}
+			this.StoreCurrencyCode = res.store_currency_code;
+			this.StoreId = res.store_id.ToStringEmptyOnNull( invariantCulture );
+			this.StoreName = res.store_name;
+			this.StoreToBaseRate = res.store_to_base_rate.ToStringEmptyOnNull( invariantCulture );
+			this.StoreToOrderRate = res.store_to_order_rate.ToStringEmptyOnNull( invariantCulture );
+			this.Subtotal = res.subtotal.ToStringEmptyOnNull( invariantCulture );
+			this.TaxAmount = res.tax_amount.ToStringEmptyOnNull( invariantCulture );
+			this.TotalCanceled = res.total_canceled.ToStringEmptyOnNull( invariantCulture );
+			this.TotalInvoiced = res.total_invoiced.ToStringEmptyOnNull( invariantCulture );
+			this.TotalOfflineRefunded = res.total_offline_refunded.ToStringEmptyOnNull( invariantCulture );
+			this.TotalOnlineRefunded = res.total_online_refunded.ToStringEmptyOnNull( invariantCulture );
+			this.TotalPaid = res.total_paid.ToStringEmptyOnNull( invariantCulture );
+			this.TotalQtyOrdered = res.total_qty_ordered.ToStringEmptyOnNull( invariantCulture );
+			this.TotalRefunded = res.total_refunded.ToStringEmptyOnNull( invariantCulture );
+			this.UpdatedAT = res.updated_at;
+			this.Weight = res.weight.ToStringEmptyOnNull( invariantCulture );
+		}
+
+		public OrderInfoResponse( Order response )
+		{
+			throw new NotImplementedException();
 		}
 
 		public string AppliedRuleIds { get; private set; }
@@ -970,6 +1161,67 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Weight = ( salesOrderItemEntity.weight ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 		}
 
+		public OrderItemEntity( Item2 salesOrderItemEntity )
+		{
+			this.AmountRefunded = salesOrderItemEntity.amount_refunded.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
+			this.BaseAmountRefunded = salesOrderItemEntity.base_amount_refunded.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseDiscountAmount = salesOrderItemEntity.base_discount_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseDiscountInvoiced = salesOrderItemEntity.base_discount_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseOriginalPrice = salesOrderItemEntity.base_original_price.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BasePrice = salesOrderItemEntity.base_price.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseRowInvoiced = salesOrderItemEntity.base_row_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseRowTotal = salesOrderItemEntity.base_row_total.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseTaxAmount = salesOrderItemEntity.base_tax_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseTaxBeforeDiscount = salesOrderItemEntity.base_tax_before_discount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseTaxInvoiced = salesOrderItemEntity.base_tax_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxAppliedAmount = salesOrderItemEntity.base_weee_tax_applied_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.base_weee_tax_applied_row_amnt.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxDisposition = salesOrderItemEntity.base_weee_tax_disposition.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.BaseWeeeTaxRowDisposition = salesOrderItemEntity.base_weee_tax_row_disposition.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.Cost = salesOrderItemEntity.base_cost.ToStringEmptyOnNull( CultureInfo.InvariantCulture ); //.cost;
+			this.CreatedAt = salesOrderItemEntity.created_at;
+			this.DiscountAmount = salesOrderItemEntity.discount_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.DiscountInvoiced = salesOrderItemEntity.discount_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.DiscountPercent = salesOrderItemEntity.discount_percent.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.FreeShipping = salesOrderItemEntity.free_shipping.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			//this.GiftMessage = salesOrderItemEntity.gift_message;
+			//this.GiftMessageAvailable = salesOrderItemEntity.gift_message_available;
+			//this.GiftMessageId = salesOrderItemEntity.gift_message_id;
+			this.IsQtyDecimal = salesOrderItemEntity.is_qty_decimal.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.IsVirtual = salesOrderItemEntity.is_virtual.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.ItemId = salesOrderItemEntity.item_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.Name = salesOrderItemEntity.name;
+			this.NoDiscount = salesOrderItemEntity.no_discount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.OrderId = salesOrderItemEntity.order_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.OriginalPrice = salesOrderItemEntity.original_price.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.Price = salesOrderItemEntity.price.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.ProductId = salesOrderItemEntity.product_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			//this.ProductOptions = salesOrderItemEntity.product_options;
+			this.ProductType = salesOrderItemEntity.product_type;
+			this.QtyCanceled = salesOrderItemEntity.qty_canceled.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.QtyInvoiced = salesOrderItemEntity.qty_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.QtyOrdered = salesOrderItemEntity.qty_ordered.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.QtyRefunded = salesOrderItemEntity.qty_refunded.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.QtyShipped = salesOrderItemEntity.qty_shipped.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.QuoteItemId = salesOrderItemEntity.quote_item_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.RowInvoiced = salesOrderItemEntity.row_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.RowTotal = salesOrderItemEntity.row_total.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.RowWeight = salesOrderItemEntity.row_weight.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.Sku = salesOrderItemEntity.sku;
+			this.TaxAmount = salesOrderItemEntity.tax_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.TaxBeforeDiscount = salesOrderItemEntity.tax_before_discount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.TaxInvoiced = salesOrderItemEntity.tax_invoiced.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.TaxPercent = salesOrderItemEntity.tax_percent.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.UpdatedAt = salesOrderItemEntity.updated_at;
+			this.WeeeTaxApplied = salesOrderItemEntity.weee_tax_applied;
+			this.WeeeTaxAppliedAmount = salesOrderItemEntity.weee_tax_applied_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.WeeeTaxAppliedRowAmount = salesOrderItemEntity.weee_tax_applied_row_amount.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.WeeeTaxDisposition = salesOrderItemEntity.weee_tax_disposition.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.WeeeTaxRowDisposition = salesOrderItemEntity.weee_tax_row_disposition.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.Weight = salesOrderItemEntity.weight.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+		}
+
 		public string OrderId { get; set; }
 
 		public string Weight { get; set; }
@@ -1140,6 +1392,18 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//IsActive = salesOrderStatusHistoryEntity.isActive;
 			this.IsCustomerNotified = salesOrderStatusHistoryEntity.isCustomerNotified.ToString( CultureInfo.InvariantCulture );
 			this.ParentId = salesOrderStatusHistoryEntity.parentId.ToString( CultureInfo.InvariantCulture );
+			this.Status = salesOrderStatusHistoryEntity.status;
+			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
+		}
+
+		public StatusHistoryRecord( StatusHistory salesOrderStatusHistoryEntity )
+		{
+			this.Comment = salesOrderStatusHistoryEntity.comment;
+			this.CreatedAt = salesOrderStatusHistoryEntity.created_at;
+			this.IncrementId = salesOrderStatusHistoryEntity.entity_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			//IsActive = salesOrderStatusHistoryEntity.isActive;
+			this.IsCustomerNotified = salesOrderStatusHistoryEntity.is_customer_notified.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
+			this.ParentId = salesOrderStatusHistoryEntity.parent_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
 			this.Status = salesOrderStatusHistoryEntity.status;
 			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
 		}

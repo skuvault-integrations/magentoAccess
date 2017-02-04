@@ -23,6 +23,7 @@ namespace MagentoAccess.Services.Soap
 		string Store { get; }
 		string StoreVersion { get; set; }
 		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
+		bool GetOrderByIdForFullInformation { get; }
 		bool GetOrdersUsesEntityInsteadOfIncrementId { get; }
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );

@@ -428,13 +428,21 @@ namespace MagentoAccess
 
 				MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ) );
 
-				var salesOrderInfoResponses = await orders.ProcessInBatchAsync( 16, async x =>
+				IEnumerable< OrderInfoResponse > salesOrderInfoResponses;
+				if( this.MagentoServiceLowLevelSoap.GetOrderByIdForFullInformation )
 				{
-					MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToStringIds() )}" );
-					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
-					MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}" );
-					return res;
-				} ).ConfigureAwait( false );
+					salesOrderInfoResponses = await orders.ProcessInBatchAsync( 16, async x =>
+					{
+						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToStringIds() )}" );
+						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
+						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}" );
+						return res;
+					} ).ConfigureAwait( false );
+				}
+				else
+				{
+					salesOrderInfoResponses = orders.Select( x => new OrderInfoResponse( x ) );
+				}
 
 				var salesOrderInfoResponsesList = salesOrderInfoResponses.Where( x => x != null ).ToList();
 
