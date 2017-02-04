@@ -663,31 +663,18 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.BaseCurrencyCode = res.base_currency_code;
 			this.BaseDiscountAmount = res.base_discount_amount.ToStringEmptyOnNull( invariantCulture );
 			this.BaseGrandTotal = res.base_grand_total.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseShippingAmount = res.base_shipping_amount.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseSubtotal = res.base_subtotal.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTaxAmount = res.base_tax_amount.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseToGlobalRate = res.base_to_global_rate.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseToOrderRate = res.base_to_order_rate.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalCanceled = res.base_total_canceled.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalInvoiced = res.base_total_invoiced.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalOfflineRefunded = res.base_total_offline_refunded.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalOnlineRefunded = res.base_total_online_refunded.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalPaid = res.base_total_paid.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalQtyOrdered = res.base_total_qty_ordered.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.BaseTotalRefunded = res.base_total_refunded.ToStringEmptyOnNull( invariantCulture );
-			;
 			if( res.billing_address != null )
 			{
 				var billingAddress = new BillingAddress
@@ -721,27 +708,19 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.CustomerEmail = res.customer_email;
 			this.CustomerFirstname = res.customer_firstname;
 			this.CustomerGroupId = res.customer_group_id.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.CustomerId = res.customer_id.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.CustomerIsGuest = res.customer_is_guest.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.CustomerLastname = res.customer_lastname;
 			this.CustomerNoteNotify = res.customer_note_notify.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.DiscountAmount = res.discount_amount.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.EmailSent = res.email_sent.ToStringEmptyOnNull( invariantCulture );
-			;
 			//this.GiftMessage = res.gift_message;
 			//this.GiftMessageId = res.gift_message_id;
 			this.GlobalCurrencyCode = res.global_currency_code;
 			this.GrandTotal = res.grand_total.ToStringEmptyOnNull( invariantCulture );
-			;
 			this.IncrementId = res.increment_id;
 			//this.IsActive = res.is_active;
 			this.IsVirtual = res.is_virtual.ToStringEmptyOnNull( invariantCulture );
-			;
 
 			if( res.items != null )
 				this.Items = res.items.Select( x => new OrderItemEntity( x ) );
