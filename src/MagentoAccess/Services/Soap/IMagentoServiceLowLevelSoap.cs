@@ -58,6 +58,7 @@ namespace MagentoAccess.Services.Soap
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );
 		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes );
+		Task InitAsync();
 	}
 
 	internal interface IMagentoServiceLowLevelSoapGetProductsBySku

@@ -102,6 +102,11 @@ namespace MagentoAccessTests.Misc
 
 			public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
+			public Task InitAsync()
+			{
+				return Task.FromResult( 0 );
+			}
+
 			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
 			{
 				return null;

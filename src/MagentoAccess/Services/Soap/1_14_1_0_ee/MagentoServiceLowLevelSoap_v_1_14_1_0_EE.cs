@@ -72,6 +72,11 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
+		public Task InitAsync()
+		{
+			return Task.FromResult( 0 );
+		}
+
 		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 		{
 			try
@@ -376,6 +381,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			throw new NotImplementedException();
 		}
+
 
 		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable<int> scopes )
 		{
