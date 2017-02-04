@@ -19,7 +19,8 @@ namespace MagentoAccess.Services.Rest.v2x
 			var fullPagesCount = itemsTotal / this.ItemsPerPage;
 			var itemsInNotFullPage = ( itemsTotal - fullPagesCount * this.ItemsPerPage );
 			var totalPagesCount = fullPagesCount + ( itemsInNotFullPage > 0 ? 1 : 0 );
-			return Enumerable.Range( this.CurrentPage + 1, totalPagesCount - this.CurrentPage );
+			var futurePages = totalPagesCount - this.CurrentPage;
+			return futurePages > 0 ? Enumerable.Range( this.CurrentPage + 1, futurePages ) : Enumerable.Empty< int >();
 		}
 
 		public IEnumerable< List< T > > GetPages< T >( IEnumerable< T > source )

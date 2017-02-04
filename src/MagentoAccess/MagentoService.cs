@@ -1025,6 +1025,11 @@ namespace MagentoAccess
 			return updateBriefInfo;
 		}
 		#endregion
+
+		public async Task InitAsync()
+		{
+			await this.MagentoServiceLowLevelSoap.InitAsync().ConfigureAwait( false );
+		}
 	}
 
 	public class MagentoConfig

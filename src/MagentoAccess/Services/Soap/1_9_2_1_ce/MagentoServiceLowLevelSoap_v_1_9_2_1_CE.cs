@@ -93,6 +93,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
 
+		public Task InitAsync()
+		{
+			return Task.FromResult( 0 );
+		}
+
 		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 		{
 			try

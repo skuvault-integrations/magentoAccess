@@ -54,7 +54,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					)
 					);
 			else
-				return new MagentoService( new MagentoAuthenticatedUserCredentials(
+			{
+				var magentoService = new MagentoService( new MagentoAuthenticatedUserCredentials(
 					accessToken,
 					accessTokenSecret,
 					magentoBaseUrl,
@@ -63,9 +64,12 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					apiUser,
 					apiKey,
 					getProductsMaxThreads,
-					sessionLifeTime, 
-					true 
+					sessionLifeTime,
+					true
 					), string.IsNullOrWhiteSpace( magentoVersionByDefault ) ? null : new MagentoConfig() { VersionByDefault = magentoVersionByDefault } );
+				magentoService.InitAsync().Wait();
+				return magentoService;
+			}
 		}
 
 		[ SetUp ]

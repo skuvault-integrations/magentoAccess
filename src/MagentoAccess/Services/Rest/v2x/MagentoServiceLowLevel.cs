@@ -186,13 +186,13 @@ namespace MagentoAccess.Services.Rest.v2x
 				try
 				{
 					await this.ProductRepository.GetProductsAsync( DateTime.UtcNow ).ConfigureAwait( false );
-					return new GetMagentoInfoResponse( "R2.0.0", "ce" );
+					return new GetMagentoInfoResponse( "R2.0.0.0", "ce" );
 				}
-				catch( Exception )
+				catch( Exception e )
 				{
 					if( suppressException )
 						return null;
-					throw;
+					throw e;
 				}
 			} );
 		}
