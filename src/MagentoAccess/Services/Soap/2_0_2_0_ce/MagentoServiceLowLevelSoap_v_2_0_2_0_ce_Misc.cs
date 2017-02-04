@@ -57,10 +57,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		protected const int SessionIdLifeTime = 3590;
 
-		public bool GetStockItemsWithoutSkuImplementedWithPages
-		{
-			get { return true; }
-		}
+		public bool GetStockItemsWithoutSkuImplementedWithPages => true;
+		public bool GetOrderByIdForFullInformation => true;
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => true;
 
 		private void LogTraceGetResponseException( Exception exception )

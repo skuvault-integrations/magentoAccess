@@ -26,9 +26,10 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			this.Token = token;
 		}
 
-		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > productSku, PagingModel page )
+		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page )
 		{
-			if( productSku == null || !productSku.Any() )
+			var idsList = ids as IList< string > ?? ids.ToList();
+			if( ids == null || !idsList.Any() )
 				return default(RootObject);
 
 			var parameters = new SearchCriteria()
@@ -39,7 +40,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					{
 						filters = new List< Filter >()
 						{
-							new Filter( "increment_id", string.Join( ",", productSku ), Filter.ConditionType.In )
+							new Filter( "increment_id", string.Join( ",", idsList ), Filter.ConditionType.In )
 						}
 					}
 				},

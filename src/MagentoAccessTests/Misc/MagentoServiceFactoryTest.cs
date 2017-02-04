@@ -100,6 +100,8 @@ namespace MagentoAccessTests.Misc
 				get { return false; }
 			}
 
+			public bool GetOrderByIdForFullInformation => false;
+
 			public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
 			public Task InitAsync()

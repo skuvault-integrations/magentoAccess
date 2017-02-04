@@ -116,11 +116,9 @@ namespace MagentoAccess.Services.Rest.v2x
 			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl );
 		}
 
-		public bool GetStockItemsWithoutSkuImplementedWithPages
-		{
-			get { return false; }
-		}
+		public bool GetStockItemsWithoutSkuImplementedWithPages => false;
 
+		public bool GetOrderByIdForFullInformation => false;
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => true;
 
 		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
@@ -140,9 +138,19 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
 		{
-			return null;
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				const int itemsPerPage = 100;
+				var page = new PagingModel( itemsPerPage, 1 );
+				var pagesData = page.GetPages( ordersIds );
+				var pages = pagesData.Select( ( x, i ) => Tuple.Create( new PagingModel( itemsPerPage, i ), x ) );
+				var sales = await pages.ProcessInBatchAsync( 4, async x => await this.SalesOrderRepository.GetOrdersAsync( x.Item2, x.Item1 ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var result = sales.ToList();
+
+				return new GetOrdersResponse( result.ToArray() );
+			} );
 		}
 
 		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
@@ -159,14 +167,15 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		public async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
 		{
-			return null;
+			var orderAsync = await this.SalesOrderRepository.GetOrdersAsync(new List<string> { incrementId},new PagingModel(1,1)).ConfigureAwait(false);
+			return new OrderInfoResponse(orderAsync.items.FirstOrDefault());
 		}
 
 		public Task< OrderInfoResponse > GetOrderAsync( Order order )
 		{
-			return null;
+			return this.GetOrderAsync(this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId);
 		}
 
 		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog )
