@@ -194,6 +194,9 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type, bool excludeType )
 		{
+			if( string.IsNullOrWhiteSpace( type ) )
+				return await this.GetProductsAsync( updatedAt ).ConfigureAwait( false );
+
 			var pagingModel = new PagingModel( 100, 1 );
 			var products = await this.GetProductsAsync( updatedAt, type, excludeType, pagingModel ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( products.totalCount );
@@ -202,6 +205,23 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var resultProducts = new List< RootObject >() { products };
 			resultProducts.AddRange( tailProducts );
 			return resultProducts;
+		}
+
+		public async Task< Item > GetProductAsync( string sku )
+		{
+			var webRequest = ( WebRequest )WebRequest.Create()
+				.Method( MagentoWebRequestMethod.Get )
+				.Path( MagentoServicePath.Products.AddCatalog( Uri.EscapeDataString( sku ) ) )
+				.AuthToken( this.Token )
+				.Url( this.Url );
+
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			{
+				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				{
+					return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
 		}
 	}
 }

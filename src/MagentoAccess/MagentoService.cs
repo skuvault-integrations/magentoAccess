@@ -550,9 +550,21 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
-				var resultProducts = ( await magentoServiceLowLevel.FillProductDetails( products.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Select( y => y.ToProduct() );
 
-				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
+				IEnumerable< Product > resultProducts;
+				var magentoServiceLowLevelFillProducts = magentoServiceLowLevel as IMagentoServiceLowLevelSoapFillProductsDetails;
+				string productBriefInfo;
+				if( magentoServiceLowLevelFillProducts != null )
+				{
+					resultProducts = ( await magentoServiceLowLevelFillProducts.FillProductDetails( products.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Select( y => y.ToProduct() );
+					productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
+				}
+				else
+				{
+					MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : mark, notes : "Current store version doesn't need fill product details. Return products as is." ) );
+					resultProducts = products;
+					productBriefInfo = $"Count:{products.Count()},Product:{products.ToJson()}";
+				}
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
 
 				return resultProducts;
@@ -789,7 +801,11 @@ namespace MagentoAccess
 				resultProducts = ( from productEntity in products join stockItemEntity in stockItems on productEntity.ProductId equals stockItemEntity.ProductId into productsList from stockItemEntity in productsList.DefaultIfEmpty() select new Product( productEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity == null? "0" : stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) ).ToList();
 
 			if( includeDetails )
-				resultProducts = ( await magentoServiceLowLevelSoap.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
+			{
+				var fillService = ( magentoServiceLowLevelSoap as IMagentoServiceLowLevelSoapFillProductsDetails );
+				if( fillService != null )
+					resultProducts = ( await fillService.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
+			}
 			return resultProducts;
 		}
 
@@ -1062,6 +1078,7 @@ namespace MagentoAccess
 				cfg.AddMemberConfiguration().AddName< CaseInsensitiveName >();
 				//cfg.AddMemberConfiguration().
 
+				cfg.CreateMap< Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem >();
 				cfg.CreateMap< Item2, OrderItemEntity >()
 
 					//.ForAllMembers(x =>

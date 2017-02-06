@@ -5,6 +5,7 @@ using System.Linq;
 using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 
 namespace MagentoAccess.Models.Services.Soap.GetStockItems
 {
@@ -57,6 +58,11 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 		public string ProductId { get; set; }
 
 		public string IsInStock { get; set; }
+
+		public InventoryStockItem()
+
+		{
+		}
 
 		public InventoryStockItem( catalogInventoryStockItemEntity catalogInventoryStockItemEntity )
 		{
