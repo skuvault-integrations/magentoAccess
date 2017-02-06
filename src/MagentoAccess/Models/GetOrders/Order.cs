@@ -16,16 +16,16 @@ namespace MagentoAccess.Models.GetOrders
 				AddressTypeEnum.Billing,
 				new Address
 				{
-					AddressType = order.BillingAddress.AddressType,
-					City = order.BillingAddress.City,
-					Company = order.BillingAddress.Company,
-					CountryId = order.BillingAddress.CountryId,
-					Firstname = order.BillingAddress.Firstname,
-					Lastname = order.BillingAddress.Lastname,
-					Postcode = order.BillingAddress.Postcode,
-					Region = order.BillingAddress.Region,
-					Street = order.BillingAddress.Street,
-					Telephone = order.BillingAddress.Telephone,
+					AddressType = order.BillingAddress?.AddressType,
+					City = order.BillingAddress?.City,
+					Company = order.BillingAddress?.Company,
+					CountryId = order.BillingAddress?.CountryId,
+					Firstname = order.BillingAddress?.Firstname,
+					Lastname = order.BillingAddress?.Lastname,
+					Postcode = order.BillingAddress?.Postcode,
+					Region = order.BillingAddress?.Region,
+					Street = order.BillingAddress?.Street,
+					Telephone = order.BillingAddress?.Telephone,
 				} );
 			var shippingAddress = Tuple.Create(
 				AddressTypeEnum.Shipping,
@@ -87,7 +87,7 @@ namespace MagentoAccess.Models.GetOrders
 				TaxPercent = x.TaxPercent.ToDecimalOrDefault(),
 			}
 				).ToList();
-			this.PaymentMethod = order.Payment.Method;
+			this.PaymentMethod = order.Payment?.Method;
 			this.StoreName = order.StoreName;
 			this.Subtotal = order.Subtotal.ToDecimalOrDefault();
 			this.TaxAmount = order.TaxAmount.ToDecimalOrDefault();

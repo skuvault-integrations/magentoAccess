@@ -17,6 +17,11 @@ namespace MagentoAccess.Misc
 		{
 			return integer?.ToString( culture ) ?? string.Empty;
 		}
+
+		public static string ToStringEmptyOnNull( this int? integer )
+		{
+			return ToStringEmptyOnNull( integer, CultureInfo.InvariantCulture );
+		}
 		public static string ToStringEmptyOnNull( this string str, CultureInfo culture )
 		{
 			return ( str ?? string.Empty ).ToString( culture );
