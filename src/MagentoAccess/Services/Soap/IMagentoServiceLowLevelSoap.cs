@@ -57,7 +57,6 @@ namespace MagentoAccess.Services.Soap
 		Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true );
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
-		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );
 		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes );
 		Task InitAsync();
 	}
@@ -65,5 +64,10 @@ namespace MagentoAccess.Services.Soap
 	internal interface IMagentoServiceLowLevelSoapGetProductsBySku
 	{
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus );
+	}
+
+	internal interface IMagentoServiceLowLevelSoapFillProductsDetails
+	{
+		Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts );
 	}
 }

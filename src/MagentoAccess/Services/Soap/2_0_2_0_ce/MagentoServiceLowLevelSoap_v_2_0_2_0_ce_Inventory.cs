@@ -28,7 +28,7 @@ using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
-	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce : IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapFillProductsDetails
 	{
 		public string StoreVersion { get; set; }
 

@@ -19,6 +19,12 @@
 			return this.RepositoryPath;
 		}
 
+		public MagentoServicePath AddCatalog(string src)
+		{
+			this.RepositoryPath = this.RepositoryPath + "/" + src.Trim( '/' ).Trim( '\\' );
+			return this;
+		}
+
 		public static MagentoServicePath Products { get; } = new MagentoServicePath( "products" );
 		public static MagentoServicePath CatalogStockItems { get; } = new MagentoServicePath("stockItems");
 		public static MagentoServicePath SalesOrder { get; } = new MagentoServicePath("orders");

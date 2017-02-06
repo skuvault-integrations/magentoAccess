@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
@@ -162,9 +163,14 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
+		public async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
 		{
-			return null;
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				var products = await this.CatalogStockItemRepository.GetStockItemsAsync( skusOrIds ).ConfigureAwait( false );
+				var inventoryStockItems = products.Select( Mapper.Map< InventoryStockItem > ).ToList();
+				return new InventoryStockItemListResponse( inventoryStockItems );
+			} );
 		}
 
 		public async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
@@ -286,9 +292,24 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
-			return null;
+			throw new NotImplementedException();//not need for this version
+//#if DEBUG
+//			var batchSize = 30;
+//#else
+//			var batchSize = 10;
+//#endif
+
+//			var productsDetailedInfo = await this.RepeatOnAuthProblemAsync.Get(async () =>
+//			{
+//				var products = await resultProducts.ProcessInBatchAsync(batchSize, async x => await this.ProductRepository.GetProductAsync(x.Sku).ConfigureAwait(false)).ConfigureAwait(false);
+//				return products.ToList();
+//			});
+
+//			var productsDetailedInfoCast = productsDetailedInfo.Select(Mapper.Map<ProductDetails>).ToList();
+			
+
 		}
 
 		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )

@@ -11,7 +11,7 @@ using Netco.Extensions;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 {
-	internal partial class MagentoServiceLowLevelSoap_v_1_14_1_0_EE : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapGetProductsBySku
+	internal partial class MagentoServiceLowLevelSoap_v_1_14_1_0_EE : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapGetProductsBySku, IMagentoServiceLowLevelSoapFillProductsDetails
 	{
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
 		{

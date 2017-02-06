@@ -15,5 +15,6 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt );
 		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type );
 		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type, bool excludeType );
+		Task< Item > GetProductAsync( string sku );
 	}
 }
