@@ -11,24 +11,28 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
 	internal class OrderInfoResponse
 	{
+		public OrderInfoResponse( )
+		{
+
+		}
 		public OrderInfoResponse( salesOrderInfoResponse res )
 		{
-			AppliedRuleIds = res.result.applied_rule_ids;
-			BaseCurrencyCode = res.result.base_currency_code;
-			BaseDiscountAmount = res.result.base_discount_amount;
-			BaseGrandTotal = res.result.base_grand_total;
-			BaseShippingAmount = res.result.base_shipping_amount;
-			BaseSubtotal = res.result.base_subtotal;
-			BaseTaxAmount = res.result.base_tax_amount;
-			BaseToGlobalRate = res.result.base_to_global_rate;
-			BaseToOrderRate = res.result.base_to_order_rate;
-			BaseTotalCanceled = res.result.base_total_canceled;
-			BaseTotalInvoiced = res.result.base_total_invoiced;
-			BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
-			BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
-			BaseTotalPaid = res.result.base_total_paid;
-			BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
-			BaseTotalRefunded = res.result.base_total_refunded;
+			this.AppliedRuleIds = res.result.applied_rule_ids;
+			this.BaseCurrencyCode = res.result.base_currency_code;
+			this.BaseDiscountAmount = res.result.base_discount_amount;
+			this.BaseGrandTotal = res.result.base_grand_total;
+			this.BaseShippingAmount = res.result.base_shipping_amount;
+			this.BaseSubtotal = res.result.base_subtotal;
+			this.BaseTaxAmount = res.result.base_tax_amount;
+			this.BaseToGlobalRate = res.result.base_to_global_rate;
+			this.BaseToOrderRate = res.result.base_to_order_rate;
+			this.BaseTotalCanceled = res.result.base_total_canceled;
+			this.BaseTotalInvoiced = res.result.base_total_invoiced;
+			this.BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
+			this.BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
+			this.BaseTotalPaid = res.result.base_total_paid;
+			this.BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
+			this.BaseTotalRefunded = res.result.base_total_refunded;
 			if( res.result.billing_address != null )
 			{
 				var billingAddress = new BillingAddress
@@ -54,34 +58,34 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 				};
 				this.BillingAddress = billingAddress;
 			}
-			BillingAddressId = res.result.billing_address_id;
-			BillingFirstname = res.result.billing_firstname;
-			BillingLastname = res.result.billing_lastname;
-			BillingName = res.result.billing_name;
-			CreatedAt = res.result.created_at;
-			CustomerEmail = res.result.customer_email;
-			CustomerFirstname = res.result.customer_firstname;
-			CustomerGroupId = res.result.customer_group_id;
-			CustomerId = res.result.customer_id;
-			CustomerIsGuest = res.result.customer_is_guest;
-			CustomerLastname = res.result.customer_lastname;
-			CustomerNoteNotify = res.result.customer_note_notify;
-			DiscountAmount = res.result.discount_amount;
-			EmailSent = res.result.email_sent;
-			GiftMessage = res.result.gift_message;
-			GiftMessageId = res.result.gift_message_id;
-			GlobalCurrencyCode = res.result.global_currency_code;
-			GrandTotal = res.result.grand_total;
-			IncrementId = res.result.increment_id;
-			IsActive = res.result.is_active;
-			IsVirtual = res.result.is_virtual;
+			this.BillingAddressId = res.result.billing_address_id;
+			this.BillingFirstname = res.result.billing_firstname;
+			this.BillingLastname = res.result.billing_lastname;
+			this.BillingName = res.result.billing_name;
+			this.CreatedAt = res.result.created_at;
+			this.CustomerEmail = res.result.customer_email;
+			this.CustomerFirstname = res.result.customer_firstname;
+			this.CustomerGroupId = res.result.customer_group_id;
+			this.CustomerId = res.result.customer_id;
+			this.CustomerIsGuest = res.result.customer_is_guest;
+			this.CustomerLastname = res.result.customer_lastname;
+			this.CustomerNoteNotify = res.result.customer_note_notify;
+			this.DiscountAmount = res.result.discount_amount;
+			this.EmailSent = res.result.email_sent;
+			this.GiftMessage = res.result.gift_message;
+			this.GiftMessageId = res.result.gift_message_id;
+			this.GlobalCurrencyCode = res.result.global_currency_code;
+			this.GrandTotal = res.result.grand_total;
+			this.IncrementId = res.result.increment_id;
+			this.IsActive = res.result.is_active;
+			this.IsVirtual = res.result.is_virtual;
 
 			if( res.result.items != null )
 				Items = res.result.items.Select( x => new OrderItemEntity( x ) );
 
-			OrderCurrencyCode = res.result.order_currency_code;
-			OrderId = res.result.order_id;
-			ParentId = res.result.parent_id;
+			this.OrderCurrencyCode = res.result.order_currency_code;
+			this.OrderId = res.result.order_id;
+			this.ParentId = res.result.parent_id;
 
 			if( res.result.payment != null )
 			{
@@ -108,13 +112,13 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 					ShippingAmount = res.result.payment.shipping_amount,
 					UpdatedAt = res.result.payment.updated_at,
 				};
-				Payment = payment;
+				this.Payment = payment;
 			}
-			QuoteId = res.result.quote_id;
-			RemoteIp = res.result.remote_ip;
+			this.QuoteId = res.result.quote_id;
+			this.RemoteIp = res.result.remote_ip;
 			if( res.result.shipping_address != null )
 			{
-				ShippingAddress = new ShippingAddress()
+				this.ShippingAddress = new ShippingAddress()
 				{
 					AddressId = res.result.shipping_address.address_id,
 					AddressType = res.result.shipping_address.address_type,
@@ -136,57 +140,57 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 					UpdatedAt = res.result.shipping_address.updated_at,
 				};
 			}
-			ShippingAddressId = res.result.shipping_address_id;
-			ShippingAmount = res.result.shipping_amount;
-			ShippingDescription = res.result.shipping_description;
-			ShippingFirstname = res.result.shipping_firstname;
-			ShippingLastname = res.result.shipping_lastname;
-			ShippingMethod = res.result.shipping_method;
-			ShippingName = res.result.shipping_name;
-			State = res.result.state;
-			Status = res.result.status;
+			this.ShippingAddressId = res.result.shipping_address_id;
+			this.ShippingAmount = res.result.shipping_amount;
+			this.ShippingDescription = res.result.shipping_description;
+			this.ShippingFirstname = res.result.shipping_firstname;
+			this.ShippingLastname = res.result.shipping_lastname;
+			this.ShippingMethod = res.result.shipping_method;
+			this.ShippingName = res.result.shipping_name;
+			this.State = res.result.state;
+			this.Status = res.result.status;
 
 			if( res.result.status_history != null )
 			{
-				StatusHistory = new List< StatusHistoryRecord >(
+				this.StatusHistory = new List< StatusHistoryRecord >(
 					res.result.status_history.Select( x => new StatusHistoryRecord( x ) ) );
 			}
-			StoreCurrencyCode = res.result.store_currency_code;
-			StoreId = res.result.store_id;
-			StoreName = res.result.store_name;
-			StoreToBaseRate = res.result.store_to_base_rate;
-			StoreToOrderRate = res.result.store_to_order_rate;
-			Subtotal = res.result.subtotal;
-			TaxAmount = res.result.tax_amount;
-			TotalCanceled = res.result.total_canceled;
-			TotalInvoiced = res.result.total_invoiced;
-			TotalOfflineRefunded = res.result.total_offline_refunded;
-			TotalOnlineRefunded = res.result.total_online_refunded;
-			TotalPaid = res.result.total_paid;
-			TotalQtyOrdered = res.result.total_qty_ordered;
-			TotalRefunded = res.result.total_refunded;
-			UpdatedAT = res.result.updated_at;
-			Weight = res.result.weight;
+			this.StoreCurrencyCode = res.result.store_currency_code;
+			this.StoreId = res.result.store_id;
+			this.StoreName = res.result.store_name;
+			this.StoreToBaseRate = res.result.store_to_base_rate;
+			this.StoreToOrderRate = res.result.store_to_order_rate;
+			this.Subtotal = res.result.subtotal;
+			this.TaxAmount = res.result.tax_amount;
+			this.TotalCanceled = res.result.total_canceled;
+			this.TotalInvoiced = res.result.total_invoiced;
+			this.TotalOfflineRefunded = res.result.total_offline_refunded;
+			this.TotalOnlineRefunded = res.result.total_online_refunded;
+			this.TotalPaid = res.result.total_paid;
+			this.TotalQtyOrdered = res.result.total_qty_ordered;
+			this.TotalRefunded = res.result.total_refunded;
+			this.UpdatedAT = res.result.updated_at;
+			this.Weight = res.result.weight;
 		}
 
 		public OrderInfoResponse( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderInfoResponse res )
 		{
-			AppliedRuleIds = res.result.applied_rule_ids;
-			BaseCurrencyCode = res.result.base_currency_code;
-			BaseDiscountAmount = res.result.base_discount_amount;
-			BaseGrandTotal = res.result.base_grand_total;
-			BaseShippingAmount = res.result.base_shipping_amount;
-			BaseSubtotal = res.result.base_subtotal;
-			BaseTaxAmount = res.result.base_tax_amount;
-			BaseToGlobalRate = res.result.base_to_global_rate;
-			BaseToOrderRate = res.result.base_to_order_rate;
-			BaseTotalCanceled = res.result.base_total_canceled;
-			BaseTotalInvoiced = res.result.base_total_invoiced;
-			BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
-			BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
-			BaseTotalPaid = res.result.base_total_paid;
-			BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
-			BaseTotalRefunded = res.result.base_total_refunded;
+			this.AppliedRuleIds = res.result.applied_rule_ids;
+			this.BaseCurrencyCode = res.result.base_currency_code;
+			this.BaseDiscountAmount = res.result.base_discount_amount;
+			this.BaseGrandTotal = res.result.base_grand_total;
+			this.BaseShippingAmount = res.result.base_shipping_amount;
+			this.BaseSubtotal = res.result.base_subtotal;
+			this.BaseTaxAmount = res.result.base_tax_amount;
+			this.BaseToGlobalRate = res.result.base_to_global_rate;
+			this.BaseToOrderRate = res.result.base_to_order_rate;
+			this.BaseTotalCanceled = res.result.base_total_canceled;
+			this.BaseTotalInvoiced = res.result.base_total_invoiced;
+			this.BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
+			this.BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
+			this.BaseTotalPaid = res.result.base_total_paid;
+			this.BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
+			this.BaseTotalRefunded = res.result.base_total_refunded;
 			if( res.result.billing_address != null )
 			{
 				var billingAddress = new BillingAddress
@@ -212,34 +216,34 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 				};
 				this.BillingAddress = billingAddress;
 			}
-			BillingAddressId = res.result.billing_address_id;
-			BillingFirstname = res.result.billing_firstname;
-			BillingLastname = res.result.billing_lastname;
-			BillingName = res.result.billing_name;
-			CreatedAt = res.result.created_at;
-			CustomerEmail = res.result.customer_email;
-			CustomerFirstname = res.result.customer_firstname;
-			CustomerGroupId = res.result.customer_group_id;
-			CustomerId = res.result.customer_id;
-			CustomerIsGuest = res.result.customer_is_guest;
-			CustomerLastname = res.result.customer_lastname;
-			CustomerNoteNotify = res.result.customer_note_notify;
-			DiscountAmount = res.result.discount_amount;
-			EmailSent = res.result.email_sent;
-			GiftMessage = res.result.gift_message;
-			GiftMessageId = res.result.gift_message_id;
-			GlobalCurrencyCode = res.result.global_currency_code;
-			GrandTotal = res.result.grand_total;
-			IncrementId = res.result.increment_id;
-			IsActive = res.result.is_active;
-			IsVirtual = res.result.is_virtual;
+			this.BillingAddressId = res.result.billing_address_id;
+			this.BillingFirstname = res.result.billing_firstname;
+			this.BillingLastname = res.result.billing_lastname;
+			this.BillingName = res.result.billing_name;
+			this.CreatedAt = res.result.created_at;
+			this.CustomerEmail = res.result.customer_email;
+			this.CustomerFirstname = res.result.customer_firstname;
+			this.CustomerGroupId = res.result.customer_group_id;
+			this.CustomerId = res.result.customer_id;
+			this.CustomerIsGuest = res.result.customer_is_guest;
+			this.CustomerLastname = res.result.customer_lastname;
+			this.CustomerNoteNotify = res.result.customer_note_notify;
+			this.DiscountAmount = res.result.discount_amount;
+			this.EmailSent = res.result.email_sent;
+			this.GiftMessage = res.result.gift_message;
+			this.GiftMessageId = res.result.gift_message_id;
+			this.GlobalCurrencyCode = res.result.global_currency_code;
+			this.GrandTotal = res.result.grand_total;
+			this.IncrementId = res.result.increment_id;
+			this.IsActive = res.result.is_active;
+			this.IsVirtual = res.result.is_virtual;
 
 			if( res.result.items != null )
 				Items = res.result.items.Select( x => new OrderItemEntity( x ) );
 
-			OrderCurrencyCode = res.result.order_currency_code;
-			OrderId = res.result.order_id;
-			ParentId = res.result.parent_id;
+			this.OrderCurrencyCode = res.result.order_currency_code;
+			this.OrderId = res.result.order_id;
+			this.ParentId = res.result.parent_id;
 
 			if( res.result.payment != null )
 			{
@@ -266,13 +270,13 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 					ShippingAmount = res.result.payment.shipping_amount,
 					UpdatedAt = res.result.payment.updated_at,
 				};
-				Payment = payment;
+				this.Payment = payment;
 			}
-			QuoteId = res.result.quote_id;
-			RemoteIp = res.result.remote_ip;
+			this.QuoteId = res.result.quote_id;
+			this.RemoteIp = res.result.remote_ip;
 			if( res.result.shipping_address != null )
 			{
-				ShippingAddress = new ShippingAddress()
+				this.ShippingAddress = new ShippingAddress()
 				{
 					AddressId = res.result.shipping_address.address_id,
 					AddressType = res.result.shipping_address.address_type,
@@ -815,10 +819,10 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Weight = res.weight.ToStringEmptyOnNull( invariantCulture );
 		}
 
-		public OrderInfoResponse( Order response )
-		{
-			throw new NotImplementedException();
-		}
+		//public OrderInfoResponse( Order response )
+		//{
+		//	throw new NotImplementedException();
+		//}
 
 		public string AppliedRuleIds { get; private set; }
 		public string BaseCurrencyCode { get; private set; }
@@ -896,65 +900,69 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 	internal class OrderItemEntity
 	{
+		public OrderItemEntity( )
+		{
+
+		}
 		public OrderItemEntity( salesOrderItemEntity salesOrderItemEntity )
 		{
-			AmountRefunded = salesOrderItemEntity.amount_refunded;
-			AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
-			BaseAmountRefunded = salesOrderItemEntity.base_amount_refunded;
-			BaseDiscountAmount = salesOrderItemEntity.base_discount_amount;
-			BaseDiscountInvoiced = salesOrderItemEntity.base_discount_invoiced;
-			BaseOriginalPrice = salesOrderItemEntity.base_original_price;
-			BasePrice = salesOrderItemEntity.base_price;
-			BaseRowInvoiced = salesOrderItemEntity.base_row_invoiced;
-			BaseRowTotal = salesOrderItemEntity.base_row_total;
-			BaseTaxAmount = salesOrderItemEntity.base_tax_amount;
-			BaseTaxBeforeDiscount = salesOrderItemEntity.base_tax_before_discount;
-			BaseTaxInvoiced = salesOrderItemEntity.base_tax_invoiced;
-			BaseWeeeTaxAppliedAmount = salesOrderItemEntity.base_weee_tax_applied_amount;
-			BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.base_weee_tax_applied_row_amount;
-			BaseWeeeTaxDisposition = salesOrderItemEntity.base_weee_tax_disposition;
-			BaseWeeeTaxRowDisposition = salesOrderItemEntity.base_weee_tax_row_disposition;
-			Cost = salesOrderItemEntity.cost;
-			CreatedAt = salesOrderItemEntity.created_at;
-			DiscountAmount = salesOrderItemEntity.discount_amount;
-			DiscountInvoiced = salesOrderItemEntity.discount_invoiced;
-			DiscountPercent = salesOrderItemEntity.discount_percent;
-			FreeShipping = salesOrderItemEntity.free_shipping;
-			GiftMessage = salesOrderItemEntity.gift_message;
-			GiftMessageAvailable = salesOrderItemEntity.gift_message_available;
-			GiftMessageId = salesOrderItemEntity.gift_message_id;
-			IsQtyDecimal = salesOrderItemEntity.is_qty_decimal;
-			IsVirtual = salesOrderItemEntity.is_virtual;
-			ItemId = salesOrderItemEntity.item_id;
-			Name = salesOrderItemEntity.name;
-			NoDiscount = salesOrderItemEntity.no_discount;
+			this.AmountRefunded = salesOrderItemEntity.amount_refunded;
+			this.AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
+			this.BaseAmountRefunded = salesOrderItemEntity.base_amount_refunded;
+			this.BaseDiscountAmount = salesOrderItemEntity.base_discount_amount;
+			this.BaseDiscountInvoiced = salesOrderItemEntity.base_discount_invoiced;
+			this.BaseOriginalPrice = salesOrderItemEntity.base_original_price;
+			this.BasePrice = salesOrderItemEntity.base_price;
+			this.BaseRowInvoiced = salesOrderItemEntity.base_row_invoiced;
+			this.BaseRowTotal = salesOrderItemEntity.base_row_total;
+			this.BaseTaxAmount = salesOrderItemEntity.base_tax_amount;
+			this.BaseTaxBeforeDiscount = salesOrderItemEntity.base_tax_before_discount;
+			this.BaseTaxInvoiced = salesOrderItemEntity.base_tax_invoiced;
+			this.BaseWeeeTaxAppliedAmount = salesOrderItemEntity.base_weee_tax_applied_amount;
+			this.BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.base_weee_tax_applied_row_amount;
+			this.BaseWeeeTaxDisposition = salesOrderItemEntity.base_weee_tax_disposition;
+			this.BaseWeeeTaxRowDisposition = salesOrderItemEntity.base_weee_tax_row_disposition;
+			this.Cost = salesOrderItemEntity.cost;
+			this.CreatedAt = salesOrderItemEntity.created_at;
+			this.DiscountAmount = salesOrderItemEntity.discount_amount;
+			this.DiscountInvoiced = salesOrderItemEntity.discount_invoiced;
+			this.DiscountPercent = salesOrderItemEntity.discount_percent;
+			this.FreeShipping = salesOrderItemEntity.free_shipping;
+			this.GiftMessage = salesOrderItemEntity.gift_message;
+			this.GiftMessageAvailable = salesOrderItemEntity.gift_message_available;
+			this.GiftMessageId = salesOrderItemEntity.gift_message_id;
+			this.IsQtyDecimal = salesOrderItemEntity.is_qty_decimal;
+			this.IsVirtual = salesOrderItemEntity.is_virtual;
+			this.ItemId = salesOrderItemEntity.item_id;
+			this.Name = salesOrderItemEntity.name;
+			this.NoDiscount = salesOrderItemEntity.no_discount;
 			this.OrderId = salesOrderItemEntity.order_id;
-			OriginalPrice = salesOrderItemEntity.original_price;
-			Price = salesOrderItemEntity.price;
-			ProductId = salesOrderItemEntity.product_id;
-			ProductOptions = salesOrderItemEntity.product_options;
-			ProductType = salesOrderItemEntity.product_type;
-			QtyCanceled = salesOrderItemEntity.qty_canceled;
-			QtyInvoiced = salesOrderItemEntity.qty_invoiced;
-			QtyOrdered = salesOrderItemEntity.qty_ordered;
-			QtyRefunded = salesOrderItemEntity.qty_refunded;
-			QtyShipped = salesOrderItemEntity.qty_shipped;
-			QuoteItemId = salesOrderItemEntity.quote_item_id;
-			RowInvoiced = salesOrderItemEntity.row_invoiced;
-			RowTotal = salesOrderItemEntity.row_total;
-			RowWeight = salesOrderItemEntity.row_weight;
-			Sku = salesOrderItemEntity.sku;
-			TaxAmount = salesOrderItemEntity.tax_amount;
-			TaxBeforeDiscount = salesOrderItemEntity.tax_before_discount;
-			TaxInvoiced = salesOrderItemEntity.tax_invoiced;
-			TaxPercent = salesOrderItemEntity.tax_percent;
-			UpdatedAt = salesOrderItemEntity.updated_at;
-			WeeeTaxApplied = salesOrderItemEntity.weee_tax_applied;
-			WeeeTaxAppliedAmount = salesOrderItemEntity.weee_tax_applied_amount;
-			WeeeTaxAppliedRowAmount = salesOrderItemEntity.weee_tax_applied_row_amount;
-			WeeeTaxDisposition = salesOrderItemEntity.weee_tax_disposition;
-			WeeeTaxRowDisposition = salesOrderItemEntity.weee_tax_row_disposition;
-			Weight = salesOrderItemEntity.weight;
+			this.OriginalPrice = salesOrderItemEntity.original_price;
+			this.Price = salesOrderItemEntity.price;
+			this.ProductId = salesOrderItemEntity.product_id;
+			this.ProductOptions = salesOrderItemEntity.product_options;
+			this.ProductType = salesOrderItemEntity.product_type;
+			this.QtyCanceled = salesOrderItemEntity.qty_canceled;
+			this.QtyInvoiced = salesOrderItemEntity.qty_invoiced;
+			this.QtyOrdered = salesOrderItemEntity.qty_ordered;
+			this.QtyRefunded = salesOrderItemEntity.qty_refunded;
+			this.QtyShipped = salesOrderItemEntity.qty_shipped;
+			this.QuoteItemId = salesOrderItemEntity.quote_item_id;
+			this.RowInvoiced = salesOrderItemEntity.row_invoiced;
+			this.RowTotal = salesOrderItemEntity.row_total;
+			this.RowWeight = salesOrderItemEntity.row_weight;
+			this.Sku = salesOrderItemEntity.sku;
+			this.TaxAmount = salesOrderItemEntity.tax_amount;
+			this.TaxBeforeDiscount = salesOrderItemEntity.tax_before_discount;
+			this.TaxInvoiced = salesOrderItemEntity.tax_invoiced;
+			this.TaxPercent = salesOrderItemEntity.tax_percent;
+			this.UpdatedAt = salesOrderItemEntity.updated_at;
+			this.WeeeTaxApplied = salesOrderItemEntity.weee_tax_applied;
+			this.WeeeTaxAppliedAmount = salesOrderItemEntity.weee_tax_applied_amount;
+			this.WeeeTaxAppliedRowAmount = salesOrderItemEntity.weee_tax_applied_row_amount;
+			this.WeeeTaxDisposition = salesOrderItemEntity.weee_tax_disposition;
+			this.WeeeTaxRowDisposition = salesOrderItemEntity.weee_tax_row_disposition;
+			this.Weight = salesOrderItemEntity.weight;
 		}
 
 		public OrderItemEntity( MagentoSoapServiceReference_v_1_14_1_EE.salesOrderItemEntity salesOrderItemEntity )

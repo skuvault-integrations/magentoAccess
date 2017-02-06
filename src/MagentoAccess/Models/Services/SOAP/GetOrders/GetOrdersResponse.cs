@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using AutoMapper;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -45,6 +47,10 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 	internal class Order
 	{
+		public Order( )
+		{
+
+		}
 		public Order( salesOrderListEntity salesOrderListEntity )
 		{
 			this.AdjustmentNegative = salesOrderListEntity.adjustment_negative;
@@ -756,6 +762,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public Order( Item salesOrderListEntity )
 		{
 			var cultureToString = CultureInfo.InvariantCulture;
+			this.Items = salesOrderListEntity.items.Select( x => Mapper.Map< OrderItemEntity >( x ) ).ToList();
 			this.AdjustmentNegative = salesOrderListEntity.adjustment_negative.ToStringEmptyOnNull( cultureToString );
 			this.AdjustmentPositive = salesOrderListEntity.adjustment_positive.ToStringEmptyOnNull( cultureToString );
 			this.AppliedRuleIds = salesOrderListEntity.applied_rule_ids;
@@ -931,6 +938,8 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.XForwardedFOR = salesOrderListEntity.x_forwarded_for;
 			this.OrderId = salesOrderListEntity.entity_id.ToStringEmptyOnNull( cultureToString );
 		}
+
+		public IEnumerable< OrderItemEntity > Items { get; private set; }
 
 		public string AdjustmentNegative { get; private set; }
 		public string AdjustmentPositive { get; private set; }

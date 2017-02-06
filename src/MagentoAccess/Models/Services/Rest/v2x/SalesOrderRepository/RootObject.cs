@@ -92,6 +92,10 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 
 	public class Item2
 	{
+		public Item2()
+		{
+		}
+
 		public string additional_data { get; set; }
 		public int? amount_refunded { get; set; }
 		public string applied_rule_ids { get; set; }

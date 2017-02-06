@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.Configuration.Conventions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
@@ -15,6 +18,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
+using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -441,7 +445,7 @@ namespace MagentoAccess
 				}
 				else
 				{
-					salesOrderInfoResponses = orders.Select( x => new OrderInfoResponse( x ) );
+					salesOrderInfoResponses = orders.Select( Mapper.Map< OrderInfoResponse > ).ToList();
 				}
 
 				var salesOrderInfoResponsesList = salesOrderInfoResponses.Where( x => x != null ).ToList();
@@ -1039,7 +1043,46 @@ namespace MagentoAccess
 
 		public async Task InitAsync()
 		{
-			await this.MagentoServiceLowLevelSoap.InitAsync().ConfigureAwait( false );
+			var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
+			//Mapper.Initialize( cfg => cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >() );
+
+			Mapper.Initialize( cfg =>
+			{
+				cfg.CreateMap< int?, string >().ConvertUsing( Extensions.ToStringEmptyOnNull );
+				cfg.CreateMap< string, string >().ConvertUsing( x => x ?? string.Empty );
+
+				cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >();
+				//cfg.AddConditionalObjectMapper().((s, d) => s.Name == d.Name + "Dto");
+				//cfg.AddConditionalObjectMapper().Where((source, destination) => s.Name.Replace("(_)([a-z])","\U1") == d.Name );
+				//cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
+				//cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+
+				//ReplaceValue(new Match(new Regex("(_)([a-z])"),0,));
+				cfg.AddMemberConfiguration().AddName< ReplaceName >( _ => _.AddReplace( "_", "" ) );
+				cfg.AddMemberConfiguration().AddName< CaseInsensitiveName >();
+				//cfg.AddMemberConfiguration().
+
+				cfg.CreateMap< Item2, OrderItemEntity >()
+
+					//.ForAllMembers(x =>
+					//{
+					//	x.NullSubstitute(string.Empty);
+					//	//x.Condition((i, o, o1, o2, rc) =>
+					//	//{
+					//	//	rc.
+					//	//})
+					//})
+					;
+			} );
+
+
+
+			/////////
+
+			//var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>().ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
+
+
+			await initTask.ConfigureAwait( false );
 		}
 	}
 
