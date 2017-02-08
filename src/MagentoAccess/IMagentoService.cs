@@ -55,5 +55,6 @@ namespace MagentoAccess
 		Func< string > AdditionalLogInfo { get; set; }
 
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null );
+		Task< bool > InitAsync( bool supressExc = false );
 	}
 }

@@ -66,9 +66,18 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		public Task InitAsync()
+		public Task< bool > InitAsync( bool supressExceptions = false )
 		{
-			return Task.FromResult( 0 );
+			try
+			{
+				return Task.FromResult( true );
+			}
+			catch( Exception e )
+			{
+				if( supressExceptions )
+					return Task.FromResult( false );
+				throw;
+			}
 		}
 
 		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
