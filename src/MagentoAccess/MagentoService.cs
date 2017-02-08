@@ -203,6 +203,7 @@ namespace MagentoAccess
 			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials,
 				new Dictionary< string, IMagentoServiceLowLevelSoap >
 				{
+					{ MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					//{ MagentoVersions.M_1_9_2_1, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					//{ MagentoVersions.M_1_9_2_2, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
@@ -213,7 +214,6 @@ namespace MagentoAccess
 					//{ MagentoVersions.M_1_14_3_1, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 					{ MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
-					{ MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) },
 				}
 				);
 
@@ -278,8 +278,13 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
-				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp => await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false ) ).ConfigureAwait( false );
-				var workingStore = storesVersions.Where( x => x != null && !string.IsNullOrWhiteSpace( x.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
+				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
+				{
+					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
+						return null;
+					return await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
+				} ).ConfigureAwait( false );
+				var workingStore = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
 				var pingSoapInfo = workingStore.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfo.ToJson() ) );
@@ -426,7 +431,7 @@ namespace MagentoAccess
 					return res;
 				} ).ConfigureAwait( false );
 
-				var orders = ordersBriefInfos.Where(x => x?.Orders != null).SelectMany(x => x.Orders).Distinct( new SalesOrderByOrderIdComparer() ).ToList();
+				var orders = ordersBriefInfos.Where( x => x?.Orders != null ).SelectMany( x => x.Orders ).Distinct( new SalesOrderByOrderIdComparer() ).ToList();
 
 				var ordersBriefInfoString = orders.ToJson();
 
@@ -1054,49 +1059,57 @@ namespace MagentoAccess
 		}
 		#endregion
 
-		public async Task InitAsync()
+		public async Task< bool > InitAsync( bool supressExc = false )
 		{
-			var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
-			//Mapper.Initialize( cfg => cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >() );
-
-			Mapper.Initialize( cfg =>
+			try
 			{
-				cfg.CreateMap< int?, string >().ConvertUsing( Extensions.ToStringEmptyOnNull );
-				cfg.CreateMap< string, string >().ConvertUsing( x => x ?? string.Empty );
+				var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
+				//Mapper.Initialize( cfg => cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >() );
 
-				cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >();
-				//cfg.AddConditionalObjectMapper().((s, d) => s.Name == d.Name + "Dto");
-				//cfg.AddConditionalObjectMapper().Where((source, destination) => s.Name.Replace("(_)([a-z])","\U1") == d.Name );
-				//cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
-				//cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+				Mapper.Initialize(cfg =>
+				{
+					cfg.CreateMap<int?, string>().ConvertUsing(Extensions.ToStringEmptyOnNull);
+					cfg.CreateMap<string, string>().ConvertUsing(x => x ?? string.Empty);
 
-				//ReplaceValue(new Match(new Regex("(_)([a-z])"),0,));
-				cfg.AddMemberConfiguration().AddName< ReplaceName >( _ => _.AddReplace( "_", "" ) );
-				cfg.AddMemberConfiguration().AddName< CaseInsensitiveName >();
-				//cfg.AddMemberConfiguration().
+					cfg.CreateMap<Models.Services.Soap.GetOrders.Order, OrderInfoResponse>();
+					//cfg.AddConditionalObjectMapper().((s, d) => s.Name == d.Name + "Dto");
+					//cfg.AddConditionalObjectMapper().Where((source, destination) => s.Name.Replace("(_)([a-z])","\U1") == d.Name );
+					//cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
+					//cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
-				cfg.CreateMap< Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem >();
-				cfg.CreateMap< Item2, OrderItemEntity >()
+					//ReplaceValue(new Match(new Regex("(_)([a-z])"),0,));
+					cfg.AddMemberConfiguration().AddName<ReplaceName>(_ => _.AddReplace("_", ""));
+					cfg.AddMemberConfiguration().AddName<CaseInsensitiveName>();
+					//cfg.AddMemberConfiguration().
 
-					//.ForAllMembers(x =>
-					//{
-					//	x.NullSubstitute(string.Empty);
-					//	//x.Condition((i, o, o1, o2, rc) =>
-					//	//{
-					//	//	rc.
-					//	//})
-					//})
-					;
-			} );
+					cfg.CreateMap<Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem>();
+					cfg.CreateMap<Item2, OrderItemEntity>()
 
+						//.ForAllMembers(x =>
+						//{
+						//	x.NullSubstitute(string.Empty);
+						//	//x.Condition((i, o, o1, o2, rc) =>
+						//	//{
+						//	//	rc.
+						//	//})
+						//})
+						;
+				});
 
+				/////////
 
-			/////////
+				//var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>().ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
 
-			//var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>().ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
+				await initTask.ConfigureAwait(false);
+				return true;
+			}
+			catch( Exception e )
+			{
+				if( !supressExc )
+					throw e;
 
-
-			await initTask.ConfigureAwait( false );
+				return false;
+			}
 		}
 	}
 
@@ -1104,6 +1117,14 @@ namespace MagentoAccess
 	{
 		public string VersionByDefault { get; set; }
 		public string EditionByDefault { get; set; }
+		public MagentoDefaultProtocol Protocol { get; set; }
+	}
+
+	public enum MagentoDefaultProtocol
+	{
+		Default = 0,
+		SoapOnly = 1,
+		RestOnly = 2,
 	}
 
 	public class ProductAttributeCodes

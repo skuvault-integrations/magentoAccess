@@ -58,7 +58,7 @@ namespace MagentoAccess.Services.Soap
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute );
 		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes );
-		Task InitAsync();
+		Task< bool > InitAsync( bool supressExceptions = false );
 	}
 
 	internal interface IMagentoServiceLowLevelSoapGetProductsBySku

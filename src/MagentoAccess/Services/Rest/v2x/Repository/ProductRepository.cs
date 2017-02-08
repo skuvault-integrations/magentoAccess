@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Rest.v2x;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Netco.Extensions;
 using Newtonsoft.Json;
-using Filter = MagentoAccess.Models.Services.Rest.v2x.Filter;
-using FilterGroup = MagentoAccess.Models.Services.Rest.v2x.FilterGroup;
-using SearchCriteria = MagentoAccess.Models.Services.Rest.v2x.SearchCriteria;
+using RootObject = MagentoAccess.Models.Services.Rest.v2x.Products.RootObject;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
@@ -27,33 +27,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( PagingModel page )
 		{
-			var parameters = new SearchCriteria()
-			{
-				filter_groups = new List< FilterGroup >()
-				{
-					new FilterGroup()
-					{
-						filters = new List< Filter > { }
-					}
-				},
-				current_page = page.CurrentPage,
-				page_size = page.ItemsPerPage
-			};
-
-			var webRequest = ( WebRequest )WebRequest.Create()
-				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.Products )
-				.Parameters( parameters )
-				.AuthToken( this.Token )
-				.Url( this.Url );
-
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
-			{
-				using( var responseStream = await webRequest.RunAsync().ConfigureAwait( false ) )
-				{
-					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( responseStream, Encoding.UTF8 ).ReadToEnd(), new JsonSerializerSettings() { } );
-				}
-			} );
+			return await this.GetProductsAsync( DateTime.MinValue, page ).ConfigureAwait( false );
 		}
 
 		public async Task< List< RootObject > > GetProductsAsync()
@@ -70,85 +44,40 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page )
 		{
-			var parameters = new SearchCriteria()
-			{
-				filter_groups = new List< FilterGroup >()
-				{
-					new FilterGroup()
-					{
-						filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
-					}
-				},
-				current_page = page.CurrentPage,
-				page_size = page.ItemsPerPage
-			};
-
-			var webRequest = ( WebRequest )WebRequest.Create()
-				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.Products )
-				.Parameters( parameters )
-				.AuthToken( this.Token )
-				.Url( this.Url );
-
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
-			{
-				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
-				{
-					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-				}
-			} );
+			return await this.GetProductsAsync( updatedAt, null, false, page ).ConfigureAwait( false );
 		}
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, PagingModel page )
 		{
-			var parameters = new SearchCriteria()
-			{
-				filter_groups = new List< FilterGroup >()
-				{
-					new FilterGroup()
-					{
-						filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
-					},
-					new FilterGroup()
-					{
-						filters = new List< Filter > { new Filter( @"type_id", type, Filter.ConditionType.Equals ) }
-					},
-				},
-				current_page = page.CurrentPage,
-				page_size = page.ItemsPerPage
-			};
-
-			var webRequest = ( WebRequest )WebRequest.Create()
-				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.Products )
-				.Parameters( parameters )
-				.AuthToken( this.Token )
-				.Url( this.Url );
-
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
-			{
-				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
-				{
-					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-				}
-			} );
+			return await this.GetProductsAsync( updatedAt, type, false, page ).ConfigureAwait( false );
 		}
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page )
 		{
+			var filterGroups = new List< FilterGroup >() { };
+
+			if( !string.IsNullOrWhiteSpace( type ) )
+			{
+				filterGroups.Add( new FilterGroup()
+				{
+					filters = new List< Filter > { new Filter( @"type_id", type, excludeType ? Filter.ConditionType.NotEqual : Filter.ConditionType.Equals ) }
+				} );
+			}
+			if( updatedAt > DateTime.MinValue )
+			{
+				filterGroups.Add( new FilterGroup()
+				{
+					filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
+				} );
+			}
+			if( !filterGroups.Any() )
+			{
+				filterGroups.Add( new FilterGroup() { filters = new List< Filter >() } );
+			}
+
 			var parameters = new SearchCriteria()
 			{
-				filter_groups = new List< FilterGroup >()
-				{
-					new FilterGroup()
-					{
-						filters = new List< Filter > { new Filter( @"updated_at", updatedAt.ToRestParameterString(), Filter.ConditionType.GreaterThan ) }
-					},
-					new FilterGroup()
-					{
-						filters = new List< Filter > { new Filter( @"type_id", type, Filter.ConditionType.NotEqual ) }
-					},
-				},
+				filter_groups = filterGroups,
 				current_page = page.CurrentPage,
 				page_size = page.ItemsPerPage
 			};
@@ -174,6 +103,18 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var products = await this.GetProductsAsync( updatedAt, pagingModel ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( products.totalCount );
 			var tailProducts = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetProductsAsync( updatedAt, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+
+			var resultProducts = new List< RootObject >() { products };
+			resultProducts.AddRange( tailProducts );
+			return resultProducts;
+		}
+
+		public async Task< List< RootObject > > GetProductsAsync( string type, bool excludeType )
+		{
+			var pagingModel = new PagingModel( 100, 1 );
+			var products = await this.GetProductsAsync( DateTime.MinValue, type, excludeType, pagingModel ).ConfigureAwait( false );
+			var pagesToProcess = pagingModel.GetPages( products.totalCount );
+			var tailProducts = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetProductsAsync( DateTime.MinValue, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultProducts = new List< RootObject >() { products };
 			resultProducts.AddRange( tailProducts );
