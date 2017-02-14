@@ -20,7 +20,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 			// ------------ Act
 			Action act = () =>
 			{
-				var service = this.CreateMagentoService( "incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs );
+				var service = this.CreateMagentoService( "incorrectuser", credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false );
 
 				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();

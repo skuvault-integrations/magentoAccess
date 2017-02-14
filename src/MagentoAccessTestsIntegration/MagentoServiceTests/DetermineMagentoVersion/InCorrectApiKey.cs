@@ -16,7 +16,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 		public void ReceiveNull( MagentoServiceSoapCredentials credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey + "_incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs );
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey + "_incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, true );
 
 			// ------------ Act
 			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
