@@ -1094,22 +1094,27 @@ namespace MagentoAccess
 					//cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
 					//ReplaceValue(new Match(new Regex("(_)([a-z])"),0,));
-					cfg.AddMemberConfiguration().AddName<ReplaceName>(_ => _.AddReplace("_", ""));
-					cfg.AddMemberConfiguration().AddName<CaseInsensitiveName>();
+					cfg.AddMemberConfiguration().AddName< ReplaceName >( _ => _.AddReplace( "_", "" ) );
+					cfg.AddMemberConfiguration().AddName< CaseInsensitiveName >();
 					//cfg.AddMemberConfiguration().
 
-					cfg.CreateMap<Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem>();
-					cfg.CreateMap<Item2, OrderItemEntity>()
-
-						//.ForAllMembers(x =>
-						//{
-						//	x.NullSubstitute(string.Empty);
-						//	//x.Condition((i, o, o1, o2, rc) =>
-						//	//{
-						//	//	rc.
-						//	//})
-						//})
+					cfg.CreateMap< Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem >();
+					cfg.CreateMap< Item2, OrderItemEntity >();
+					cfg.CreateMap< Item, Models.Services.Soap.GetOrders.Order >()
+						.ForMember( x => x.OrderId, opt => opt.MapFrom( src => src.entity_id ) )
+						.ForMember( x => x.BillingFirstname, opt => opt.MapFrom( src => src != null ? src.billing_address != null ? src.billing_address.firstname ?? string.Empty : string.Empty : string.Empty ) )
+						.ForMember( x => x.BillingLastname, opt => opt.MapFrom( src => src != null ? src.billing_address != null ? src.billing_address.lastname ?? string.Empty : string.Empty : string.Empty ) )
 						;
+
+					//.ForAllMembers(x =>
+					//{
+					//	x.NullSubstitute(string.Empty);
+					//	//x.Condition((i, o, o1, o2, rc) =>
+					//	//{
+					//	//	rc.
+					//	//})
+					//})
+					;
 				});
 
 				/////////
