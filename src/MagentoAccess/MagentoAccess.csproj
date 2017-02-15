@@ -245,6 +245,9 @@
     <Compile Include="Services\Parsers\MegentoOrdersResponseParser.cs" />
     <Compile Include="Services\Rest\v1x\IMagentoServiceLowLevelRest.cs" />
     <Compile Include="Services\Rest\v1x\MagentoServiceLowLevelRestRest.cs" />
+    <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Inventory.cs" />
+    <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Products.cs" />
+    <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Orders.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory.cs" />
     <Compile Include="Services\Rest\v2x\PagingModel.cs" />
