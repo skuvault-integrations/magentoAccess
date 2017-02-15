@@ -20,7 +20,7 @@ namespace MagentoAccess.Misc
 			return NetcoLogger.GetLogger( "MagentoLogger" );
 		}
 
-		public static void LogTraceException( Exception exception )
+		public static void LogTraceException( Exception exception, Mark mark = null )
 		{
 			Log().Trace( exception, "[magento]\t[{0}]\t[Exception]\t[mark:]", _fvi.FileVersion );
 		}

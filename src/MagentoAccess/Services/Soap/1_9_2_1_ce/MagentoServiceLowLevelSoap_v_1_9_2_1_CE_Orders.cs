@@ -10,7 +10,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_1_9_2_1_ce : IMagentoServiceLowLevelSoap
 	{
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 		{
 			var filters = new filters();
 			AddFilter( filters, modifiedFrom.ToSoapParameterString(), "updated_at", "from" );

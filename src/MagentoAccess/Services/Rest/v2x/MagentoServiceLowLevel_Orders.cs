@@ -11,17 +11,17 @@ namespace MagentoAccess.Services.Rest.v2x
 {
 	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
 	{
-		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
 				const int itemsPerPage = 100;
 				var page = new PagingModel( itemsPerPage, 1 );
-				var sale = await this.SalesOrderRepository.GetOrdersAsync( modifiedFrom, modifiedTo, page ).ConfigureAwait( false );
+				var sale = await this.SalesOrderRepository.GetOrdersAsync( modifiedFrom, modifiedTo, page, mark ).ConfigureAwait( false );
 				var pages = page.GetPages( sale.total_count ).Select( x => new PagingModel( itemsPerPage, x ) );
-				var sales = await pages.ProcessInBatchAsync( 4, async x => await this.SalesOrderRepository.GetOrdersAsync( modifiedFrom, modifiedTo, x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var sales = await pages.ProcessInBatchAsync( 4, async x => await this.SalesOrderRepository.GetOrdersAsync( modifiedFrom, modifiedTo, x, mark ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
-				var result = Enumerable.ToList( sales );
+				var result = sales.ToList();
 				result.Add( sale );
 
 				return new GetOrdersResponse( result.ToArray() );
