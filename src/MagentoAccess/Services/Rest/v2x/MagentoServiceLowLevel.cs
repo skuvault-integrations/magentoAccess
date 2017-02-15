@@ -210,14 +210,16 @@ namespace MagentoAccess.Services.Rest.v2x
 			{
 				try
 				{
-					await this.ProductRepository.GetProductsAsync( DateTime.UtcNow ).ConfigureAwait( false );
+					var task1 = this.ProductRepository.GetProductsAsync( DateTime.UtcNow );
+					var task2 = this.SalesOrderRepository.GetOrdersAsync( DateTime.UtcNow.AddMinutes( -1 ), DateTime.UtcNow, new PagingModel( 10, 1 ) );
+					await Task.WhenAll( task1, task2 ).ConfigureAwait( false );
 					return new GetMagentoInfoResponse( "R2.0.0.0", "CE" );
 				}
 				catch( Exception e )
 				{
 					if( suppressException )
 						return null;
-					throw e;
+					throw;
 				}
 			} );
 		}
