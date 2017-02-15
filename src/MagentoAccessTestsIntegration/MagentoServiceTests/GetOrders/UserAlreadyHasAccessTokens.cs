@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using MagentoAccess.Misc;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 			// var modifiedTo = new DateTime( ( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
 			var modifiedFrom = new DateTime( 2016, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
 			var modifiedTo = new DateTime( 2017, 2, 2, 23, 30, 39 ).AddSeconds( -1 );
-			var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo );
+			var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS" ) );
 			getOrdersTask.Wait();
 
 			// ------------ Assert

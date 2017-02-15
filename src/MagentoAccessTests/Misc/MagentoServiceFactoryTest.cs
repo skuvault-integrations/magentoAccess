@@ -118,7 +118,7 @@ namespace MagentoAccessTests.Misc
 				}
 			}
 
-			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo )
+			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 			{
 				return null;
 			}

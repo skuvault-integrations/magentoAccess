@@ -16,7 +16,7 @@ namespace MagentoAccess
 {
 	public interface IMagentoService
 	{
-		Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo );
+		Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, Mark mark2 = null );
 
 		Task< IEnumerable< Order > > GetOrdersAsync();
 

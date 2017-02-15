@@ -411,24 +411,24 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo )
+		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, Mark mark = null )
 		{
 			var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
 			var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
 			var methodParameters = $"{{dateFrom:{dateFromUtc},dateTo:{dateToUtc}}}";
 
-			var mark = Mark.CreateNew();
+			mark = mark ?? Mark.CreateNew();
 
 			try
 			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters ), mark );
 
 				var interval = new TimeSpan( 7, 0, 0, 0 );
 				var intervalOverlapping = new TimeSpan( 0, 0, 0, 1 );
 
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( Mark.CreateNew( mark ) ).ConfigureAwait( false );
 				//crunch for old versions
 				var magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
 				                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
@@ -436,11 +436,12 @@ namespace MagentoAccess
 				                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
-					MagentoLogger.LogTrace( $"OrdersRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : $"{x.Item1},{x.Item2}" )}" );
+					var atomicMark = Mark.CreateNew( mark );
+					MagentoLogger.LogTrace( $"OrdersRequested: {this.CreateMethodCallInfo( methodParameters : $"{x.Item1},{x.Item2}" )}", atomicMark );
 
-					var res = await magentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2 ).ConfigureAwait( false );
+					var res = await magentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2, atomicMark ).ConfigureAwait( false );
 
-					MagentoLogger.LogTrace( $"OrdersReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : $"{x.Item1},{x.Item2}" )}" );
+					MagentoLogger.LogTrace( $"OrdersReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : $"{x.Item1},{x.Item2}" )}", atomicMark );
 					return res;
 				} ).ConfigureAwait( false );
 
@@ -448,16 +449,16 @@ namespace MagentoAccess
 
 				var ordersBriefInfoString = orders.ToJson();
 
-				MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ) );
+				MagentoLogger.LogTrace( this.CreateMethodCallInfo( methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ), mark );
 
 				IEnumerable< OrderInfoResponse > salesOrderInfoResponses;
 				if( this.MagentoServiceLowLevelSoap.GetOrderByIdForFullInformation )
 				{
 					salesOrderInfoResponses = await orders.ProcessInBatchAsync( 16, async x =>
 					{
-						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToStringIds() )}" );
+						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( methodParameters : x.ToStringIds() )}", mark );
 						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
-						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}" );
+						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}", mark );
 						return res;
 					} ).ConfigureAwait( false );
 				}
@@ -478,15 +479,15 @@ namespace MagentoAccess
 					resultOrders.AddRange( resultOrderPart );
 					var resultOrdersBriefInfo = resultOrderPart.ToJsonAsParallel( 0, batchSize );
 					var partDescription = "From: " + i.ToString() + "," + ( ( i + batchSize < salesOrderInfoResponsesList.Count ) ? batchSize : salesOrderInfoResponsesList.Count % batchSize ).ToString() + " items(or few)";
-					MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : resultOrdersBriefInfo, methodParameters : methodParameters, notes : "LogPart:\"{0}\"".FormatWith( partDescription ) ) );
+					MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : resultOrdersBriefInfo, methodParameters : methodParameters, notes : "LogPart:\"{0}\"".FormatWith( partDescription ) ), mark );
 				}
 
 				return resultOrders;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark, methodParameters : methodParameters ), exception );
-				MagentoLogger.LogTraceException( mexc );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( methodParameters : methodParameters ), exception );
+				MagentoLogger.LogTraceException( mexc, mark );
 				throw mexc;
 			}
 		}

@@ -10,12 +10,24 @@ MagentoAccess tested with these Magento versions.
 * 1.9.0.1
 * 1.9.1.0
 * 1.9.2.0
+* 1.9.2.1
 * 1.9.2.2
+* 1.9.2.3
+* 1.9.2.4
+* 1.9.3.1
 * 2.0.2
+* 2.0.4
+* 2.0.5
+* 2.0.6
 * 2.0.7
 * 2.0.8
+* 2.0.9
+* 2.0.10
+* 2.0.11
 * 2.1.0
 * 2.1.1
+* 2.1.2
+* 2.1.3
 
 **Enterprise Edition**
 * 1.14.1.0
@@ -27,7 +39,7 @@ Install the [NuGet package](https://www.nuget.org/packages/MagentoAccess).
 
 **Create service and get products from Magento**
 
-For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl``` will be enough (set other parameters as empty strings). MagentoAccess interacts with store through SOAP (adding support for REST is in process), WS-I compliance should be turned on.
+For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl``` will be enough (set other parameters as empty strings). MagentoAccess interacts with store through SOAP ( REST supported only for Magento 2), WS-I compliance should be turned on.
 ```C#
 			var servicesFactory = new MagentoFactory();
 			var magentoService = servicesFactory.CreateService(new MagentoAuthenticatedUserCredentials("AccessToken", "AccessTokenSecret", "StoreUrl", "ConsumerSecret", "ConsumerKey", "SoapApiUser", "SoapApiKey"), new MagentoConfig() { EditionByDefault = "ce", VersionByDefault = "2.0.2.0" });

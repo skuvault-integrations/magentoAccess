@@ -25,7 +25,7 @@ namespace MagentoAccess.Services.Soap
 		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
 		bool GetOrderByIdForFullInformation { get; }
 		bool GetOrdersUsesEntityInsteadOfIncrementId { get; }
-		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo );
+		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null );
