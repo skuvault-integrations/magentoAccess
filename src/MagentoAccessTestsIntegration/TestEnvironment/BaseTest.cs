@@ -239,7 +239,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
-			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => x.Sku.StartsWith( "testsku", StringComparison.InvariantCultureIgnoreCase ) ).TakeWhile( ( x, i ) => i < 5 );
+			var onlyProductsCreatedForThisTests = allProductsinMagent.Where( x => x.Sku.StartsWith( "testsku", StringComparison.InvariantCultureIgnoreCase ) && x.ProductType == "simple" ).TakeWhile( ( x, i ) => i < 5 );
 			return onlyProductsCreatedForThisTests;
 		}
 
