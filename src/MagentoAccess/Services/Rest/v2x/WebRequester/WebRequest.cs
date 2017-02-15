@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x;
 
 namespace MagentoAccess.Services.Rest.v2x.WebRequester
@@ -20,22 +21,23 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			return new WebRequestBuilder( new WebRequest() );
 		}
 
-		public async Task< Stream > RunAsync()
+		public async Task< Stream > RunAsync( Mark mark = null )
 		{
 			var webRequestServices = new WebRequestServices();
-
 			var serviceUrl = this.Url.ToString().TrimEnd( '/' ) + MagentoRestPath + this.MagentoServicePath.ToString();
 			var body = this.Body.ToString();
 			var method = this.MagentoWebRequestMethod.ToString();
 			var parameters = this.Parameters?.ToString();
+			var rawHeaders = new Dictionary< string, string > { { "Authorization", $"Bearer {this.AuthorizationToken}" } };
 			var requestAsync = await webRequestServices.CreateCustomRequestAsync(
 				serviceUrl,
 				body,
-				new Dictionary< string, string > { { "Authorization", $"Bearer {this.AuthorizationToken}" } }, //TODO:create VO with builder!!!
+				rawHeaders, //TODO:create VO with builder!!!
 				method,
 				parameters ).ConfigureAwait( false );
 
-			return await webRequestServices.GetResponseStreamAsync( requestAsync ).ConfigureAwait( false );
+			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{parameters}',headers:{rawHeaders.ToJson()},body:'{body}'", mark );
+			return await webRequestServices.GetResponseStreamAsync( requestAsync, mark ).ConfigureAwait( false );
 		}
 
 		public class WebRequestBuilder

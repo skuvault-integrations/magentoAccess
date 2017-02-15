@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Netco.Extensions;
@@ -36,7 +37,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
 				}
@@ -62,7 +63,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}

@@ -63,7 +63,6 @@ namespace MagentoAccess.Services
 					using( var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait( false ) )
 						newStream.Write( encodedBody, 0, encodedBody.Length );
 				}
-
 				return serviceRequest;
 			}
 			catch( Exception exc )
@@ -139,7 +138,7 @@ namespace MagentoAccess.Services
 			}
 		}
 
-		public async Task< Stream > GetResponseStreamAsync( WebRequest webRequest )
+		public async Task< Stream > GetResponseStreamAsync( WebRequest webRequest, Mark mark = null )
 		{
 			try
 			{
@@ -147,7 +146,13 @@ namespace MagentoAccess.Services
 				using( var dataStream = await new TaskFactory< Stream >().StartNew( () => response != null ? response.GetResponseStream() : null ).ConfigureAwait( false ) )
 				{
 					var memoryStream = new MemoryStream();
-					await dataStream.CopyToAsync( memoryStream, 0x100 ).ConfigureAwait( false );
+					if( dataStream != null )
+					{
+						await dataStream.CopyToAsync( memoryStream, 0x100 ).ConfigureAwait( false );
+						memoryStream.Position = 0;
+						MagentoLogger.LogTraceResponseMessage( new StreamReader( memoryStream ).ReadToEnd(), mark );
+					}
+
 					memoryStream.Position = 0;
 					return memoryStream;
 				}
@@ -156,14 +161,8 @@ namespace MagentoAccess.Services
 			{
 				var webrequestUrl = PredefinedValues.NotAvailable;
 
-				if( webRequest != null )
-				{
-					if( webRequest.RequestUri != null )
-					{
-						if( webRequest.RequestUri.AbsoluteUri != null )
-							webrequestUrl = webRequest.RequestUri.AbsoluteUri;
-					}
-				}
+				if( webRequest?.RequestUri?.AbsoluteUri != null )
+					webrequestUrl = webRequest.RequestUri.AbsoluteUri;
 
 				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{webrequestUrl})", ex );
 			}

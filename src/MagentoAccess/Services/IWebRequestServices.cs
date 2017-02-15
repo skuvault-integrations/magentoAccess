@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Services
 {
@@ -9,7 +10,7 @@ namespace MagentoAccess.Services
 	{
 		Stream GetResponseStream( WebRequest webRequest );
 
-		Task< Stream > GetResponseStreamAsync( WebRequest webRequest );
+		Task< Stream > GetResponseStreamAsync( WebRequest webRequest, Mark mark = null );
 
 		WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters );
 

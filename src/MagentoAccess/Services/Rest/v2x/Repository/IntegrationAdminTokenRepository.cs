@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Newtonsoft.Json;
 
@@ -26,7 +27,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 						.Url( this.Url )
 						.Path( MagentoServicePath.IntegrationAdmin )
 						.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = url.Password } ) ) )
-					.RunAsync().ConfigureAwait( false ) )
+					.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
 					return AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}

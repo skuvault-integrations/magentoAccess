@@ -57,7 +57,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
@@ -98,7 +98,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync().ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
