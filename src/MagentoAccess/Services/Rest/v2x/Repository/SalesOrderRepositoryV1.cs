@@ -64,7 +64,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			} );
 		}
 
-		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page )
+		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, Mark mark = null )
 		{
 			var parameters = new SearchCriteria()
 			{
@@ -98,7 +98,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}

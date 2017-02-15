@@ -253,8 +253,7 @@ namespace MagentoAccess
 		#region ping
 		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null )
 		{
-			if( mark.IsBlank() )
-				mark = Mark.CreateNew();
+			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
@@ -287,8 +286,7 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null )
 		{
-			if( mark.IsBlank() )
-				mark = Mark.CreateNew();
+			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
@@ -317,7 +315,7 @@ namespace MagentoAccess
 
 		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
 		{
-			var markLocal = mark.CreateChild();
+			var markLocal = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo(), markLocal );
@@ -538,7 +536,7 @@ namespace MagentoAccess
 
 		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true, Mark mark = null )
 		{
-			var markLocal = Mark.CreateNew( mark );
+			var markLocal = mark ?? Mark.CreateNew();
 			var parameters = $"includeDetails:{includeDetails},productType:{productType},excludeProductByType:{excludeProductByType},updatedFrom:{updatedFrom}";
 			try
 			{

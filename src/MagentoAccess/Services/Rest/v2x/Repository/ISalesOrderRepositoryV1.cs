@@ -10,6 +10,6 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	public interface ISalesOrderRepositoryV1
 	{
 		Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel pagingModel );
-		Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel pagingModel );
+		Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel pagingModel, Mark mark = null );
 	}
 }
