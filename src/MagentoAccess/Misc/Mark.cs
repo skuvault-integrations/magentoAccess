@@ -79,7 +79,7 @@ namespace MagentoAccess.Misc
 
 		public static string ToStringSafe( this Mark source )
 		{
-			return IsBlank( source ) ? PredefinedValues.EmptyJsonObject : source.ToString();
+			return IsBlank( source ) ? PredefinedValues.EmptyJsonObject : ( source.Parrent == null ? source.ToString() : source.Parrent.ToStringSafe() + "-PARENT-" + source.ToString() );
 		}
 	}
 }
