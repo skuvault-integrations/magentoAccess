@@ -147,7 +147,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			filters.complex_filter = temp.ToArray();
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			return await this.GetWithAsync(
 				x => new InventoryStockItemListResponse( x ),
@@ -188,7 +188,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
-		public async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
+		public async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			var pages = new PagingModel( 1000, 0 ).GetPages( skusOrIds ).ToList();
 

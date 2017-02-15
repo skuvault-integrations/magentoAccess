@@ -29,12 +29,12 @@ namespace MagentoAccess.Services.Rest.v2x
 {
 	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
 	{
-		public async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
+		public async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
-				var products = await this.CatalogStockItemRepository.GetStockItemsAsync( skusOrIds ).ConfigureAwait( false );
-				var inventoryStockItems = products.Select( Mapper.Map< InventoryStockItem > ).ToList();
+				var products = await this.CatalogStockItemRepository.GetStockItemsAsync( skusOrIds, mark ).ConfigureAwait( false );
+				var inventoryStockItems = Enumerable.ToList( products.Select( Mapper.Map< InventoryStockItem > ) );
 				return new InventoryStockItemListResponse( inventoryStockItems );
 			} );
 		}
@@ -55,7 +55,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			throw new NotImplementedException();
 		}

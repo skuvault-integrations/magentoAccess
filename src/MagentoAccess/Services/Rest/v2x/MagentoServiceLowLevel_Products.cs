@@ -29,11 +29,11 @@ namespace MagentoAccess.Services.Rest.v2x
 {
 	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
 	{
-		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
+		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
-				var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded ).ConfigureAwait( false );
+				var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded, mark ).ConfigureAwait( false );
 				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
 			} );
 		}

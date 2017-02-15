@@ -195,7 +195,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		}
 
 		//TODO: refactor, remove redundant wrapper
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
 		{
 			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait(false);
 		}
@@ -457,7 +457,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			try
 			{
@@ -515,8 +515,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		/// </summary>
 		/// <param name="skusOrIds"></param>
 		/// <param name="scopes"></param>
+		/// <param name="mark"></param>
 		/// <returns>Union of scope items (the minimal qty item will be in the union)</returns>
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			try
 			{

@@ -42,7 +42,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			return resultProducts;
 		}
 
-		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page )
+		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page, Mark mark = null )
 		{
 			return await this.GetProductsAsync( updatedAt, null, false, page ).ConfigureAwait( false );
 		}
@@ -52,7 +52,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			return await this.GetProductsAsync( updatedAt, type, false, page ).ConfigureAwait( false );
 		}
 
-		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page )
+		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page, Mark mark = null )
 		{
 			var filterGroups = new List< FilterGroup >() { };
 
@@ -90,19 +90,19 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
 			} );
 		}
 
-		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt )
+		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, Mark mark = null )
 		{
 			var pagingModel = new PagingModel( 100, 1 );
-			var products = await this.GetProductsAsync( updatedAt, pagingModel ).ConfigureAwait( false );
+			var products = await this.GetProductsAsync( updatedAt, pagingModel, mark.CreateChildOrNull() ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( products.totalCount );
-			var tailProducts = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetProductsAsync( updatedAt, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetProductsAsync( updatedAt, new PagingModel( pagingModel.ItemsPerPage, x ), mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultProducts = new List< RootObject >() { products };
 			resultProducts.AddRange( tailProducts );
@@ -133,15 +133,15 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			return resultProducts;
 		}
 
-		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type, bool excludeType )
+		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, Mark mark = null )
 		{
 			if( string.IsNullOrWhiteSpace( type ) )
-				return await this.GetProductsAsync( updatedAt ).ConfigureAwait( false );
+				return await this.GetProductsAsync( updatedAt, mark.CreateChildOrNull() ).ConfigureAwait( false );
 
 			var pagingModel = new PagingModel( 100, 1 );
-			var products = await this.GetProductsAsync( updatedAt, type, excludeType, pagingModel ).ConfigureAwait( false );
+			var products = await this.GetProductsAsync( updatedAt, type, excludeType, pagingModel, mark.CreateChildOrNull() ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( products.totalCount );
-			var tailProducts = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetProductsAsync( updatedAt, type, excludeType, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetProductsAsync( updatedAt, type, excludeType, new PagingModel( pagingModel.ItemsPerPage, x ), mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultProducts = new List< RootObject >() { products };
 			resultProducts.AddRange( tailProducts );

@@ -10,12 +10,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	{
 		Task< RootObject > GetProductsAsync( PagingModel page );
 		Task< List< RootObject > > GetProductsAsync();
-		Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page );
+		Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page, Mark mark = null );
 		Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, PagingModel page );
-		Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page );
-		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt );
+		Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, PagingModel page, Mark mark = null );
+		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, Mark mark = null );
 		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type );
-		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type, bool excludeType );
+		Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, string type, bool excludeType, Mark mark = null );
 		Task< Item > GetProductAsync( string sku );
 	}
 }
