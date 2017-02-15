@@ -39,12 +39,13 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog )
+		public async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
 				var products = await this.CatalogStockItemRepository.PutStockItemsAsync(
-					stockItems.Select( x => Tuple.Create( x.Sku, x.ItemId, new RootObject() { stockItem = new StockItem { qty = x.Qty, minQty = x.MinQty } } ) ) ).ConfigureAwait( false );
+					stockItems.Select( x => Tuple.Create( x.Sku, x.ItemId, new RootObject() { stockItem = new StockItem { qty = x.Qty, minQty = x.MinQty } } ) ),
+					mark ).ConfigureAwait( false );
 				return products.All( x => x );
 			} );
 		}

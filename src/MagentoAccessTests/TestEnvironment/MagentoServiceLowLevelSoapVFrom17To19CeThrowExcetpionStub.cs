@@ -48,7 +48,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
+		public override Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
 		{
 			throw new Exception();
 		}

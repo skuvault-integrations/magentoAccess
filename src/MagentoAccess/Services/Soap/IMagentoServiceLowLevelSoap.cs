@@ -31,7 +31,7 @@ namespace MagentoAccess.Services.Soap
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< OrderInfoResponse > GetOrderAsync( Order order );
-		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog );
+		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null );
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException );
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );

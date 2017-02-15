@@ -35,7 +35,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface > getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface >();
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
@@ -64,7 +64,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
-							MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark : markForLog ) );
+							MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark : mark ) );
 
 							var catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface()
 							{
@@ -107,7 +107,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : markForLog, methodResult : res.ToJson() ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : mark, methodResult : res.ToJson() ) );
 
 				return res.All( x => x.Success > 0 );
 			}

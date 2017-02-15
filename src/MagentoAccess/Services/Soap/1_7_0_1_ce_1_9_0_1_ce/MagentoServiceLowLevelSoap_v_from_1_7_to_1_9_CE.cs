@@ -406,7 +406,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
@@ -439,14 +439,14 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, markForLog ) );
+						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
 
 						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
 
 						res = temp.result;
 
 						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
-						MagentoLogger.LogTraceEnded( CreateMethodCallInfo( methodParameters, markForLog, methodResult : updateBriefInfo ) );
+						MagentoLogger.LogTraceEnded( CreateMethodCallInfo( methodParameters, mark, methodResult : updateBriefInfo ) );
 					}
 				} ).ConfigureAwait( false );
 

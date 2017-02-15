@@ -148,7 +148,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog )
+			public Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
 			{
 				return null;
 			}

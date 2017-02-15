@@ -197,7 +197,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return result;
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark markForLog = null )
+		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
 		{
 			var methodParameters = stockItems.ToJson();
 			var stockItemsProcessed = stockItems.Select( x =>
