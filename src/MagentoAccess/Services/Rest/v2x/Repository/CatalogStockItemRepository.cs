@@ -22,7 +22,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			this.Token = token;
 		}
 
-		public async Task< bool > PutStockItemAsync( string productSku, string itemId, RootObject stockItem )
+		public async Task< bool > PutStockItemAsync( string productSku, string itemId, RootObject stockItem, Mark mark = null )
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Put )
@@ -37,16 +37,16 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
 				}
 			} );
 		}
 
-		public async Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items )
+		public async Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items, Mark mark = null )
 		{
-			var tailProducts = await items.ProcessInBatchAsync( 10, async x => await this.PutStockItemAsync( x.Item1, x.Item2, x.Item3 ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await items.ProcessInBatchAsync( 10, async x => await this.PutStockItemAsync( x.Item1, x.Item2, x.Item3, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			return tailProducts;
 		}
