@@ -10,7 +10,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	{
 		Task< bool > PutStockItemAsync( string productSku, string itemId, RootObject stockItem, Mark mark = null );
 		Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items, Mark mark = null );
-		Task< StockItem > GetStockItemAsync( string productSku );
-		Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku );
+		Task< StockItem > GetStockItemAsync( string productSku, Mark mark = null );
+		Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku, Mark mark = null );
 	}
 }

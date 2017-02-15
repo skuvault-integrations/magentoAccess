@@ -51,7 +51,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			return tailProducts;
 		}
 
-		public async Task< StockItem > GetStockItemAsync( string productSku )
+		public async Task< StockItem > GetStockItemAsync( string productSku, Mark mark = null )
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
@@ -63,16 +63,16 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
 			} );
 		}
 
-		public async Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku )
+		public async Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku, Mark mark = null )
 		{
-			var tailProducts = await productSku.ProcessInBatchAsync( 10, async x => await this.GetStockItemAsync( x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await productSku.ProcessInBatchAsync( 10, async x => await this.GetStockItemAsync( x, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			return tailProducts;
 		}
