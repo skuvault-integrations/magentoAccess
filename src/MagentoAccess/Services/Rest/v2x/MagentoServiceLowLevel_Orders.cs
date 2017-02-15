@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Services.Soap;
 using Netco.Extensions;

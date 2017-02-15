@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.Repository;

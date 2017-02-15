@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="Misc\Cache.cs" />
     <Compile Include="Misc\ICreateCallInfoExtensions.cs" />
+    <Compile Include="Misc\PagingModel.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModel.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModelResult.cs" />
     <Compile Include="Models\DeleteProducts\DeleteProductModel.cs" />
@@ -250,9 +251,7 @@
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Orders.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory.cs" />
-    <Compile Include="Services\Rest\v2x\PagingModel.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ActionPolicies.cs" />
-    <Compile Include="Services\Rest\v2x\Repository\Extension.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ISalesOrderRepositoryV1.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IIntegrationAdminTokenRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IntegrationAdminTokenRepository.cs" />

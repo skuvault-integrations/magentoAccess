@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using System.Xml;
 using MagentoAccess.Models.GetOrders;
 using Newtonsoft.Json;
@@ -13,6 +14,12 @@ namespace MagentoAccess.Misc
 {
 	internal static class Extensions
 	{
+		public static T WaitResult< T >( this Task< T > t )
+		{
+			t.Wait();
+			return t.Result;
+		}
+
 		public static string ToStringEmptyOnNull( this int? integer, CultureInfo culture )
 		{
 			return integer?.ToString( culture ) ?? string.Empty;

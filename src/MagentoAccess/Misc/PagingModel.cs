@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MagentoAccess.Services.Rest.v2x
+namespace MagentoAccess.Misc
 {
 	public class PagingModel
 	{

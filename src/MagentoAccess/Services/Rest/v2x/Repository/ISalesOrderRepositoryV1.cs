@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using RootObject = MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository.RootObject;
 

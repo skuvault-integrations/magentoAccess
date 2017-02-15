@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using FluentAssertions;
+using MagentoAccess.Misc;
 using MagentoAccess.Services.Rest.v2x;
 using NUnit.Framework;
 
