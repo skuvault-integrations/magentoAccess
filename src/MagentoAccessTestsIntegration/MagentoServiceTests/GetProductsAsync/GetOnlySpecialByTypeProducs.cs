@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MagentoAccess.Misc;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
@@ -19,8 +20,8 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false );
 
 			// ------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false );
-			var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "bundle", excludeProductByType : false );
+			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false, mark : new Mark( nameof( ReceiveProducts ) + "_s" ) );
+			var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "bundle", excludeProductByType : false, mark : new Mark( nameof( ReceiveProducts ) + "_b" ) );
 			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
 
 			// ------------ Assert

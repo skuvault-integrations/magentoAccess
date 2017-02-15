@@ -34,7 +34,7 @@ namespace MagentoAccess.Misc
 
 		public override string ToString()
 		{
-			return this.MarkValue;
+			return this.Parrent == null ? this.MarkValue : this.Parrent.ToString() + "-PARENT-" + this.MarkValue;
 		}
 
 		public override int GetHashCode()
@@ -77,9 +77,14 @@ namespace MagentoAccess.Misc
 			return source != null ? Mark.CreateNew( source ) : null;
 		}
 
+		public static Mark CreateChild( this Mark source )
+		{
+			return source != null ? Mark.CreateNew( source ) : Mark.CreateNew();
+		}
+
 		public static string ToStringSafe( this Mark source )
 		{
-			return IsBlank( source ) ? PredefinedValues.EmptyJsonObject : ( source.Parrent == null ? source.ToString() : source.Parrent.ToStringSafe() + "-PARENT-" + source.ToString() );
+			return IsBlank( source ) ? PredefinedValues.EmptyJsonObject : source.ToString();
 		}
 	}
 }

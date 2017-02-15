@@ -317,22 +317,21 @@ namespace MagentoAccess
 
 		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
 		{
-			if( mark.IsBlank() )
-				mark = Mark.CreateNew();
+			var markLocal = mark.CreateChild();
 			try
 			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo(), markLocal );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : magentoCoreInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : magentoCoreInfo.ToJson() ), markLocal );
 
 				return magentoCoreInfo;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : markLocal ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -537,26 +536,26 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true )
+		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true, Mark mark = null )
 		{
-			var mark = Mark.CreateNew();
+			var markLocal = Mark.CreateNew( mark );
 			var parameters = $"includeDetails:{includeDetails},productType:{productType},excludeProductByType:{excludeProductByType},updatedFrom:{updatedFrom}";
 			try
 			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters : parameters, mark : mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters : parameters ), markLocal );
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
-				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, mark ).ConfigureAwait( false );
+				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
 
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : productBriefInfo ), markLocal );
 
 				return resultProducts;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : markLocal ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -738,7 +737,7 @@ namespace MagentoAccess
 			additionalInfo = ( string.IsNullOrWhiteSpace( additionalInfo ) && this.AdditionalLogInfo != null ) ? this.AdditionalLogInfo() : PredefinedValues.EmptyJsonObject;
 			mark = mark ?? Mark.Blank();
 			var connectionInfo = this.MagentoServiceLowLevelSoap.ToJson();
-			var str = $"{{MethodName:{memberName}, ConnectionInfo:{connectionInfo}, MethodParameters:{methodParameters}, Mark:\"{mark}\"{( string.IsNullOrWhiteSpace( errors ) ? string.Empty : ", Errors:" + errors )}{( string.IsNullOrWhiteSpace( methodResult ) ? string.Empty : ", Result:" + methodResult )}{( string.IsNullOrWhiteSpace( notes ) ? string.Empty : ", Notes:" + notes )}{( string.IsNullOrWhiteSpace( additionalInfo ) ? string.Empty : ", " + additionalInfo )}}}";
+			var str = $"{{MethodName:{memberName}, ConnectionInfo:{connectionInfo}, MethodParameters:{methodParameters}, Mark:\"{mark.ToStringSafe()}\"{( string.IsNullOrWhiteSpace( errors ) ? string.Empty : ", Errors:" + errors )}{( string.IsNullOrWhiteSpace( methodResult ) ? string.Empty : ", Result:" + methodResult )}{( string.IsNullOrWhiteSpace( notes ) ? string.Empty : ", Notes:" + notes )}{( string.IsNullOrWhiteSpace( additionalInfo ) ? string.Empty : ", " + additionalInfo )}}}";
 			return str;
 		}
 

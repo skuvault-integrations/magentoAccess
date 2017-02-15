@@ -25,19 +25,19 @@ namespace MagentoAccess.Misc
 			Log().Trace( exception, "[magento]\t[{0}]\t[Exception]\t[mark:]", _fvi.FileVersion );
 		}
 
-		public static void LogTraceStarted( string info )
+		public static void LogTraceStarted( string info, Mark mark = null )
 		{
-			Log().Trace( "[magento]\t[{1}]\t[Start]\t[mark:]\t[payload:{0}]", info, _fvi.FileVersion );
+			Log().Trace( "[magento]\t[{1}]\t[Start]\t[mark:{2}]\t[payload:{0}]", info, _fvi.FileVersion, mark.ToStringSafe() );
 		}
 
-		public static void LogTraceEnded( string info )
+		public static void LogTraceEnded( string info, Mark mark = null )
 		{
-			Log().Trace( "[magento]\t[{1}]\t[End]\t[mark:]\t[payload:{0}]", info, _fvi.FileVersion );
+			Log().Trace( "[magento]\t[{1}]\t[End]\t[mark:{2}]\t[payload:{0}]", info, _fvi.FileVersion, mark.ToStringSafe() );
 		}
 
-		public static void LogTrace( string info )
+		public static void LogTrace( string info, Mark mark = null )
 		{
-			Log().Trace( "[magento]\t[{1}]\t[Trace]\t[mark:]\t[payload:{0}]", info, _fvi.FileVersion );
+			Log().Trace( "[magento]\t[{1}]\t[Trace]\t[mark:{2}]\t[payload:{0}]", info, _fvi.FileVersion, mark.ToStringSafe() );
 		}
 
 		public static void LogTraceRequestMessage( string info, Mark mark = null )
