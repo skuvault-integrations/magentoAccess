@@ -44,7 +44,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, PagingModel page, Mark mark = null )
 		{
-			return await this.GetProductsAsync( updatedAt, null, false, page ).ConfigureAwait( false );
+			return await this.GetProductsAsync( updatedAt, null, false, page, mark ).ConfigureAwait( false );
 		}
 
 		public async Task< RootObject > GetProductsAsync( DateTime updatedAt, string type, PagingModel page )

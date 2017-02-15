@@ -224,7 +224,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				async ( client, session ) => await client.catalogInventoryStockItemUpdateAsync( session, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
 		
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 		{
 			return await this.GetWithAsync(
 				res => new GetMagentoInfoResponse( res ),

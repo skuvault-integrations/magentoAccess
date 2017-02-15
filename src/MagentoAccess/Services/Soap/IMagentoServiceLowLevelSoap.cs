@@ -32,7 +32,7 @@ namespace MagentoAccess.Services.Soap
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< OrderInfoResponse > GetOrderAsync( Order order );
 		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null );
-		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException );
+		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null );
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );
 		Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog = null );

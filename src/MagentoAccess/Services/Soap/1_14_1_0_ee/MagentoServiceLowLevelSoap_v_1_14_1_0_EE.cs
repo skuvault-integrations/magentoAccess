@@ -531,7 +531,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 		{
 			try
 			{

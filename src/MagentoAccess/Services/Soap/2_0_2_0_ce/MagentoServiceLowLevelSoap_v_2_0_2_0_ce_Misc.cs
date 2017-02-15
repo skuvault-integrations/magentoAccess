@@ -265,7 +265,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return $"{{BaseMagentoUrl:{( string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl )}, ApiUser:{( string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser )},ApiKey:{( string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey )},ApiToken:{( string.IsNullOrWhiteSpace( this._sessionId ) ? PredefinedValues.NotAvailable : this._sessionId )},Store:{( string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store )}}}";
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 		{
 			try
 			{

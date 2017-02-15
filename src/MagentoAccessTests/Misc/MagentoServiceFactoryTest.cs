@@ -153,7 +153,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
+			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 			{
 				return null;
 			}

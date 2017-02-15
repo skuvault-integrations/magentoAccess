@@ -278,7 +278,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			return customBinding;
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 		{
 			try
 			{

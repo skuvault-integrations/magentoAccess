@@ -321,7 +321,7 @@ namespace MagentoAccess
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo(), markLocal );
-				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false ).ConfigureAwait( false );
+				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, markLocal ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
@@ -544,7 +544,7 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters : parameters ), markLocal );
 
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( markLocal ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
 
