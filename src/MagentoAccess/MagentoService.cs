@@ -449,16 +449,16 @@ namespace MagentoAccess
 
 				var ordersBriefInfoString = orders.ToJson();
 
-				MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : mark, methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ) );
+				MagentoLogger.LogTrace( this.CreateMethodCallInfo( methodParameters : methodParameters, notes : "BriefOrdersReceived:\"{0}\"".FormatWith( ordersBriefInfoString ) ), mark );
 
 				IEnumerable< OrderInfoResponse > salesOrderInfoResponses;
 				if( this.MagentoServiceLowLevelSoap.GetOrderByIdForFullInformation )
 				{
 					salesOrderInfoResponses = await orders.ProcessInBatchAsync( 16, async x =>
 					{
-						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToStringIds() )}" );
+						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( methodParameters : x.ToStringIds() )}", mark );
 						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
-						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}" );
+						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}", mark );
 						return res;
 					} ).ConfigureAwait( false );
 				}
