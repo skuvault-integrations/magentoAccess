@@ -120,11 +120,18 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		protected async Task ReauthorizeAsync()
 		{
-			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) );
-			var magentoUrl = MagentoUrl.Create( this.Store );
-			this.ProductRepository = new ProductRepository( newToken, magentoUrl );
-			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
-			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl );
+			try
+			{
+				var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) ).ConfigureAwait( false );
+				var magentoUrl = MagentoUrl.Create( this.Store );
+				this.ProductRepository = new ProductRepository( newToken, magentoUrl );
+				this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
+				this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl );
+			}
+			catch( Exception e )
+			{
+				throw;
+			}
 		}
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages => false;

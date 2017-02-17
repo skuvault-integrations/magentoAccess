@@ -31,7 +31,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				{
 					return AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
-			} );
+			} ).ConfigureAwait( false );
 		}
 
 		private class CredentialsModel
