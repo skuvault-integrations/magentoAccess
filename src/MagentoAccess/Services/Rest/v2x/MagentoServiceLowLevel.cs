@@ -156,7 +156,7 @@ namespace MagentoAccess.Services.Rest.v2x
 						return null;
 					throw;
 				}
-			} );
+			} ).ConfigureAwait( false );
 		}
 
 		public string ToJsonSoapInfo()
