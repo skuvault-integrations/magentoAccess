@@ -102,7 +102,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
-			} );
+			} ).ConfigureAwait( false );
 		}
 
 		public async Task< IEnumerable< RootObject > > GetOrdersAsync( IEnumerable< string > productSku )
