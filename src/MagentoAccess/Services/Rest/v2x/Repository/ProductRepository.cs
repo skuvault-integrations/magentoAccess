@@ -94,7 +94,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
-			} );
+			} ).ConfigureAwait( false );
 		}
 
 		public async Task< List< RootObject > > GetProductsAsync( DateTime updatedAt, Mark mark = null )
