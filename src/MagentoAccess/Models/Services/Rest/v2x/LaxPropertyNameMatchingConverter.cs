@@ -9,7 +9,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 {
 	public class LaxPropertyNameMatchingConverter : JsonConverter
 	{
-		public override bool CanConvert(Type objectType)
+		public override bool CanConvert( Type objectType )
 		{
 			return objectType.IsClass;
 		}
@@ -50,7 +50,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 			return instance;
 		}
 
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
 		{
 			throw new NotImplementedException();
 		}

@@ -93,6 +93,7 @@ task NuGet Package, Version, {
 				<dependency id="CuttingEdge.Conditions" version="1.2.0.0" />
 				<dependency id="DotNetOpenAuth.OAuth.Consumer" version="4.3.4.13329" />
 				<dependency id="Newtonsoft.Json" version="7.0.1" />
+				<dependency id="AutoMapper" version="5.2.0" />
 			</group>
 		</dependencies>
 	</metadata>
