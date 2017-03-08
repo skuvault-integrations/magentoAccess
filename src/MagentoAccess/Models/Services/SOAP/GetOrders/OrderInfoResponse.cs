@@ -599,30 +599,31 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			}
 			this.QuoteId = ( res.quoteId ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.RemoteIp = res.remoteIp;
-			//if (res.shippingAddress != null)
-			//{
-			//	ShippingAddress = new ShippingAddress()
-			//	{
-			//		//AddressId = res.shippingAddress.addressId,
-			//		//AddressType = res.shippingAddress.addressType,
-			//		//City = res.shippingAddress.city,
-			//		Company = res.shippingAddress.company,
-			//		CountryId = res.shippingAddress.countryId,
-			//		CreatedAt = res.shippingAddress.createdAt,
-			//		Fax = res.shippingAddress.fax,
-			//		Firstname = res.shippingAddress.firstname,
-			//		IncrementId = res.shippingAddress.incrementId,
-			//		IsActive = res.shippingAddress.isActive,
-			//		Lastname = res.shippingAddress.lastname,
-			//		ParentId = res.shippingAddress.parentId,
-			//		Postcode = res.shippingAddress.postcode,
-			//		Region = res.shippingAddress.region,
-			//		RegionId = res.shippingAddress.regionId,
-			//		Street = res.shippingAddress.street,
-			//		Telephone = res.shippingAddress.telephone,
-			//		UpdatedAt = res.shippingAddress.updatedAt,
-			//	};
-			//}
+			var shippingAddress = res.extensionAttributes?.shippingAssignments?.First()?.shipping?.address;
+			if( shippingAddress != null )
+			{
+				this.ShippingAddress = new ShippingAddress()
+				{
+					//AddressId = shippingAddress.customerAddressId.ToString( CultureInfo.InvariantCulture ),
+					AddressType = shippingAddress.addressType,
+					City = shippingAddress.city,
+					Company = shippingAddress.company,
+					CountryId = shippingAddress.countryId,
+					//CreatedAt = 
+					Fax = shippingAddress.fax,
+					Firstname = shippingAddress.firstname,
+					//IncrementId = 
+					//IsActive = 
+					Lastname = shippingAddress.lastname,
+					ParentId = shippingAddress.parentId.ToString( CultureInfo.InvariantCulture ),
+					Postcode = shippingAddress.postcode,
+					Region = shippingAddress.region,
+					RegionId = shippingAddress.regionId.ToString( CultureInfo.InvariantCulture ),
+					Street = string.Join( "\n", shippingAddress.street ),
+					Telephone = shippingAddress.telephone,
+					//UpdatedAt = 
+				};
+			}
 			//ShippingAddressId = res.shippingAddressId;
 			this.ShippingAmount = ( res.shippingAmount ?? string.Empty ).ToString( CultureInfo.InvariantCulture );
 			this.ShippingDescription = res.shippingDescription;
