@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< Tuple< PutStockItem, RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
+				var res = new ConcurrentQueue< Tuple< PutStockItem, RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{
@@ -99,7 +100,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 							};
 
 							var response = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
-							res.Add( Tuple.Create( x, response ) );
+							res.Enqueue( Tuple.Create( x, response ) );
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
