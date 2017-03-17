@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -44,7 +45,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< UpdateRessult< PutStockItem > >();
+				var res = new ConcurrentQueue< Tuple< PutStockItem, RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{
@@ -58,8 +59,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 						    && privateClient.State != CommunicationState.Opening )
 							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-						var updateResult = new UpdateRessult< PutStockItem >( x, 0 );
-						res.Add( updateResult );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
@@ -99,16 +98,15 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 								stockItem = catalogInventoryDataStockItemInterface
 							};
 
-							var temp = await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
-
-							updateResult.Success = temp.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse.result;
+							var response = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
+							res.Enqueue( Tuple.Create( x, response ) );
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : mark, methodResult : res.ToJson() ) );
 
-				return res.All( x => x.Success > 0 );
+				return res.All( x => x.Item2.ErrorCode > 0 );
 			}
 			catch( Exception exc )
 			{
@@ -180,7 +178,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 						res = temp.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse.result > 0;
 
-						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						var updateBriefInfo = string.Format( "{{ErrorCode:{0}}}", res );
 						MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( productsBriefInfo, markForLog, methodResult : updateBriefInfo ) );
 					}
 				} ).ConfigureAwait( false );

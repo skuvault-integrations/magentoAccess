@@ -630,7 +630,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< UpdateRessult< CreatteProductModel > >();
+				var res = new List< RpcInvoker.RpcResult< catalogProductRepositoryV1SaveResponse1 > >();
 				var stockItems = new List< CreatteProductModel > { stockItem };
 
 				await stockItems.DoInBatchAsync( 10, async x =>
@@ -644,9 +644,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 						    && privateClient.State != CommunicationState.Created
 						    && privateClient.State != CommunicationState.Opening )
 							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
-
-						var updateResult = new UpdateRessult< CreatteProductModel >( x, 0 );
-						res.Add( updateResult );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
@@ -681,14 +678,15 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 							var temp = await privateClient.catalogProductRepositoryV1SaveAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
 
-							updateResult.Success = temp.catalogProductRepositoryV1SaveResponse.result.id;
+							var updateResult = new RpcInvoker.RpcResult< catalogProductRepositoryV1SaveResponse1 >( RpcInvoker.SoapErrorCode.Success, temp, null );
+							res.Add( updateResult );
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : markForLog, methodResult : res.ToJson() ) );
 
-				return res.First().Success;
+				return res.First().Result.catalogProductRepositoryV1SaveResponse.result.id;
 			}
 			catch( Exception exc )
 			{
@@ -713,17 +711,5 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 		#endregion
-
-		private class UpdateRessult< T1 >
-		{
-			public UpdateRessult( T1 itemToUpdate, int success )
-			{
-				this.ItemToUpdate = itemToUpdate;
-				this.Success = success;
-			}
-
-			public int Success { get; set; }
-			public T1 ItemToUpdate { get; set; }
-		}
 	}
 }
