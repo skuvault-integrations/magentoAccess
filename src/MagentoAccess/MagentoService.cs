@@ -36,18 +36,19 @@ using Order = MagentoAccess.Models.GetOrders.Order;
 
 namespace MagentoAccess
 {
-	public class MagentoService : IMagentoService
+	public class MagentoService: IMagentoService
 	{
-		public bool UseSoapOnly { get; set; }
-		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest { get; set; }
-		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap { get; set; }
-		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory { get; set; }
+		public bool UseSoapOnly{ get; set; }
+		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest{ get; set; }
+		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap{ get; set; }
+		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory{ get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
 
-		public SaveAccessToken AfterGettingToken { get; set; }
-		public TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
-		public Func< string > AdditionalLogInfo { get; set; }
+		public SaveAccessToken AfterGettingToken{ get; set; }
+		public TransmitVerificationCodeDelegate TransmitVerificationCode{ get; set; }
+		public Func< string > AdditionalLogInfo{ get; set; }
+		public MagentoConfig Config{ get; set; }
 
 		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models )
 		{
@@ -190,7 +191,7 @@ namespace MagentoAccess
 		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, MagentoConfig magentoConfig )
 		{
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-
+			this.Config = magentoConfig;
 			this.MagentoServiceLowLevelRest = new MagentoServiceLowLevelRestRest(
 				magentoAuthenticatedUserCredentials.ConsumerKey,
 				magentoAuthenticatedUserCredentials.ConsumerSckretKey,
@@ -810,7 +811,7 @@ namespace MagentoAccess
 			if( stockItemsOnly )
 				resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) );
 			else
-				resultProducts = ( from productEntity in products join stockItemEntity in stockItems on productEntity.ProductId equals stockItemEntity.ProductId into productsList from stockItemEntity in productsList.DefaultIfEmpty() select new Product( productEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity == null? "0" : stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) );
+				resultProducts = ( from productEntity in products join stockItemEntity in stockItems on productEntity.ProductId equals stockItemEntity.ProductId into productsList from stockItemEntity in productsList.DefaultIfEmpty() select new Product( productEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity == null ? "0" : stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) );
 			resultProducts = resultProducts.Where( p => !string.IsNullOrWhiteSpace( p.Sku ) );
 
 			if( includeDetails )
@@ -1057,14 +1058,21 @@ namespace MagentoAccess
 
 			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, markForLog.CreateChildOrNull() ).ConfigureAwait( false ), x ) ).ConfigureAwait( false );
 
-			var updateBriefInfo = batchResponses.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
+			var batchResponsesList = batchResponses as IList< Tuple< bool, List< PutStockItem > > > ?? batchResponses.ToList();
+			var updateBriefInfo = batchResponsesList.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
 
-			var notUpdatedProducts = batchResponses.Where( x => !x.Item1 ).SelectMany( y => y.Item2 );
+			var notUpdatedProducts = batchResponsesList.Where( x => !x.Item1 ).SelectMany( y => y.Item2 ).ToList();
 
 			var notUpdatedBriefInfo = notUpdatedProducts.ToJson();
 
-			if( notUpdatedProducts.Any() )
+			var cfg = this.Config.DefaultIfNull();
+			if( cfg.OnUpdateInventory == ThrowExceptionIfFailed.OneItem && notUpdatedProducts.Any() )
 				throw new Exception( $"Not updated {notUpdatedBriefInfo}" );
+			if( cfg.OnUpdateInventory == ThrowExceptionIfFailed.AllItems && notUpdatedProducts.Count == inventories.Count )
+				throw new Exception( $"Not updated {notUpdatedBriefInfo}" );
+
+			if( notUpdatedProducts.Any() )
+				MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : markForLog, methodParameters : inventories.ToJson(), methodResult : notUpdatedProducts.ToJson(), notes : "Following items can't be updated" ) );
 
 			return updateBriefInfo;
 		}
@@ -1077,12 +1085,12 @@ namespace MagentoAccess
 				var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
 				//Mapper.Initialize( cfg => cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >() );
 
-				Mapper.Initialize(cfg =>
+				Mapper.Initialize( cfg =>
 				{
-					cfg.CreateMap<int?, string>().ConvertUsing(Extensions.ToStringEmptyOnNull);
-					cfg.CreateMap<string, string>().ConvertUsing(x => x ?? string.Empty);
+					cfg.CreateMap< int?, string >().ConvertUsing( Extensions.ToStringEmptyOnNull );
+					cfg.CreateMap< string, string >().ConvertUsing( x => x ?? string.Empty );
 
-					cfg.CreateMap<Models.Services.Soap.GetOrders.Order, OrderInfoResponse>();
+					cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >();
 					//cfg.AddConditionalObjectMapper().((s, d) => s.Name == d.Name + "Dto");
 					//cfg.AddConditionalObjectMapper().Where((source, destination) => s.Name.Replace("(_)([a-z])","\U1") == d.Name );
 					//cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
@@ -1110,13 +1118,13 @@ namespace MagentoAccess
 					//	//})
 					//})
 					;
-				});
+				} );
 
 				/////////
 
 				//var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>().ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
 
-				await initTask.ConfigureAwait(false);
+				await initTask.ConfigureAwait( false );
 				return true;
 			}
 			catch( Exception e )
@@ -1131,9 +1139,31 @@ namespace MagentoAccess
 
 	public class MagentoConfig
 	{
-		public string VersionByDefault { get; set; }
-		public string EditionByDefault { get; set; }
-		public MagentoDefaultProtocol Protocol { get; set; }
+		public string VersionByDefault{ get; set; }
+		public string EditionByDefault{ get; set; }
+		public MagentoDefaultProtocol Protocol{ get; set; }
+		public ThrowExceptionIfFailed OnUpdateInventory{ get; set; }
+	}
+
+	public static class MagentoConfigExtension
+	{
+		public static MagentoConfig DefaultIfNull( this MagentoConfig cfg )
+		{
+			return cfg ?? new MagentoConfig()
+			{
+				EditionByDefault = "ce",
+				OnUpdateInventory = ThrowExceptionIfFailed.OneItem,
+				Protocol = MagentoDefaultProtocol.SoapOnly,
+				VersionByDefault = "1.9.2.2"
+			};
+		}
+	}
+
+	public enum ThrowExceptionIfFailed
+	{
+		OneItem = 0,
+		AllItems = 1,
+		Never = 2,
 	}
 
 	public enum MagentoDefaultProtocol
@@ -1150,7 +1180,7 @@ namespace MagentoAccess
 		public const string Manufacturer = "manufacturer";
 	}
 
-	internal class ProductComparer : IEqualityComparer< Models.Services.Rest.v1x.GetProducts.Product >
+	internal class ProductComparer: IEqualityComparer< Models.Services.Rest.v1x.GetProducts.Product >
 	{
 		public bool Equals( Models.Services.Rest.v1x.GetProducts.Product x, Models.Services.Rest.v1x.GetProducts.Product y )
 		{
@@ -1163,7 +1193,7 @@ namespace MagentoAccess
 		}
 	}
 
-	internal class SalesOrderByOrderIdComparer : IEqualityComparer< Models.Services.Soap.GetOrders.Order >
+	internal class SalesOrderByOrderIdComparer: IEqualityComparer< Models.Services.Soap.GetOrders.Order >
 	{
 		public bool Equals( Models.Services.Soap.GetOrders.Order x, Models.Services.Soap.GetOrders.Order y )
 		{

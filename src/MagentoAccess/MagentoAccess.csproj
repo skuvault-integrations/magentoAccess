@@ -87,6 +87,7 @@
     <Compile Include="Misc\Cache.cs" />
     <Compile Include="Misc\ICreateCallInfoExtensions.cs" />
     <Compile Include="Misc\PagingModel.cs" />
+    <Compile Include="Misc\RpcInvoker.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModel.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModelResult.cs" />
     <Compile Include="Models\DeleteProducts\DeleteProductModel.cs" />
