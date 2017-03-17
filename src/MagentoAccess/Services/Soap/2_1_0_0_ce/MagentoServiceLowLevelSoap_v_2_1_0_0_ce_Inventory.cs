@@ -101,14 +101,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 							};
 
 							var tempRes = await RpcInvoker.NullOnIncorrectEnvelop( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
-							updateResult.Success = tempRes?.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse?.result ?? 0;
+							updateResult.ErrorCode = tempRes?.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse?.result ?? 0;
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : mark, methodResult : res.ToJson() ) );
 
-				return res.All( x => x.Success > 0 );
+				return res.All( x => x.ErrorCode > 0 );
 			}
 			catch( Exception exc )
 			{
@@ -180,7 +180,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 						res = temp.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse.result > 0;
 
-						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
+						var updateBriefInfo = string.Format( "{{ErrorCode:{0}}}", res );
 						MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( productsBriefInfo, markForLog, methodResult : updateBriefInfo ) );
 					}
 				} ).ConfigureAwait( false );

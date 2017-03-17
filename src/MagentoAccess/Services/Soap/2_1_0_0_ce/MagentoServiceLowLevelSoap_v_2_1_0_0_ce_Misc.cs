@@ -684,14 +684,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 							var temp = await privateClient.catalogProductRepositoryV1SaveAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
 
-							updateResult.Success = temp.catalogProductRepositoryV1SaveResponse.result.id;
+							updateResult.ErrorCode = temp.catalogProductRepositoryV1SaveResponse.result.id;
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : markForLog, methodResult : res.ToJson() ) );
 
-				return res.First().Success;
+				return res.First().ErrorCode;
 			}
 			catch( Exception exc )
 			{
@@ -719,13 +719,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		private class UpdateRessult< T1 >
 		{
-			public UpdateRessult( T1 itemToUpdate, int success )
+			public UpdateRessult( T1 itemToUpdate, int errorCode )
 			{
 				this.ItemToUpdate = itemToUpdate;
-				this.Success = success;
+				this.ErrorCode = errorCode;
 			}
 
-			public int Success { get; set; }
+			public int ErrorCode { get; set; }
 			public T1 ItemToUpdate { get; set; }
 		}
 	}
