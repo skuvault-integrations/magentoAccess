@@ -98,9 +98,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 								stockItem = catalogInventoryDataStockItemInterface
 							};
 
-							var tempRes = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
-							var updateResult = Tuple.Create( x, ( RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > )tempRes );
-							res.Add( updateResult );
+							var response = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
+							res.Add( Tuple.Create( x, response ) );
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
