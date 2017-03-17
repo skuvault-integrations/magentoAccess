@@ -106,7 +106,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : mark, methodResult : res.ToJson() ) );
 
-				return res.All( x => x.Item2.ErrorCode > 0 );
+				return res.All( x => ( x?.Item2?.Result?.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse?.result ?? 0 ) > 0 );
 			}
 			catch( Exception exc )
 			{
