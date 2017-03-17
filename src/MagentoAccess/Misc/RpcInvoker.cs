@@ -6,11 +6,12 @@ namespace MagentoAccess.Misc
 {
 	public static class RpcInvoker
 	{
-		public static async Task< T > NullOnIncorrectEnvelop< T >( Func< Task< T > > func ) where T : class
+		public static async Task< RpcResult< T > > SuppressExceptions< T >( Func< Task< T > > func ) where T : class
 		{
 			try
 			{
-				return await func().ConfigureAwait( false );
+				var result = await func().ConfigureAwait( false );
+				return new RpcResult< T >( SoapErrorCode.Success, result, null );
 			}
 			catch( CommunicationException ex ) //crutch for magento 2.1
 			{
@@ -18,9 +19,29 @@ namespace MagentoAccess.Misc
 				if( exceptionMessge.Contains( @"(soap12 (http://www.w3.org/2003/05/soap-envelope))" ) &&
 				    exceptionMessge.Contains( @"(soap11 (http://schemas.xmlsoap.org/soap/envelope/))" ) )
 				{
-					return null;
+					return new RpcResult< T >( SoapErrorCode.WaitingAnotherEnvelopVersion, null, ex );
 				}
 				throw;
+			}
+		}
+
+		public enum SoapErrorCode
+		{
+			Success = 0,
+			WaitingAnotherEnvelopVersion = 1,
+		}
+
+		public class RpcResult< T >
+		{
+			public SoapErrorCode ErrorCode { get; private set; }
+			public T Result { get; private set; }
+			public Exception Exception { get; private set; }
+
+			public RpcResult( SoapErrorCode errorCode, T result, Exception exception )
+			{
+				this.ErrorCode = errorCode;
+				this.Result = result;
+				this.Exception = exception;
 			}
 		}
 	}
