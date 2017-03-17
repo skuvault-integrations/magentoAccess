@@ -45,7 +45,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< UpdateRessult< PutStockItem > >();
+				var res = new List< Tuple< PutStockItem, RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{
@@ -59,8 +59,6 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						    && privateClient.State != CommunicationState.Opening )
 							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-						var updateResult = new UpdateRessult< PutStockItem >( x, 0 );
-						res.Add( updateResult );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
@@ -101,14 +99,15 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 							};
 
 							var tempRes = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
-							updateResult.ErrorCode = ( int )tempRes.ErrorCode;
+							var updateResult = Tuple.Create( x, ( RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > )tempRes );
+							res.Add( updateResult );
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : mark, methodResult : res.ToJson() ) );
 
-				return res.All( x => x.ErrorCode > 0 );
+				return res.All( x => x.Item2.ErrorCode > 0 );
 			}
 			catch( Exception exc )
 			{
