@@ -204,7 +204,8 @@ namespace MagentoAccess
 			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
 			var lowLevelServices = new Dictionary< string, IMagentoServiceLowLevelSoap >();
 
-			switch( magentoConfig.Protocol )
+			var cfg = this.Config.DefaultIfNull();
+			switch ( cfg.Protocol )
 			{
 				case MagentoDefaultProtocol.RestOnly:
 					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
