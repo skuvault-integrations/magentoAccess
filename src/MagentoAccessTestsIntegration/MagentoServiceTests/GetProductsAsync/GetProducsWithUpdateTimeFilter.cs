@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 		public void ReceiveProducts( MagentoServiceSoapCredentials credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false );
+			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
 			var updatedFrom = DateTime.UtcNow.AddMonths( -15 );
 
 			// ------------ Act

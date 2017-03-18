@@ -95,6 +95,7 @@
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\CorrectCredentials.cs" />
     <Compile Include="MagentoServiceTests\GetOrders\UserAlreadyHasAccessTokens.cs" />
     <Content Include="MagentoServiceTests\Readme.txt" />
+    <Compile Include="MagentoServiceTests\UpdateInventory\GetOnlySpecialByTypeProducs.cs" />
     <Compile Include="MagentoServiceTests\GetProductsAsync\GetProducsWithUpdateTimeAndSkusFilter.cs" />
     <Compile Include="MagentoServiceTests\GetProductsAsync\GetProducsWithUpdateTimeFilter.cs" />
     <Compile Include="MagentoServiceTests\GetProductsAsync\GetProductsWithoutSpecifiedType.cs" />
