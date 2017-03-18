@@ -148,9 +148,9 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
+			Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > IMagentoServiceLowLevelSoap.PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
 			{
-				return null;
+				throw new NotImplementedException();
 			}
 
 			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
@@ -217,6 +217,7 @@ namespace MagentoAccessTests.Misc
 			{
 				return null;
 			}
+
 			public Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, bool throwException = true )
 			{
 				return null;
