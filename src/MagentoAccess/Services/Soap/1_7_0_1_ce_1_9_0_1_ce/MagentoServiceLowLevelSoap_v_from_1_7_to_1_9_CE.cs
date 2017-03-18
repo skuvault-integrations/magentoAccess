@@ -426,6 +426,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				var res = false;
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
+				RpcInvoker.RpcResponse< catalogInventoryStockItemMultiUpdateResponse > serverResponse = null;
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
@@ -440,14 +441,16 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark ) );
+						MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
 
-						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false );
+						var catalogInventoryStockItemUpdateEntities = stockItemsProcessed.Select( x => x.Item2 ).ToArray();
+
+						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), catalogInventoryStockItemUpdateEntities ).ConfigureAwait( false );
 
 						res = temp.result;
 
 						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
-						MagentoLogger.LogTraceEnded( CreateMethodCallInfo( methodParameters, mark, methodResult : updateBriefInfo ) );
+						MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark, methodResult : updateBriefInfo ) );
 					}
 				} ).ConfigureAwait( false );
 

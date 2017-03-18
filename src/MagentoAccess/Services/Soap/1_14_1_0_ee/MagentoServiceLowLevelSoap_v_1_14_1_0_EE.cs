@@ -29,17 +29,17 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 {
-	internal partial class MagentoServiceLowLevelSoap_v_1_14_1_0_EE : IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevelSoap_v_1_14_1_0_EE: IMagentoServiceLowLevelSoap
 	{
-		public string ApiUser { get; private set; }
+		public string ApiUser{ get; private set; }
 
-		public string ApiKey { get; private set; }
+		public string ApiKey{ get; private set; }
 
-		public string Store { get; private set; }
+		public string Store{ get; private set; }
 
 		public string BaseMagentoUrl{ get; set; }
-		public string StoreVersion { get; set; }
-		public bool LogRawMessages { get; private set; }
+		public string StoreVersion{ get; set; }
+		public bool LogRawMessages{ get; private set; }
 
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
@@ -67,8 +67,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			get { return false; }
 		}
+
 		public bool GetOrderByIdForFullInformation => true;
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
+
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
@@ -139,9 +141,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			this._getProductsMaxThreads = getProductsMaxThreads;
 			this.SessionIdLifeTime = sessionIdLifeTime;
 			this.LogRawMessages = logMessages;
-
 		}
-
 
 		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl, bool keepAlive = true )
 		{
@@ -217,7 +217,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			return customBinding;
 		}
 
-		
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
 		{
 			if( filters.complex_filter == null )
@@ -393,7 +392,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			throw new NotImplementedException();
 		}
 
-
 		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
 		{
 			try
@@ -465,7 +463,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark : mark ) );
+						MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
 
 						var catalogInventoryStockItemUpdateEntities = stockItemsProcessed.Select( x => x.Item2 ).ToArray();
 
