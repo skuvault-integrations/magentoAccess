@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -1056,12 +1057,12 @@ namespace MagentoAccess
 
 			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< bool, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, markForLog.CreateChildOrNull() ).ConfigureAwait( false ), x ) ).ConfigureAwait( false );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > >, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, markForLog.CreateChildOrNull() ).ConfigureAwait( false ), x ) ).ConfigureAwait( false );
 
-			var batchResponsesList = batchResponses as IList< Tuple< bool, List< PutStockItem > > > ?? batchResponses.ToList();
-			var updateBriefInfo = batchResponsesList.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
+			var batchResponsesList = batchResponses as IList< Tuple< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > >, List< PutStockItem > > > ?? batchResponses.ToList();
+			var updateBriefInfo = batchResponsesList.SelectMany( x => x.Item1 ).Where( y => y.Response.ErrorCode == RpcInvoker.SoapErrorCode.Success ).ToJson();
 
-			var notUpdatedProducts = batchResponsesList.Where( x => !x.Item1 ).SelectMany( y => y.Item2 ).ToList();
+			var notUpdatedProducts = batchResponsesList.SelectMany( x => x.Item1 ).Where( y => y.Response.ErrorCode != RpcInvoker.SoapErrorCode.Success ).ToList();
 
 			var notUpdatedBriefInfo = notUpdatedProducts.ToJson();
 

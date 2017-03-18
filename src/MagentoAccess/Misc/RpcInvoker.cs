@@ -29,9 +29,17 @@ namespace MagentoAccess.Misc
 		{
 			Success = 0,
 			WaitingAnotherEnvelopVersion = 1,
+			Unknown = 2,
 		}
 
-		public class RpcResponse< T >
+		public interface IRpcResponse< out T >
+		{
+			SoapErrorCode ErrorCode{ get; }
+			T Result{ get; }
+			Exception Exception{ get; }
+		}
+
+		public class RpcResponse< T >: IRpcResponse< T >
 		{
 			public SoapErrorCode ErrorCode{ get; private set; }
 			public T Result{ get; private set; }
@@ -48,9 +56,9 @@ namespace MagentoAccess.Misc
 		public class RpcRequestResponse< T1, T2 >
 		{
 			public T1 Request{ get; private set; }
-			public RpcResponse< T2 > Response{ get; private set; }
+			public IRpcResponse< T2 > Response{ get; private set; }
 
-			public RpcRequestResponse( T1 request, RpcResponse< T2 > response )
+			public RpcRequestResponse( T1 request, IRpcResponse< T2 > response )
 			{
 				this.Request = request;
 				this.Response = response;

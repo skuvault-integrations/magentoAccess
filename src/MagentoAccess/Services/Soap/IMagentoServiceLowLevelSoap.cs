@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
@@ -31,7 +32,7 @@ namespace MagentoAccess.Services.Soap
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< OrderInfoResponse > GetOrderAsync( Order order );
-		Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null );
+		Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null );
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null );
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );
