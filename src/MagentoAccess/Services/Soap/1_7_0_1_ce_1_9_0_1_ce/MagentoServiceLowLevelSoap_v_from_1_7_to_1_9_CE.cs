@@ -445,16 +445,15 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 
 						var catalogInventoryStockItemUpdateEntities = stockItemsProcessed.Select( x => x.Item2 ).ToArray();
 
-						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), catalogInventoryStockItemUpdateEntities ).ConfigureAwait( false );
+						serverResponse = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ItemId ).ToArray(), catalogInventoryStockItemUpdateEntities ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
-						res = temp.result;
-
-						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
-						MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark, methodResult : updateBriefInfo ) );
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", serverResponse.Result.result );
+						MagentoLogger.LogTraceEnded( CreateMethodCallInfo( methodParameters, mark : mark, methodResult : updateBriefInfo ) );
 					}
 				} ).ConfigureAwait( false );
 
-				return res;
+				var result = stockItems.Select( y => new RpcInvoker.RpcRequestResponse< PutStockItem, object >( y, new RpcInvoker.RpcResponse< object >( serverResponse?.ErrorCode ?? RpcInvoker.SoapErrorCode.Unknown, serverResponse?.Result, serverResponse?.Exception ) ) );
+				return result;
 			}
 			catch( Exception exc )
 			{
