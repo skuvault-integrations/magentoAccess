@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -430,9 +431,9 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
 		{
-			var productsBriefInfo = stockItems.ToJson();
+			var methodParameters = stockItems.ToJson();
 			try
 			{
 				var stockItemsProcessed = stockItems.Select( x =>
@@ -449,6 +450,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				var res = false;
 				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
 
+				RpcInvoker.RpcResponse< catalogInventoryStockItemMultiUpdateResponse > serverResponse = null;
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
@@ -463,23 +465,23 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
-						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( productsBriefInfo, mark : mark ) );
+						MagentoLogger.LogTraceStarted( CreateMethodCallInfo( methodParameters, mark : mark ) );
 
 						var catalogInventoryStockItemUpdateEntities = stockItemsProcessed.Select( x => x.Item2 ).ToArray();
-						var temp = await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), catalogInventoryStockItemUpdateEntities ).ConfigureAwait( false );
 
-						res = temp.result;
+						serverResponse = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockItemMultiUpdateAsync( sessionId.SessionId, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), catalogInventoryStockItemUpdateEntities ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
-						var updateBriefInfo = string.Format( "{{Success:{0}}}", res );
-						MagentoLogger.LogTraceEnded( CreateMethodCallInfo( productsBriefInfo, mark : mark, methodResult : updateBriefInfo ) );
+						var updateBriefInfo = string.Format( "{{Success:{0}}}", serverResponse.Result.result );
+						MagentoLogger.LogTraceEnded( CreateMethodCallInfo( methodParameters, mark : mark, methodResult : updateBriefInfo ) );
 					}
 				} ).ConfigureAwait( false );
 
-				return res;
+				var result = stockItems.Select( y => new RpcInvoker.RpcRequestResponse< PutStockItem, object >( y, new RpcInvoker.RpcResponse< object >( serverResponse?.ErrorCode ?? RpcInvoker.SoapErrorCode.Unknown, serverResponse?.Result, serverResponse?.Exception ) ) );
+				return result;
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( string.Format( "An error occured during PutStockItemsAsync({0})", productsBriefInfo ), exc );
+				throw new MagentoSoapException( $"An error occured during PutStockItemsAsync({methodParameters})", exc );
 			}
 		}
 

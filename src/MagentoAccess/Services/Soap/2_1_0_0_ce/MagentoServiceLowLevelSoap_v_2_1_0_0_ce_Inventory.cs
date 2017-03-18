@@ -36,7 +36,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface > getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface >();
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
@@ -46,7 +46,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new ConcurrentQueue< Tuple< PutStockItem, RpcInvoker.RpcResponse< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
+				var res = new ConcurrentQueue< RpcInvoker.RpcRequestResponse< PutStockItem, object> >();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{
@@ -99,15 +99,16 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 								stockItem = catalogInventoryDataStockItemInterface
 							};
 
-							var response = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
-							res.Enqueue( Tuple.Create( x, response ) );
+							RpcInvoker.IRpcResponse<object> response = await RpcInvoker.SuppressExceptions( async () => await privateClient.catalogInventoryStockRegistryV1UpdateStockItemBySkuAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false ) ).ConfigureAwait( false );
+							var reqResp = new RpcInvoker.RpcRequestResponse< PutStockItem, object >( x, response);
+							res.Enqueue( reqResp );
 						}
 					} ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodParameters, mark : mark, methodResult : res.ToJson() ) );
-
-				return res.All( x => ( x?.Item2?.Result?.catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse?.result ?? 0 ) > 0 );
+				//return errors count instead of true false;
+				return res;
 			}
 			catch( Exception exc )
 			{

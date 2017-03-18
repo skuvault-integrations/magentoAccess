@@ -197,7 +197,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return result;
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			var stockItemsProcessed = stockItems.Select( x =>
@@ -208,9 +208,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
 			} );
 
-			return await this.GetWithAsync(
-				res => res.result,
-				async ( client, session ) => await client.catalogInventoryStockItemMultiUpdateAsync( session, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
+			var stockItemsAsync = await this.GetWithSafeAsync(
+				res => ( object )res.result,
+				async ( client, session ) => await client.catalogInventoryStockItemMultiUpdateAsync( session, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false ),
+				600000 ).ConfigureAwait( false );
+
+			var results = stockItems.Select( x => new RpcInvoker.RpcRequestResponse< PutStockItem, object >( x, stockItemsAsync ) );
+
+			return results;
 		}
 
 		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
@@ -630,6 +635,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
 			return privateClient;
 		}
+
 		private static class ClientBaseActionRunner
 		{
 			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class
@@ -650,24 +656,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			try
 			{
-				var res = new TServerResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
-
-					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
-						abortAfter,
-						async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
-						privateClient ).ConfigureAwait( false );
-
-					if( temp.Item2 )
-						throw new TaskCanceledException();
-				} ).ConfigureAwait( false );
-
-				return converter( res );
+				return await this.GetWithUnsafeAsync( converter, action, abortAfter ).ConfigureAwait( false );
 			}
 			catch( Exception exc )
 			{
@@ -677,6 +666,36 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				}
 				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetWithAsync )}", exc );
 			}
+		}
+
+		private async Task< RpcInvoker.RpcResponse< TResult > > GetWithSafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TResult : class
+		{
+			var withSafeAsync = await RpcInvoker.SuppressExceptions(
+				async () => await this.GetWithUnsafeAsync( converter, action, abortAfter ).ConfigureAwait( false )
+				).ConfigureAwait( false );
+			return withSafeAsync;
+		}
+
+		private async Task< TResult > GetWithUnsafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter ) where TServerResponse : new()
+		{
+			var res = new TServerResponse();
+			var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+
+			await ActionPolicies.GetAsync.Do( async () =>
+			{
+				privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+
+				var temp = await ClientBaseActionRunner.RunWithAbortAsync(
+					abortAfter,
+					async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
+					privateClient ).ConfigureAwait( false );
+
+				if( temp.Item2 )
+					throw new TaskCanceledException();
+			} ).ConfigureAwait( false );
+
+			return converter( res );
 		}
 
 		public string ToJsonSoapInfo()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -406,7 +407,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
