@@ -46,7 +46,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
-				var res = new ConcurrentQueue< Tuple< PutStockItem, RpcInvoker.RpcResult< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
+				var res = new ConcurrentQueue< Tuple< PutStockItem, RpcInvoker.RpcResponse< catalogInventoryStockRegistryV1UpdateStockItemBySkuResponse1 > > >();
 
 				await stockItems.DoInBatchAsync( 10, async x =>
 				{

@@ -630,7 +630,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
 
-				var res = new List< RpcInvoker.RpcResult< catalogProductRepositoryV1SaveResponse1 > >();
+				var res = new List< RpcInvoker.RpcResponse< catalogProductRepositoryV1SaveResponse1 > >();
 				var stockItems = new List< CreatteProductModel > { stockItem };
 
 				await stockItems.DoInBatchAsync( 10, async x =>
@@ -678,7 +678,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 							var temp = await privateClient.catalogProductRepositoryV1SaveAsync( catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest ).ConfigureAwait( false );
 
-							var updateResult = new RpcInvoker.RpcResult< catalogProductRepositoryV1SaveResponse1 >( RpcInvoker.SoapErrorCode.Success, temp, null );
+							var updateResult = new RpcInvoker.RpcResponse< catalogProductRepositoryV1SaveResponse1 >( RpcInvoker.SoapErrorCode.Success, temp, null );
 							res.Add( updateResult );
 						}
 					} ).ConfigureAwait( false );

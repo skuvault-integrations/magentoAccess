@@ -6,12 +6,12 @@ namespace MagentoAccess.Misc
 {
 	public static class RpcInvoker
 	{
-		public static async Task< RpcResult< T > > SuppressExceptions< T >( Func< Task< T > > func ) where T : class
+		public static async Task< RpcResponse< T > > SuppressExceptions< T >( Func< Task< T > > func ) where T : class
 		{
 			try
 			{
 				var result = await func().ConfigureAwait( false );
-				return new RpcResult< T >( SoapErrorCode.Success, result, null );
+				return new RpcResponse< T >( SoapErrorCode.Success, result, null );
 			}
 			catch( CommunicationException ex ) //crutch for magento 2.1
 			{
@@ -19,7 +19,7 @@ namespace MagentoAccess.Misc
 				if( exceptionMessge.Contains( @"(soap12 (http://www.w3.org/2003/05/soap-envelope))" ) &&
 				    exceptionMessge.Contains( @"(soap11 (http://schemas.xmlsoap.org/soap/envelope/))" ) )
 				{
-					return new RpcResult< T >( SoapErrorCode.WaitingAnotherEnvelopVersion, null, ex );
+					return new RpcResponse< T >( SoapErrorCode.WaitingAnotherEnvelopVersion, null, ex );
 				}
 				throw;
 			}
@@ -31,17 +31,29 @@ namespace MagentoAccess.Misc
 			WaitingAnotherEnvelopVersion = 1,
 		}
 
-		public class RpcResult< T >
+		public class RpcResponse< T >
 		{
-			public SoapErrorCode ErrorCode { get; private set; }
-			public T Result { get; private set; }
-			public Exception Exception { get; private set; }
+			public SoapErrorCode ErrorCode{ get; private set; }
+			public T Result{ get; private set; }
+			public Exception Exception{ get; private set; }
 
-			public RpcResult( SoapErrorCode errorCode, T result, Exception exception )
+			public RpcResponse( SoapErrorCode errorCode, T result, Exception exception )
 			{
 				this.ErrorCode = errorCode;
 				this.Result = result;
 				this.Exception = exception;
+			}
+		}
+
+		public class RpcRequestResponse< T1, T2 >
+		{
+			public T1 Request{ get; private set; }
+			public RpcResponse< T2 > Response{ get; private set; }
+
+			public RpcRequestResponse( T1 request, RpcResponse< T2 > response )
+			{
+				this.Request = request;
+				this.Response = response;
 			}
 		}
 	}
