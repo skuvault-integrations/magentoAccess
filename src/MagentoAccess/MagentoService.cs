@@ -594,13 +594,13 @@ namespace MagentoAccess
 		#endregion
 
 		#region updateInventory
-		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products )
+		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products, Mark mark = null )
 		{
 			var productsBriefInfo = products.ToJson();
-			var mark = Mark.CreateNew();
+			var markLocal = mark ?? Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : markLocal, methodParameters : productsBriefInfo ) );
 
 				var inventories = products as IList< Inventory > ?? products.ToList();
 				var updateBriefInfo = PredefinedValues.NotAvailable;
@@ -609,15 +609,15 @@ namespace MagentoAccess
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 					//crunch for 1702
 					updateBriefInfo = string.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-						? await this.UpdateStockItemsBySoapByThePiece( inventories, mark ).ConfigureAwait( false )
-						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false ), mark ).ConfigureAwait( false );
+						? await this.UpdateStockItemsBySoapByThePiece( inventories, markLocal ).ConfigureAwait( false )
+						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false ), markLocal ).ConfigureAwait( false );
 				}
 
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : markLocal, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : markLocal ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}

@@ -20,7 +20,7 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Order > > GetOrdersAsync();
 
-		Task UpdateInventoryAsync( IEnumerable< Inventory > products );
+		Task UpdateInventoryAsync( IEnumerable< Inventory > products, Mark mark = null );
 
 		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
