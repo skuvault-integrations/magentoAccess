@@ -738,7 +738,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				( prods, prodInfos ) => ( from rp in prods
 					join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 					from pair in pairs.DefaultIfEmpty()
-					let imageesUrls = ( pair.Attributes ?? new List< ProductAttribute >() ).Where( IsImageUrlAttribute ).Select( x => new MagentoUrl( new MagentoImage( x.Key, this.BaseMagentoUrl + x.Value ) ) ).ToList() // new List< MagentoUrl >()
+					let imageesUrls = ( pair?.Attributes ?? new List< ProductAttribute >() ).Where( IsImageUrlAttribute ).Select( x => new MagentoUrl( new MagentoImage( x.Key, this.BaseMagentoUrl + x.Value ) ) ).ToList() // new List< MagentoUrl >()
 					select pair == null ? rp : new ProductDetails( rp, upc : pair.GetUpcAttributeValue(), manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ), images : imageesUrls ) );
 
 			Func< IEnumerable< ProductDetails >, CatalogProductAttributeInfoResponse, IEnumerable< ProductDetails > > FillManufactures =
