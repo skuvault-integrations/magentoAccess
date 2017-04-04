@@ -24,10 +24,12 @@ MagentoAccess tested with these Magento versions.
 * 2.0.9
 * 2.0.10
 * 2.0.11
+* 2.0.13
 * 2.1.0
 * 2.1.1
 * 2.1.2
 * 2.1.3
+* 2.1.5
 
 **Enterprise Edition**
 * 1.14.1.0
@@ -42,8 +44,9 @@ Install the [NuGet package](https://www.nuget.org/packages/MagentoAccess).
 For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl``` will be enough (set other parameters as empty strings). MagentoAccess interacts with store through SOAP ( REST supported only for Magento 2), WS-I compliance should be turned on.
 ```C#
 			var servicesFactory = new MagentoFactory();
-			var magentoService = servicesFactory.CreateService(new MagentoAuthenticatedUserCredentials("AccessToken", "AccessTokenSecret", "StoreUrl", "ConsumerSecret", "ConsumerKey", "SoapApiUser", "SoapApiKey"), new MagentoConfig() { EditionByDefault = "ce", VersionByDefault = "2.0.2.0" });
-			
+
+			var magentoService = servicesFactory.CreateService(new MagentoAuthenticatedUserCredentials( "n/a", "n/a", "https://www.youstore.com", "n/a", "n/a", "User", "Password", 4, 1800000, false ), new MagentoConfig() { EditionByDefault = "ce", VersionByDefault = "2.1.0.0", Protocol = MagentoDefaultProtocol.SoapOnly } );
+
 			// Call only if you are not sure about your magento store version specified in CreateService.
 			// Here magentoService will try to determine your store version and configure itself to work with your store.
 			// This may take few minutes.
