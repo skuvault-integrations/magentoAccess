@@ -45,7 +45,7 @@ For most of magento versions ```SoapApiUser```, ```SoapApiKey```, ```StoreUrl```
 ```C#
 			var servicesFactory = new MagentoFactory();
 
-			var magentoService = servicesFactory.CreateService(new MagentoAuthenticatedUserCredentials( "n/a", "n/a", "https://www.youstore.com", "n/a", "n/a", "User", "Password", 4, 1800000, false ), new MagentoConfig() { EditionByDefault = "ce", VersionByDefault = "2.1.0.0", Protocol = MagentoDefaultProtocol.SoapOnly } );
+			var magentoService = servicesFactory.CreateService(new MagentoAuthenticatedUserCredentials( "n/a", "n/a", "https://www.youstore.com", "n/a", "n/a", "User", "Password", 4, 1800000, false ), new MagentoConfig() { EditionByDefault = "ce", VersionByDefault = "2.1.0.0", Protocol = MagentoDefaultProtocol.SoapOnly } ); // 2.1.0.0. used instead of 2.1.0 for back compatibility with magento 1.x.x.x
 
 			// Call only if you are not sure about your magento store version specified in CreateService.
 			// Here magentoService will try to determine your store version and configure itself to work with your store.
