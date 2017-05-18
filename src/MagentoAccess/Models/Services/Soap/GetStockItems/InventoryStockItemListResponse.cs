@@ -12,6 +12,7 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 	internal class InventoryStockItemListResponse
 	{
 		public IEnumerable< InventoryStockItem > InventoryStockItems { get; set; }
+		public IEnumerable< object > Responses { get; set; }
 
 		public InventoryStockItemListResponse( catalogInventoryStockItemListResponse res )
 		{
@@ -26,11 +27,13 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 		public InventoryStockItemListResponse( IEnumerable< Tuple< string, CatalogInventoryDataStockItemInterface > > responses )
 		{
 			this.InventoryStockItems = responses.Select( x => new InventoryStockItem( x.Item1, x.Item2 ) );
+			this.Responses = responses.Select( x => x.Item2 );
 		}
 
 		public InventoryStockItemListResponse( IEnumerable< Tuple< string, M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryDataStockItemInterface > > responses )
 		{
 			this.InventoryStockItems = responses.Select( x => new InventoryStockItem( x.Item1, x.Item2 ) );
+			this.Responses = responses.Select( x => x.Item2 );
 		}
 
 		public InventoryStockItemListResponse( IEnumerable< Tuple< int, CatalogInventoryDataStockStatusCollectionInterface > > responses )

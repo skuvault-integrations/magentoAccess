@@ -44,6 +44,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
+				var magentoStockItemsResponse = await this.GetStockItemsOldAsync( stockItems.Select( item => item.Sku ).ToList() ).ConfigureAwait( false );
+				var magentoStockItems = magentoStockItemsResponse.Responses.Select( item => item as CatalogInventoryDataStockItemInterface ).Where( item => item != null );
+
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
 
 				var res = new ConcurrentQueue< RpcInvoker.RpcRequestResponse< PutStockItem, object> >();
@@ -65,34 +68,42 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						{
 							MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark : mark ) );
 
-							var catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface()
+							var productId = int.Parse( x.ProductId );
+							var catalogInventoryDataStockItemInterface = magentoStockItems.FirstOrDefault( i => i.productId == productId );
+							if( catalogInventoryDataStockItemInterface == null )
 							{
-								qty = x.Qty.ToString(),
-								productId = int.Parse( x.ProductId ),
-								productIdSpecified = true,
-								isInStock = x.Qty > 0,
-								isQtyDecimal = false,
-								showDefaultNotificationMessage = false,
-								useConfigMinQty = true,
-								minQty = 0,
-								useConfigMinSaleQty = 1,
-								minSaleQty = 1,
-								useConfigMaxSaleQty = true,
-								maxSaleQty = 10000,
-								useConfigBackorders = true,
-								backorders = 0,
-								useConfigNotifyStockQty = true,
-								notifyStockQty = 1,
-								useConfigQtyIncrements = true,
-								qtyIncrements = 0,
-								useConfigEnableQtyInc = false,
-								enableQtyIncrements = false,
-								useConfigManageStock = true,
-								manageStock = true,
-								//lowStockDate = "2016-02-29 20:48:26",
-								isDecimalDivided = false,
-								stockStatusChangedAuto = 1
-							};
+								MagentoLogger.LogTrace( $"PutStockItemsAsync. Can't find StockItem with ProductId={x.ProductId} (SKU={x.Sku}).", mark );
+								catalogInventoryDataStockItemInterface = new CatalogInventoryDataStockItemInterface
+								{
+									productId = productId,
+									productIdSpecified = true,
+									isInStock = false,
+									isQtyDecimal = false,
+									showDefaultNotificationMessage = false,
+									useConfigMinQty = true,
+									minQty = 0,
+									useConfigMinSaleQty = 1,
+									minSaleQty = 1,
+									useConfigMaxSaleQty = true,
+									maxSaleQty = 10000,
+									useConfigBackorders = true,
+									backorders = 0,
+									useConfigNotifyStockQty = true,
+									notifyStockQty = 1,
+									useConfigQtyIncrements = true,
+									qtyIncrements = 0,
+									useConfigEnableQtyInc = false,
+									enableQtyIncrements = false,
+									useConfigManageStock = true,
+									manageStock = true,
+									//lowStockDate = "2016-02-29 20:48:26",
+									isDecimalDivided = false,
+									stockStatusChangedAuto = 1
+								};
+							}
+							catalogInventoryDataStockItemInterface.qty = x.Qty.ToString();
+							catalogInventoryDataStockItemInterface.isInStock |= x.Qty > 0;
+
 							var catalogInventoryStockRegistryV1UpdateStockItemBySkuRequest = new CatalogInventoryStockRegistryV1UpdateStockItemBySkuRequest()
 							{
 								productSku = x.Sku,
