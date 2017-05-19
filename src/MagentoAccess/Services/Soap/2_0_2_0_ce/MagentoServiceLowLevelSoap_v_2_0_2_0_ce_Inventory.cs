@@ -43,7 +43,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var magentoStockItemsResponse = await this.GetStockItemsOldAsync( stockItems.Select( item => item.Sku ).ToList() ).ConfigureAwait( false );
+				var magentoStockItemsResponse = await this.GetStockItemsOldAsync( stockItems.Select( item => item.Sku ) ).ConfigureAwait( false );
 				var magentoStockItems = magentoStockItemsResponse.Responses.Select( item => item as CatalogInventoryDataStockItemInterface ).Where( item => item != null );
 
 				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
@@ -445,7 +445,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsOldAsync( List< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsOldAsync( IEnumerable< string > skusOrIds )
 		{
 			try
 			{
