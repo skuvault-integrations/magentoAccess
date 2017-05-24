@@ -74,14 +74,11 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+				var privateClient = this._clientFactory.GetClient( keepAlive );
 				var statusChecker = new StatusChecker( maxCheckCount );
 				TimerCallback tcb = statusChecker.CheckStatus;
 
-				if( privateClient.State != CommunicationState.Opened
-				    && privateClient.State != CommunicationState.Created
-				    && privateClient.State != CommunicationState.Opening )
-					privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+				privateClient = this._clientFactory.RefreshClient( privateClient, keepAlive );
 
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 

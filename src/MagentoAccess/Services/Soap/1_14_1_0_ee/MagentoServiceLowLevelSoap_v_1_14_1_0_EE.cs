@@ -55,8 +55,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		protected DateTime _sessionIdCreatedAt;
 
-		private readonly CustomBinding _customBinding;
-
 		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected readonly int _getProductsMaxThreads;
@@ -128,12 +126,12 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
-			this._customBinding = CustomBinding( baseMagentoUrl );
-			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logMessages );
+			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
 			{
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
@@ -143,79 +141,57 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			this.LogRawMessages = logMessages;
 		}
 
-		private Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl, bool keepAlive = true )
+		#region SoapClientsFactories
+		private readonly MagentoServiceSoapClientFactory _clientFactory;
+
+		private sealed class MagentoServiceSoapClientFactory
 		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
+			private readonly MagentoServiceSoapClientFactoryWithKeepAlive _clientFactoryDefault, _clientFactoryWithoutKeepAlive;
 
-			// for cpecific clients, where servers can close connection
-			dynamic httpsTransportBindingElement = _customBinding.Elements.Find< HttpsTransportBindingElement >();
-			httpsTransportBindingElement = httpsTransportBindingElement ?? _customBinding.Elements.Find< HttpTransportBindingElement >();
-			httpsTransportBindingElement.KeepAliveEnabled = keepAlive;
-
-			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( _customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl, bool keepAlive = true )
-		{
-			var task = Task.Factory.StartNew( () => CreateMagentoServiceClient( baseMagentoUrl, keepAlive ) );
-			await Task.WhenAll( task ).ConfigureAwait( false );
-			return task.Result;
-		}
-
-		private static CustomBinding CustomBinding( string baseMagentoUrl )
-		{
-			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
+			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages )
 			{
-				MessageVersion = MessageVersion.Soap11,
-				WriteEncoding = new UTF8Encoding()
-			};
-
-			BindingElement httpTransportBindingElement;
-			if( baseMagentoUrl.StartsWith( "https" ) )
-			{
-				httpTransportBindingElement = new HttpsTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-					RequestInitializationTimeout = new TimeSpan( 0, 30, 0 )
-				};
-			}
-			else
-			{
-				httpTransportBindingElement = new HttpTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-					RequestInitializationTimeout = new TimeSpan( 0, 30, 0 ),
-				};
+				this._clientFactoryDefault = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages );
+				this._clientFactoryWithoutKeepAlive = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages, false );
 			}
 
-			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
+			public Mage_Api_Model_Server_Wsi_HandlerPortTypeClient GetClient( bool keepAlive = true )
 			{
-				MessageVersion = MessageVersion.Soap11,
-			};
+				return keepAlive ? this._clientFactoryDefault.GetClient() : this._clientFactoryWithoutKeepAlive.GetClient();
+			}
 
-			ICollection< BindingElement > bindingElements = new List< BindingElement >();
-			var httpBindingElement = httpTransportBindingElement;
-			var textBindingElement = myTextMessageEncodingBindingElement;
-			bindingElements.Add( textBindingElement );
-			bindingElements.Add( httpBindingElement );
+			public Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RefreshClient( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient client, bool keepAlive = true )
+			{
+				return keepAlive ? this._clientFactoryDefault.RefreshClient( client ) : this._clientFactoryWithoutKeepAlive.RefreshClient( client );
+			}
 
-			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
-			return customBinding;
+			private sealed class MagentoServiceSoapClientFactoryWithKeepAlive : BaseMagentoServiceSoapClientFactory< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, Mage_Api_Model_Server_Wsi_HandlerPortType >
+			{
+				private readonly bool _keepAlive;
+
+				public MagentoServiceSoapClientFactoryWithKeepAlive( string baseMagentoUrl, bool logRawMessages, bool keepAlive = true ) : base( baseMagentoUrl, logRawMessages )
+				{
+					this._keepAlive = keepAlive;
+				}
+
+				protected override Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateClient()
+				{
+					var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl }.BuildUrl();
+
+					// for cpecific clients, where servers can close connection
+					var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11 );
+					dynamic httpsTransportBindingElement = customBinding.Elements.Find< HttpsTransportBindingElement >();
+					httpsTransportBindingElement = httpsTransportBindingElement ?? customBinding.Elements.Find< HttpTransportBindingElement >();
+					httpsTransportBindingElement.KeepAliveEnabled = this._keepAlive;
+
+					var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+
+					magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this._logRawMessages } );
+
+					return magentoSoapService;
+				}
+			}
 		}
+		#endregion
 
 		private static void AddFilter( filters filters, string value, string key, string valueKey )
 		{
@@ -235,17 +211,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int delayBeforeCheck = 1800000;
 
 				var res = new catalogProductInfoResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 					var attributes = new catalogProductRequestAttributes { additional_attributes = request.custAttributes ?? new string[ 0 ] };
@@ -269,16 +242,13 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				{
 					const int maxCheckCount = 2;
 					const int delayBeforeCheck = 1800000;
-					var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+					var privateClient = this._clientFactory.GetClient( keepAlive );
 
 					var res = new catalogProductAttributeMediaListResponse();
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl, keepAlive );
+					privateClient = this._clientFactory.RefreshClient( privateClient, keepAlive );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -321,7 +291,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				var res = new catalogCategoryTreeResponse();
 				await ActionPolicies.GetAsync.Do( async () =>
@@ -329,10 +299,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -356,17 +323,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int delayBeforeCheck = 1800000;
 
 				var res = new catalogProductAttributeInfoResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -402,17 +366,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int delayBeforeCheck = 1800000;
 
 				var res = new catalogInventoryStockItemListResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -446,7 +407,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int delayBeforeCheck = 1800000;
 
 				var res = false;
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				RpcInvoker.RpcResponse< catalogInventoryStockItemMultiUpdateResponse > serverResponse = null;
 				await ActionPolicies.GetAsync.Do( async () =>
@@ -454,10 +415,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -496,17 +454,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int delayBeforeCheck = 120000;
 
 				var res = false;
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -539,17 +494,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				const int delayBeforeCheck = 1800000;
 
 				var res = new magentoInfoResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
@@ -890,13 +842,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		}
 		#endregion
 
-		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed( Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient )
-		{
-			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-				privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
-			return privateClient;
-		}
-
 		private static class ClientBaseActionRunner
 		{
 			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class
@@ -918,11 +863,11 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			try
 			{
 				var res = new TServerResponse();
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
+					privateClient = this._clientFactory.RefreshClient( privateClient );
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 					var temp = await ClientBaseActionRunner.RunWithAbortAsync(

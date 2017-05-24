@@ -3,15 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE;
-using MagentoAccess.Magento2backendModuleServiceV1_v_2_1_0_0_CE;
-using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_1_0_0_CE;
-using MagentoAccess.Magento2catalogProductAttributeMediaGalleryManagementV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2integrationAdminTokenServiceV1_v_2_1_0_0_CE;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE;
@@ -19,7 +12,6 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using Netco.Extensions;
-using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
@@ -42,9 +34,6 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		[ IgnoreDataMember ]
 		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
-		//protected const string SoapApiUrl = "soap/default?wsdl&services=";
-		protected const string SoapApiUrl = "soap/default?services=";
-
 		protected salesOrderRepositoryV1PortTypeClient _magentoSoapService;
 
 		protected integrationAdminTokenServiceV1PortTypeClient _magentoSoapService2;
@@ -53,11 +42,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		protected DateTime _sessionIdCreatedAt;
 
-		private readonly CustomBinding _customBinding;
-
-		private readonly CustomBinding _customBinding12;
-
 		protected SemaphoreSlim getSessionIdSemaphore;
+
+		private readonly MagentoServiceSoapClientFactory _clientFactory;
 
 		protected const int SessionIdLifeTime = 3590;
 
@@ -124,13 +111,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 			this.LogRawMessages = logRawMessages;
 
-			this._customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap11 );
-			this._customBinding12 = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, this.ApiKey );
 			this.PullSessionId = async () =>
 			{
 				if( !string.IsNullOrWhiteSpace( apiUser ) )
 				{
-					var privateClient = this.CreateMagentoServiceAdminClient( this.BaseMagentoUrl );
+					var privateClient = this._clientFactory.CreateMagentoServiceAdminClient();
 					var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
 					var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
 					this._sessionIdCreatedAt = DateTime.UtcNow;
@@ -140,142 +126,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				{
 					this._sessionId = this.ApiKey;
 				}
-
+				if( this._clientFactory != null ) this._clientFactory.Session = this._sessionId;
 				return Tuple.Create( this._sessionId, DateTime.UtcNow );
 			};
 
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
-		}
-
-		private integrationAdminTokenServiceV1PortTypeClient CreateMagentoServiceAdminClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "integrationAdminTokenServiceV1" }.BuildUrl( trimTailsSlash : true );
-			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
-			var magentoSoapService = new integrationAdminTokenServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private catalogProductAttributeMediaGalleryManagementV1PortTypeClient CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductAttributeMediaGalleryManagementV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private salesOrderRepositoryV1PortTypeClient CreateMagentoSalesOrderRepositoryServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "salesOrderRepositoryV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new salesOrderRepositoryV1PortTypeClient( this._customBinding12, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private catalogCategoryManagementV1PortTypeClient CreateMagentoCategoriesRepositoryServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogCategoryManagementV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new catalogCategoryManagementV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private catalogProductRepositoryV1PortTypeClient CreateMagentoCatalogProductRepositoryServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogProductRepositoryV1" }.BuildUrl( trimTailsSlash : true );
-
-			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
-			var magentoSoapService = new catalogProductRepositoryV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private backendModuleServiceV1PortTypeClient CreateMagentoBackendModuleServiceV1Client( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "backendModuleServiceV1" }.BuildUrl( trimTailsSlash : true );
-
-			var customBinding = CustomBinding( baseMagentoUrl, MessageVersion.Soap12 );
-			var magentoSoapService = new backendModuleServiceV1PortTypeClient( customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private catalogInventoryStockRegistryV1PortTypeClient CreateMagentoCatalogInventoryStockServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl + "catalogInventoryStockRegistryV1" }.BuildUrl( trimTailsSlash : true );
-			var magentoSoapService = new catalogInventoryStockRegistryV1PortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior() { AccessToken = this._sessionId, LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		private async Task< salesOrderRepositoryV1PortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
-		{
-			var task = Task.Factory.StartNew( () => this.CreateMagentoSalesOrderRepositoryServiceClient( baseMagentoUrl ) );
-			await Task.WhenAll( task ).ConfigureAwait( false );
-			return task.Result;
-		}
-
-		private static CustomBinding CustomBinding( string baseMagentoUrl, MessageVersion messageVersion )
-		{
-			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
-			{
-				MessageVersion = messageVersion,
-				WriteEncoding = new UTF8Encoding()
-			};
-
-			BindingElement httpTransportBindingElement;
-			if( baseMagentoUrl.StartsWith( "https" ) )
-			{
-				httpTransportBindingElement = new HttpsTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-				};
-			}
-			else
-			{
-				httpTransportBindingElement = new HttpTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-				};
-			}
-
-			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
-			{
-				MessageVersion = messageVersion,
-			};
-
-			ICollection< BindingElement > bindingElements = new List< BindingElement >();
-			var httpBindingElement = httpTransportBindingElement;
-			var textBindingElement = myTextMessageEncodingBindingElement;
-			bindingElements.Add( textBindingElement );
-			bindingElements.Add( httpBindingElement );
-
-			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
-			return customBinding;
 		}
 
 		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
@@ -290,12 +145,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					MagentoLogger.LogTrace( "Can't get session id. Possible reasons: incorrect credentials, user was blocked." );
 					return null;
 				}
-				var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
+				//var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
 				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
 				var getProductsRes = await this.GetProductsAsync( 1, null, false, null ).ConfigureAwait( false );
 
 				//var saveMethodResult = await this.SaveOrderMethodExistAsync().ConfigureAwait( false );
-				return modules?.Modules != null && modules.Modules.Count > 0 && getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.1.0.0", "CE" ) : null;
+				return /*modules?.Modules != null && modules.Modules.Count > 0 &&*/ getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.1.0.0", "CE" ) : null;
 			}
 			catch( Exception exc )
 			{
@@ -631,7 +486,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient();
 
 				var res = new List< UpdateRessult< CreatteProductModel > >();
 				var stockItems = new List< CreatteProductModel > { stockItem };
@@ -643,10 +498,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						var statusChecker = new StatusChecker( maxCheckCount );
 						TimerCallback tcb = statusChecker.CheckStatus;
 
-						if( privateClient.State != CommunicationState.Opened
-						    && privateClient.State != CommunicationState.Created
-						    && privateClient.State != CommunicationState.Opening )
-							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+						privateClient = this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient( privateClient );
 
 						var updateResult = new UpdateRessult< CreatteProductModel >( x, 0 );
 						res.Add( updateResult );
