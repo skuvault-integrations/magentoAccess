@@ -14,7 +14,6 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
-using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeInfo;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
 using MagentoAccess.Models.Services.Soap.GetProductInfo;
@@ -22,7 +21,6 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services.Rest.v2x;
 using Netco.Extensions;
 using Newtonsoft.Json;
 
@@ -55,8 +53,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		protected DateTime _sessionIdCreatedAt;
 
-		protected readonly CustomBinding _customBinding;
-
 		protected SemaphoreSlim getSessionIdSemaphore;
 
 		protected readonly int _getProductsMaxThreads;
@@ -76,20 +72,42 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 			this.LogRawMessages = idLifeTimeMs;
 
-			this._customBinding = CustomBinding( baseMagentoUrl );
 			this._getProductsMaxThreads = getProductsMaxThreads;
 			this.SessionIdLifeTimeMs = sessionIdLifeTimeMs;
-			this._magentoSoapService = this.CreateMagentoServiceClient( baseMagentoUrl );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, idLifeTimeMs );
+			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
 			{
-				var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.GetClient();
 				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
 
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
+
+		#region SoapClientsFactories
+		private readonly MagentoServiceSoapClientFactory _clientFactory;
+
+		private sealed class MagentoServiceSoapClientFactory : BaseMagentoServiceSoapClientFactory< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, Mage_Api_Model_Server_Wsi_HandlerPortType >
+		{
+			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages ) : base( baseMagentoUrl, logRawMessages )
+			{
+			}
+
+			protected override Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateClient()
+			{
+				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl }.BuildUrl();
+				var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11 );
+				var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
+
+				magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this._logRawMessages } );
+
+				return magentoSoapService;
+			}
+		}
+		#endregion
 
 		public Task< bool > InitAsync( bool supressExceptions = false )
 		{
@@ -240,73 +258,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
-
-		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateMagentoServiceClient( string baseMagentoUrl )
-		{
-			var endPoint = new List< string > { baseMagentoUrl, SoapApiUrl }.BuildUrl();
-			var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( this._customBinding, new EndpointAddress( endPoint ) );
-
-			magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this.LogRawMessages } );
-
-			return magentoSoapService;
-		}
-
-		protected async Task< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient > CreateMagentoServiceClientAsync( string baseMagentoUrl )
-		{
-			var task = Task.Factory.StartNew( () => this.CreateMagentoServiceClient( baseMagentoUrl ) );
-			await Task.WhenAll( task ).ConfigureAwait( false );
-			return task.Result;
-		}
-
-		protected static CustomBinding CustomBinding( string baseMagentoUrl )
-		{
-			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
-			{
-				MessageVersion = MessageVersion.Soap11,
-				WriteEncoding = new UTF8Encoding()
-			};
-
-			BindingElement httpTransportBindingElement;
-			if( baseMagentoUrl.StartsWith( "https" ) )
-			{
-				httpTransportBindingElement = new HttpsTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-				};
-			}
-			else
-			{
-				httpTransportBindingElement = new HttpTransportBindingElement
-				{
-					DecompressionEnabled = false,
-					MaxReceivedMessageSize = 999999999,
-					MaxBufferSize = 999999999,
-					MaxBufferPoolSize = 999999999,
-					KeepAliveEnabled = true,
-					AllowCookies = false,
-				};
-			}
-
-			var myTextMessageEncodingBindingElement = new CustomMessageEncodingBindingElement( textMessageEncodingBindingElement, "qwe" )
-			{
-				MessageVersion = MessageVersion.Soap11,
-			};
-
-			ICollection< BindingElement > bindingElements = new List< BindingElement >();
-			var httpBindingElement = httpTransportBindingElement;
-			var textBindingElement = myTextMessageEncodingBindingElement;
-			bindingElements.Add( textBindingElement );
-			bindingElements.Add( httpBindingElement );
-
-			var customBinding = new CustomBinding( bindingElements ) { ReceiveTimeout = new TimeSpan( 0, 2, 30, 0 ), SendTimeout = new TimeSpan( 0, 2, 30, 0 ), OpenTimeout = new TimeSpan( 0, 2, 30, 0 ), CloseTimeout = new TimeSpan( 0, 2, 30, 0 ), Name = "CustomHttpBinding" };
-			return customBinding;
-		}
-
 
 		#region JustForTesting
 		public async Task< int > CreateCart( string storeid )
@@ -629,13 +580,6 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		}
 		#endregion
 
-		protected Mage_Api_Model_Server_Wsi_HandlerPortTypeClient RecreateMagentoServiceClientIfItNeed(Mage_Api_Model_Server_Wsi_HandlerPortTypeClient privateClient)
-		{
-			if (privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening)
-				privateClient = this.CreateMagentoServiceClient(this.BaseMagentoUrl);
-			return privateClient;
-		}
-
 		private static class ClientBaseActionRunner
 		{
 			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, ClientBase< TClient > cleintBase ) where TClient : class
@@ -679,11 +623,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		private async Task< TResult > GetWithUnsafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter ) where TServerResponse : new()
 		{
 			var res = new TServerResponse();
-			var privateClient = this.CreateMagentoServiceClient( this.BaseMagentoUrl );
+			var privateClient = this._clientFactory.GetClient();
 
 			await ActionPolicies.GetAsync.Do( async () =>
 			{
-				privateClient = this.RecreateMagentoServiceClientIfItNeed( privateClient );
+				privateClient = this._clientFactory.RefreshClient( privateClient );
 				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				var temp = await ClientBaseActionRunner.RunWithAbortAsync(

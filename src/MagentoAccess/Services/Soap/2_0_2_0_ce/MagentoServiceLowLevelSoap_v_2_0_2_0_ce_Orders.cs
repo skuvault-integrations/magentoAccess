@@ -41,17 +41,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = new salesOrderRepositoryV1GetListResponse1();
 
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
@@ -96,17 +93,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = new salesOrderRepositoryV1GetListResponse1();
 
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
@@ -141,17 +135,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var res = new salesOrderRepositoryV1GetResponse1();
 
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.salesOrderRepositoryV1GetAsync( filters ).ConfigureAwait( false );

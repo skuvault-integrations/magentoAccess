@@ -281,6 +281,7 @@
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE_Products.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE_Orders.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory.cs" />
+    <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceSoapClientFactory.cs" />
     <Compile Include="Services\Soap\2_1_0_0_ce\ChannelBehaviour\ClientMessageInspector.cs" />
     <Compile Include="Services\Soap\2_1_0_0_ce\ChannelBehaviour\CustomBehavior.cs" />
     <Compile Include="Services\Soap\2_1_0_0_ce\GetBackEndMuduleServiceResponse.cs" />
@@ -292,6 +293,8 @@
     <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\GetProductAttributeMediaListRequest.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\GetBackEndMuduleServiceResponse.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory.cs" />
+    <Compile Include="Services\Soap\2_1_0_0_ce\MagentoServiceSoapClientFactory.cs" />
+    <Compile Include="Services\Soap\BaseMagentoServiceSoapClientFactory.cs" />
     <Compile Include="Services\Soap\ClientMessageInspector.cs" />
     <Compile Include="Services\Soap\IMagento1XxxHelper.cs" />
     <Compile Include="Services\Soap\Magento1xxxHelper.cs" />

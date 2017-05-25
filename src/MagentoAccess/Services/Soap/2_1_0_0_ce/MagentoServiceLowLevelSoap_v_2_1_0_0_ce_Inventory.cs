@@ -47,7 +47,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				var magentoStockItemsResponse = await this.GetStockItemsOldAsync( stockItems.Select( item => item.Sku ) ).ConfigureAwait( false );
 				var magentoStockItems = magentoStockItemsResponse.Responses.Select( item => item as CatalogInventoryDataStockItemInterface ).Where( item => item != null );
 
-				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient();
 
 				var res = new ConcurrentQueue< RpcInvoker.RpcRequestResponse< PutStockItem, object> >();
 
@@ -58,11 +58,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						var statusChecker = new StatusChecker( maxCheckCount );
 						TimerCallback tcb = statusChecker.CheckStatus;
 
-						if( privateClient.State != CommunicationState.Opened
-						    && privateClient.State != CommunicationState.Created
-						    && privateClient.State != CommunicationState.Opening )
-							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
-
+						privateClient = this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient( privateClient );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
@@ -137,17 +133,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int delayBeforeCheck = 120000;
 
 				var res = false;
-				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -218,7 +211,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int delayBeforeCheck = 1800000;
 
 				var res = new List< CatalogDataProductInterface >();
-				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient();
 				catalogProductRepositoryV1GetListResponse1 catalogProductRepositoryV1GetListResponse = null;
 				var currentPage = 0;
 
@@ -229,10 +222,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						var statusChecker = new StatusChecker( maxCheckCount );
 						TimerCallback tcb = statusChecker.CheckStatus;
 
-						if( privateClient.State != CommunicationState.Opened
-						    && privateClient.State != CommunicationState.Created
-						    && privateClient.State != CommunicationState.Opening )
-							privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+						privateClient = this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient( privateClient );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
@@ -372,7 +362,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				res => res?.catalogProductRepositoryV1GetListResponse.result,
 				//res => new SoapGetProductsResponse(res == null? new List<CatalogDataProductSearchResultsInterface>(): new List<CatalogDataProductSearchResultsInterface>() { res.catalogProductRepositoryV1GetListResponse }),
 				//res => new SoapGetProductsResponse(  res.catalogProductRepositoryV1GetListResponse.result ),
-				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this.CreateMagentoCatalogProductRepositoryServiceClient, this.RecreateMagentoServiceClientIfItNeed2 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient, this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient ).ConfigureAwait(false);
 			this.getProductsPageCache.Add( result, parameters, TimeSpan.FromSeconds( 300 ) );
 			return result;
 		}
@@ -385,17 +375,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int delayBeforeCheck = 1800000;
 
 				GetBackEndMuduleServiceResponse res = null;
-				var privateClient = this.CreateMagentoBackendModuleServiceV1Client( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoBackendModuleServiceV1Client();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoBackendModuleServiceV1Client( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoBackendModuleServiceV1Client( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -419,7 +406,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient();
 
 				var responses = await skusOrIds.ProcessInBatchAsync( 10, async x =>
 				{
@@ -429,10 +416,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 						var statusChecker = new StatusChecker( maxCheckCount );
 						TimerCallback tcb = statusChecker.CheckStatus;
 
-						if( privateClient.State != CommunicationState.Opened
-						    && privateClient.State != CommunicationState.Created
-						    && privateClient.State != CommunicationState.Opening )
-							privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+						privateClient = this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient( privateClient );
 
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						{
@@ -595,17 +579,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient();
 				var res = new catalogInventoryStockRegistryV1GetLowStockItemsResponse1();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -627,7 +608,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 			return await this.GetWithAsync(
 				res => res,
-				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient, this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient ).ConfigureAwait(false);
 		}
 
 		private async Task< catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 > GetStockItemBySkuAsync( string sku )
@@ -636,7 +617,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 			return await this.GetWithAsync(
 				res => res,
-				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this.CreateMagentoCatalogInventoryStockServiceClient, this.RecreateMagentoServiceClientIfItNeed ).ConfigureAwait( false );
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient, this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient ).ConfigureAwait( false );
 		}
 
 		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
@@ -646,7 +627,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient();
 
 				var res = new catalogProductAttributeMediaGalleryManagementV1GetListResponse1();
 				await ActionPolicies.GetAsync.Do( async () =>
@@ -654,10 +635,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( privateClient );
 
 					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest() { sku = getProductAttributeMediaListRequest.Sku };
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
@@ -682,7 +660,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var privateClient = this.CreateMagentoCategoriesRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCategoriesRepositoryServiceClient();
 
 				var res = new catalogCategoryManagementV1GetTreeResponse1();
 				await ActionPolicies.GetAsync.Do( async () =>
@@ -690,10 +668,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoCategoriesRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoCategoriesRepositoryServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -718,17 +693,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int delayBeforeCheck = 1800000;
 
 				var res = new catalogProductRepositoryV1GetResponse1();
-				var privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient( privateClient );
 
 					// we don't need them, since Magento 2.0 returns all attributes
 					//var attributes = new catalogProductRequestAttributes { additional_attributes = custAttributes ?? new string[ 0 ] };
@@ -759,17 +731,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				const int delayBeforeCheck = 1800000;
 
 				var res = new catalogProductAttributeInfoResponse();
-				var privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					if( privateClient.State != CommunicationState.Opened
-					    && privateClient.State != CommunicationState.Created
-					    && privateClient.State != CommunicationState.Opening )
-						privateClient = this.CreateMagentoSalesOrderRepositoryServiceClient( this.BaseMagentoUrl );
+					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						//res = await privateClient.catalogProductAttributeInfoAsync( sessionId, attribute ).ConfigureAwait( false );
@@ -844,20 +813,6 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			       || string.Compare( x.Key, "image", StringComparison.CurrentCultureIgnoreCase ) == 0;
 		}
 
-		protected catalogInventoryStockRegistryV1PortTypeClient RecreateMagentoServiceClientIfItNeed( catalogInventoryStockRegistryV1PortTypeClient privateClient )
-		{
-			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-				privateClient = this.CreateMagentoCatalogInventoryStockServiceClient( this.BaseMagentoUrl );
-			return privateClient; 
-		}
-
-		protected catalogProductRepositoryV1PortTypeClient RecreateMagentoServiceClientIfItNeed2( catalogProductRepositoryV1PortTypeClient privateClient )
-		{
-			if( privateClient.State != CommunicationState.Opened && privateClient.State != CommunicationState.Created && privateClient.State != CommunicationState.Opening )
-				privateClient = this.CreateMagentoCatalogProductRepositoryServiceClient( this.BaseMagentoUrl );
-			return privateClient;
-		}
-
 		private static class ClientBaseActionRunner
 		{
 			public static async Task< Tuple< TClientResponse, bool > > RunWithAbortAsync< TClientResponse, TClient >( int delayBeforeCheck, Func< Task< TClientResponse > > func, TClient cleintBase ) where TClient : class
@@ -874,12 +829,12 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func<TClient, string, Task< TServerResponse > > action, int abortAfter, Func< string, TClient> clientFactory, Func<TClient, TClient> clientRecreateFactory, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func< TClient, string, Task< TServerResponse > > action, int abortAfter, Func< TClient > clientFactory, Func< TClient, TClient > clientRecreateFactory, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
 		{
 			try
 			{
 				var res = new TServerResponse();
-				var privateClient = clientFactory( this.BaseMagentoUrl );
+				var privateClient = clientFactory();
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					privateClient = clientRecreateFactory( privateClient );
