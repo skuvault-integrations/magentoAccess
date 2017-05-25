@@ -25,7 +25,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		internal string Session
 		{
-			get => this._session;
+			get { return this._session; }
 			set
 			{
 				if( !string.Equals( this._session, value ) )
