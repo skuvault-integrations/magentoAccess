@@ -21,9 +21,6 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				{
 					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
 
-					if( sourceList.RemoveAll( x => x == "%00" ) > 0 )
-						sourceList.Add( "%*00" );
-
 					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
 					return prods;
