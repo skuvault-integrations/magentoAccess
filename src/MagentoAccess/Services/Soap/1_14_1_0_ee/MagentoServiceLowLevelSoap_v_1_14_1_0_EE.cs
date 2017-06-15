@@ -43,7 +43,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId{ get; set; }
+		public Func< CancellationToken, Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
 		protected IMagento1XxxHelper Magento1xxxHelper{ get; set; }
 
@@ -88,15 +88,15 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken ctx  = default(CancellationToken), bool throwException = true )
 		{
 			try
 			{
-				this.getSessionIdSemaphore.Wait();
-				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
+				this.getSessionIdSemaphore.Wait( ctx );
+				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < this.SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				var sessionId = await this.PullSessionId().ConfigureAwait( false );
+				var sessionId = await this.PullSessionId( ctx ).ConfigureAwait( false );
 
 				this._sessionIdCreatedAt = sessionId.Item2;
 				this._sessionId = sessionId.Item1;
@@ -106,7 +106,11 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			catch( Exception exc )
 			{
 				if( throwException )
-					throw new MagentoSoapException( string.Format( "An error occured during GetSessionId()" ), exc );
+				{
+					if( exc is OperationCanceledException )
+						throw;
+					throw new MagentoSoapException( "An error occured during GetSessionId()", exc );
+				}
 				else
 				{
 					this.LogTraceGetResponseException( exc );
@@ -129,10 +133,16 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logMessages );
 			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
-			this.PullSessionId = async () =>
+			this.PullSessionId = async ( ctx ) =>
 			{
+				ctx.ThrowIfCancellationRequested();
 				var privateClient = this._clientFactory.GetClient();
-				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				loginResponse loginResponse = null;
+				using( ctx.Register( privateClient.Abort ) )
+				{
+					loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				}
+				ctx.ThrowIfCancellationRequested();
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
@@ -486,27 +496,36 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null )
 		{
 			try
 			{
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
+				var sessionId = await this.GetSessionId( ctx ).ConfigureAwait( false );
+				if( sessionId == null )
+					return null;
+
 				var res = new magentoInfoResponse();
 				var privateClient = this._clientFactory.GetClient();
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetAsyncCtx( ctx ).Do( async () =>
 				{
+					ctx.ThrowIfCancellationRequested();
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
 
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					sessionId = await this.GetSessionId( ctx ).ConfigureAwait( false );
 
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.magentoInfoAsync( sessionId.SessionId ).ConfigureAwait( false );
+					using( ctx.Register( () => privateClient.Abort() ) )
+					{
+						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+							res = await privateClient.magentoInfoAsync( sessionId.SessionId ).ConfigureAwait( false );
+					}
+					ctx.ThrowIfCancellationRequested();
 				} ).ConfigureAwait( false );
 
 				return new GetMagentoInfoResponse( res );

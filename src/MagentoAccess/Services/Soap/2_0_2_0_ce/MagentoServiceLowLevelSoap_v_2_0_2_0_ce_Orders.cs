@@ -13,6 +13,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 	{
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 		{
+			return await this.GetOrdersAsync( modifiedFrom, modifiedTo, CancellationToken.None, mark ).ConfigureAwait( false );
+		}
+
+		private async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken ctx, Mark mark = null )
+		{
 			try
 			{
 				var frameworkSearchFilterGroups = new List< FrameworkSearchFilterGroup >
@@ -43,15 +48,20 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetAsyncCtx( ctx ).Do( async () =>
 				{
+					ctx.ThrowIfCancellationRequested();
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
 
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
+					using( ctx.Register( () => privateClient.Abort() ) )
+					{
+						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+							res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
+					}
+					ctx.ThrowIfCancellationRequested();
 				} ).ConfigureAwait( false );
 
 				return new GetOrdersResponse( res );

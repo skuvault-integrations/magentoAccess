@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
@@ -18,7 +19,7 @@ namespace MagentoAccessTests.TestEnvironment
 		{
 		}
 
-		public override Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+		public override Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null )
 		{
 			throw new Exception();
 		}

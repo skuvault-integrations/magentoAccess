@@ -139,7 +139,7 @@ namespace MagentoAccess.Services.Rest.v2x
 		public bool GetOrderByIdForFullInformation => false;
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => true;
 
-		public async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+		public async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
@@ -189,7 +189,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
-		public Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+		public Task< GetSessionIdResponse > GetSessionId( CancellationToken ctx, bool throwException = true )
 		{
 			return null;
 		}

@@ -41,7 +41,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
+		public Func< CancellationToken, Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
 		protected IMagento1XxxHelper Magento1xxxHelper { get; set; }
 
@@ -77,10 +77,16 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, idLifeTimeMs );
 			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
-			this.PullSessionId = async () =>
+			this.PullSessionId = async ctx =>
 			{
+				ctx.ThrowIfCancellationRequested();
 				var privateClient = this._clientFactory.GetClient();
-				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				loginResponse loginResponse = null;
+				using( ctx.Register( privateClient.Abort ) )
+				{
+					loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				}
+				ctx.ThrowIfCancellationRequested();
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
 
@@ -123,15 +129,15 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken ctx  = default(CancellationToken), bool throwException = true )
 		{
 			try
 			{
-				this.getSessionIdSemaphore.Wait();
-				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalMilliseconds < SessionIdLifeTimeMs )
+				this.getSessionIdSemaphore.Wait( ctx );
+				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalMilliseconds < this.SessionIdLifeTimeMs )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				var sessionId = await this.PullSessionId().ConfigureAwait( false );
+				var sessionId = await this.PullSessionId( ctx ).ConfigureAwait( false );
 
 				this._sessionIdCreatedAt = sessionId.Item2;
 				this._sessionId = sessionId.Item1;
@@ -141,7 +147,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			catch( Exception exc )
 			{
 				if( throwException )
-					throw new MagentoSoapException( string.Format( "An error occured during GetSessionId()" ), exc );
+				{
+					if( exc is OperationCanceledException )
+						throw;
+					throw new MagentoSoapException( "An error occured during GetSessionId()", exc );
+				}
 				else
 				{
 					this.LogTraceGetResponseException( exc );
@@ -246,12 +256,16 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				res => res.result > 0,
 				async ( client, session ) => await client.catalogInventoryStockItemUpdateAsync( session, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
 		}
-		
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null )
 		{
+			var sessionId = await this.GetSessionId( ctx, !suppressException ).ConfigureAwait( false );
+			if( sessionId == null )
+				return null;
+
 			return await this.GetWithAsync(
 				res => new GetMagentoInfoResponse( res ),
-				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException ).ConfigureAwait(false);
+				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, ctx, suppressException ).ConfigureAwait( false );
 		}
 
 		protected void LogTraceGetResponseException( Exception exception )
@@ -596,11 +610,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, CancellationToken ctx = default(CancellationToken), bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
 		{
 			try
 			{
-				return await this.GetWithUnsafeAsync( converter, action, abortAfter ).ConfigureAwait( false );
+				return await this.GetWithUnsafeAsync( converter, action, abortAfter, ctx ).ConfigureAwait( false );
 			}
 			catch( Exception exc )
 			{
@@ -620,23 +634,28 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return withSafeAsync;
 		}
 
-		private async Task< TResult > GetWithUnsafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter ) where TServerResponse : new()
+		private async Task< TResult > GetWithUnsafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, CancellationToken ctx = default(CancellationToken) ) where TServerResponse : new()
 		{
 			var res = new TServerResponse();
 			var privateClient = this._clientFactory.GetClient();
 
-			await ActionPolicies.GetAsync.Do( async () =>
+			await ActionPolicies.GetAsyncCtx( ctx ).Do( async () =>
 			{
+				ctx.ThrowIfCancellationRequested();
 				privateClient = this._clientFactory.RefreshClient( privateClient );
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( ctx ).ConfigureAwait( false );
 
-				var temp = await ClientBaseActionRunner.RunWithAbortAsync(
-					abortAfter,
-					async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
-					privateClient ).ConfigureAwait( false );
+				using( ctx.Register( privateClient.Abort ) )
+				{
+					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
+						abortAfter,
+						async () => res = await action( privateClient, sessionId.SessionId ).ConfigureAwait( false ),
+						privateClient ).ConfigureAwait( false );
 
-				if( temp.Item2 )
-					throw new TaskCanceledException();
+					if( temp.Item2 )
+						throw new TaskCanceledException();
+				}
+				ctx.ThrowIfCancellationRequested();
 			} ).ConfigureAwait( false );
 
 			return converter( res );

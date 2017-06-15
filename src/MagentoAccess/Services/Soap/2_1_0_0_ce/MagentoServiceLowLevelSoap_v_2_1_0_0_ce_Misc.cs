@@ -32,7 +32,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		[ JsonIgnore ]
 		[ IgnoreDataMember ]
-		public Func< Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
+		public Func< CancellationToken, Task< Tuple< string, DateTime > > > PullSessionId { get; set; }
 
 		protected salesOrderRepositoryV1PortTypeClient _magentoSoapService;
 
@@ -71,15 +71,15 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken ctx  = default(CancellationToken), bool throwException = true )
 		{
 			try
 			{
-				this.getSessionIdSemaphore.Wait();
+				this.getSessionIdSemaphore.Wait( ctx );
 				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalSeconds < SessionIdLifeTime )
 					return new GetSessionIdResponse( this._sessionId, true );
 
-				var sessionId = await this.PullSessionId().ConfigureAwait( false );
+				var sessionId = await this.PullSessionId( ctx ).ConfigureAwait( false );
 
 				this._sessionIdCreatedAt = sessionId.Item2;
 				this._sessionId = sessionId.Item1;
@@ -112,20 +112,27 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.LogRawMessages = logRawMessages;
 
 			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, this.ApiKey );
-			this.PullSessionId = async () =>
+			this.PullSessionId = async ctx =>
 			{
+				ctx.ThrowIfCancellationRequested();
 				if( !string.IsNullOrWhiteSpace( apiUser ) )
 				{
 					var privateClient = this._clientFactory.CreateMagentoServiceAdminClient();
 					var integrationAdminTokenServiceV1CreateAdminAccessTokenRequest = new IntegrationAdminTokenServiceV1CreateAdminAccessTokenRequest() { username = this.ApiUser, password = this.ApiKey };
-					var loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
+					integrationAdminTokenServiceV1CreateAdminAccessTokenResponse1 loginResponse = null;
+					using( ctx.Register(privateClient.Abort) )
+					{
+						loginResponse = await privateClient.integrationAdminTokenServiceV1CreateAdminAccessTokenAsync( integrationAdminTokenServiceV1CreateAdminAccessTokenRequest ).ConfigureAwait( false );
+					}
+					
 					this._sessionIdCreatedAt = DateTime.UtcNow;
-					this._sessionId = loginResponse.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse.result;
+					this._sessionId = loginResponse?.integrationAdminTokenServiceV1CreateAdminAccessTokenResponse?.result;
 				}
 				else
 				{
 					this._sessionId = this.ApiKey;
 				}
+				ctx.ThrowIfCancellationRequested();
 				if( this._clientFactory != null ) this._clientFactory.Session = this._sessionId;
 				return Tuple.Create( this._sessionId, DateTime.UtcNow );
 			};
@@ -133,21 +140,25 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.getSessionIdSemaphore = new SemaphoreSlim( 1, 1 );
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null )
 		{
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
 
-				var sessionIdRespnse = await this.GetSessionId( !suppressException ).ConfigureAwait( false );
+				var sessionIdRespnse = await this.GetSessionId( ctx, !suppressException ).ConfigureAwait( false );
 				if( sessionIdRespnse == null )
 				{
 					MagentoLogger.LogTrace( "Can't get session id. Possible reasons: incorrect credentials, user was blocked." );
 					return null;
 				}
 				//var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
-				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ) ).ConfigureAwait( false );
-				var getProductsRes = await this.GetProductsAsync( 1, null, false, null ).ConfigureAwait( false );
+
+				var getOrdersTask = this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ), ctx );
+				var getProductsTask = this.GetProductsAsync( 1, null, false, null );
+				Task.WaitAll( new Task[] { getOrdersTask, getProductsTask }, ctx );
+				var getOrdersResponse = getOrdersTask.Result;
+				var getProductsRes = getProductsTask.Result;
 
 				//var saveMethodResult = await this.SaveOrderMethodExistAsync().ConfigureAwait( false );
 				return /*modules?.Modules != null && modules.Modules.Count > 0 &&*/ getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.1.0.0", "CE" ) : null;

@@ -20,6 +20,7 @@ using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
 using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
+using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
@@ -247,7 +248,7 @@ namespace MagentoAccess
 		#endregion
 
 		#region ping
-		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null )
+		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( bool stopOnFirstPassedCheck = true, Mark mark = null )
 		{
 			mark = mark ?? Mark.CreateNew();
 			try
@@ -255,7 +256,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false );
-				var soapInfos = await this.DetermineMagentoVersionAsync( mark ).ConfigureAwait( false );
+				var soapInfos = await this.DetermineMagentoVersionAsync( stopOnFirstPassedCheck, mark ).ConfigureAwait( false );
 				var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
 				if( pingSoapInfos.Any() )
 				{
@@ -280,21 +281,40 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null )
+		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( bool stopOnFirstPassedCheck = true, Mark mark = null )
 		{
 			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
+				var cts = new CancellationTokenSource();
+				var workingStore = new List< GetMagentoInfoResponse >();
+
+				Action< GetMagentoInfoResponse > MagentoVersionDetectComplete = info =>
+				{
+					lock( workingStore )
+					{
+						if( string.IsNullOrWhiteSpace( info?.MagentoEdition ) || string.IsNullOrWhiteSpace( info.MagentoVersion ) )
+							return;
+
+						workingStore.Add( info );
+						if( stopOnFirstPassedCheck )
+							cts.Cancel();
+					}
+				};
+
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
-				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
+				await magentoLowLevelServices.DoInBatchAsync( 14, async kvp =>
 				{
 					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
-						return null;
-					return await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
+						return;
+
+					var info = await kvp.Value.GetMagentoInfoAsync( true, cts.Token ).ConfigureAwait( false );
+					if( info != null )
+						MagentoVersionDetectComplete( info );
+
 				} ).ConfigureAwait( false );
-				var workingStore = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
 				var pingSoapInfo = workingStore.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfo.ToJson() ) );
@@ -315,7 +335,7 @@ namespace MagentoAccess
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo(), markLocal );
-				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, markLocal ).ConfigureAwait( false );
+				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, CancellationToken.None, markLocal ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );

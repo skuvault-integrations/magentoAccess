@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
@@ -153,7 +154,7 @@ namespace MagentoAccessTests.Misc
 				throw new NotImplementedException();
 			}
 
-			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null )
 			{
 				return null;
 			}
@@ -213,7 +214,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+			public Task< GetSessionIdResponse > GetSessionId( CancellationToken ctx  = default(CancellationToken), bool throwException = true )
 			{
 				return null;
 			}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
@@ -33,7 +34,7 @@ namespace MagentoAccess.Services.Soap
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
 		Task< OrderInfoResponse > GetOrderAsync( Order order );
 		Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null );
-		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null );
+		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken ctx, Mark mark = null );
 		string ToJsonSoapInfo();
 		Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog );
 		Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog = null );
@@ -45,7 +46,7 @@ namespace MagentoAccess.Services.Soap
 		Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store );
 		Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store );
 		Task< string > CreateOrder( int shoppingcartid, string store );
-		Task< GetSessionIdResponse > GetSessionId( bool throwException = true );
+		Task< GetSessionIdResponse > GetSessionId( CancellationToken ctx = default(CancellationToken), bool throwException = true );
 
 		/// <summary>
 		/// Provides additional information about product. (Description,ShortDescription,Price,SpecialPrice,Weight,ProductId,CategoryIds)

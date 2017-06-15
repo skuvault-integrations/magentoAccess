@@ -46,7 +46,7 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products );
 
-		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null );
+		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( bool stopOnFirstPassedCheck = true, Mark mark = null );
 
 		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
 
@@ -54,7 +54,7 @@ namespace MagentoAccess
 
 		Func< string > AdditionalLogInfo { get; set; }
 
-		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null );
+		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( bool stopOnFirstPassedCheck = true, Mark mark = null );
 		Task< bool > InitAsync( bool supressExc = false );
 	}
 }

@@ -19,7 +19,7 @@ namespace MagentoAccessTests.Services.Soap._1_9_2_1_ce
 			var apiCallsCount = 0;
 			var magentoServiceLowLevelSoapV1921Ce = new MagentoServiceLowLevelSoap_v_1_9_2_1_ce( "qwe", "qwe", "https://magento.com", "1", 30, true, 300000 )
 			{
-				PullSessionId = async () =>
+				PullSessionId = async ctx =>
 				{
 					await Task.Delay( 1000 ).ConfigureAwait(false);
 					Interlocked.Increment( ref apiCallsCount );
@@ -33,7 +33,7 @@ namespace MagentoAccessTests.Services.Soap._1_9_2_1_ce
 			}
 
 			//A
-			var getSessionTasks = list.ProcessInBatchAsync( tasksCount, async x => await magentoServiceLowLevelSoapV1921Ce.GetSessionId( false ).ConfigureAwait( false ) );
+			var getSessionTasks = list.ProcessInBatchAsync( tasksCount, async x => await magentoServiceLowLevelSoapV1921Ce.GetSessionId( CancellationToken.None, false ).ConfigureAwait( false ) );
 			getSessionTasks.Wait();
 
 			//A
