@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
+using MagentoAccess.Services.Soap._1_9_2_1_ce;
 
 namespace MagentoAccess.Services.Soap
 {
@@ -32,6 +33,7 @@ namespace MagentoAccess.Services.Soap
 			};
 
 			var factories = this._factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
+			factories.Add( "1.9.3.x", new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials ) );
 			if( tryToSelectSuitable && !factories.ContainsKey( magentoVersion ) )
 			{
 				// try to use similar version
