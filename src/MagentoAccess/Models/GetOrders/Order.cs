@@ -8,8 +8,53 @@ using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
 {
-	public class Order
+	public class Order : IEquatable< Order >
 	{
+		public string CustomerEmail { get; set; }
+		public DateTime UpdatedAt { get; set; }
+		public string ShippingName { get; set; }
+		public string ShippingMethod { get; set; }
+		public string ShippingLastname { get; set; }
+		public string ShippingFirstname { get; set; }
+		public string ShippingDescription { get; set; }
+		public string ShippingAddressId { get; set; }
+		public string OrderId { get; set; }
+		public OrderStatusesEnum Status { get; set; }
+		public string Customer { get; set; }
+		public double BaseDiscount { get; set; }
+		public decimal BaseGrandTotal { get; set; }
+		public decimal BaseShippingAmount { get; set; }
+		public decimal BaseShippingTaxAmount { get; set; }
+		public decimal BaseSubtotal { get; set; }
+		public decimal BaseTaxAmount { get; set; }
+		public decimal BaseTotalPaid { get; set; }
+		public decimal BaseTotalRefunded { get; set; }
+		public double DiscountAmount { get; set; }
+		public decimal GrandTotal { get; set; }
+		public decimal ShippingAmount { get; set; }
+		public decimal ShippingTaxAmount { get; set; }
+		public decimal StoreToOrderRate { get; set; }
+		public decimal Subtotal { get; set; }
+		public decimal TaxAmount { get; set; }
+		public decimal TotalPaid { get; set; }
+		public decimal TotalRefunded { get; set; }
+		public decimal BaseShippingDiscountAmount { get; set; }
+		public decimal BaseSubtotalInclTax { get; set; }
+		public decimal BaseTotalDue { get; set; }
+		public decimal ShippingDiscountAmount { get; set; }
+		public decimal SubtotalInclTax { get; set; }
+		public decimal TotalDue { get; set; }
+		public string BaseCurrencyCode { get; set; }
+		public string StoreName { get; set; }
+		public DateTime CreatedAt { get; set; }
+		public decimal ShippingInclTax { get; set; }
+		public string PaymentMethod { get; set; }
+		public List< Tuple< AddressTypeEnum, Address > > Addresses { get; set; }
+		public List< Item > Items { get; set; }
+		public List< Comment > Comments { get; set; }
+		public OrderStateEnum State { get; set; }
+		public string OrderIncrementalId { get; set; }
+
 		internal Order( OrderInfoResponse order )
 		{
 			var billingAddress = Tuple.Create(
@@ -64,29 +109,29 @@ namespace MagentoAccess.Models.GetOrders
 			this.OrderIncrementalId = order.IncrementId;
 			this.OrderId = order.OrderId;
 			this.Items = order.Items.Select( x => new Item
-			{
-				BaseDiscountAmount = x.BaseDiscountAmount.ToDecimalOrDefault(),
-				BaseOriginalPrice = x.BaseOriginalPrice.ToDecimalOrDefault(),
-				Sku = x.Sku,
-				Name = x.Name,
-				BaseTaxAmount = x.BaseTaxAmount.ToDecimalOrDefault(),
-				ItemId = x.ItemId,
-				BasePrice = x.BasePrice.ToDecimalOrDefault(),
-				BaseRowTotal = x.BaseRowTotal.ToDecimalOrDefault(),
-				DscountAmount = x.DiscountAmount.ToDecimalOrDefault(),
-				OriginalPrice = x.OriginalPrice.ToDecimalOrDefault(),
-				Price = x.Price.ToDecimalOrDefault(),
-				ProductType = x.ProductType,
-				QtyCanceled = x.QtyCanceled.ToDecimalOrDefault(),
-				QtyInvoiced = x.QtyInvoiced.ToDecimalOrDefault(),
-				QtyOrdered = x.QtyOrdered.ToDecimalOrDefault(),
-				QtyShipped = x.QtyShipped.ToDecimalOrDefault(),
-				QtyRefunded = x.QtyRefunded.ToDecimalOrDefault(),
-				RowTotal = x.RowTotal.ToDecimalOrDefault(),
-				TaxAmount = x.TaxAmount.ToDecimalOrDefault(),
-				TaxPercent = x.TaxPercent.ToDecimalOrDefault(),
-			}
-				).ToList();
+				{
+					BaseDiscountAmount = x.BaseDiscountAmount.ToDecimalOrDefault(),
+					BaseOriginalPrice = x.BaseOriginalPrice.ToDecimalOrDefault(),
+					Sku = x.Sku,
+					Name = x.Name,
+					BaseTaxAmount = x.BaseTaxAmount.ToDecimalOrDefault(),
+					ItemId = x.ItemId,
+					BasePrice = x.BasePrice.ToDecimalOrDefault(),
+					BaseRowTotal = x.BaseRowTotal.ToDecimalOrDefault(),
+					DscountAmount = x.DiscountAmount.ToDecimalOrDefault(),
+					OriginalPrice = x.OriginalPrice.ToDecimalOrDefault(),
+					Price = x.Price.ToDecimalOrDefault(),
+					ProductType = x.ProductType,
+					QtyCanceled = x.QtyCanceled.ToDecimalOrDefault(),
+					QtyInvoiced = x.QtyInvoiced.ToDecimalOrDefault(),
+					QtyOrdered = x.QtyOrdered.ToDecimalOrDefault(),
+					QtyShipped = x.QtyShipped.ToDecimalOrDefault(),
+					QtyRefunded = x.QtyRefunded.ToDecimalOrDefault(),
+					RowTotal = x.RowTotal.ToDecimalOrDefault(),
+					TaxAmount = x.TaxAmount.ToDecimalOrDefault(),
+					TaxPercent = x.TaxPercent.ToDecimalOrDefault(),
+				}
+			).ToList();
 			this.PaymentMethod = order.Payment?.Method;
 			this.StoreName = order.StoreName;
 			this.Subtotal = order.Subtotal.ToDecimalOrDefault();
@@ -109,21 +154,6 @@ namespace MagentoAccess.Models.GetOrders
 			this.Status = Enum.TryParse( order.Status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.State, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
 		}
-
-		public string CustomerEmail { get; set; }
-		public DateTime UpdatedAt { get; set; }
-
-		public string ShippingName { get; set; }
-
-		public string ShippingMethod { get; set; }
-
-		public string ShippingLastname { get; set; }
-
-		public string ShippingFirstname { get; set; }
-
-		public string ShippingDescription { get; set; }
-
-		public string ShippingAddressId { get; set; }
 
 		public Order( Services.Rest.v1x.GetOrders.Order order )
 		{
@@ -164,45 +194,6 @@ namespace MagentoAccess.Models.GetOrders
 			this.Items = clone.Items;
 			this.Comments = clone.Comments;
 		}
-
-		public string OrderId { get; set; }
-		public OrderStatusesEnum Status { get; set; }
-		public string Customer { get; set; }
-		public double BaseDiscount { get; set; }
-		public decimal BaseGrandTotal { get; set; }
-		public decimal BaseShippingAmount { get; set; }
-		public decimal BaseShippingTaxAmount { get; set; }
-		public decimal BaseSubtotal { get; set; }
-		public decimal BaseTaxAmount { get; set; }
-		public decimal BaseTotalPaid { get; set; }
-		public decimal BaseTotalRefunded { get; set; }
-		public double DiscountAmount { get; set; }
-		public decimal GrandTotal { get; set; }
-		public decimal ShippingAmount { get; set; }
-		public decimal ShippingTaxAmount { get; set; }
-		public decimal StoreToOrderRate { get; set; }
-		public decimal Subtotal { get; set; }
-		public decimal TaxAmount { get; set; }
-		public decimal TotalPaid { get; set; }
-		public decimal TotalRefunded { get; set; }
-		public decimal BaseShippingDiscountAmount { get; set; }
-		public decimal BaseSubtotalInclTax { get; set; }
-		public decimal BaseTotalDue { get; set; }
-		public decimal ShippingDiscountAmount { get; set; }
-		public decimal SubtotalInclTax { get; set; }
-		public decimal TotalDue { get; set; }
-		public string BaseCurrencyCode { get; set; }
-		public string StoreName { get; set; }
-		public DateTime CreatedAt { get; set; }
-		public decimal ShippingInclTax { get; set; }
-		public string PaymentMethod { get; set; }
-		public List< Tuple< AddressTypeEnum, Address > > Addresses { get; set; }
-		public List< Item > Items { get; set; }
-		public List< Comment > Comments { get; set; }
-
-		public OrderStateEnum State { get; set; }
-
-		public string OrderIncrementalId { get; set; }
 
 		public Order( salesOrderEntity order )
 		{
@@ -253,29 +244,29 @@ namespace MagentoAccess.Models.GetOrders
 			this.OrderIncrementalId = order.increment_id;
 			this.OrderId = order.order_id;
 			this.Items = order.items.Select( x => new Item
-			{
-				BaseDiscountAmount = x.base_discount_amount.ToDecimalOrDefault(),
-				BaseOriginalPrice = x.base_original_price.ToDecimalOrDefault(),
-				Sku = x.sku,
-				Name = x.name,
-				BaseTaxAmount = x.base_tax_amount.ToDecimalOrDefault(),
-				ItemId = x.item_id,
-				BasePrice = x.base_price.ToDecimalOrDefault(),
-				BaseRowTotal = x.base_row_total.ToDecimalOrDefault(),
-				DscountAmount = x.discount_amount.ToDecimalOrDefault(),
-				OriginalPrice = x.original_price.ToDecimalOrDefault(),
-				Price = x.price.ToDecimalOrDefault(),
-				ProductType = x.product_type,
-				QtyCanceled = x.qty_canceled.ToDecimalOrDefault(),
-				QtyInvoiced = x.qty_invoiced.ToDecimalOrDefault(),
-				QtyOrdered = x.qty_ordered.ToDecimalOrDefault(),
-				QtyShipped = x.qty_shipped.ToDecimalOrDefault(),
-				QtyRefunded = x.qty_refunded.ToDecimalOrDefault(),
-				RowTotal = x.row_total.ToDecimalOrDefault(),
-				TaxAmount = x.tax_amount.ToDecimalOrDefault(),
-				TaxPercent = x.tax_percent.ToDecimalOrDefault(),
-			}
-				).ToList();
+				{
+					BaseDiscountAmount = x.base_discount_amount.ToDecimalOrDefault(),
+					BaseOriginalPrice = x.base_original_price.ToDecimalOrDefault(),
+					Sku = x.sku,
+					Name = x.name,
+					BaseTaxAmount = x.base_tax_amount.ToDecimalOrDefault(),
+					ItemId = x.item_id,
+					BasePrice = x.base_price.ToDecimalOrDefault(),
+					BaseRowTotal = x.base_row_total.ToDecimalOrDefault(),
+					DscountAmount = x.discount_amount.ToDecimalOrDefault(),
+					OriginalPrice = x.original_price.ToDecimalOrDefault(),
+					Price = x.price.ToDecimalOrDefault(),
+					ProductType = x.product_type,
+					QtyCanceled = x.qty_canceled.ToDecimalOrDefault(),
+					QtyInvoiced = x.qty_invoiced.ToDecimalOrDefault(),
+					QtyOrdered = x.qty_ordered.ToDecimalOrDefault(),
+					QtyShipped = x.qty_shipped.ToDecimalOrDefault(),
+					QtyRefunded = x.qty_refunded.ToDecimalOrDefault(),
+					RowTotal = x.row_total.ToDecimalOrDefault(),
+					TaxAmount = x.tax_amount.ToDecimalOrDefault(),
+					TaxPercent = x.tax_percent.ToDecimalOrDefault(),
+				}
+			).ToList();
 			this.PaymentMethod = order.payment.method;
 			this.ShippingAmount = order.shipping_amount.ToDecimalOrDefault();
 			this.StoreName = order.store_name;
@@ -298,6 +289,120 @@ namespace MagentoAccess.Models.GetOrders
 			OrderStateEnum tempstate;
 			this.Status = Enum.TryParse( order.status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.state, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
+		}
+
+		public override bool Equals( object obj )
+		{
+			if( ReferenceEquals( this, obj ) )
+				return true;
+
+			var order = obj as Order;
+			if( order == null )
+				return false;
+			else
+				return Equals( order );
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var result = this.CustomerEmail.GetHashCode();
+				result = ( result * 381 ) ^ this.UpdatedAt.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingName.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingMethod.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingLastname.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingFirstname.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingDescription.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingAddressId.GetHashCode();
+				result = ( result * 381 ) ^ this.OrderId.GetHashCode();
+				result = ( result * 381 ) ^ this.Status.GetHashCode();
+				result = ( result * 381 ) ^ this.Customer.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseDiscount.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseGrandTotal.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseShippingAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseShippingTaxAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseSubtotal.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseTaxAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseTotalPaid.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseTotalRefunded.GetHashCode();
+				result = ( result * 381 ) ^ this.DiscountAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.GrandTotal.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingTaxAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.StoreToOrderRate.GetHashCode();
+				result = ( result * 381 ) ^ this.Subtotal.GetHashCode();
+				result = ( result * 381 ) ^ this.TaxAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.TotalPaid.GetHashCode();
+				result = ( result * 381 ) ^ this.TotalRefunded.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseShippingDiscountAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseSubtotalInclTax.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseTotalDue.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingDiscountAmount.GetHashCode();
+				result = ( result * 381 ) ^ this.SubtotalInclTax.GetHashCode();
+				result = ( result * 381 ) ^ this.TotalDue.GetHashCode();
+				result = ( result * 381 ) ^ this.BaseCurrencyCode.GetHashCode();
+				result = ( result * 381 ) ^ this.StoreName.GetHashCode();
+				result = ( result * 381 ) ^ this.CreatedAt.GetHashCode();
+				result = ( result * 381 ) ^ this.ShippingInclTax.GetHashCode();
+				result = ( result * 381 ) ^ this.PaymentMethod.GetHashCode();
+				result = ( result * 381 ) ^ this.Addresses.GetHashCode();
+				result = ( result * 381 ) ^ this.Items.GetHashCode();
+				result = ( result * 381 ) ^ this.Comments.GetHashCode();
+				result = ( result * 381 ) ^ this.State.GetHashCode();
+				result = ( result * 381 ) ^ this.OrderIncrementalId.GetHashCode();
+				return result;
+			}
+		}
+
+		public bool Equals( Order order )
+		{
+			if( order == null )
+				return false;
+			return this.CustomerEmail.Equals( order.CustomerEmail ) &&
+			       this.UpdatedAt.Equals( order.UpdatedAt ) &&
+			       this.ShippingName.Equals( order.ShippingName ) &&
+			       this.ShippingMethod.Equals( order.ShippingMethod ) &&
+			       this.ShippingLastname.Equals( order.ShippingLastname ) &&
+			       this.ShippingFirstname.Equals( order.ShippingFirstname ) &&
+			       this.ShippingDescription.Equals( order.ShippingDescription ) &&
+			       this.ShippingAddressId.Equals( order.ShippingAddressId ) &&
+			       this.OrderId.Equals( order.OrderId ) &&
+			       this.Status.Equals( order.Status ) &&
+			       this.Customer.Equals( order.Customer ) &&
+			       this.BaseDiscount.Equals( order.BaseDiscount ) &&
+			       this.BaseGrandTotal.Equals( order.BaseGrandTotal ) &&
+			       this.BaseShippingAmount.Equals( order.BaseShippingAmount ) &&
+			       this.BaseShippingTaxAmount.Equals( order.BaseShippingTaxAmount ) &&
+			       this.BaseSubtotal.Equals( order.BaseSubtotal ) &&
+			       this.BaseTaxAmount.Equals( order.BaseTaxAmount ) &&
+			       this.BaseTotalPaid.Equals( order.BaseTotalPaid ) &&
+			       this.BaseTotalRefunded.Equals( order.BaseTotalRefunded ) &&
+			       this.DiscountAmount.Equals( order.DiscountAmount ) &&
+			       this.GrandTotal.Equals( order.GrandTotal ) &&
+			       this.ShippingAmount.Equals( order.ShippingAmount ) &&
+			       this.ShippingTaxAmount.Equals( order.ShippingTaxAmount ) &&
+			       this.StoreToOrderRate.Equals( order.StoreToOrderRate ) &&
+			       this.Subtotal.Equals( order.Subtotal ) &&
+			       this.TaxAmount.Equals( order.TaxAmount ) &&
+			       this.TotalPaid.Equals( order.TotalPaid ) &&
+			       this.TotalRefunded.Equals( order.TotalRefunded ) &&
+			       this.BaseShippingDiscountAmount.Equals( order.BaseShippingDiscountAmount ) &&
+			       this.BaseSubtotalInclTax.Equals( order.BaseSubtotalInclTax ) &&
+			       this.BaseTotalDue.Equals( order.BaseTotalDue ) &&
+			       this.ShippingDiscountAmount.Equals( order.ShippingDiscountAmount ) &&
+			       this.SubtotalInclTax.Equals( order.SubtotalInclTax ) &&
+			       this.TotalDue.Equals( order.TotalDue ) &&
+			       this.BaseCurrencyCode.Equals( order.BaseCurrencyCode ) &&
+			       this.StoreName.Equals( order.StoreName ) &&
+			       this.CreatedAt.Equals( order.CreatedAt ) &&
+			       this.ShippingInclTax.Equals( order.ShippingInclTax ) &&
+			       this.PaymentMethod.Equals( order.PaymentMethod ) &&
+			       this.Addresses.Equals( order.Addresses ) &&
+			       this.Items.Equals( order.Items ) &&
+			       this.Comments.Equals( order.Comments ) &&
+			       this.State.Equals( order.State ) &&
+			       this.OrderIncrementalId.Equals( order.OrderIncrementalId );
 		}
 	}
 
