@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InterchangeabilityTests\BaseTestSecret.cs" />
     <Compile Include="MagentoServiceTest.cs" />
     <Compile Include="InterchangeabilityTests\GetOrders\UserAlreadyHasAccessTokens.cs" />
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\CorrectCredentials.cs" />
