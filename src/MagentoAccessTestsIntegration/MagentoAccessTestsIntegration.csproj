@@ -92,8 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MagentoServiceTest.cs" />
+    <Compile Include="InterchangeabilityTests\GetOrders\UserAlreadyHasAccessTokens.cs" />
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\CorrectCredentials.cs" />
     <Compile Include="MagentoServiceTests\GetOrders\UserAlreadyHasAccessTokens.cs" />
+    <Content Include="InterchangeabilityTests\Readme.txt" />
     <Content Include="MagentoServiceTests\Readme.txt" />
     <Compile Include="MagentoServiceTests\FillProductsDetails\GetProducsAndFillProductsDetails.cs" />
     <Compile Include="MagentoServiceTests\UpdateInventory\GetOnlySpecialByTypeProducs.cs" />
