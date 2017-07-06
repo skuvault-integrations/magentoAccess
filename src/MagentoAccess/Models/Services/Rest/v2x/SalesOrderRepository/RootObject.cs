@@ -107,11 +107,11 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? base_discount_tax_compensation_amount { get; set; }
 		public int? base_discount_tax_compensation_invoiced { get; set; }
 		public int? base_discount_tax_compensation_refunded { get; set; }
-		public int? base_original_price { get; set; }
-		public int? base_price { get; set; }
-		public int? base_price_incl_tax { get; set; }
+		public decimal? base_original_price { get; set; }
+		public decimal? base_price { get; set; }
+		public decimal? base_price_incl_tax { get; set; }
 		public int? base_row_invoiced { get; set; }
-		public int? base_row_total { get; set; }
+		public decimal? base_row_total { get; set; }
 		public int? base_row_total_incl_tax { get; set; }
 		public int? base_tax_amount { get; set; }
 		public int? base_tax_before_discount { get; set; }
@@ -155,10 +155,10 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public string name { get; set; }
 		public int? no_discount { get; set; }
 		public int? order_id { get; set; }
-		public int? original_price { get; set; }
+		public decimal? original_price { get; set; }
 		public int? parent_item_id { get; set; }
-		public int? price { get; set; }
-		public int? price_incl_tax { get; set; }
+		public decimal? price { get; set; }
+		public decimal? price_incl_tax { get; set; }
 		public int? product_id { get; set; }
 		public string product_type { get; set; }
 		public int? qty_backordered { get; set; }
@@ -170,16 +170,16 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? qty_shipped { get; set; }
 		public int? quote_item_id { get; set; }
 		public int? row_invoiced { get; set; }
-		public int? row_total { get; set; }
-		public int? row_total_incl_tax { get; set; }
-		public int? row_weight { get; set; }
+		public decimal? row_total { get; set; }
+		public decimal? row_total_incl_tax { get; set; }
+		public decimal? row_weight { get; set; }
 		public string sku { get; set; }
 		public int? store_id { get; set; }
-		public int? tax_amount { get; set; }
-		public int? tax_before_discount { get; set; }
-		public int? tax_canceled { get; set; }
-		public int? tax_invoiced { get; set; }
-		public int? tax_percent { get; set; }
+		public decimal? tax_amount { get; set; }
+		public decimal? tax_before_discount { get; set; }
+		public decimal? tax_canceled { get; set; }
+		public decimal? tax_invoiced { get; set; }
+		public decimal? tax_percent { get; set; }
 		public int? tax_refunded { get; set; }
 		public string updated_at { get; set; }
 		public string weee_tax_applied { get; set; }
