@@ -26,6 +26,11 @@ namespace MagentoAccess.Misc
 			return integer?.ToString( culture ) ?? string.Empty;
 		}
 
+		public static string ToStringEmptyOnNull( this decimal? decimalVal, CultureInfo culture )
+		{
+			return decimalVal?.ToString( culture ) ?? string.Empty;
+		}
+
 		public static string ToStringEmptyOnNull( this int? integer )
 		{
 			return ToStringEmptyOnNull( integer, CultureInfo.InvariantCulture );
