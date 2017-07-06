@@ -11,11 +11,11 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
-	internal class UserAlreadyHasAccessTokens : BaseTest	
+	internal class UserAlreadyHasAccessTokens : BaseTest
 	{
 		[ Test ]
-		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void ReceiveOrders( MagentoServiceSoapCredentials credentials )
+		[ TestCaseSource( typeof( InterchangeabilityTestCases ), "TestStoresCredentials" ) ]
+		public void ReceiveOrders( MagentoServiceSoapCredentials credentials, MagentoServiceSoapCredentials credentials2 )
 		{
 			// ------------ Arrange
 			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
