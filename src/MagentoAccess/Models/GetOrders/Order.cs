@@ -408,33 +408,6 @@ namespace MagentoAccess.Models.GetOrders
 		}
 	}
 
-	public static class Extensions
-	{
-		public static bool Equal( this List< Tuple< AddressTypeEnum, Address > > o1, List< Tuple< AddressTypeEnum, Address > > o2 )
-		{
-			if( ReferenceEquals( o1, o2 ) )
-				return true;
-
-			if( o1 == null && o2 == null )
-				return true;
-
-			if( o1.Count != o2.Count )
-				return false;
-
-			var o1Sorted = o1.OrderBy( x => x.Item1 ).ToList();
-			var o2Sorted = o2.OrderBy( x => x.Item1 ).ToList();
-
-			var conntinueFlag = true;
-			for( var i = 0; i < o1.Count && conntinueFlag; i++ )
-			{
-				conntinueFlag &= o2Sorted[ i ].Item1.Equals( o1Sorted[ i ].Item1 );
-				conntinueFlag &= o2Sorted[ i ].Item2.Equals( o1Sorted[ i ].Item2 );
-			}
-
-			return conntinueFlag;
-		}
-	}
-
 	public enum OrderStateEnum
 	{
 		unknown,
@@ -478,6 +451,30 @@ namespace MagentoAccess.Models.GetOrders
 		public static OrderId GetId( this Order order )
 		{
 			return !string.IsNullOrWhiteSpace( order.OrderIncrementalId ) ? new OrderId( order.OrderIncrementalId, true ) : new OrderId( order.OrderId, false );
+		}
+
+		public static bool Equal( this List< Tuple< AddressTypeEnum, Address > > o1, List< Tuple< AddressTypeEnum, Address > > o2 )
+		{
+			if( ReferenceEquals( o1, o2 ) )
+				return true;
+
+			if( o1 == null && o2 == null )
+				return true;
+
+			if( o1.Count != o2.Count )
+				return false;
+
+			var o1Sorted = o1.OrderBy( x => x.Item1 ).ToList();
+			var o2Sorted = o2.OrderBy( x => x.Item1 ).ToList();
+
+			var conntinueFlag = true;
+			for( var i = 0; i < o1.Count && conntinueFlag; i++ )
+			{
+				conntinueFlag &= o2Sorted[ i ].Item1.Equals( o1Sorted[ i ].Item1 );
+				conntinueFlag &= o2Sorted[ i ].Item2.Equals( o1Sorted[ i ].Item2 );
+			}
+
+			return conntinueFlag;
 		}
 	}
 }
