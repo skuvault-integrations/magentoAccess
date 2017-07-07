@@ -359,50 +359,79 @@ namespace MagentoAccess.Models.GetOrders
 		{
 			if( order == null )
 				return false;
-			return this.CustomerEmail.Equals( order.CustomerEmail ) &&
-			       this.UpdatedAt.Equals( order.UpdatedAt ) &&
-			       this.ShippingName.Equals( order.ShippingName ) &&
-			       this.ShippingMethod.Equals( order.ShippingMethod ) &&
-			       this.ShippingLastname.Equals( order.ShippingLastname ) &&
-			       this.ShippingFirstname.Equals( order.ShippingFirstname ) &&
-			       this.ShippingDescription.Equals( order.ShippingDescription ) &&
-			       this.ShippingAddressId.Equals( order.ShippingAddressId ) &&
-			       this.OrderId.Equals( order.OrderId ) &&
-			       this.Status.Equals( order.Status ) &&
-			       this.Customer.Equals( order.Customer ) &&
-			       this.BaseDiscount.Equals( order.BaseDiscount ) &&
-			       this.BaseGrandTotal.Equals( order.BaseGrandTotal ) &&
-			       this.BaseShippingAmount.Equals( order.BaseShippingAmount ) &&
-			       this.BaseShippingTaxAmount.Equals( order.BaseShippingTaxAmount ) &&
-			       this.BaseSubtotal.Equals( order.BaseSubtotal ) &&
-			       this.BaseTaxAmount.Equals( order.BaseTaxAmount ) &&
-			       this.BaseTotalPaid.Equals( order.BaseTotalPaid ) &&
-			       this.BaseTotalRefunded.Equals( order.BaseTotalRefunded ) &&
-			       this.DiscountAmount.Equals( order.DiscountAmount ) &&
-			       this.GrandTotal.Equals( order.GrandTotal ) &&
-			       this.ShippingAmount.Equals( order.ShippingAmount ) &&
-			       this.ShippingTaxAmount.Equals( order.ShippingTaxAmount ) &&
-			       this.StoreToOrderRate.Equals( order.StoreToOrderRate ) &&
-			       this.Subtotal.Equals( order.Subtotal ) &&
-			       this.TaxAmount.Equals( order.TaxAmount ) &&
-			       this.TotalPaid.Equals( order.TotalPaid ) &&
-			       this.TotalRefunded.Equals( order.TotalRefunded ) &&
-			       this.BaseShippingDiscountAmount.Equals( order.BaseShippingDiscountAmount ) &&
-			       this.BaseSubtotalInclTax.Equals( order.BaseSubtotalInclTax ) &&
-			       this.BaseTotalDue.Equals( order.BaseTotalDue ) &&
-			       this.ShippingDiscountAmount.Equals( order.ShippingDiscountAmount ) &&
-			       this.SubtotalInclTax.Equals( order.SubtotalInclTax ) &&
-			       this.TotalDue.Equals( order.TotalDue ) &&
-			       this.BaseCurrencyCode.Equals( order.BaseCurrencyCode ) &&
-			       this.StoreName.Equals( order.StoreName ) &&
-			       this.CreatedAt.Equals( order.CreatedAt ) &&
-			       this.ShippingInclTax.Equals( order.ShippingInclTax ) &&
-			       this.PaymentMethod.Equals( order.PaymentMethod ) &&
-			       this.Addresses.Equals( order.Addresses ) &&
-			       this.Items.Equals( order.Items ) &&
-			       this.Comments.Equals( order.Comments ) &&
-			       this.State.Equals( order.State ) &&
-			       this.OrderIncrementalId.Equals( order.OrderIncrementalId );
+
+			var result = this.CustomerEmail.Equals( order.CustomerEmail ) &&
+			             this.UpdatedAt.Equals( order.UpdatedAt ) &&
+			             this.ShippingName.Equals( order.ShippingName ) &&
+			             this.ShippingMethod.Equals( order.ShippingMethod ) &&
+			             this.ShippingLastname.Equals( order.ShippingLastname ) &&
+			             this.ShippingFirstname.Equals( order.ShippingFirstname ) &&
+			             this.ShippingDescription.Equals( order.ShippingDescription ) &&
+			             this.ShippingAddressId.Equals( order.ShippingAddressId ) &&
+			             this.OrderId.Equals( order.OrderId ) &&
+			             this.Status.Equals( order.Status ) &&
+			             this.Customer.Equals( order.Customer ) &&
+			             this.BaseDiscount.Equals( order.BaseDiscount ) &&
+			             this.BaseGrandTotal.Equals( order.BaseGrandTotal ) &&
+			             this.BaseShippingAmount.Equals( order.BaseShippingAmount ) &&
+			             this.BaseShippingTaxAmount.Equals( order.BaseShippingTaxAmount ) &&
+			             this.BaseSubtotal.Equals( order.BaseSubtotal ) &&
+			             this.BaseTaxAmount.Equals( order.BaseTaxAmount ) &&
+			             this.BaseTotalPaid.Equals( order.BaseTotalPaid ) &&
+			             this.BaseTotalRefunded.Equals( order.BaseTotalRefunded ) &&
+			             this.DiscountAmount.Equals( order.DiscountAmount ) &&
+			             this.GrandTotal.Equals( order.GrandTotal ) &&
+			             this.ShippingAmount.Equals( order.ShippingAmount ) &&
+			             this.ShippingTaxAmount.Equals( order.ShippingTaxAmount ) &&
+			             this.StoreToOrderRate.Equals( order.StoreToOrderRate ) &&
+			             this.Subtotal.Equals( order.Subtotal ) &&
+			             this.TaxAmount.Equals( order.TaxAmount ) &&
+			             this.TotalPaid.Equals( order.TotalPaid ) &&
+			             this.TotalRefunded.Equals( order.TotalRefunded ) &&
+			             this.BaseShippingDiscountAmount.Equals( order.BaseShippingDiscountAmount ) &&
+			             this.BaseSubtotalInclTax.Equals( order.BaseSubtotalInclTax ) &&
+			             this.BaseTotalDue.Equals( order.BaseTotalDue ) &&
+			             this.ShippingDiscountAmount.Equals( order.ShippingDiscountAmount ) &&
+			             this.SubtotalInclTax.Equals( order.SubtotalInclTax ) &&
+			             this.TotalDue.Equals( order.TotalDue ) &&
+			             this.BaseCurrencyCode.Equals( order.BaseCurrencyCode ) &&
+			             this.StoreName.Equals( order.StoreName ) &&
+			             this.CreatedAt.Equals( order.CreatedAt ) &&
+			             this.ShippingInclTax.Equals( order.ShippingInclTax ) &&
+			             this.PaymentMethod.Equals( order.PaymentMethod ) &&
+			             this.Addresses.Equal( order.Addresses ) &&
+			             this.Items.Equals( order.Items ) &&
+			             this.Comments.Equals( order.Comments ) &&
+			             this.State.Equals( order.State ) &&
+			             this.OrderIncrementalId.Equals( order.OrderIncrementalId );
+			return result;
+		}
+	}
+
+	public static class Extensions
+	{
+		public static bool Equal( this List< Tuple< AddressTypeEnum, Address > > o1, List< Tuple< AddressTypeEnum, Address > > o2 )
+		{
+			if( ReferenceEquals( o1, o2 ) )
+				return true;
+
+			if( o1 == null && o2 == null )
+				return true;
+
+			if( o1.Count != o2.Count )
+				return false;
+
+			var o1Sorted = o1.OrderBy( x => x.Item1 ).ToList();
+			var o2Sorted = o2.OrderBy( x => x.Item1 ).ToList();
+
+			var conntinueFlag = true;
+			for( var i = 0; i < o1.Count && conntinueFlag; i++ )
+			{
+				conntinueFlag &= o2Sorted[ i ].Item1.Equals( o1Sorted[ i ].Item1 );
+				conntinueFlag &= o2Sorted[ i ].Item2.Equals( o1Sorted[ i ].Item2 );
+			}
+
+			return conntinueFlag;
 		}
 	}
 
