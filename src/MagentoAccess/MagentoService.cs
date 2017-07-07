@@ -34,6 +34,7 @@ using MagentoAccess.Services.Soap._2_0_2_0_ce;
 using MagentoAccess.Services.Soap._2_1_0_0_ce;
 using Netco.Extensions;
 using Order = MagentoAccess.Models.GetOrders.Order;
+using Payment = MagentoAccess.Models.Services.Soap.GetOrders.Payment;
 
 namespace MagentoAccess
 {
@@ -1105,10 +1106,15 @@ namespace MagentoAccess
 
 					cfg.CreateMap< Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem >();
 					cfg.CreateMap< Item2, OrderItemEntity >();
+
+					cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >()
+						.ForMember( x => x.Payment, opt => opt.MapFrom( src => new Payment() { Method = src.PaymentMethod } ) );
+
 					cfg.CreateMap< Item, Models.Services.Soap.GetOrders.Order >()
 						.ForMember( x => x.OrderId, opt => opt.MapFrom( src => src.entity_id ) )
 						.ForMember( x => x.BillingFirstname, opt => opt.MapFrom( src => src != null ? src.billing_address != null ? src.billing_address.firstname ?? string.Empty : string.Empty : string.Empty ) )
 						.ForMember( x => x.BillingLastname, opt => opt.MapFrom( src => src != null ? src.billing_address != null ? src.billing_address.lastname ?? string.Empty : string.Empty : string.Empty ) )
+						.ForMember( x => x.PaymentMethod, opt => opt.MapFrom( src => src != null ? src.payment != null ? src.payment.method ?? string.Empty : string.Empty : string.Empty ) )
 						;
 
 					//.ForAllMembers(x =>

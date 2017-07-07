@@ -248,6 +248,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public VaultPaymentToken vault_payment_token { get; set; }
 	}
 
+	[ JsonConverter( typeof( LaxPropertyNameMatchingConverter ) ) ]
 	public class Payment
 	{
 		public string account_status { get; set; }
