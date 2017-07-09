@@ -139,6 +139,7 @@
     <Compile Include="Models\Services\Rest\v1x\PutStockItems\StockItem.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\CategoryNode.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\GetCategoryTreeResponse.cs" />
+    <Compile Include="Models\Services\Soap\GetOrders\ShippingAddress.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeInfo\CatalogProductAttributeInfoResponse.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeInfo\ProductAttributeInfo.cs" />
     <Compile Include="Models\Services\Soap\GetProductAttributeMediaList\MagentoImage.cs" />

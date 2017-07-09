@@ -34,6 +34,7 @@ using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using MagentoAccess.Services.Soap._2_0_2_0_ce;
 using MagentoAccess.Services.Soap._2_1_0_0_ce;
 using Netco.Extensions;
+using BillingAddress = MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository.BillingAddress;
 using Order = MagentoAccess.Models.GetOrders.Order;
 using Payment = MagentoAccess.Models.Services.Soap.GetOrders.Payment;
 
@@ -1114,16 +1115,22 @@ namespace MagentoAccess
 							Lastname = src.ShippingLastname,
 							Firstname = src.ShippingFirstname,
 						} ) );
-					
+
+					cfg.CreateMap< BillingAddress, Models.Services.Soap.GetOrders.BillingAddress >()
+						.ForMember( x => x.Street, opt => opt.MapFrom( src => src.street != null ? string.Join( ", ", src.street ) : null ) )
+						.ForMember( x => x.Company, opt => opt.MapFrom( src => src.company == string.Empty ? null : src.company ) ) //since soap returns null instead of "", can be changed in future.
+						.ForMember( x => x.Region, opt => opt.MapFrom( src => src.region == string.Empty ? null : src.region ) ); //since soap returns null instead of "", can be changed in future.
+
 					cfg.CreateMap< Item, Models.Services.Soap.GetOrders.Order >()
 						.ForMember( x => x.OrderId, opt => opt.MapFrom( src => src.entity_id ) )
 						.ForMember( x => x.BillingFirstname, opt => opt.MapFrom( src => src != null ? src.billing_address != null ? src.billing_address.firstname ?? string.Empty : string.Empty : string.Empty ) )
 						.ForMember( x => x.BillingLastname, opt => opt.MapFrom( src => src != null ? src.billing_address != null ? src.billing_address.lastname ?? string.Empty : string.Empty : string.Empty ) )
 						.ForMember( x => x.PaymentMethod, opt => opt.MapFrom( src => src != null ? src.payment != null ? src.payment.method ?? string.Empty : string.Empty : string.Empty ) )
 						.ForMember( x => x.ShippingAddressId, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping.address != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.address.customer_address_id : null ) : null ) : null ) : null ) : null ) )
+						//.ForMember( x => x.BillingAddress, opt => opt.MapFrom( src => src != null && src.billing_address != null ? new BillingAddress : null )
 						.ForMember( x => x.ShippingLastname, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping.address != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.address.lastname : null ) : null ) : null ) : null ) : null ) )
 						.ForMember( x => x.ShippingFirstname, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping.address != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.address.firstname : null ) : null ) : null ) : null ) : null ) )
-						.ForMember( x => x.ShippingMethod, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ?  src.extension_attributes.shipping_assignments[ 0 ].shipping.method : null ) : null ) : null ) : null ) );
+						.ForMember( x => x.ShippingMethod, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.method : null ) : null ) : null ) : null ) );
 					;
 
 					//.ForAllMembers(x =>
@@ -1152,6 +1159,7 @@ namespace MagentoAccess
 				return false;
 			}
 		}
+		
 	}
 
 	public class MagentoConfig
