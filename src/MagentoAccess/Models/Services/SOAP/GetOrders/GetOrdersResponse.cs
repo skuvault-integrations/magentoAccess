@@ -1118,6 +1118,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public string XForwardedFOR { get; private set; }
 		public string PaymentMethod { get; set; }
 		public BillingAddress BillingAddress { get; set; }
+		public ShippingAddress ShippingAddress { get; set; }
 
 		public string ToStringIds()
 		{

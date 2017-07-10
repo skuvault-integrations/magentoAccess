@@ -54,6 +54,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 				x.ShippingName = string.Empty;
 			};
 
+			//soap uses null for such values, but rest empty string
 			Action< Order > restPreparer = x =>
 			{
 				var ba = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Billing );
@@ -62,11 +63,18 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 
 				if( ba?.Item2?.Company == string.Empty )
 					ba.Item2.Company = null;
+
+				var sa = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Shipping );
+				if( sa?.Item2?.Region == string.Empty )
+					sa.Item2.Region = null;
+
+				if( sa?.Item2?.Company == string.Empty )
+					sa.Item2.Company = null;
 			};
 
 			thatWasReturnedSoap.ForEach( cpmmonPreparer );
 			thatWasReturnedRest.ForEach( cpmmonPreparer );
-			thatWasReturnedRest.ForEach(restPreparer);
+			thatWasReturnedRest.ForEach( restPreparer );
 
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
