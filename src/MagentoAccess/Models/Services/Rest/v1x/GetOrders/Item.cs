@@ -31,6 +31,51 @@ namespace MagentoAccess.Models.Services.Rest.v1x.GetOrders
 		public decimal BasePriceInclTax { get; set; }
 		public decimal RawTotalInclTax { get; set; }
 		public decimal BaseRowTotalInclTax { get; set; }
+
+		public override bool Equals( object obj )
+		{
+			if( ReferenceEquals( this, obj ) )
+				return true;
+
+			var item = obj as Item;
+			if( item == null )
+				return false;
+			else
+				return this.Equals( item );
+		}
+
+		public bool Equals( Item item )
+		{
+			if( item == null )
+				return false;
+			var res = Equals( this.ItemId, item.ItemId )
+			          && Equals( this.ParentItemId, item.ParentItemId )
+			          && Equals( this.ProductType, item.ProductType )
+			          && Equals( this.Sku, item.Sku )
+			          && Equals( this.Name, item.Name )
+			          && Equals( this.QtyCanceled, item.QtyCanceled )
+			          && Equals( this.QtyInvoiced, item.QtyInvoiced )
+			          && Equals( this.QtyOrdered, item.QtyOrdered )
+			          && Equals( this.QtyRefunded, item.QtyRefunded )
+			          && Equals( this.QtyShipped, item.QtyShipped )
+			          && Equals( this.Price, item.Price )
+			          && Equals( this.BasePrice, item.BasePrice )
+			          && Equals( this.OriginalPrice, item.OriginalPrice )
+			          && Equals( this.BaseOriginalPrice, item.BaseOriginalPrice )
+			          && Equals( this.TaxPercent, item.TaxPercent )
+			          && Equals( this.TaxAmount, item.TaxAmount )
+			          && Equals( this.BaseTaxAmount, item.BaseTaxAmount )
+			          && Equals( this.DscountAmount, item.DscountAmount )
+			          && Equals( this.BaseDiscountAmount, item.BaseDiscountAmount )
+			          && Equals( this.RowTotal, item.RowTotal )
+			          && Equals( this.BaseRowTotal, item.BaseRowTotal )
+			          && Equals( this.PriceInclTax, item.PriceInclTax )
+			          && Equals( this.BasePriceInclTax, item.BasePriceInclTax )
+			          && Equals( this.RawTotalInclTax, item.RawTotalInclTax )
+			          && Equals( this.BaseRowTotalInclTax, item.BaseRowTotalInclTax );
+
+			return res;
+		}
 	}
 
 	public static class Extensions

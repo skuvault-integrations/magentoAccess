@@ -400,7 +400,7 @@ namespace MagentoAccess.Models.GetOrders
 			             Equals( this.ShippingInclTax, order.ShippingInclTax ) &&
 			             Equals( this.PaymentMethod, order.PaymentMethod ) &&
 			             this.Addresses.Equal( order.Addresses ) &&
-			             Equals( this.Items, order.Items ) &&
+						 this.Items.Equal( order.Items ) &&
 			             Equals( this.Comments, order.Comments ) &&
 			             Equals( this.State, order.State ) &&
 			             Equals( this.OrderIncrementalId, order.OrderIncrementalId );
@@ -474,6 +474,25 @@ namespace MagentoAccess.Models.GetOrders
 				conntinueFlag &= o2Sorted[ i ].Item2.Equals( o1Sorted[ i ].Item2 );
 			}
 
+			return conntinueFlag;
+		}
+
+		public static bool Equal( this List< Item > o1, List< Item > o2 )
+		{
+			if( ReferenceEquals( o1, o2 ) )
+				return true;
+
+			if( o1 == null && o2 == null )
+				return true;
+
+			if( o1.Count != o2.Count )
+				return false;
+
+			var o1Sorted = o1.OrderBy( x => x.ItemId ).ThenBy( y => y.Name ).ThenBy( z => z.Price ).ToList();
+			var o2Sorted = o2.OrderBy( x => x.ItemId ).ThenBy( y => y.Name ).ThenBy( z => z.Price ).ToList();
+
+			var conntinueFlag = true;
+			conntinueFlag = o1Sorted.SequenceEqual( o2Sorted );
 			return conntinueFlag;
 		}
 	}
