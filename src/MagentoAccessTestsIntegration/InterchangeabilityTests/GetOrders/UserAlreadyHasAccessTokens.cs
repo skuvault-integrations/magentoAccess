@@ -28,23 +28,23 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			var modifiedFrom = new DateTime( 2016, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
 			var modifiedTo = new DateTime( 2017, 7, 2, 23, 30, 39 ).AddSeconds( -1 );
 
-			Task.Delay(10000).Wait();
+			Task.Delay( 10000 ).Wait();
 			var swR = Stopwatch.StartNew();
 			var getOrdersTaskRest = magentoServiceRest.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS" ) );
 			getOrdersTaskRest.Wait();
 			swR.Stop();
-			Task.Delay(10000).Wait();
+			Task.Delay( 10000 ).Wait();
 			var swS = Stopwatch.StartNew();
 			var getOrdersTask2 = magentoServiceSoap.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS-2" ) );
 			getOrdersTask2.Wait();
 			swS.Stop();
-			Task.Delay(10000).Wait();
+			Task.Delay( 10000 ).Wait();
 			//------------Assert
 			var thatWasReturnedRest = getOrdersTaskRest.Result.OrderBy( x => x.OrderIncrementalId ).ToList();
 			var thatWasReturnedSoap = getOrdersTask2.Result.OrderBy( x => x.OrderIncrementalId ).ToList();
-			
+
 			//these fields works in rest, but doesn't in soap. We need to skip them for assert.
-			Action< Order > action = x =>
+			Action< Order > cpmmonPreparer = x =>
 			{
 				x.OrderId = string.Empty;
 				x.ShippingAddressId = string.Empty;
@@ -54,9 +54,19 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 				x.ShippingName = string.Empty;
 			};
 
-			thatWasReturnedSoap.ForEach(action );
-			thatWasReturnedRest.ForEach(action );
+			Action< Order > restPreparer = x =>
+			{
+				var ba = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Billing );
+				if( ba?.Item2?.Region == string.Empty )
+					ba.Item2.Region = null;
 
+				if( ba?.Item2?.Company == string.Empty )
+					ba.Item2.Company = null;
+			};
+
+			thatWasReturnedSoap.ForEach( cpmmonPreparer );
+			thatWasReturnedRest.ForEach( cpmmonPreparer );
+			thatWasReturnedRest.ForEach(restPreparer);
 
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );

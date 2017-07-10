@@ -1118,8 +1118,8 @@ namespace MagentoAccess
 
 					cfg.CreateMap< BillingAddress, Models.Services.Soap.GetOrders.BillingAddress >()
 						.ForMember( x => x.Street, opt => opt.MapFrom( src => src.street != null ? string.Join( ", ", src.street ) : null ) )
-						.ForMember( x => x.Company, opt => opt.MapFrom( src => src.company == string.Empty ? null : src.company ) ) //since soap returns null instead of "", can be changed in future.
-						.ForMember( x => x.Region, opt => opt.MapFrom( src => src.region == string.Empty ? null : src.region ) ); //since soap returns null instead of "", can be changed in future.
+						.ForMember( x => x.Company, opt => opt.MapFrom( src => string.IsNullOrWhiteSpace( src.company ) ? null : src.company ) ) //since soap returns null instead of "", can be changed in future.
+						.ForMember( x => x.Region, opt => opt.MapFrom( src => string.IsNullOrWhiteSpace( src.region ) ? null : src.region ) ); //since soap returns null instead of "", can be changed in future.
 
 					cfg.CreateMap< Item, Models.Services.Soap.GetOrders.Order >()
 						.ForMember( x => x.OrderId, opt => opt.MapFrom( src => src.entity_id ) )
