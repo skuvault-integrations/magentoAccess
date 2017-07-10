@@ -360,50 +360,50 @@ namespace MagentoAccess.Models.GetOrders
 			if( order == null )
 				return false;
 
-			var result = this.CustomerEmail.Equals( order.CustomerEmail ) &&
-			             this.UpdatedAt.Equals( order.UpdatedAt ) &&
-			             this.ShippingName.Equals( order.ShippingName ) &&
-			             this.ShippingMethod.Equals( order.ShippingMethod ) &&
-			             this.ShippingLastname.Equals( order.ShippingLastname ) &&
-			             this.ShippingFirstname.Equals( order.ShippingFirstname ) &&
-			             this.ShippingDescription.Equals( order.ShippingDescription ) &&
-			             this.ShippingAddressId.Equals( order.ShippingAddressId ) &&
-			             this.OrderId.Equals( order.OrderId ) &&
-			             this.Status.Equals( order.Status ) &&
-			             this.Customer.Equals( order.Customer ) &&
-			             this.BaseDiscount.Equals( order.BaseDiscount ) &&
-			             this.BaseGrandTotal.Equals( order.BaseGrandTotal ) &&
-			             this.BaseShippingAmount.Equals( order.BaseShippingAmount ) &&
-			             this.BaseShippingTaxAmount.Equals( order.BaseShippingTaxAmount ) &&
-			             this.BaseSubtotal.Equals( order.BaseSubtotal ) &&
-			             this.BaseTaxAmount.Equals( order.BaseTaxAmount ) &&
-			             this.BaseTotalPaid.Equals( order.BaseTotalPaid ) &&
-			             this.BaseTotalRefunded.Equals( order.BaseTotalRefunded ) &&
-			             this.DiscountAmount.Equals( order.DiscountAmount ) &&
-			             this.GrandTotal.Equals( order.GrandTotal ) &&
-			             this.ShippingAmount.Equals( order.ShippingAmount ) &&
-			             this.ShippingTaxAmount.Equals( order.ShippingTaxAmount ) &&
-			             this.StoreToOrderRate.Equals( order.StoreToOrderRate ) &&
-			             this.Subtotal.Equals( order.Subtotal ) &&
-			             this.TaxAmount.Equals( order.TaxAmount ) &&
-			             this.TotalPaid.Equals( order.TotalPaid ) &&
-			             this.TotalRefunded.Equals( order.TotalRefunded ) &&
-			             this.BaseShippingDiscountAmount.Equals( order.BaseShippingDiscountAmount ) &&
-			             this.BaseSubtotalInclTax.Equals( order.BaseSubtotalInclTax ) &&
-			             this.BaseTotalDue.Equals( order.BaseTotalDue ) &&
-			             this.ShippingDiscountAmount.Equals( order.ShippingDiscountAmount ) &&
-			             this.SubtotalInclTax.Equals( order.SubtotalInclTax ) &&
-			             this.TotalDue.Equals( order.TotalDue ) &&
-			             this.BaseCurrencyCode.Equals( order.BaseCurrencyCode ) &&
-			             this.StoreName.Equals( order.StoreName ) &&
-			             this.CreatedAt.Equals( order.CreatedAt ) &&
-			             this.ShippingInclTax.Equals( order.ShippingInclTax ) &&
-			             this.PaymentMethod.Equals( order.PaymentMethod ) &&
+			var result = Equals( this.CustomerEmail, order.CustomerEmail ) &&
+			             Equals( this.UpdatedAt, order.UpdatedAt ) &&
+			             Equals( this.ShippingName, order.ShippingName ) &&
+			             Equals( this.ShippingMethod, order.ShippingMethod ) &&
+			             Equals( this.ShippingLastname, order.ShippingLastname ) &&
+			             Equals( this.ShippingFirstname, order.ShippingFirstname ) &&
+			             Equals( this.ShippingDescription, order.ShippingDescription ) &&
+			             Equals( this.ShippingAddressId, order.ShippingAddressId ) &&
+			             Equals( this.OrderId, order.OrderId ) &&
+			             Equals( this.Status, order.Status ) &&
+			             Equals( this.Customer, order.Customer ) &&
+			             Equals( this.BaseDiscount, order.BaseDiscount ) &&
+			             Equals( this.BaseGrandTotal, order.BaseGrandTotal ) &&
+			             Equals( this.BaseShippingAmount, order.BaseShippingAmount ) &&
+			             Equals( this.BaseShippingTaxAmount, order.BaseShippingTaxAmount ) &&
+			             Equals( this.BaseSubtotal, order.BaseSubtotal ) &&
+			             Equals( this.BaseTaxAmount, order.BaseTaxAmount ) &&
+			             Equals( this.BaseTotalPaid, order.BaseTotalPaid ) &&
+			             Equals( this.BaseTotalRefunded, order.BaseTotalRefunded ) &&
+			             Equals( this.DiscountAmount, order.DiscountAmount ) &&
+			             Equals( this.GrandTotal, order.GrandTotal ) &&
+			             Equals( this.ShippingAmount, order.ShippingAmount ) &&
+			             Equals( this.ShippingTaxAmount, order.ShippingTaxAmount ) &&
+			             Equals( this.StoreToOrderRate, order.StoreToOrderRate ) &&
+			             Equals( this.Subtotal, order.Subtotal ) &&
+			             Equals( this.TaxAmount, order.TaxAmount ) &&
+			             Equals( this.TotalPaid, order.TotalPaid ) &&
+			             Equals( this.TotalRefunded, order.TotalRefunded ) &&
+			             Equals( this.BaseShippingDiscountAmount, order.BaseShippingDiscountAmount ) &&
+			             Equals( this.BaseSubtotalInclTax, order.BaseSubtotalInclTax ) &&
+			             Equals( this.BaseTotalDue, order.BaseTotalDue ) &&
+			             Equals( this.ShippingDiscountAmount, order.ShippingDiscountAmount ) &&
+			             Equals( this.SubtotalInclTax, order.SubtotalInclTax ) &&
+			             Equals( this.TotalDue, order.TotalDue ) &&
+			             Equals( this.BaseCurrencyCode, order.BaseCurrencyCode ) &&
+			             Equals( this.StoreName, order.StoreName ) &&
+			             Equals( this.CreatedAt, order.CreatedAt ) &&
+			             Equals( this.ShippingInclTax, order.ShippingInclTax ) &&
+			             Equals( this.PaymentMethod, order.PaymentMethod ) &&
 			             this.Addresses.Equal( order.Addresses ) &&
-			             this.Items.Equals( order.Items ) &&
-			             this.Comments.Equals( order.Comments ) &&
-			             this.State.Equals( order.State ) &&
-			             this.OrderIncrementalId.Equals( order.OrderIncrementalId );
+			             Equals( this.Items, order.Items ) &&
+			             Equals( this.Comments, order.Comments ) &&
+			             Equals( this.State, order.State ) &&
+			             Equals( this.OrderIncrementalId, order.OrderIncrementalId );
 			return result;
 		}
 	}
