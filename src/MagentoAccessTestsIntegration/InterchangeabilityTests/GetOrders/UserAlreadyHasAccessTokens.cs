@@ -76,6 +76,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			thatWasReturnedRest.ForEach( cpmmonPreparer );
 			thatWasReturnedRest.ForEach( restPreparer );
 
+			Console.WriteLine( "rest time: " + swR.Elapsed + " soap time: " + swS.Elapsed );
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
 		}

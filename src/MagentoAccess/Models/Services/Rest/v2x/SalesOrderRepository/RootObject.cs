@@ -704,7 +704,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? base_discount_tax_compensation_amount { get; set; }
 		public int? base_discount_tax_compensation_invoiced { get; set; }
 		public int? base_discount_tax_compensation_refunded { get; set; }
-		public int? base_shipping_amount { get; set; }
+		public decimal? base_shipping_amount { get; set; }
 		public int? base_shipping_canceled { get; set; }
 		public int? base_shipping_discount_amount { get; set; }
 		public int? base_shipping_discount_tax_compensation_amnt { get; set; }
@@ -728,9 +728,9 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? base_total_invoiced_cost { get; set; }
 		public int? base_total_offline_refunded { get; set; }
 		public int? base_total_online_refunded { get; set; }
-		public int? base_total_paid { get; set; }
+		public decimal? base_total_paid { get; set; }
 		public int? base_total_qty_ordered { get; set; }
-		public int? base_total_refunded { get; set; }
+		public decimal? base_total_refunded { get; set; }
 		public int? base_to_global_rate { get; set; }
 		public int? base_to_order_rate { get; set; }
 		public int? billing_address_id { get; set; }
@@ -784,7 +784,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public string relation_parent_id { get; set; }
 		public string relation_parent_real_id { get; set; }
 		public string remote_ip { get; set; }
-		public int? shipping_amount { get; set; }
+		public decimal? shipping_amount { get; set; }
 		public int? shipping_canceled { get; set; }
 		public string shipping_description { get; set; }
 		public int? shipping_discount_amount { get; set; }
@@ -816,9 +816,9 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? total_item_count { get; set; }
 		public int? total_offline_refunded { get; set; }
 		public int? total_online_refunded { get; set; }
-		public int? total_paid { get; set; }
+		public decimal? total_paid { get; set; }
 		public int? total_qty_ordered { get; set; }
-		public int? total_refunded { get; set; }
+		public decimal? total_refunded { get; set; }
 		public string updated_at { get; set; }
 		public int? weight { get; set; }
 		public string x_forwarded_for { get; set; }
