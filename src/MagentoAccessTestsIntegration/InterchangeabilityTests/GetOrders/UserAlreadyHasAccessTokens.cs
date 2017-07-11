@@ -25,7 +25,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			var magentoServiceSoap = this.CreateMagentoService( credentialsSoap.SoapApiUser, credentialsSoap.SoapApiKey, "null", "null", "null", "null", credentialsSoap.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentialsSoap.MagentoVersion, credentialsSoap.GetProductsThreadsLimit, credentialsSoap.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
 
 			//------------Act
-			var modifiedFrom = new DateTime( 2016, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
+			var modifiedFrom = new DateTime( 2017, 6, 2, 23, 23, 59 ).AddSeconds( 1 );
 			var modifiedTo = new DateTime( 2017, 7, 2, 23, 30, 39 ).AddSeconds( -1 );
 
 			Task.Delay( 10000 ).Wait();
@@ -40,18 +40,25 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			swS.Stop();
 			Task.Delay( 10000 ).Wait();
 			//------------Assert
-			var thatWasReturnedRest = getOrdersTaskRest.Result.OrderBy( x => x.OrderIncrementalId ).ToList();
-			var thatWasReturnedSoap = getOrdersTask2.Result.OrderBy( x => x.OrderIncrementalId ).ToList();
+			Console.WriteLine( "rest time: " + swR.Elapsed + " soap time: " + swS.Elapsed );
+
 
 			//these fields works in rest, but doesn't in soap. We need to skip them for assert.
-			Action< Order > cpmmonPreparer = x =>
+			Action< Order > soapPreparer = x =>
 			{
-				x.OrderId = string.Empty;
-				x.ShippingAddressId = string.Empty;
-				x.ShippingFirstname = string.Empty;
-				x.ShippingLastname = string.Empty;
-				x.ShippingMethod = string.Empty;
-				x.ShippingName = string.Empty;
+				//x.OrderId = string.Empty;
+				//x.ShippingAddressId = string.Empty;
+				//x.ShippingFirstname = string.Empty;
+				//x.ShippingLastname = string.Empty;
+				//x.ShippingMethod = string.Empty;
+				//x.ShippingName = string.Empty;
+				var ba = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Billing );
+				if( ba?.Item2?.Street != null )
+					ba.Item2.Street = ba.Item2.Street.Replace( ",", "" ).Replace( " ", "" ).Replace( "\n", "" );
+
+				var sa = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Shipping );
+				if( sa?.Item2?.Street != null )
+					sa.Item2.Street = sa.Item2.Street.Replace( ",", "" ).Replace( " ", "" ).Replace( "\n", "" );
 			};
 
 			//soap uses null for such values, but rest empty string
@@ -60,6 +67,9 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 				var ba = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Billing );
 				if( ba?.Item2?.Region == string.Empty )
 					ba.Item2.Region = null;
+
+				if( ba?.Item2?.Street != null )
+					ba.Item2.Street = ba.Item2.Street.Replace( ",", "" ).Replace( " ", "" ).Replace( "\n", "" );
 
 				if( ba?.Item2?.Company == string.Empty )
 					ba.Item2.Company = null;
@@ -70,13 +80,22 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 
 				if( sa?.Item2?.Company == string.Empty )
 					sa.Item2.Company = null;
+
+				if( sa?.Item2?.Street != null )
+					sa.Item2.Street = sa.Item2.Street.Replace( ",", "" ).Replace( " ", "" ).Replace( "\n", "" );
+
+				x.OrderId = string.Empty;
+				x.ShippingAddressId = null;
+				x.ShippingFirstname = null;
+				x.ShippingLastname = null;
+				x.ShippingMethod = null;
+				x.ShippingName = null;
 			};
 
-			thatWasReturnedSoap.ForEach( cpmmonPreparer );
-			thatWasReturnedRest.ForEach( cpmmonPreparer );
+			var thatWasReturnedRest = getOrdersTaskRest.Result.OrderBy(x => x.OrderIncrementalId).ToList();
+			var thatWasReturnedSoap = getOrdersTask2.Result.OrderBy(x => x.OrderIncrementalId).ToList();
+			thatWasReturnedSoap.ForEach( soapPreparer );
 			thatWasReturnedRest.ForEach( restPreparer );
-
-			Console.WriteLine( "rest time: " + swR.Elapsed + " soap time: " + swS.Elapsed );
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
 		}
