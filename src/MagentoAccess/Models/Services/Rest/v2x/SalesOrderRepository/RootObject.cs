@@ -100,33 +100,33 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? amount_refunded { get; set; }
 		public string applied_rule_ids { get; set; }
 		public int? base_amount_refunded { get; set; }
-		public int? base_cost { get; set; }
-		public int? base_discount_amount { get; set; }
-		public int? base_discount_invoiced { get; set; }
-		public int? base_discount_refunded { get; set; }
-		public int? base_discount_tax_compensation_amount { get; set; }
-		public int? base_discount_tax_compensation_invoiced { get; set; }
-		public int? base_discount_tax_compensation_refunded { get; set; }
+		public decimal? base_cost { get; set; }
+		public decimal? base_discount_amount { get; set; }
+		public decimal? base_discount_invoiced { get; set; }
+		public decimal? base_discount_refunded { get; set; }
+		public decimal? base_discount_tax_compensation_amount { get; set; }
+		public decimal? base_discount_tax_compensation_invoiced { get; set; }
+		public decimal? base_discount_tax_compensation_refunded { get; set; }
 		public decimal? base_original_price { get; set; }
 		public decimal? base_price { get; set; }
 		public decimal? base_price_incl_tax { get; set; }
 		public int? base_row_invoiced { get; set; }
 		public decimal? base_row_total { get; set; }
 		public int? base_row_total_incl_tax { get; set; }
-		public int? base_tax_amount { get; set; }
-		public int? base_tax_before_discount { get; set; }
-		public int? base_tax_invoiced { get; set; }
-		public int? base_tax_refunded { get; set; }
+		public decimal? base_tax_amount { get; set; }
+		public decimal? base_tax_before_discount { get; set; }
+		public decimal? base_tax_invoiced { get; set; }
+		public decimal? base_tax_refunded { get; set; }
 		public int? base_weee_tax_applied_amount { get; set; }
 		public int? base_weee_tax_applied_row_amnt { get; set; }
 		public int? base_weee_tax_disposition { get; set; }
 		public int? base_weee_tax_row_disposition { get; set; }
 		public string created_at { get; set; }
 		public string description { get; set; }
-		public int? discount_amount { get; set; }
-		public int? discount_invoiced { get; set; }
-		public int? discount_percent { get; set; }
-		public int? discount_refunded { get; set; }
+		public decimal? discount_amount { get; set; }
+		public decimal? discount_invoiced { get; set; }
+		public decimal? discount_percent { get; set; }
+		public decimal? discount_refunded { get; set; }
 		public int? event_id { get; set; }
 		public string ext_order_item_id { get; set; }
 		public int? free_shipping { get; set; }
@@ -180,7 +180,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public decimal? tax_canceled { get; set; }
 		public decimal? tax_invoiced { get; set; }
 		public decimal? tax_percent { get; set; }
-		public int? tax_refunded { get; set; }
+		public decimal? tax_refunded { get; set; }
 		public string updated_at { get; set; }
 		public string weee_tax_applied { get; set; }
 		public int? weee_tax_applied_amount { get; set; }
@@ -696,10 +696,10 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public int? base_adjustment_negative { get; set; }
 		public int? base_adjustment_positive { get; set; }
 		public string base_currency_code { get; set; }
-		public int? base_discount_amount { get; set; }
-		public int? base_discount_canceled { get; set; }
-		public int? base_discount_invoiced { get; set; }
-		public int? base_discount_refunded { get; set; }
+		public decimal? base_discount_amount { get; set; }
+		public decimal? base_discount_canceled { get; set; }
+		public decimal? base_discount_invoiced { get; set; }
+		public decimal? base_discount_refunded { get; set; }
 		public decimal? base_grand_total { get; set; }
 		public int? base_discount_tax_compensation_amount { get; set; }
 		public int? base_discount_tax_compensation_invoiced { get; set; }
@@ -718,11 +718,11 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public decimal? base_subtotal_incl_tax { get; set; }
 		public int? base_subtotal_invoiced { get; set; }
 		public int? base_subtotal_refunded { get; set; }
-		public int? base_tax_amount { get; set; }
-		public int? base_tax_canceled { get; set; }
-		public int? base_tax_invoiced { get; set; }
-		public int? base_tax_refunded { get; set; }
-		public int? base_total_canceled { get; set; }
+		public decimal? base_tax_amount { get; set; }
+		public decimal? base_tax_canceled { get; set; }
+		public decimal? base_tax_invoiced { get; set; }
+		public decimal? base_tax_refunded { get; set; }
+		public decimal? base_total_canceled { get; set; }
 		public decimal? base_total_due { get; set; }
 		public int? base_total_invoiced { get; set; }
 		public int? base_total_invoiced_cost { get; set; }
@@ -752,11 +752,11 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public string customer_prefix { get; set; }
 		public string customer_suffix { get; set; }
 		public string customer_taxvat { get; set; }
-		public int? discount_amount { get; set; }
-		public int? discount_canceled { get; set; }
+		public decimal? discount_amount { get; set; }
+		public decimal? discount_canceled { get; set; }
 		public string discount_description { get; set; }
-		public int? discount_invoiced { get; set; }
-		public int? discount_refunded { get; set; }
+		public decimal? discount_invoiced { get; set; }
+		public decimal? discount_refunded { get; set; }
 		public int? edit_increment { get; set; }
 		public int? email_sent { get; set; }
 		public int? entity_id { get; set; }
@@ -806,13 +806,13 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public decimal? subtotal_incl_tax { get; set; }
 		public int? subtotal_invoiced { get; set; }
 		public int? subtotal_refunded { get; set; }
-		public int? tax_amount { get; set; }
-		public int? tax_canceled { get; set; }
-		public int? tax_invoiced { get; set; }
-		public int? tax_refunded { get; set; }
-		public int? total_canceled { get; set; }
+		public decimal? tax_amount { get; set; }
+		public decimal? tax_canceled { get; set; }
+		public decimal? tax_invoiced { get; set; }
+		public decimal? tax_refunded { get; set; }
+		public decimal? total_canceled { get; set; }
 		public decimal? total_due { get; set; }
-		public int? total_invoiced { get; set; }
+		public decimal? total_invoiced { get; set; }
 		public int? total_item_count { get; set; }
 		public int? total_offline_refunded { get; set; }
 		public int? total_online_refunded { get; set; }
