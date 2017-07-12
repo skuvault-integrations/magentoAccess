@@ -28,17 +28,17 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			var modifiedFrom = new DateTime( 2017, 6, 2, 23, 23, 59 ).AddSeconds( 1 );
 			var modifiedTo = new DateTime( 2017, 7, 2, 23, 30, 39 ).AddSeconds( -1 );
 
-			Task.Delay( 10000 ).Wait();
 			var swR = Stopwatch.StartNew();
 			var getOrdersTaskRest = magentoServiceRest.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS" ) );
 			getOrdersTaskRest.Wait();
 			swR.Stop();
+
 			Task.Delay( 10000 ).Wait();
 			var swS = Stopwatch.StartNew();
 			var getOrdersTask2 = magentoServiceSoap.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS-2" ) );
 			getOrdersTask2.Wait();
 			swS.Stop();
-			Task.Delay( 10000 ).Wait();
+
 			//------------Assert
 			Console.WriteLine( "rest time: " + swR.Elapsed + " soap time: " + swS.Elapsed );
 
@@ -46,12 +46,6 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			//these fields works in rest, but doesn't in soap. We need to skip them for assert.
 			Action< Order > soapPreparer = x =>
 			{
-				//x.OrderId = string.Empty;
-				//x.ShippingAddressId = string.Empty;
-				//x.ShippingFirstname = string.Empty;
-				//x.ShippingLastname = string.Empty;
-				//x.ShippingMethod = string.Empty;
-				//x.ShippingName = string.Empty;
 				var ba = x.Addresses.FirstOrDefault( y => y.Item1 == AddressTypeEnum.Billing );
 				if( ba?.Item2?.Street != null )
 					ba.Item2.Street = ba.Item2.Street.Replace( ",", "" ).Replace( " ", "" ).Replace( "\n", "" );
@@ -97,7 +91,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			thatWasReturnedSoap.ForEach( soapPreparer );
 			thatWasReturnedRest.ForEach( restPreparer );
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
-			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
+			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );// I know this thing shouldn't be tested here. I hope, it will be fixed soon and will be moved to appropriate place
 		}
 	}
 }
