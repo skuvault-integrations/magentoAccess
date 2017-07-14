@@ -35,7 +35,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
 				var products = await this.CatalogStockItemRepository.GetStockItemsAsync( skusOrIds, mark ).ConfigureAwait( false );
-				var inventoryStockItems = Enumerable.ToList( products.Select( Mapper.Map< InventoryStockItem > ) );
+				var inventoryStockItems = products.Where( p => p.qty != null ).Select( Mapper.Map< InventoryStockItem > ).ToList();
 				return new InventoryStockItemListResponse( inventoryStockItems );
 			} );
 		}

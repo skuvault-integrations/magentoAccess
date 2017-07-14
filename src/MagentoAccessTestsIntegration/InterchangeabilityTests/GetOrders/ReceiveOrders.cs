@@ -14,7 +14,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
-	internal class UserAlreadyHasAccessTokens : BaseTest
+	internal class InterchangeabilityTests_ReceiveOrders : BaseTest
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( InterchangeabilityTestCases ), "TestStoresCredentials" ) ]

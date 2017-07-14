@@ -92,8 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InterchangeabilityTests\BaseTestSecret.cs" />
+    <Compile Include="InterchangeabilityTests\GetOrders\ReceiveOrders.cs" />
+    <Compile Include="InterchangeabilityTests\GetProducts\RecieveProducts.cs" />
+    <Compile Include="InterchangeabilityTests\UpdateInventory\UpdateInventory.cs" />
     <Compile Include="MagentoServiceTest.cs" />
-    <Compile Include="InterchangeabilityTests\GetOrders\UserAlreadyHasAccessTokens.cs" />
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\CorrectCredentials.cs" />
     <Compile Include="MagentoServiceTests\GetOrders\UserAlreadyHasAccessTokens.cs" />
     <Content Include="InterchangeabilityTests\Readme.txt" />

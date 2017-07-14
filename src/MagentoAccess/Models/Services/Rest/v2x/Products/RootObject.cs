@@ -281,7 +281,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.Products
 		public string value { get; set; }
 	}
 
-	[JsonConverter(typeof(LaxPropertyNameMatchingConverter))]
+	[ JsonConverter( typeof( LaxPropertyNameMatchingConverter ) ) ]
 	public class Item
 	{
 		public int id { get; set; }
@@ -303,6 +303,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.Products
 		public List<CustomAttribute> customAttributes { get; set; }
 	}
 
+	[ JsonConverter( typeof( LaxPropertyNameMatchingConverter ) ) ]
 	public class RootObject
 	{
 		public List<Item> items { get; set; }
