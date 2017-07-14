@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
@@ -67,7 +68,7 @@ namespace MagentoAccessTests.Misc
 				{ s7.Store, s7 },
 				{ s8.Store, s8 },
 			};
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, factories );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( new MagentoAuthenticatedUserCredentials( "", "", "http://base.url", "", "", "", "", 0, 0, false ), factories );
 
 			//------------ Act
 			var magentoServiceLowLevelSoap = magentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( magentoVer, true, false );
