@@ -89,7 +89,8 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		[ TestFixtureSetUp ]
 		public void TestFixtureSetup()
 		{
-			this._testData = new TestData( @"..\..\Files\magento_ConsumerKey.csv", @"..\..\Files\magento_AuthorizeEndPoints.csv", @"..\..\Files\magento_AccessToken.csv", @"..\..\Files\magento_VerifierCode.csv" );
+			var baseDir = TestContext.CurrentContext.TestDirectory;
+			this._testData = new TestData( baseDir + @"\..\..\Files\Credentials_magento_ConsumerKey.csv", baseDir + @"\..\..\Files\Credentials_magento_AuthorizeEndPoints.csv", baseDir + @"\..\..\Files\Credentials_magento_AccessToken.csv", baseDir + @"\..\..\Files\Credentials_magento_VerifierCode.csv" );
 			this._consumer = this._testData.GetMagentoConsumerCredentials();
 			this._authorityUrls = this._testData.GetMagentoUrls();
 			this._accessToken = this._testData.GetMagentoAccessToken();

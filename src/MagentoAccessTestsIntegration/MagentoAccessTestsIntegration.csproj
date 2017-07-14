@@ -119,6 +119,7 @@
     <Compile Include="Services\Rest\v2x\Repository\RepositoryTestCases.cs" />
     <Compile Include="TestEnvironment\BaseTest.cs" />
     <Compile Include="TestEnvironment\BaseTestSecret.cs" />
+    <Compile Include="TestEnvironment\Environment.cs" />
     <Compile Include="TestEnvironment\MagentoAccessToken.cs" />
     <Compile Include="TestEnvironment\MagentoConsumerCredentials.cs" />
     <Compile Include="TestEnvironment\MagentoUrls.cs" />
@@ -126,10 +127,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Files\magento_AccessToken.csv" />
-    <None Include="Files\magento_AuthorizeEndPoints.csv" />
-    <None Include="Files\magento_ConsumerKey.csv" />
-    <None Include="Files\magento_VerifierCode.csv" />
+    <None Include="Files\Credentials_magento_TestEnvironment.csv" />
+    <None Include="Files\Credentials_magento_AccessToken.csv" />
+    <None Include="Files\Credentials_magento_AuthorizeEndPoints.csv" />
+    <None Include="Files\Credentials_magento_ConsumerKey.csv" />
+    <None Include="Files\Credentials_magento_VerifierCode.csv" />
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -141,6 +143,7 @@
       <Name>MagentoAccess</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

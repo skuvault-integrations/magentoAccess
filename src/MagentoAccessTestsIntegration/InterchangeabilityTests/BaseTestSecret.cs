@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using NUnit.Framework;
 
@@ -14,10 +15,11 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests
 		{
 			get
 			{
-				yield return new TestCaseData(
-					new BaseTest.MagentoServiceSoapCredentials() { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = "R2.1.0.0", SoapApiKey = "password", SoapApiUser = "MaximKitsenko", StoreUrl = "http://yourmagentourl/magento-2-1-0-0-ce" },
-					new BaseTest.MagentoServiceSoapCredentials() { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = "2.1.0.0", SoapApiKey = "password", SoapApiUser = "MaximKitsenko", StoreUrl = "http://yourmagentourl/magento-2-1-0-0-ce" }
-				).SetName( "magento-2-1-5-0-ce" );
+				return Environment.ActiveEnvironmentRows.Where( line => line.V2 == "1" && line.Rest == "1" ).Select( line =>
+					new TestCaseData(
+						new BaseTest.MagentoServiceSoapCredentials { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = "R2.1.0.0", SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl },
+						new BaseTest.MagentoServiceSoapCredentials { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = line.Version, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl }
+					).SetName( line.Version ) ).ToList();
 			}
 		}
 	}
