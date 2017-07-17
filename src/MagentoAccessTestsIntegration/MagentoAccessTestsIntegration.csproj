@@ -97,6 +97,7 @@
     <Compile Include="InterchangeabilityTests\GetProducts\ReceiveProductsWithDetalis.cs" />
     <Compile Include="InterchangeabilityTests\GetProducts\ReceiveProductsWithoutDetalis.cs" />
     <Compile Include="InterchangeabilityTests\UpdateInventory\UpdateInventory.cs" />
+    <Compile Include="InterchangeabilityTests\UpdateInventory\UpdateInventoryBySku.cs" />
     <Compile Include="MagentoServiceTest.cs" />
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\CorrectCredentials.cs" />
     <Compile Include="MagentoServiceTests\GetOrders\UserAlreadyHasAccessTokens.cs" />

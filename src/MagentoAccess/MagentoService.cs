@@ -662,7 +662,7 @@ namespace MagentoAccess
 					else
 					{
 						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync( scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
-						var resultProducts = productsWithSkuUpdatedQtyId.Select( x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() } );
+						var resultProducts = from i in inventory join s in productsWithSkuUpdatedQtyId on i.Sku.ToUpper() equals s.Sku.ToUpper() select new Inventory { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty, Sku = s.Sku };
 						await this.UpdateInventoryAsync( resultProducts ).ConfigureAwait( false );
 					}
 				}

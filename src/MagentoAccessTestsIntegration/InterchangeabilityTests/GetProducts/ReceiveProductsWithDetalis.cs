@@ -28,7 +28,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			getProductsTaskRest.Wait();
 			swR.Stop();
 
-			Task.Delay( 2000 ).Wait();
+			Task.Delay( 500 ).Wait();
 			var swS = Stopwatch.StartNew();
 			var getProductsTaskSoap = magentoServiceSoap.GetProductsAsync( new[] { 0, 1 }, includeDetails : true );
 			getProductsTaskSoap.Wait();
