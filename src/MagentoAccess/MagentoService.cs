@@ -782,7 +782,7 @@ namespace MagentoAccess
 				else
 				{
 					catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, mark ).ConfigureAwait( false );
-					var soapProducts = ( from p in catalogProductListResponse.Products join s in skus on p.Sku equals s select p ).ToList();
+					var soapProducts = ( from p in catalogProductListResponse.Products join s in skus on p.Sku.ToUpper() equals s.ToUpper() select p ).ToList();
 					catalogProductListResponse.Products = soapProducts;
 				}
 			}

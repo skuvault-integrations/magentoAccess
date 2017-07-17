@@ -50,7 +50,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.SalesOrder )
+				.Path( MagentoServicePath.GetOrdersServicePath() )
 				.Parameters( parameters )
 				.AuthToken( this.Token )
 				.Url( this.Url );
@@ -91,7 +91,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.SalesOrder )
+				.Path( MagentoServicePath.GetOrdersServicePath() )
 				.Parameters( parameters )
 				.AuthToken( this.Token )
 				.Url( this.Url );

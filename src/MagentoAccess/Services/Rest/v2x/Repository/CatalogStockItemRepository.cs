@@ -27,9 +27,9 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Put )
 				.Path( MagentoServicePath.Create(
-					MagentoServicePath.Products.RepositoryPath +
+					MagentoServicePath.ProductsPath +
 					$"/{productSku}/" +
-					MagentoServicePath.CatalogStockItems.RepositoryPath +
+					MagentoServicePath.StockItemsPath +
 					$"/{itemId}" ) )
 				.Body( JsonConvert.SerializeObject( stockItem, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore } ) )
 				.AuthToken( this.Token )
@@ -56,7 +56,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.Create(
-					MagentoServicePath.CatalogStockItems.RepositoryPath +
+					MagentoServicePath.StockItemsPath +
 					$"/{productSku}" ) )
 				.AuthToken( this.Token )
 				.Url( this.Url );

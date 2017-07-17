@@ -46,7 +46,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v1x
 			//------------ Assert
 			var qwe = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.Products )
+				.Path( MagentoServicePath.GetProductsServicePath() )
 				.Parameters( sc )
 				.Url( MagentoUrl.Create( "http://xxx" ) )
 				;

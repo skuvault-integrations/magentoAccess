@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
@@ -11,6 +12,7 @@ using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Netco.Extensions;
 using Newtonsoft.Json;
 using RootObject = MagentoAccess.Models.Services.Rest.v2x.Products.RootObject;
+using WebRequest = MagentoAccess.Services.Rest.v2x.WebRequester.WebRequest;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
@@ -83,7 +85,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			};
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.Products )
+				.Path( MagentoServicePath.GetProductsServicePath() )
 				.Parameters( parameters )
 				.AuthToken( this.Token )
 				.Url( this.Url );
@@ -152,15 +154,27 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.Products.AddCatalog( Uri.EscapeDataString( sku ) ) )
+				.Path( MagentoServicePath.GetProductsServicePath().AddCatalog( Uri.EscapeDataString( sku ) ) )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				try
 				{
-					return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+					{
+						return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					}
+				}
+				catch( MagentoException exception )
+				{
+					var webException = ( exception as MagentoWebException )?.InnerException as WebException;
+					var response = webException?.Response as HttpWebResponse;
+					if( webException?.Status == WebExceptionStatus.ProtocolError && response?.StatusCode == HttpStatusCode.NotFound )
+						return null;
+					
+					throw;
 				}
 			} );
 		}

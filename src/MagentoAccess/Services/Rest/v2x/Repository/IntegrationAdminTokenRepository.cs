@@ -25,7 +25,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					WebRequest.Create()
 						.Method( MagentoWebRequestMethod.Post )
 						.Url( this.Url )
-						.Path( MagentoServicePath.IntegrationAdmin )
+						.Path( MagentoServicePath.GetIntegrationServicePath() )
 						.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = url.Password } ) ) )
 					.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
 				{

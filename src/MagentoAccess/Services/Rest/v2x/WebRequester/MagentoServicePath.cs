@@ -2,6 +2,11 @@
 {
 	public class MagentoServicePath
 	{
+		public const string ProductsPath = "products";
+		public const string StockItemsPath = "stockItems";
+		public const string OrdersPath = "orders";
+		public const string IntegrationPath = "integration/admin/token";
+		
 		public string RepositoryPath { get; private set; }
 
 		private MagentoServicePath( string repositoryPath )
@@ -24,10 +29,25 @@
 			this.RepositoryPath = this.RepositoryPath + "/" + src.Trim( '/' ).Trim( '\\' );
 			return this;
 		}
-
-		public static MagentoServicePath Products { get; } = new MagentoServicePath( "products" );
-		public static MagentoServicePath CatalogStockItems { get; } = new MagentoServicePath("stockItems");
-		public static MagentoServicePath SalesOrder { get; } = new MagentoServicePath("orders");
-		public static MagentoServicePath IntegrationAdmin { get; } = new MagentoServicePath( "integration/admin/token" );
+		
+		public static MagentoServicePath GetProductsServicePath()
+		{
+			return Create( ProductsPath );
+		}
+		
+		public static MagentoServicePath GetStockItemsServicePath()
+		{
+			return Create( StockItemsPath );
+		}
+		
+		public static MagentoServicePath GetOrdersServicePath()
+		{
+			return Create( OrdersPath );
+		}
+		
+		public static MagentoServicePath GetIntegrationServicePath()
+		{
+			return Create( IntegrationPath );
+		}
 	}
 }
