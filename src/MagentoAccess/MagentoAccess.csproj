@@ -263,6 +263,7 @@
     <Compile Include="Services\Rest\v2x\Repository\CatalogStockItemRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ProductRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\SalesOrderRepositoryV1.cs" />
+    <Compile Include="Services\Rest\v2x\WebRequester\IRest2xMagentoServiceLowLevel.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoPass.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\MagentoLogin.cs" />
     <Compile Include="Services\Rest\v2x\WebRequester\AuthorizationToken.cs" />

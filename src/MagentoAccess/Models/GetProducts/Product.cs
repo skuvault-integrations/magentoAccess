@@ -75,8 +75,8 @@ namespace MagentoAccess.Models.GetProducts
 			return string.Equals( this.Upc, other.Upc ) && 
 			       this.SpecialPrice == other.SpecialPrice && 
 			       this.Cost == other.Cost && 
-			       string.Equals( this.Manufacturer, other.Manufacturer ) && 
-			       Equals( this.Images, other.Images ) && 
+			       string.Equals( this.Manufacturer, other.Manufacturer ) &&
+			       Enumerable.SequenceEqual( this.Images ?? new List< MagentoUrl >(), other.Images ?? new List< MagentoUrl >() ) && 
 			       string.Equals( this.ShortDescription, other.ShortDescription ) && 
 			       string.Equals( this.Weight, other.Weight ) && 
 			       string.Equals( this.EntityId, other.EntityId ) && 

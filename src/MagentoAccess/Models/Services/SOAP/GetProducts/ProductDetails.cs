@@ -31,7 +31,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			this.Manufacturer = manufacturer ?? rp.Manufacturer;
 			this.Cost = cost ?? rp.Cost;
 			this.Upc = upc ?? rp.Upc;
-			this.ProductType = upc ?? rp.ProductType;
+			this.ProductType = rp.ProductType;
 		}
 
 		public ProductDetails( Product product )

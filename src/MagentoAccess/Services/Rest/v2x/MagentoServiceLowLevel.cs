@@ -27,7 +27,7 @@ using MagentoUrl = MagentoAccess.Services.Rest.v2x.WebRequester.MagentoUrl;
 
 namespace MagentoAccess.Services.Rest.v2x
 {
-	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
+	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap, IRest2XMagentoServiceLowLevel
 	{
 		public string ApiUser { get; }
 		public string ApiKey { get; }

@@ -67,6 +67,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			    && catalogDataProductInterface.customAttributes.Any() )
 			{
 				this.Description = GetSimpleStringCustomAttribute( catalogDataProductInterface, "description" );
+				this.ShortDescription = GetSimpleStringCustomAttribute( catalogDataProductInterface, "short_description" );
 				this.SpecialPrice = GetSimpleStringCustomAttribute( catalogDataProductInterface, "special_price" );
 				this.CategoryIds = GetArrayOfStringCustomAttribute( catalogDataProductInterface, "category_ids" );
 
@@ -101,6 +102,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			    && catalogDataProductInterface.customAttributes.Any() )
 			{
 				this.Description = GetSimpleStringCustomAttribute( catalogDataProductInterface, "description" );
+				this.ShortDescription = GetSimpleStringCustomAttribute( catalogDataProductInterface, "short_description" );
 				this.SpecialPrice = GetSimpleStringCustomAttribute( catalogDataProductInterface, "special_price" );
 				this.CategoryIds = GetArrayOfStringCustomAttribute( catalogDataProductInterface, "category_ids" );
 
