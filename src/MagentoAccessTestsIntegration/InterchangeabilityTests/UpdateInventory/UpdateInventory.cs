@@ -14,7 +14,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.UpdateInventory
 	internal class InterchangeabilityTests_UpdateInventory : BaseTest
 	{
 		[ Test ]
-		[ TestCaseSource( typeof( InterchangeabilityTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( InterchangeabilityTestCases ), nameof(InterchangeabilityTestCases.TestStoresCredentials) ) ]
 		public void UpdateInventory( MagentoServiceSoapCredentials credentialsRest, MagentoServiceSoapCredentials credentialsSoap )
 		{
 			// ------------ Arrange

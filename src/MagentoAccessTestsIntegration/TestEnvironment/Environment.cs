@@ -38,16 +38,19 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			[ CsvColumn( Name = "Rest", FieldIndex = 4 ) ]
 			public string Rest { get; set; }
 
-			[ CsvColumn( Name = "Version", FieldIndex = 5 ) ]
-			public string Version { get; set; }
+			[ CsvColumn( Name = "MagentoVersion", FieldIndex = 5 ) ]
+			public string MagentoVersion { get; set; }
+			
+			[ CsvColumn( Name = "ServiceVersion", FieldIndex = 6 ) ]
+			public string ServiceVersion { get; set; }
 
-			[ CsvColumn( Name = "MagentoUrl", FieldIndex = 6 ) ]
+			[ CsvColumn( Name = "MagentoUrl", FieldIndex = 7 ) ]
 			public string MagentoUrl { get; set; }
 
-			[ CsvColumn( Name = "MagentoLogin", FieldIndex = 7 ) ]
+			[ CsvColumn( Name = "MagentoLogin", FieldIndex = 8 ) ]
 			public string MagentoLogin { get; set; }
 
-			[ CsvColumn( Name = "MagentoPass", FieldIndex = 8 ) ]
+			[ CsvColumn( Name = "MagentoPass", FieldIndex = 9 ) ]
 			public string MagentoPass { get; set; }
 		}
 	}

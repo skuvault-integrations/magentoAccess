@@ -43,6 +43,15 @@ namespace MagentoAccess.Models.Services.Rest.v2x
 					}
 					catch
 					{
+						try
+						{
+							if( jp.Value.Type == JTokenType.Array && prop.PropertyType == Type.GetType( "System.String" ) )
+								prop.SetValue( instance, jp.Value.ToString() );
+						}
+						catch
+						{
+							//throw;
+						}
 						//throw;
 					}
 			}

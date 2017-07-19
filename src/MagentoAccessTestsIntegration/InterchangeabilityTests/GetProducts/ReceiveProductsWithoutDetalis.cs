@@ -15,7 +15,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 	internal class InterchangeabilityTests_ReceiveProductsWithoutDetalis : BaseTest
 	{
 		[ Test ]
-		[ TestCaseSource( typeof( InterchangeabilityTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( InterchangeabilityTestCases ), nameof(InterchangeabilityTestCases.TestStoresCredentials) ) ]
 		public void ReceiveProductsWithoutDetalis( MagentoServiceSoapCredentials credentialsRest, MagentoServiceSoapCredentials credentialsSoap )
 		{
 			// ------------ Arrange
@@ -39,12 +39,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 
 			var thatWasReturnedRest = getProductsTaskRest.Result.OrderBy( x => x.ProductId ).ToList();
 			var thatWasReturnedSoap = getProductsTaskSoap.Result.OrderBy( x => x.ProductId ).ToList();
-			thatWasReturnedRest.ForEach( item =>
-			{
-				item.Price = 0;
-				item.Weight = null;
-			} );
-
+			
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
 		}

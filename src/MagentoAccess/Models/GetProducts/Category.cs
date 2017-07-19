@@ -26,6 +26,18 @@ namespace MagentoAccess.Models.GetProducts
 			Id = int.TryParse( id, out temp ) ? temp : 0;
 		}
 
+		internal Category( Category value, bool ignoreChildrens = false )
+		{
+			this.Id = value.Id;
+			this.ParentId = value.ParentId;
+			this.Level = value.Level;
+			this.Name = value.Name;
+			this.IsActive = value.IsActive;
+
+			if( !ignoreChildrens && value.Childrens != null )
+				this.Childrens = value.Childrens.Select( x => new Category( x ) ).ToList();
+		}
+
 		public int Id { get; set; }
 		public int ParentId { get; set; }
 		public int Level { get; set; }

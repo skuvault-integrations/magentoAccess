@@ -545,16 +545,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync( markLocal ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
-				IEnumerable< Product > resultProducts;
-				if( magentoServiceLowLevel is IRest2XMagentoServiceLowLevel )
-				{
-					resultProducts = await ( magentoServiceLowLevel as IRest2XMagentoServiceLowLevel ).GetProductsByRest( includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
-				}
-				else
-				{
-					resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
-				}
-
+				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : productBriefInfo ), markLocal );
 

@@ -2,6 +2,7 @@
 {
 	public class MagentoServicePath
 	{
+		public const string CategoriesPath = "categories";
 		public const string ProductsPath = "products";
 		public const string StockItemsPath = "stockItems";
 		public const string OrdersPath = "orders";
@@ -28,6 +29,11 @@
 		{
 			this.RepositoryPath = this.RepositoryPath + "/" + src.Trim( '/' ).Trim( '\\' );
 			return this;
+		}
+		
+		public static MagentoServicePath GetCategoriesPath()
+		{
+			return Create( CategoriesPath );
 		}
 		
 		public static MagentoServicePath GetProductsServicePath()

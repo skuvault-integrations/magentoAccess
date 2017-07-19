@@ -86,7 +86,7 @@ namespace MagentoAccess.Models.GetProducts
 			       string.Equals( this.Description, other.Description ) && 
 			       string.Equals( this.Qty, other.Qty ) && 
 			       string.Equals( this.ProductId, other.ProductId ) && 
-			       Equals( this.Categories, other.Categories ) && 
+			       Enumerable.SequenceEqual( this.Categories ?? new Category[] { }, other.Categories ?? new Category[] { } ) && 
 			       string.Equals( this.ProductType, other.ProductType ) && 
 			       string.Equals( this.UpdatedAt, other.UpdatedAt );
 		}

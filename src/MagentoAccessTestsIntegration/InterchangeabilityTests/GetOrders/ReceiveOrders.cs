@@ -17,7 +17,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 	internal class InterchangeabilityTests_ReceiveOrders : BaseTest
 	{
 		[ Test ]
-		[ TestCaseSource( typeof( InterchangeabilityTestCases ), "TestStoresCredentials" ) ]
+		[ TestCaseSource( typeof( InterchangeabilityTestCases ), nameof(InterchangeabilityTestCases.TestStoresCredentials) ) ]
 		public void ReceiveOrders( MagentoServiceSoapCredentials credentialsRest, MagentoServiceSoapCredentials credentialsSoap )
 		{
 			// ------------ Arrange
