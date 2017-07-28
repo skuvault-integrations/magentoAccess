@@ -21,7 +21,7 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 				this.Childrens = value.Childrens.Select( x => new Category( x ) ).ToList();
 		}
 		
-		internal Category( MagentoAccess.Models.Services.Rest.v2x.Products.CategoryNode value )
+		internal Category( Rest.v2x.Products.CategoryNode value )
 		{
 			this.Id = value.id;
 			this.ParentId = value.parentId;

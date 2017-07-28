@@ -114,10 +114,10 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		private static bool IsImageUrlAttribute( CustomAttribute x )
 		{
-			return string.Compare( x.attributeCode, "swatch_image", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.attributeCode, "thumbnail", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.attributeCode, "small_image", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.attributeCode, "image", StringComparison.CurrentCultureIgnoreCase ) == 0;
+			return string.Compare( x.attributeCode, "swatch_image", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.attributeCode, "thumbnail", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.attributeCode, "small_image", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.attributeCode, "image", StringComparison.OrdinalIgnoreCase ) == 0;
 		}
 	}
 }

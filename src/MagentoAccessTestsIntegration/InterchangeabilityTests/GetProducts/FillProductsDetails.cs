@@ -14,11 +14,11 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
-	internal class InterchangeabilityTests_FillProductsDetails : BaseTest
+	internal class FillProductsDetails : BaseTest
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( InterchangeabilityTestCases ), nameof(InterchangeabilityTestCases.TestStoresCredentials) ) ]
-		public void FillProductsDetails( MagentoServiceSoapCredentials credentialsRest, MagentoServiceSoapCredentials credentialsSoap )
+		public void ProductsDetailsFilled( MagentoServiceSoapCredentials credentialsRest, MagentoServiceSoapCredentials credentialsSoap )
 		{
 			// ------------ Arrange
 			var magentoServiceRest = this.CreateMagentoService( credentialsRest.SoapApiUser, credentialsRest.SoapApiKey, "null", "null", "null", "null", credentialsRest.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentialsRest.MagentoVersion, credentialsRest.GetProductsThreadsLimit, credentialsRest.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
@@ -27,7 +27,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			var getProductsTaskSoap = magentoServiceSoap.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
 			getProductsTaskSoap.Wait();
 			var productsList = getProductsTaskSoap.Result;
-			
+
 			// ------------ Act
 			var swR = Stopwatch.StartNew();
 			var productsListRest = productsList.Select( p => p.DeepClone() );
@@ -47,7 +47,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 
 			var thatWasReturnedRest = fillProductsDetailsRest.Result.OrderBy( x => x.ProductId ).ToList();
 			var thatWasReturnedSoap = fillProductsDetailsSoap.Result.OrderBy( x => x.ProductId ).ToList();
-			
+
 			thatWasReturnedRest.ForEach( item =>
 			{
 				item.Categories = item.Categories?.OrderBy( c => c.Id ).Select( c => new Category( c, true ) ).ToArray();
@@ -56,7 +56,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			{
 				item.Categories = item.Categories?.OrderBy( c => c.Id ).Select( c => new Category( c, true ) ).ToArray();
 			} );
-			
+
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
 		}

@@ -808,10 +808,10 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		private static bool IsImageUrlAttribute( ProductAttribute x )
 		{
-			return string.Compare( x.Key, "swatch_image", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.Key, "thumbnail", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.Key, "small_image", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.Key, "image", StringComparison.CurrentCultureIgnoreCase ) == 0;
+			return string.Compare( x.Key, "swatch_image", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.Key, "thumbnail", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.Key, "small_image", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.Key, "image", StringComparison.OrdinalIgnoreCase ) == 0;
 		}
 
 		private static class ClientBaseActionRunner
