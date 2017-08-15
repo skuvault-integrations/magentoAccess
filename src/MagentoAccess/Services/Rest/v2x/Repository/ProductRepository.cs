@@ -85,7 +85,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			};
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.GetProductsServicePath() )
+				.Path( MagentoServicePath.CreateProductsServicePath() )
 				.Parameters( parameters )
 				.AuthToken( this.Token )
 				.Url( this.Url );
@@ -154,7 +154,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.GetProductsServicePath().AddCatalog( Uri.EscapeDataString( sku ) ) )
+				.Path( MagentoServicePath.CreateProductsServicePath().AddCatalog( Uri.EscapeDataString( sku ) ) )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
@@ -183,7 +183,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
-				.Path( MagentoServicePath.GetCategoriesPath() )
+				.Path( MagentoServicePath.CreateCategoriesPath() )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 

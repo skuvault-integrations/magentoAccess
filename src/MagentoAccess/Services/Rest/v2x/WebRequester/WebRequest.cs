@@ -11,7 +11,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 		private const string MagentoRestPath = "/index.php/rest/V1/";// TODO: remove from here, this class unresponsible for this
 		public MagentoUrl Url { get; private set; } = MagentoUrl.SandBox;
 		public MagentoWebRequestMethod MagentoWebRequestMethod { get; private set; } = MagentoWebRequestMethod.Get;
-		public MagentoServicePath MagentoServicePath { get; private set; } = MagentoServicePath.GetProductsServicePath();
+		public MagentoServicePath MagentoServicePath { get; private set; } = MagentoServicePath.CreateProductsServicePath();
 		public MagentoWebRequestBody Body { get; private set; } = MagentoWebRequestBody.Empty;
 		public SearchCriteria Parameters { get; private set; } // TODO: create special class
 		public AuthorizationToken AuthorizationToken { get; set; } = AuthorizationToken.Empty;

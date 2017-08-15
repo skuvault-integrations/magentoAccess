@@ -7,7 +7,7 @@
 		public const string StockItemsPath = "stockItems";
 		public const string OrdersPath = "orders";
 		public const string IntegrationPath = "integration/admin/token";
-		
+
 		public string RepositoryPath { get; private set; }
 
 		private MagentoServicePath( string repositoryPath )
@@ -31,27 +31,27 @@
 			return this;
 		}
 		
-		public static MagentoServicePath GetCategoriesPath()
+		public static MagentoServicePath CreateCategoriesPath()
 		{
 			return Create( CategoriesPath );
 		}
 		
-		public static MagentoServicePath GetProductsServicePath()
+		public static MagentoServicePath CreateProductsServicePath()
 		{
 			return Create( ProductsPath );
 		}
 		
-		public static MagentoServicePath GetStockItemsServicePath()
+		public static MagentoServicePath CreateStockItemsServicePath()
 		{
 			return Create( StockItemsPath );
 		}
 		
-		public static MagentoServicePath GetOrdersServicePath()
+		public static MagentoServicePath CreateOrdersServicePath()
 		{
 			return Create( OrdersPath );
 		}
 		
-		public static MagentoServicePath GetIntegrationServicePath()
+		public static MagentoServicePath CreateIntegrationServicePath()
 		{
 			return Create( IntegrationPath );
 		}
