@@ -5,23 +5,20 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
 {
-	public static class Environment
+	public static class TestEnvironment
 	{
 		private const string TestCasesFile = @"\..\..\Files\Credentials_magento_TestEnvironment.csv";
 		private static readonly IEnumerable< EnvironmentCredentialRow > _environmentRows;
 
-		static Environment()
+		static TestEnvironment()
 		{
 			var cc = new CsvContext();
-			_environmentRows = cc.Read<EnvironmentCredentialRow>( TestContext.CurrentContext.TestDirectory + TestCasesFile, new CsvFileDescription { FirstLineHasColumnNames = true } );
+			_environmentRows = cc.Read< EnvironmentCredentialRow >( TestContext.CurrentContext.TestDirectory + TestCasesFile, new CsvFileDescription { FirstLineHasColumnNames = true } );
 		}
-		
-		public static IEnumerable<EnvironmentCredentialRow> ActiveEnvironmentRows
+
+		public static IEnumerable< EnvironmentCredentialRow > ActiveEnvironmentRows
 		{
-			get
-			{
-				return _environmentRows.Where( line => line.Active == "1" );
-			}
+			get { return _environmentRows.Where( line => line.Active == "1" ); }
 		}
 
 		public class EnvironmentCredentialRow
@@ -40,7 +37,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			[ CsvColumn( Name = "MagentoVersion", FieldIndex = 5 ) ]
 			public string MagentoVersion { get; set; }
-			
+
 			[ CsvColumn( Name = "ServiceVersion", FieldIndex = 6 ) ]
 			public string ServiceVersion { get; set; }
 
