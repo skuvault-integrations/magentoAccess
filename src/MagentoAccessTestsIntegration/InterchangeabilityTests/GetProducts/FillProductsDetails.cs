@@ -24,9 +24,9 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			var magentoServiceRest = this.CreateMagentoService( credentialsRest.SoapApiUser, credentialsRest.SoapApiKey, "null", "null", "null", "null", credentialsRest.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentialsRest.MagentoVersion, credentialsRest.GetProductsThreadsLimit, credentialsRest.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
 			var magentoServiceSoap = this.CreateMagentoService( credentialsSoap.SoapApiUser, credentialsSoap.SoapApiKey, "null", "null", "null", "null", credentialsSoap.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentialsSoap.MagentoVersion, credentialsSoap.GetProductsThreadsLimit, credentialsSoap.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
 
-			var getProductsTaskSoap = magentoServiceSoap.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
-			getProductsTaskSoap.Wait();
-			var productsList = getProductsTaskSoap.Result;
+			var getProductsSoapTask = magentoServiceSoap.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
+			getProductsSoapTask.Wait();
+			var productsList = getProductsSoapTask.Result;
 
 			// ------------ Act
 			var swR = Stopwatch.StartNew();

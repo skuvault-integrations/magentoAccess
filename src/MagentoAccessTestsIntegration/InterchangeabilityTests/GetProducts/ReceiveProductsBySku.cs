@@ -22,7 +22,7 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			// ------------ Arrange
 			var magentoServiceRest = this.CreateMagentoService( credentialsRest.SoapApiUser, credentialsRest.SoapApiKey, "null", "null", "null", "null", credentialsRest.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentialsRest.MagentoVersion, credentialsRest.GetProductsThreadsLimit, credentialsRest.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
 			var magentoServiceSoap = this.CreateMagentoService( credentialsSoap.SoapApiUser, credentialsSoap.SoapApiKey, "null", "null", "null", "null", credentialsSoap.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentialsSoap.MagentoVersion, credentialsSoap.GetProductsThreadsLimit, credentialsSoap.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
-			var skus = new string[] { "testsku1", "testsku2", "product2", "badsku___" };
+			var skus = new[] { "testsku1", "testsku2", "product2", "badsku___" };
 
 			// ------------ Act
 			var swR = Stopwatch.StartNew();
