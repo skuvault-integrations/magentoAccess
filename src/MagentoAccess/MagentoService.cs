@@ -653,7 +653,7 @@ namespace MagentoAccess
 					else
 					{
 						var products = await this.GetProductsAsync( scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
-						var productsWithSkuQtyId = from i in inventory join s in products on i.Sku.ToUpper() equals s.Sku.ToUpper() select new Inventory { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty, Sku = s.Sku };
+						var productsWithSkuQtyId = from i in inventory join s in products on i.Sku equals s.Sku select new Inventory { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty, Sku = s.Sku };
 						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
 					}
 				}
@@ -773,7 +773,7 @@ namespace MagentoAccess
 				else
 				{
 					catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, mark ).ConfigureAwait( false );
-					var soapProducts = ( from p in catalogProductListResponse.Products join s in skus on p.Sku.ToUpper() equals s.ToUpper() select p ).ToList();
+					var soapProducts = ( from p in catalogProductListResponse.Products join s in skus on p.Sku equals s select p ).ToList();
 					catalogProductListResponse.Products = soapProducts;
 				}
 			}

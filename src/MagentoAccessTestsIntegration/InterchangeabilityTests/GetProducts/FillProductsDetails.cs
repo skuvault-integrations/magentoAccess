@@ -48,14 +48,8 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			var thatWasReturnedRest = fillProductsDetailsRest.Result.OrderBy( x => x.ProductId ).ToList();
 			var thatWasReturnedSoap = fillProductsDetailsSoap.Result.OrderBy( x => x.ProductId ).ToList();
 
-			thatWasReturnedRest.ForEach( item =>
-			{
-				item.Categories = item.Categories?.OrderBy( c => c.Id ).Select( c => new Category( c, true ) ).ToArray();
-			} );
-			thatWasReturnedSoap.ForEach( item =>
-			{
-				item.Categories = item.Categories?.OrderBy( c => c.Id ).Select( c => new Category( c, true ) ).ToArray();
-			} );
+			thatWasReturnedRest.ForEach( item => item.Categories = item.Categories?.OrderBy( c => c.Id ).Select( c => new Category( c, true ) ).ToArray() );
+			thatWasReturnedSoap.ForEach( item => item.Categories = item.Categories?.OrderBy( c => c.Id ).Select( c => new Category( c, true ) ).ToArray() );
 
 			thatWasReturnedRest.Should().BeEquivalentTo( thatWasReturnedSoap );
 			swS.Elapsed.Should().BeGreaterThan( swR.Elapsed );
