@@ -274,27 +274,28 @@ namespace MagentoAccess.Models.Services.Rest.v2x.Products
 		public int value { get; set; }
 		public ExtensionAttributes15 extensionAttributes { get; set; }
 	}
-
+	
+	[ JsonConverter( typeof( LaxPropertyNameMatchingConverter ) ) ]
 	public class CustomAttribute
 	{
 		public string attributeCode { get; set; }
 		public string value { get; set; }
 	}
 
-	[JsonConverter(typeof(LaxPropertyNameMatchingConverter))]
+	[ JsonConverter( typeof( LaxPropertyNameMatchingConverter ) ) ]
 	public class Item
 	{
 		public int id { get; set; }
 		public string sku { get; set; }
 		public string name { get; set; }
 		public int attributeSetId { get; set; }
-		public int price { get; set; }
+		public decimal price { get; set; }
 		public int status { get; set; }
 		public int visibility { get; set; }
 		public string typeId { get; set; }
 		public string createdAt { get; set; }
 		public string updatedAt { get; set; }
-		public int weight { get; set; }
+		public decimal? weight { get; set; }
 		public ExtensionAttributes extensionAttributes { get; set; }
 		public List<ProductLink2> productLinks { get; set; }
 		public List<Option> options { get; set; }
@@ -303,6 +304,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.Products
 		public List<CustomAttribute> customAttributes { get; set; }
 	}
 
+	[ JsonConverter( typeof( LaxPropertyNameMatchingConverter ) ) ]
 	public class RootObject
 	{
 		public List<Item> items { get; set; }

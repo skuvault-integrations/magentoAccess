@@ -32,6 +32,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_2_1_0_0_ce : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapFillProductsDetails
 	{
+		private const string ImagePath = "/pub/media/catalog/product";
 		public string StoreVersion { get; set; }
 
 		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface > getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface >();
@@ -782,7 +783,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				( prods, prodInfos ) => ( from rp in prods
 					join pi in prodInfos on rp.ProductId equals pi.ProductId into pairs
 					from pair in pairs.DefaultIfEmpty()
-					let imageesUrls = ( pair?.Attributes ?? new List< ProductAttribute >() ).Where( IsImageUrlAttribute ).Select( x => new MagentoUrl( new MagentoImage( x.Key, this.BaseMagentoUrl + x.Value ) ) ).ToList() // new List< MagentoUrl >()
+					let imageesUrls = ( pair?.Attributes ?? new List< ProductAttribute >() ).Where( IsImageUrlAttribute ).Select( x => new MagentoUrl( new MagentoImage( x.Key, this.BaseMagentoUrl + ImagePath + x.Value ) ) ).ToList() // new List< MagentoUrl >()
 					select pair == null ? rp : new ProductDetails( rp, upc : pair.GetUpcAttributeValue(), manufacturer : pair.GetManufacturerAttributeValue(), cost : pair.GetCostAttributeValue().ToDecimalOrDefault(), weight : pair.Weight, shortDescription : pair.ShortDescription, description : pair.Description, specialPrice : pair.SpecialPrice, price : pair.Price, categories : pair.CategoryIds.Select( z => new Category( z ) ), images : imageesUrls ) );
 
 			Func< IEnumerable< ProductDetails >, CatalogProductAttributeInfoResponse, IEnumerable< ProductDetails > > FillManufactures =
@@ -807,10 +808,10 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		private static bool IsImageUrlAttribute( ProductAttribute x )
 		{
-			return string.Compare( x.Key, "swatch_image", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.Key, "thumbnail", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.Key, "small_image", StringComparison.CurrentCultureIgnoreCase ) == 0
-			       || string.Compare( x.Key, "image", StringComparison.CurrentCultureIgnoreCase ) == 0;
+			return string.Compare( x.Key, "swatch_image", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.Key, "thumbnail", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.Key, "small_image", StringComparison.OrdinalIgnoreCase ) == 0
+			       || string.Compare( x.Key, "image", StringComparison.OrdinalIgnoreCase ) == 0;
 		}
 
 		private static class ClientBaseActionRunner

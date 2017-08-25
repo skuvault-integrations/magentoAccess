@@ -20,6 +20,18 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 			if( value.Childrens != null )
 				this.Childrens = value.Childrens.Select( x => new Category( x ) ).ToList();
 		}
+		
+		internal Category( Rest.v2x.Products.CategoryNode value )
+		{
+			this.Id = value.id;
+			this.ParentId = value.parentId;
+			this.Level = value.level;
+			this.Name = value.name;
+			this.IsActive = value.isActive ? 1 : 0;
+
+			if( value.childrenData != null )
+				this.Childrens = value.childrenData.Select( x => new Category( x ) ).ToList();
+		}
 
 		public Category( string id )
 		{

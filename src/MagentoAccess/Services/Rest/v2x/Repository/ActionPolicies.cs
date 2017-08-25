@@ -23,6 +23,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					switch( response.StatusCode )
 					{
 						case HttpStatusCode.NotFound:
+						case HttpStatusCode.BadRequest:
 							return true;
 						default:
 							return false;

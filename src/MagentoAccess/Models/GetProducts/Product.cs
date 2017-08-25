@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.GetOrders;
 
 namespace MagentoAccess.Models.GetProducts
 {
 	[ Serializable ]
-	public class Product
+	public class Product : IEquatable< Product >
 	{
 		public Product( Product rp, IEnumerable< MagentoUrl > images = null, string upc = null, string manufacturer = null, decimal? cost = null, string weight = null, string shortDescription = null, string description = null, string price = null, string specialPrice = null, IEnumerable< Category > categories = null, string productType = null )
 		{
@@ -64,5 +65,66 @@ namespace MagentoAccess.Models.GetProducts
 		public string UpdatedAt { get; set; }
 
 		//category_ids have many
+		public bool Equals( Product other )
+		{
+			if( ReferenceEquals( null, other ) )
+				return false;
+			if( ReferenceEquals( this, other ) )
+				return true;
+			
+			return string.Equals( this.Upc, other.Upc ) && 
+			       this.SpecialPrice == other.SpecialPrice && 
+			       this.Cost == other.Cost && 
+			       string.Equals( this.Manufacturer, other.Manufacturer ) &&
+			       Enumerable.SequenceEqual( this.Images ?? new List< MagentoUrl >(), other.Images ?? new List< MagentoUrl >() ) && 
+			       string.Equals( this.ShortDescription, other.ShortDescription ) && 
+			       string.Equals( this.Weight, other.Weight ) && 
+			       string.Equals( this.EntityId, other.EntityId ) && 
+			       string.Equals( this.Sku, other.Sku ) && 
+			       this.Price == other.Price && 
+			       string.Equals( this.Name, other.Name ) && 
+			       string.Equals( this.Description, other.Description ) && 
+			       string.Equals( this.Qty, other.Qty ) && 
+			       string.Equals( this.ProductId, other.ProductId ) && 
+			       Enumerable.SequenceEqual( this.Categories ?? new Category[] { }, other.Categories ?? new Category[] { } ) && 
+			       string.Equals( this.ProductType, other.ProductType ) && 
+			       string.Equals( this.UpdatedAt, other.UpdatedAt );
+		}
+
+		public override bool Equals( object obj )
+		{
+			if( ReferenceEquals( null, obj ) )
+				return false;
+			if( ReferenceEquals( this, obj ) )
+				return true;
+			if( obj.GetType() != this.GetType() )
+				return false;
+			return Equals( ( Product )obj );
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hashCode = ( this.Upc != null ? this.Upc.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ this.SpecialPrice.GetHashCode();
+				hashCode = ( hashCode * 397 ) ^ this.Cost.GetHashCode();
+				hashCode = ( hashCode * 397 ) ^ ( this.Manufacturer != null ? this.Manufacturer.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.Images != null ? this.Images.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.ShortDescription != null ? this.ShortDescription.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.Weight != null ? this.Weight.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.EntityId != null ? this.EntityId.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.Sku != null ? this.Sku.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ this.Price.GetHashCode();
+				hashCode = ( hashCode * 397 ) ^ ( this.Name != null ? this.Name.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.Description != null ? this.Description.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.Qty != null ? this.Qty.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.ProductId != null ? this.ProductId.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.Categories != null ? this.Categories.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.ProductType != null ? this.ProductType.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ ( this.UpdatedAt != null ? this.UpdatedAt.GetHashCode() : 0 );
+				return hashCode;
+			}
+		}
 	}
 }

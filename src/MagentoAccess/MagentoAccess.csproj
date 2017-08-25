@@ -117,6 +117,7 @@
     <Compile Include="Models\PingRest\MagentoCoreInfo.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
     <Compile Include="Models\Services\Rest\v2x\CatalogStockItemRepository\RootObject.cs" />
+    <Compile Include="Models\Services\Rest\v2x\Products\CategoryNode.cs" />
     <Compile Include="Models\Services\Rest\v2x\Error.cs" />
     <Compile Include="Models\Services\Rest\v2x\LaxPropertyNameMatchingConverter.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\RootObject.cs" />

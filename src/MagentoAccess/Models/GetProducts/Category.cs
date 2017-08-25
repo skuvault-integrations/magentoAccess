@@ -6,7 +6,7 @@ using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 namespace MagentoAccess.Models.GetProducts
 {
 	[ Serializable ]
-	public class Category
+	public class Category : IEquatable< Category >
 	{
 		internal Category( CategoryNode value )
 		{
@@ -24,6 +24,18 @@ namespace MagentoAccess.Models.GetProducts
 		{
 			int temp;
 			Id = int.TryParse( id, out temp ) ? temp : 0;
+		}
+
+		internal Category( Category value, bool ignoreChildrens = false )
+		{
+			this.Id = value.Id;
+			this.ParentId = value.ParentId;
+			this.Level = value.Level;
+			this.Name = value.Name;
+			this.IsActive = value.IsActive;
+
+			if( !ignoreChildrens && value.Childrens != null )
+				this.Childrens = value.Childrens.Select( x => new Category( x ) ).ToList();
 		}
 
 		public int Id { get; set; }
@@ -70,6 +82,45 @@ namespace MagentoAccess.Models.GetProducts
 			}
 
 			return null;
+		}
+
+		public bool Equals( Category other )
+		{
+			if( ReferenceEquals( null, other ) )
+				return false;
+			if( ReferenceEquals( this, other ) )
+				return true;
+			return this.Id == other.Id && 
+			       this.ParentId == other.ParentId && 
+			       this.Level == other.Level && 
+			       string.Equals( this.Name, other.Name ) && 
+			       this.IsActive == other.IsActive && 
+			       Equals( this.Childrens, other.Childrens );
+		}
+
+		public override bool Equals( object obj )
+		{
+			if( ReferenceEquals( null, obj ) )
+				return false;
+			if( ReferenceEquals( this, obj ) )
+				return true;
+			if( obj.GetType() != this.GetType() )
+				return false;
+			return Equals( ( Category )obj );
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hashCode = this.Id;
+				hashCode = ( hashCode * 397 ) ^ this.ParentId;
+				hashCode = ( hashCode * 397 ) ^ this.Level;
+				hashCode = ( hashCode * 397 ) ^ ( this.Name != null ? this.Name.GetHashCode() : 0 );
+				hashCode = ( hashCode * 397 ) ^ this.IsActive;
+				hashCode = ( hashCode * 397 ) ^ ( this.Childrens != null ? this.Childrens.GetHashCode() : 0 );
+				return hashCode;
+			}
 		}
 	}
 }

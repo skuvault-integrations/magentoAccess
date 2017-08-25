@@ -27,6 +27,7 @@ using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Rest.v1x;
 using MagentoAccess.Services.Rest.v2x;
+using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
@@ -545,7 +546,6 @@ namespace MagentoAccess
 				var pingres = await this.PingSoapAsync( markLocal ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
 				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
-
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : productBriefInfo ), markLocal );
 
@@ -652,9 +652,9 @@ namespace MagentoAccess
 					}
 					else
 					{
-						var productsWithSkuUpdatedQtyId = await this.GetProductsAsync( scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
-						var resultProducts = productsWithSkuUpdatedQtyId.Select( x => new Inventory() { ItemId = x.EntityId, ProductId = x.ProductId, Qty = x.Qty.ToLongOrDefault() } );
-						await this.UpdateInventoryAsync( resultProducts ).ConfigureAwait( false );
+						var products = await this.GetProductsAsync( scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
+						var productsWithSkuQtyId = from i in inventory join s in products on i.Sku equals s.Sku select new Inventory { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty, Sku = s.Sku };
+						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
 					}
 				}
 

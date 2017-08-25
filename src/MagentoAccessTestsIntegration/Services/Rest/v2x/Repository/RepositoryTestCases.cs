@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using NUnit.Framework;
 
@@ -14,10 +15,8 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		{
 			get
 			{
-				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create("MaxKitsenko"), MagentoLogin = MagentoLogin.Create("MaxKitsenko"), Url = MagentoUrl.Create("http://yourmagentostore") } ).SetName( "magento-2-0-2-0-ce" );
-				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create("MaxKitsenko"), MagentoLogin = MagentoLogin.Create("MaxKitsenko"), Url = MagentoUrl.Create("http://yourmagentostore") } ).SetName( "magento-2-1-0-0-ce" );
-				yield return new TestCaseData( new RepositoryTestCase() { MagentoPass = MagentoPass.Create("MaxKitsenko"), MagentoLogin = MagentoLogin.Create("MaxKitsenko"), Url = MagentoUrl.Create("http://yourmagentostore") } ).SetName( "magento-2-0-7-0-ce" );
-				yield break;
+				return TestEnvironment.TestEnvironment.ActiveEnvironmentRows.Where( line => line.V2 == "1" && line.Rest == "1" ).Select( line =>
+					new TestCaseData( new RepositoryTestCase { MagentoPass = MagentoPass.Create( line.MagentoPass ), MagentoLogin = MagentoLogin.Create( line.MagentoLogin ), Url = MagentoUrl.Create( line.MagentoUrl ) } ).SetName( line.MagentoVersion ) );
 			}
 		}
 	}
