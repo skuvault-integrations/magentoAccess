@@ -10,11 +10,5 @@ namespace MagentoAccess
 			Condition.Requires( userAuthCredentials, "userAuthCredentials" ).IsNotNull();
 			return new MagentoService( userAuthCredentials, magentoConfig );
 		}
-
-		public IMagentoService CreateService( MagentoNonAuthenticatedUserCredentials userNonAuthCredentials )
-		{
-			Condition.Requires( userNonAuthCredentials, "userNonAuthCredentials" ).IsNotNull();
-			return new MagentoService( userNonAuthCredentials );
-		}
 	}
 }

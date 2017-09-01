@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.Rest.v1x.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 
 namespace MagentoAccess.Models.GetOrders
@@ -153,46 +152,6 @@ namespace MagentoAccess.Models.GetOrders
 			OrderStateEnum tempstate;
 			this.Status = Enum.TryParse( order.Status, true, out tempstatus ) ? tempstatus : OrderStatusesEnum.unknown;
 			this.State = Enum.TryParse( order.State, true, out tempstate ) ? tempstate : OrderStateEnum.unknown;
-		}
-
-		public Order( Services.Rest.v1x.GetOrders.Order order )
-		{
-			var clone = order.DeepClone();
-
-			this.OrderId = clone.OrderId;
-			this.Status = clone.Status;
-			this.Customer = clone.Customer;
-			this.BaseDiscount = clone.BaseDiscount;
-			this.BaseGrandTotal = clone.BaseGrandTotal;
-			this.BaseShippingAmount = clone.BaseShippingAmount;
-			this.BaseShippingTaxAmount = clone.BaseShippingTaxAmount;
-			this.BaseSubtotal = clone.BaseSubtotal;
-			this.BaseTaxAmount = clone.BaseTaxAmount;
-			this.BaseTotalPaid = clone.BaseTotalPaid;
-			this.BaseTotalRefunded = clone.BaseTotalRefunded;
-			this.DiscountAmount = clone.DiscountAmount;
-			this.GrandTotal = clone.GrandTotal;
-			this.ShippingAmount = clone.ShippingAmount;
-			this.ShippingTaxAmount = clone.ShippingTaxAmount;
-			this.StoreToOrderRate = clone.StoreToOrderRate;
-			this.Subtotal = clone.Subtotal;
-			this.TaxAmount = clone.TaxAmount;
-			this.TotalPaid = clone.TotalPaid;
-			this.TotalRefunded = clone.TotalRefunded;
-			this.BaseShippingDiscountAmount = clone.BaseShippingDiscountAmount;
-			this.BaseSubtotalInclTax = clone.BaseSubtotalInclTax;
-			this.BaseTotalDue = clone.BaseTotalDue;
-			this.ShippingDiscountAmount = clone.ShippingDiscountAmount;
-			this.SubtotalInclTax = clone.SubtotalInclTax;
-			this.TotalDue = clone.TotalDue;
-			this.BaseCurrencyCode = clone.BaseCurrencyCode;
-			this.StoreName = clone.StoreName;
-			this.CreatedAt = clone.CreatedAt;
-			this.ShippingInclTax = clone.ShippingInclTax;
-			this.PaymentMethod = clone.PaymentMethod;
-			this.Addresses = clone.Addresses.Select( x => Tuple.Create( AddressTypeEnum.Unknown, x ) ).ToList();
-			this.Items = clone.Items;
-			this.Comments = clone.Comments;
 		}
 
 		public Order( salesOrderEntity order )

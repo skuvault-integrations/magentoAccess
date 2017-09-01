@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration.Conventions;
@@ -17,17 +13,13 @@ using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Models.Services.Rest.v1x.GetStockItems;
 using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
-using MagentoAccess.Services.Rest.v1x;
 using MagentoAccess.Services.Rest.v2x;
-using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
@@ -44,14 +36,12 @@ namespace MagentoAccess
 	public class MagentoService: IMagentoService
 	{
 		public bool UseSoapOnly{ get; set; }
-		internal virtual IMagentoServiceLowLevelRest MagentoServiceLowLevelRest{ get; set; }
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap{ get; set; }
 		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory{ get; set; }
 
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken{ get; set; }
-		public TransmitVerificationCodeDelegate TransmitVerificationCode{ get; set; }
 		public Func< string > AdditionalLogInfo{ get; set; }
 		public MagentoConfig Config{ get; set; }
 
@@ -197,13 +187,6 @@ namespace MagentoAccess
 		{
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 			this.Config = magentoConfig;
-			this.MagentoServiceLowLevelRest = new MagentoServiceLowLevelRestRest(
-				magentoAuthenticatedUserCredentials.ConsumerKey,
-				magentoAuthenticatedUserCredentials.ConsumerSckretKey,
-				magentoAuthenticatedUserCredentials.BaseMagentoUrl,
-				magentoAuthenticatedUserCredentials.AccessToken,
-				magentoAuthenticatedUserCredentials.AccessTokenSecret
-				);
 
 			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
 			var lowLevelServices = new Dictionary< string, IMagentoServiceLowLevelSoap >();
@@ -235,18 +218,6 @@ namespace MagentoAccess
 			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServices );
 			var defaultVersion = !string.IsNullOrWhiteSpace( magentoConfig?.VersionByDefault ) ? magentoConfig.VersionByDefault : MagentoVersions.M_1_7_0_2;
 			this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( defaultVersion, true, false );
-		}
-
-		public MagentoService( MagentoNonAuthenticatedUserCredentials magentoUserCredentials )
-		{
-			this.MagentoServiceLowLevelRest = new MagentoServiceLowLevelRestRest(
-				magentoUserCredentials.ConsumerKey,
-				magentoUserCredentials.ConsumerSckretKey,
-				magentoUserCredentials.BaseMagentoUrl,
-				magentoUserCredentials.RequestTokenUrl,
-				magentoUserCredentials.AuthorizeUrl,
-				magentoUserCredentials.AccessTokenUrl
-				);
 		}
 		#endregion
 
@@ -330,29 +301,6 @@ namespace MagentoAccess
 			catch( Exception exception )
 			{
 				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : markLocal ), exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public async Task< PingRestInfo > PingRestAsync()
-		{
-			var mark = Mark.CreateNew();
-			try
-			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
-
-				var magentoOrders = await this.MagentoServiceLowLevelRest.GetProductsAsync( 1, 1, true ).ConfigureAwait( false );
-				var restWorks = magentoOrders.Products != null;
-				var magentoCoreInfo = new PingRestInfo( restWorks );
-
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : magentoCoreInfo.ToJson() ) );
-
-				return magentoCoreInfo;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
@@ -491,50 +439,9 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
-
-		public async Task< IEnumerable< Order > > GetOrdersAsync()
-		{
-			var mark = Mark.CreateNew();
-			try
-			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
-				var res = await this.MagentoServiceLowLevelRest.GetOrdersAsync().ConfigureAwait( false );
-				var resHandled = res.Orders.Select( x => new Order( x ) );
-				var orderBriefInfo = resHandled.ToJson();
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : orderBriefInfo ) );
-				return resHandled;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
 		#endregion
 
 		#region getProducts
-		public async Task< IEnumerable< Product > > GetProductsSimpleAsync()
-		{
-			var mark = Mark.CreateNew();
-			try
-			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
-				var res = await this.GetRestProductsAsync().ConfigureAwait( false );
-
-				var productBriefInfo = $"Count:{res.Count()},Product:{res.ToJson()}";
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
-
-				return res;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
 		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true, Mark mark = null )
 		{
 			var markLocal = mark ?? Mark.CreateNew();
@@ -669,66 +576,6 @@ namespace MagentoAccess
 		}
 		#endregion
 
-		#region auth
-		public void InitiateDesktopAuthentication()
-		{
-			try
-			{
-				MagentoLogger.LogTraceStarted( "InitiateDesktopAuthentication()" );
-				this.MagentoServiceLowLevelRest.TransmitVerificationCode = this.TransmitVerificationCode;
-				var authorizeTask = this.MagentoServiceLowLevelRest.InitiateDescktopAuthenticationProcess();
-				authorizeTask.Wait();
-
-				this.AfterGettingToken?.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
-
-				MagentoLogger.LogTraceEnded( "InitiateDesktopAuthentication()" );
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( "Error.", exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public VerificationData RequestVerificationUri()
-		{
-			try
-			{
-				MagentoLogger.LogTraceStarted( "RequestVerificationUri()" );
-				var res = this.MagentoServiceLowLevelRest.RequestVerificationUri();
-				MagentoLogger.LogTraceEnded( "RequestVerificationUri()" );
-
-				return res;
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( "Error.", exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-
-		public void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret )
-		{
-			try
-			{
-				MagentoLogger.LogTraceStarted( "PopulateAccessTokenAndAccessTokenSecret(...)" );
-				this.MagentoServiceLowLevelRest.PopulateAccessTokenAndAccessTokenSecret( verificationCode, requestToken, requestTokenSecret );
-
-				this.AfterGettingToken?.Invoke( this.MagentoServiceLowLevelRest.AccessToken, this.MagentoServiceLowLevelRest.AccessTokenSecret );
-
-				MagentoLogger.LogTraceEnded( "PopulateAccessTokenAndAccessTokenSecret(...)" );
-			}
-			catch( Exception exception )
-			{
-				var mexc = new MagentoCommonException( "Error.", exception );
-				MagentoLogger.LogTraceException( mexc );
-				throw mexc;
-			}
-		}
-		#endregion
-
 		#region MethodsImplementations
 		private string CreateMethodCallInfo( string methodParameters = "", Mark mark = null, string errors = "", string methodResult = "", string additionalInfo = "", [ CallerMemberName ] string memberName = "", string notes = "" )
 		{
@@ -828,30 +675,6 @@ namespace MagentoAccess
 			return resultProducts;
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsByRest()
-		{
-			// this code doesn't work for magento 1.8.0.1 http://www.magentocommerce.com/bug-tracking/issue/index/id/130
-			// this code works for magento 1.9.0.1
-			var stockItemsAsync = this.GetRestStockItemsAsync();
-
-			var productsAsync = this.GetRestProductsAsyncPparallel();
-
-			await Task.WhenAll( stockItemsAsync, productsAsync ).ConfigureAwait( false );
-
-			var stockItems = stockItemsAsync.Result.ToList();
-
-			var products = productsAsync.Result.ToList();
-			//#if DEBUG
-			//			var temps = stockItems.Select( x => string.Format( "INSERT INTO [dbo].[StockItems] ([EntityId] ,[ProductId] ,[Qty]) VALUES ('{0}','{1}','{2}');", x.EntityId, x.ProductId, x.Qty ) );
-			//			var stockItemsStr = string.Join( "\n", temps );
-			//			var tempp = products.Select( x => string.Format( "INSERT INTO [dbo].[Products2]([EntityId] ,[ProductId] ,[Description] ,[Name] ,[Sku] ,[Price]) VALUES ('{0}','{1}','','','{4}','{5}');", x.EntityId, x.ProductId, x.Description, x.Name, x.Sku, x.Price ) );
-			//			var productsStr = string.Join( "\n", tempp );
-			//#endif
-
-			IEnumerable< Product > resultProducts = ( from stockItem in stockItems join product in products on stockItem.ProductId equals product.EntityId select new Product( stockItem.ProductId, stockItem.EntityId, product.Name, product.Sku, stockItem.Qty, product.Price, product.Description, product.ProductType, string.Empty ) ).ToList();
-			return resultProducts;
-		}
-
 		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, Mark mark )
 		{
 			var productToUpdate = inventories.Select( x => new PutStockItem( x ) ).ToList();
@@ -866,190 +689,6 @@ namespace MagentoAccess
 
 			if( notUpdatedProducts.Any() )
 				throw new Exception( $"Not updated {notUpdatedBriefInfo}" );
-
-			return updateBriefInfo;
-		}
-
-		private async Task< IEnumerable< Product > > GetRestProductsAsync()
-		{
-			var page = 1;
-			const int itemsPerPage = 100;
-
-			var getProductsResponse = await this.MagentoServiceLowLevelRest.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
-
-			var productsChunk = getProductsResponse.Products;
-			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
-
-			var receivedProducts = new List< Models.Services.Rest.v1x.GetProducts.Product >();
-
-			var lastReceiveProducts = productsChunk;
-
-			bool isLastAndCurrentResponsesHaveTheSameProducts;
-
-			do
-			{
-				receivedProducts.AddRange( productsChunk );
-
-				var getProductsTask = this.MagentoServiceLowLevelRest.GetProductsAsync( ++page, itemsPerPage );
-				getProductsTask.Wait();
-				productsChunk = getProductsTask.Result.Products;
-
-				//var repeatedItems = from l in lastReceiveProducts join c in productsChunk on l.EntityId equals c.EntityId select l;
-				var repeatedItems = from c in productsChunk join l in lastReceiveProducts on c.EntityId equals l.EntityId select l;
-
-				lastReceiveProducts = productsChunk;
-
-				isLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
-
-				// try to get items that was added before last iteration
-				if( isLastAndCurrentResponsesHaveTheSameProducts )
-				{
-					var notRrepeatedItems = productsChunk.Where( x => !repeatedItems.Exists( r => r.EntityId == x.EntityId ) );
-					receivedProducts.AddRange( notRrepeatedItems );
-				}
-			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
-
-			return receivedProducts.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
-		}
-
-		private async Task< IEnumerable< Product > > GetRestProductsAsyncPparallel()
-		{
-			var page = 1;
-			const int itemsPerPage = 100;
-
-			var getProductsResponse = await this.MagentoServiceLowLevelRest.GetProductsAsync( page, itemsPerPage ).ConfigureAwait( false );
-
-			var productsChunk = getProductsResponse.Products;
-			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
-
-			var receivedProducts = new List< Models.Services.Rest.v1x.GetProducts.Product >();
-
-			var lastReceiveProducts = productsChunk;
-
-			receivedProducts.AddRange( productsChunk );
-
-			var getProductsTasks = new List< Task< List< Models.Services.Rest.v1x.GetProducts.Product > > >
-			{
-				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
-				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
-				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) ),
-				Task.Factory.StartNew( () => this.GetRestProducts( lastReceiveProducts, itemsPerPage, ref page ) )
-			};
-
-			await Task.WhenAll( getProductsTasks ).ConfigureAwait( false );
-
-			var results = getProductsTasks.SelectMany( x => x.Result ).ToList();
-			receivedProducts.AddRange( results );
-			receivedProducts = receivedProducts.Distinct( new ProductComparer() ).ToList();
-
-			return receivedProducts.Select( x => new Product( null, x.EntityId, x.Name, x.Sku, null, x.Price, x.Description, null, null ) );
-		}
-
-		private List< Models.Services.Rest.v1x.GetProducts.Product > GetRestProducts( IEnumerable< Models.Services.Rest.v1x.GetProducts.Product > lastReceiveProducts, int itemsPerPage, ref int page )
-		{
-			var localIsLastAndCurrentResponsesHaveTheSameProducts = true;
-			var localLastReceivedProducts = lastReceiveProducts;
-			var localReceivedProducts = new List< Models.Services.Rest.v1x.GetProducts.Product >();
-			do
-			{
-				Interlocked.Increment( ref page );
-
-				var getProductsTask = this.MagentoServiceLowLevelRest.GetProductsAsync( page, itemsPerPage );
-				getProductsTask.Wait();
-				var localProductsChunk = getProductsTask.Result.Products;
-
-				var lastProductsChunksList = localProductsChunk as IList< Models.Services.Rest.v1x.GetProducts.Product > ?? localProductsChunk.ToList();
-				var repeatedItems = from c in lastProductsChunksList join l in localLastReceivedProducts on c.EntityId equals l.EntityId select l;
-
-				localLastReceivedProducts = lastProductsChunksList;
-
-				var repeatedItemsList = repeatedItems as IList< Models.Services.Rest.v1x.GetProducts.Product > ?? repeatedItems.ToList();
-				localIsLastAndCurrentResponsesHaveTheSameProducts = repeatedItemsList.Any();
-
-				// try to get items that was added before last iteration
-				if( localIsLastAndCurrentResponsesHaveTheSameProducts )
-				{
-					var notRrepeatedItems = lastProductsChunksList.Where( x => !repeatedItemsList.Exists( r => r.EntityId == x.EntityId ) );
-					localReceivedProducts.AddRange( notRrepeatedItems );
-				}
-				else
-					localReceivedProducts.AddRange( lastProductsChunksList );
-			} while( !localIsLastAndCurrentResponsesHaveTheSameProducts );
-
-			return localReceivedProducts;
-		}
-
-		private async Task< IEnumerable< Product > > GetRestStockItemsAsync()
-		{
-			var page = 1;
-			const int itemsPerPage = 100;
-
-			var getProductsResponse = await this.MagentoServiceLowLevelRest.GetStockItemsAsync( page, itemsPerPage ).ConfigureAwait( false );
-
-			var productsChunk = getProductsResponse.Items;
-			if( productsChunk.Count() < itemsPerPage )
-				return productsChunk.Select( x => new Product( null, x.ItemId, null, null, null, 0, null, null, null ) );
-
-			var receivedProducts = new List< StockItem >();
-
-			var lastReceiveProducts = productsChunk;
-
-			bool isLastAndCurrentResponsesHaveTheSameProducts;
-
-			do
-			{
-				receivedProducts.AddRange( productsChunk );
-
-				var getProductsTask = this.MagentoServiceLowLevelRest.GetStockItemsAsync( ++page, itemsPerPage );
-				getProductsTask.Wait();
-
-				productsChunk = getProductsTask.Result.Items;
-
-				var repeatedItems = from c in productsChunk join l in lastReceiveProducts on new { ItemId = c.ItemId, BackOrders = c.BackOrders, Qty = c.Qty } equals new { ItemId = l.ItemId, BackOrders = l.BackOrders, Qty = l.Qty } select l;
-
-				lastReceiveProducts = productsChunk;
-
-				isLastAndCurrentResponsesHaveTheSameProducts = repeatedItems.Any();
-
-				// try to get items that was added before last iteration
-				if( isLastAndCurrentResponsesHaveTheSameProducts )
-				{
-					var notRrepeatedItems = productsChunk.Where( x => !repeatedItems.Exists( r => new { ItemId = r.ItemId, BackOrders = r.BackOrders, Qty = r.Qty } != new { ItemId = x.ItemId, BackOrders = x.BackOrders, Qty = x.Qty } ) );
-					receivedProducts.AddRange( notRrepeatedItems );
-				}
-			} while( !isLastAndCurrentResponsesHaveTheSameProducts );
-
-			return receivedProducts.Select( x => new Product( x.ProductId, x.ItemId, null, null, x.Qty, 0, "", null, null ) );
-		}
-
-		private async Task< string > UpdateStockItemsByRest( IList< Inventory > inventories, string markForLog = "" )
-		{
-			const int productsUpdateMaxChunkSize = 50;
-			var inventoryItems = inventories.Select( x => new Models.Services.Rest.v1x.PutStockItems.StockItem
-			{
-				ItemId = x.ItemId,
-				MinQty = x.MinQty,
-				ProductId = x.ProductId,
-				Qty = x.Qty,
-				StockId = x.StockId,
-			} ).ToList();
-
-			var productsDevidedToChunks = inventoryItems.SplitToChunks( productsUpdateMaxChunkSize );
-
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => await this.MagentoServiceLowLevelRest.PutStockItemsAsync( x, markForLog ).ConfigureAwait( false ) ).ConfigureAwait( false );
-
-			var updateResult = batchResponses.Where( y => y.Items != null ).SelectMany( x => x.Items ).ToList();
-
-			var secessefullyUpdated = updateResult.Where( x => x.Code == "200" );
-
-			var unSecessefullyUpdated = updateResult.Where( x => x.Code != "200" );
-
-			var updateBriefInfo = updateResult.ToJson();
-
-			if( unSecessefullyUpdated.Any() )
-				throw new Exception( $"Not updated: {unSecessefullyUpdated.ToJson()}, Updated: {secessefullyUpdated.ToJson()}" );
 
 			return updateBriefInfo;
 		}
@@ -1214,19 +853,6 @@ namespace MagentoAccess
 		public const string Upc = "upc";
 		public const string Cost = "cost";
 		public const string Manufacturer = "manufacturer";
-	}
-
-	internal class ProductComparer: IEqualityComparer< Models.Services.Rest.v1x.GetProducts.Product >
-	{
-		public bool Equals( Models.Services.Rest.v1x.GetProducts.Product x, Models.Services.Rest.v1x.GetProducts.Product y )
-		{
-			return x.EntityId == y.EntityId;
-		}
-
-		public int GetHashCode( Models.Services.Rest.v1x.GetProducts.Product obj )
-		{
-			return obj.EntityId.GetHashCode();
-		}
 	}
 
 	internal class SalesOrderByOrderIdComparer: IEqualityComparer< Models.Services.Soap.GetOrders.Order >

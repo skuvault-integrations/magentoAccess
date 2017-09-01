@@ -8,9 +8,7 @@ using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
-using MagentoAccess.Services.Rest.v1x;
 
 namespace MagentoAccess
 {
@@ -18,21 +16,11 @@ namespace MagentoAccess
 	{
 		Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, Mark mark2 = null );
 
-		Task< IEnumerable< Order > > GetOrdersAsync();
-
 		Task UpdateInventoryAsync( IEnumerable< Inventory > products, Mark mark = null );
-
-		Task< IEnumerable< Product > > GetProductsSimpleAsync();
 
 		Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true, Mark mark = null );
 
-		VerificationData RequestVerificationUri();
-
-		void PopulateAccessTokenAndAccessTokenSecret( string verificationCode, string requestToken, string requestTokenSecret );
-
 		Task< PingSoapInfo > PingSoapAsync( Mark mark = null );
-
-		Task< PingRestInfo > PingRestAsync();
 
 		Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory, IEnumerable< int > scopes = null );
 
@@ -49,8 +37,6 @@ namespace MagentoAccess
 		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null );
 
 		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
-
-		TransmitVerificationCodeDelegate TransmitVerificationCode { get; set; }
 
 		Func< string > AdditionalLogInfo { get; set; }
 

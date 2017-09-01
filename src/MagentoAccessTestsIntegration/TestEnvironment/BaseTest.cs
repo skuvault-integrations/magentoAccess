@@ -12,9 +12,6 @@ using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.DeleteProducts;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
-using MagentoAccess.Services.Rest.v1x;
-using MagentoAccess.Services.Soap._1_14_1_0_ee;
-using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using Netco.Extensions;
 using Netco.Logging;
@@ -25,85 +22,37 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 {
 	internal partial class BaseTest
 	{
-		private MagentoConsumerCredentials _consumer;
-		private MagentoUrls _authorityUrls;
-		private MagentoAccessToken _accessToken;
-
-		protected TestData _testData;
-		protected TransmitVerificationCodeDelegate transmitVerificationCode;
-		protected MagentoService _magentoServiceNotAuth;
-		protected MagentoSoapCredentials _soapUserCredentials;
-		protected MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE _magentoLowLevelSoapVFrom17To19CeService;
-		protected MagentoServiceLowLevelSoap_v_1_14_1_0_EE _magentoServiceLowLevelSoapV11410Ee;
 		protected ConcurrentDictionary< string, List< Order > > _orders;
 		protected ConcurrentDictionary< string, Dictionary< int, string > > _productsIds;
-		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRest;
-		protected MagentoServiceLowLevelRestRest _magentoServiceLowLevelRestRestRestRestNotAuth;
 		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoLowLevelSoapForCreatingTestEnvironment;
 
 		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl, string magentoVersionByDefault, int getProductsMaxThreads, int sessionLifeTime, bool supressExc, ThrowExceptionIfFailed onUpdateInventory = ThrowExceptionIfFailed.OneItem )
 		{
-			if( string.IsNullOrWhiteSpace( accessToken ) || string.IsNullOrWhiteSpace( accessTokenSecret ) )
-				return new MagentoService( new MagentoNonAuthenticatedUserCredentials(
-					consumerKey,
-					consumerSecret,
-					magentoBaseUrl,
-					requestTokenUrl,
-					authorizeUrl,
-					accessTokenUrl
-					)
-					);
-			else
-			{
-				var magentoService = new MagentoService( new MagentoAuthenticatedUserCredentials(
-					accessToken,
-					accessTokenSecret,
-					magentoBaseUrl,
-					consumerSecret,
-					consumerKey,
-					apiUser,
-					apiKey,
-					getProductsMaxThreads,
-					sessionLifeTime,
-					true
-					), string.IsNullOrWhiteSpace( magentoVersionByDefault ) ? null : new MagentoConfig() { VersionByDefault = magentoVersionByDefault,OnUpdateInventory = onUpdateInventory } );
-				magentoService.InitAsync( supressExc ).Wait();
-				return magentoService;
-			}
+			var magentoService = new MagentoService( new MagentoAuthenticatedUserCredentials(
+				accessToken,
+				accessTokenSecret,
+				magentoBaseUrl,
+				consumerSecret,
+				consumerKey,
+				apiUser,
+				apiKey,
+				getProductsMaxThreads,
+				sessionLifeTime,
+				true
+			), string.IsNullOrWhiteSpace( magentoVersionByDefault ) ? null : new MagentoConfig() { VersionByDefault = magentoVersionByDefault, OnUpdateInventory = onUpdateInventory } );
+			magentoService.InitAsync( supressExc ).Wait();
+			return magentoService;
 		}
 
 		[ SetUp ]
 		public void Setup()
 		{
-			this._magentoServiceNotAuth = new MagentoService( new MagentoNonAuthenticatedUserCredentials(
-				this._consumer.Key,
-				this._consumer.Secret,
-				this._authorityUrls.MagentoBaseUrl
-				) );
-
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
-
-			this._magentoServiceNotAuth.AfterGettingToken += this._testData.CreateAccessTokenFile;
 		}
 
 		[ TestFixtureSetUp ]
 		public void TestFixtureSetup()
 		{
-			var baseDir = TestContext.CurrentContext.TestDirectory;
-			this._testData = new TestData( baseDir + @"\..\..\Files\Credentials_magento_ConsumerKey.csv", baseDir + @"\..\..\Files\Credentials_magento_AuthorizeEndPoints.csv", baseDir + @"\..\..\Files\Credentials_magento_AccessToken.csv", baseDir + @"\..\..\Files\Credentials_magento_VerifierCode.csv" );
-			this._consumer = this._testData.GetMagentoConsumerCredentials();
-			this._authorityUrls = this._testData.GetMagentoUrls();
-			this._accessToken = this._testData.GetMagentoAccessToken();
-			this._soapUserCredentials = this._testData.GetMagentoSoapUser();
-			this.transmitVerificationCode = () => this._testData.TransmitVerification();
-
-			this._magentoLowLevelSoapVFrom17To19CeService = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null, 300000, 30, true );
-			this._magentoServiceLowLevelSoapV11410Ee = new MagentoServiceLowLevelSoap_v_1_14_1_0_EE( this._soapUserCredentials.ApiUser, this._soapUserCredentials.ApiKey, this._authorityUrls.MagentoBaseUrl, null, 300000, true, 30 );
-			this._magentoServiceLowLevelRestRestRestRestNotAuth = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._authorityUrls.RequestTokenUrl, this._authorityUrls.AuthorizeUrl, this._authorityUrls.AccessTokenUrl );
-			this._magentoServiceLowLevelRestRestRestRest = new MagentoServiceLowLevelRestRest( this._consumer.Key, this._consumer.Secret, this._authorityUrls.MagentoBaseUrl, this._accessToken.AccessToken, this._accessToken.AccessTokenSecret );
-
-			//this.CreateProducts();
-			//this.CreateOrders();
 		}
 
 		[ TestFixtureTearDown ]

@@ -117,7 +117,6 @@
     <Compile Include="MagentoServiceTests\PingSoap\CorrectCredentialsAndUrl.cs" />
     <Compile Include="MagentoServiceTests\DetermineMagentoVersion\InCorrectApiKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Rest\v1x\MeagentoServiceLowLevelRestTest.cs" />
     <Compile Include="Services\Rest\v2x\MeagentoServiceLowLevelRestTest.cs" />
     <Compile Include="Services\Rest\v2x\Repository\SaleRepositoryTest.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ProductRepositoryTest.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="TestEnvironment\MagentoAccessToken.cs" />
     <Compile Include="TestEnvironment\MagentoConsumerCredentials.cs" />
     <Compile Include="TestEnvironment\MagentoUrls.cs" />
-    <Compile Include="TestEnvironment\TestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

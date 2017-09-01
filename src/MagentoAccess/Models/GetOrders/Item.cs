@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace MagentoAccess.Models.Services.Rest.v1x.GetOrders
+namespace MagentoAccess.Models.GetOrders
 {
 	[ Serializable ]
 	public class Item
@@ -78,16 +77,11 @@ namespace MagentoAccess.Models.Services.Rest.v1x.GetOrders
 		}
 	}
 
-	public static class Extensions
+	public static class ItemExtensions
 	{
 		public static bool IsShipped( this Item item )
 		{
 			return item.QtyOrdered.CompareTo( item.QtyCanceled + item.QtyShipped ) == 0;
-		}
-
-		public static bool IsShipped( this Order order )
-		{
-			return order.Items.ToList().TrueForAll( x => x.IsShipped() );
 		}
 	}
 }

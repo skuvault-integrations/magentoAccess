@@ -31,15 +31,15 @@ namespace MagentoAccessTests.Services.Rest.v2x
 			{
 				get
 				{
-					yield return new TestCaseData( new SearchCriteriaTestCase() { Expected = @"searchCriteria=", SearchCriteria = new SearchCriteria() } ).SetName( "SearchCriteria:{}" );
+					yield return new TestCaseData( new SearchCriteriaTestCase() { Expected = @"searchCriteria=", SearchCriteria = new SearchCriteria { filter_groups = new List<FilterGroup>() } } ).SetName( "SearchCriteria:{}" );
 					yield return new TestCaseData( new SearchCriteriaTestCase()
 					{
-						Expected = @"searchCriteria[filter_groups][0][filters][0][field]=size&" +
-						           @"searchCriteria[filter_groups][0][filters][0][value]=Large&" +
-						           @"searchCriteria[filter_groups][0][filters][0][condition_type]=eq&" +
-						           @"searchCriteria[filter_groups][0][filters][1][field]=color&" +
-						           @"searchCriteria[filter_groups][0][filters][1][value]=Red&" +
-						           @"searchCriteria[filter_groups][0][filters][1][condition_type]=eq",
+						Expected = @"searchCriteria[filterGroups][0][filters][0][field]=size&" +
+						           @"searchCriteria[filterGroups][0][filters][0][value]=Large&" +
+						           @"searchCriteria[filterGroups][0][filters][0][conditionType]=eq&" +
+						           @"searchCriteria[filterGroups][0][filters][1][field]=color&" +
+						           @"searchCriteria[filterGroups][0][filters][1][value]=Red&" +
+						           @"searchCriteria[filterGroups][0][filters][1][conditionType]=gt",
 						SearchCriteria = new SearchCriteria()
 						{
 							filter_groups = new List< FilterGroup >()
@@ -48,7 +48,7 @@ namespace MagentoAccessTests.Services.Rest.v2x
 								{
 									filters = new List< Filter >
 									{
-										new Filter( @"size", @"Large", Filter.ConditionType.GreaterThan ),
+										new Filter( @"size", @"Large", Filter.ConditionType.Equals ),
 										new Filter( @"color", @"Red", Filter.ConditionType.GreaterThan ),
 									}
 								}
@@ -58,10 +58,10 @@ namespace MagentoAccessTests.Services.Rest.v2x
 
 					yield return new TestCaseData( new SearchCriteriaTestCase()
 					{
-						Expected = @"searchCriteria[filter_groups][0][filters][0][field]=size&" +
-						           "searchCriteria[filter_groups][0][filters][0][value]=Large&" +
-						           @"searchCriteria[filter_groups][0][filters][1][field]=color&" +
-						           @"searchCriteria[filter_groups][0][filters][1][value]=Red",
+						Expected = @"searchCriteria[filterGroups][0][filters][0][field]=size&" +
+						           @"searchCriteria[filterGroups][0][filters][0][value]=Large&" +
+						           @"searchCriteria[filterGroups][0][filters][1][field]=color&" +
+						           @"searchCriteria[filterGroups][0][filters][1][value]=Red",
 						SearchCriteria = new SearchCriteria()
 						{
 							filter_groups = new List< FilterGroup >()
@@ -80,23 +80,23 @@ namespace MagentoAccessTests.Services.Rest.v2x
 
 					yield return new TestCaseData( new SearchCriteriaTestCase()
 					{
-						Expected = "searchCriteria[filter_groups][0][filters][0][field]=price" +
-						           "&searchCriteria[filter_groups][0][filters][0][value]=20" +
-						           "&searchCriteria[filter_groups][0][filters][0][condition_type]=lt" +
-						           "&searchCriteria[filter_groups][0][filters][1][field]=price" +
-						           "&searchCriteria[filter_groups][0][filters][1][value]=50" +
-						           "&searchCriteria[filter_groups][0][filters][1][condition_type]=gt" +
-						           "&searchCriteria[filter_groups][1][filters][0][field]=price" +
-						           "&searchCriteria[filter_groups][1][filters][0][value]=1" +
-						           "&searchCriteria[filter_groups][1][filters][0][condition_type]=from" +
-						           "&searchCriteria[filter_groups][1][filters][1][field]=price" +
-						           "&searchCriteria[filter_groups][1][filters][1][value]=100" +
-						           "&searchCriteria[filter_groups][1][filters][1][condition_type]=to" +
-						           "&searchCriteria[filter_groups][2][filters][0][field]=price" +
-						           "&searchCriteria[filter_groups][2][filters][0][value]=0" +
-						           "&searchCriteria[filter_groups][2][filters][0][condition_type]=neq" +
-						           "&searchCriteria[current_page]=1" +
-						           "&searchCriteria[page_size]=100",
+						Expected = "searchCriteria[filterGroups][0][filters][0][field]=price" +
+						           "&searchCriteria[filterGroups][0][filters][0][value]=20" +
+						           "&searchCriteria[filterGroups][0][filters][0][conditionType]=lt" +
+						           "&searchCriteria[filterGroups][0][filters][1][field]=price" +
+						           "&searchCriteria[filterGroups][0][filters][1][value]=50" +
+						           "&searchCriteria[filterGroups][0][filters][1][conditionType]=gt" +
+						           "&searchCriteria[filterGroups][1][filters][0][field]=price" +
+						           "&searchCriteria[filterGroups][1][filters][0][value]=1" +
+						           "&searchCriteria[filterGroups][1][filters][0][conditionType]=from" +
+						           "&searchCriteria[filterGroups][1][filters][1][field]=price" +
+						           "&searchCriteria[filterGroups][1][filters][1][value]=100" +
+						           "&searchCriteria[filterGroups][1][filters][1][conditionType]=to" +
+						           "&searchCriteria[filterGroups][2][filters][0][field]=price" +
+						           "&searchCriteria[filterGroups][2][filters][0][value]=0" +
+						           "&searchCriteria[filterGroups][2][filters][0][conditionType]=neq" +
+						           "&searchCriteria[currentPage]=1" +
+						           "&searchCriteria[pageSize]=100",
 						SearchCriteria = new SearchCriteria()
 						{
 							filter_groups = new List< FilterGroup >()
