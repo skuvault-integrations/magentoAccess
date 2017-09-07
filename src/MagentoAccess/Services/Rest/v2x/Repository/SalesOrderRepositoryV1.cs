@@ -12,6 +12,7 @@ using Filter = MagentoAccess.Models.Services.Rest.v2x.Filter;
 using FilterGroup = MagentoAccess.Models.Services.Rest.v2x.FilterGroup;
 using SearchCriteria = MagentoAccess.Models.Services.Rest.v2x.SearchCriteria;
 using Netco.Extensions;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {

@@ -14,6 +14,7 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Soap
 {

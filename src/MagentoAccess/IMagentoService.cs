@@ -11,6 +11,7 @@ using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PingRest;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services.Rest.v1x;
+using Netco.Logging;
 
 namespace MagentoAccess
 {

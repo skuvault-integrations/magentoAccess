@@ -10,6 +10,7 @@ using MagentoAccess.Models.Services.Soap.GetProductInfo;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Services.Soap;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x

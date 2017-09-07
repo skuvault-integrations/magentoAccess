@@ -15,6 +15,7 @@ using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Soap;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTests.Misc

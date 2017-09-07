@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 {

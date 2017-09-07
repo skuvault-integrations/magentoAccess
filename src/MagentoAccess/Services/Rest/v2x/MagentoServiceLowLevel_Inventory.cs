@@ -8,6 +8,7 @@ using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Soap;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x
 {

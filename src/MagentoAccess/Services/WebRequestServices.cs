@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using Netco.Extensions;
+using Netco.Logging;
 
 namespace MagentoAccess.Services
 {

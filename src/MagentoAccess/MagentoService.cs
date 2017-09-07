@@ -35,6 +35,7 @@ using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using MagentoAccess.Services.Soap._2_0_2_0_ce;
 using MagentoAccess.Services.Soap._2_1_0_0_ce;
 using Netco.Extensions;
+using Netco.Logging;
 using BillingAddress = MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository.BillingAddress;
 using Order = MagentoAccess.Models.GetOrders.Order;
 using Payment = MagentoAccess.Models.Services.Soap.GetOrders.Payment;

@@ -11,6 +11,7 @@ using MagentoAccess.Services.Rest.v2x.Repository;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccess.Services.Soap;
 using Netco.ActionPolicyServices;
+using Netco.Logging;
 using MagentoUrl = MagentoAccess.Services.Rest.v2x.WebRequester.MagentoUrl;
 
 namespace MagentoAccess.Services.Rest.v2x

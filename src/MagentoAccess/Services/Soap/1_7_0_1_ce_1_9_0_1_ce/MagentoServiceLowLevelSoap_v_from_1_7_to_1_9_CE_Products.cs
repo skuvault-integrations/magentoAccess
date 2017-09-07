@@ -7,6 +7,7 @@ using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using Netco.Extensions;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 {

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository

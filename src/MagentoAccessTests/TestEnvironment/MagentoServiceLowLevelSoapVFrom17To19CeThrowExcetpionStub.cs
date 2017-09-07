@@ -9,6 +9,7 @@ using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
+using Netco.Logging;
 
 namespace MagentoAccessTests.TestEnvironment
 {

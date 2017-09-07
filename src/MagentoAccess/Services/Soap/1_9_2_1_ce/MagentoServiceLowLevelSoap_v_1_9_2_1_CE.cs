@@ -22,6 +22,7 @@ using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
@@ -128,7 +129,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			try
 			{
 				this.getSessionIdSemaphore.Wait();
-				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalMilliseconds < SessionIdLifeTimeMs )
+				if( !string.IsNullOrWhiteSpace( this._sessionId ) && DateTime.UtcNow.Subtract( this._sessionIdCreatedAt ).TotalMilliseconds < this.SessionIdLifeTimeMs )
 					return new GetSessionIdResponse( this._sessionId, true );
 
 				var sessionId = await this.PullSessionId().ConfigureAwait( false );
@@ -141,7 +142,9 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			catch( Exception exc )
 			{
 				if( throwException )
+				{
 					throw new MagentoSoapException( string.Format( "An error occured during GetSessionId()" ), exc );
+				}
 				else
 				{
 					this.LogTraceGetResponseException( exc );
@@ -220,7 +223,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			var methodParameters = stockItems.ToJson();
 			var stockItemsProcessed = stockItems.Select( x =>
 			{
-				var catalogInventoryStockItemUpdateEntity = ( x.Qty > 0 ) ?
+				var catalogInventoryStockItemUpdateEntity = x.Qty > 0 ?
 					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = x.Qty.ToString() } :
 					new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = x.Qty.ToString() };
 				return Tuple.Create( x, catalogInventoryStockItemUpdateEntity );
@@ -238,7 +241,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
 		{
-			var catalogInventoryStockItemUpdateEntity = ( putStockItem.Qty > 0 ) ?
+			var catalogInventoryStockItemUpdateEntity = putStockItem.Qty > 0 ?
 				new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = putStockItem.Qty.ToString() } :
 				new catalogInventoryStockItemUpdateEntity() { is_in_stock = 0, is_in_stockSpecified = false, qty = putStockItem.Qty.ToString() };
 
@@ -605,9 +608,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			catch( Exception exc )
 			{
 				if( suppressException )
-				{
 					return default(TResult);
-				}
 				throw new MagentoSoapException( $"An error occured during{callerName}->{nameof( this.GetWithAsync )}", exc );
 			}
 		}

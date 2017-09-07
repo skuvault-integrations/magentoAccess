@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {

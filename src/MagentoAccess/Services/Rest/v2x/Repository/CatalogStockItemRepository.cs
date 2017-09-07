@@ -7,6 +7,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository

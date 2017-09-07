@@ -25,6 +25,7 @@ using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._1_14_1_0_ee

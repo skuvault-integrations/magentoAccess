@@ -7,6 +7,7 @@ using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders

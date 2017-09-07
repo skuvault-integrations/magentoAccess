@@ -4,6 +4,7 @@ using FluentAssertions;
 using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync

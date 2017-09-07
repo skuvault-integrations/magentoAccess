@@ -10,6 +10,7 @@ using MagentoAccess.Models.Services.Rest.v2x;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 using RootObject = MagentoAccess.Models.Services.Rest.v2x.Products.RootObject;
 using WebRequest = MagentoAccess.Services.Rest.v2x.WebRequester.WebRequest;

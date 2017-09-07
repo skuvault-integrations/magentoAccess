@@ -12,6 +12,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetSessionId;
 using Netco.Extensions;
+using Netco.Logging;
 using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce

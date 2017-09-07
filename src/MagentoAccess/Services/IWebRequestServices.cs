@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using Netco.Logging;
 
 namespace MagentoAccess.Services
 {

@@ -9,6 +9,7 @@ using MagentoAccess.Models;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccessTestsIntegration.TestEnvironment;
 using Netco.Extensions;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync

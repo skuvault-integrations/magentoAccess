@@ -24,6 +24,7 @@ using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Services.Rest.v2x;
 using Netco.Extensions;
+using Netco.Logging;
 using CatalogInventoryDataStockItemInterface = MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_1_0_0_CE.CatalogInventoryDataStockItemInterface;
 using Category = MagentoAccess.Models.Services.Soap.GetProducts.Category;
 using MagentoUrl = MagentoAccess.Models.Services.Soap.GetProducts.MagentoUrl;

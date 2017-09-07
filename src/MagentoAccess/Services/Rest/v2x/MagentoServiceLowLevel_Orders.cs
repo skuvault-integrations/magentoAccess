@@ -6,6 +6,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Services.Soap;
 using Netco.Extensions;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x
 {

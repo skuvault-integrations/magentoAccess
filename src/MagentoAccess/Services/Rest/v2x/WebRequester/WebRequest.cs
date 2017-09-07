@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x;
+using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x.WebRequester
 {
