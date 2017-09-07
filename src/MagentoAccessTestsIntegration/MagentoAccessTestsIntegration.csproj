@@ -56,8 +56,8 @@
     <Reference Include="LINQtoCSV">
       <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
     </Reference>
-    <Reference Include="Netco">
-      <HintPath>..\packages\Netco.1.4.3\lib\net45\Netco.dll</HintPath>
+    <Reference Include="Netco, Version=1.5.8.0, Culture=neutral, PublicKeyToken=9d732c15ac2ec2c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Netco.1.5.8\lib\net45\Netco.dll</HintPath>
     </Reference>
     <Reference Include="Netco.Logging.NLogIntegration">
       <HintPath>..\packages\Netco.NLog.1.4.3\lib\net45\Netco.Logging.NLogIntegration.dll</HintPath>
