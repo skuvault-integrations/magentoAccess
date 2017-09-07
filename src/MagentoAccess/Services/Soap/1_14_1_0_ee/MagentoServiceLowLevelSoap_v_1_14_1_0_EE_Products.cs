@@ -101,7 +101,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 						res = await call( keepAlive ).ConfigureAwait( false );
 						return;
 					}
-					catch( CommunicationException exc )
+					catch( CommunicationException )
 					{
 						keepAlive = !keepAlive;
 					}
