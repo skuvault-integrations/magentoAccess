@@ -62,7 +62,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			{
 				return Task.FromResult( true );
 			}
-			catch( Exception e )
+			catch( Exception )
 			{
 				if( supressExceptions )
 					return Task.FromResult( false );

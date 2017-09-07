@@ -76,7 +76,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			{
 				return Task.FromResult( true );
 			}
-			catch( Exception e )
+			catch( Exception )
 			{
 				if( supressExceptions )
 					return Task.FromResult( false );
@@ -359,7 +359,6 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;
 
-				var res = false;
 				var privateClient = this._clientFactory.GetClient();
 
 				RpcInvoker.RpcResponse< catalogInventoryStockItemMultiUpdateResponse > serverResponse = null;

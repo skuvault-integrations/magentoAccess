@@ -112,7 +112,7 @@ namespace MagentoAccessTests.Misc
 				{
 					return Task.FromResult( true );
 				}
-				catch( Exception e )
+				catch( Exception )
 				{
 					if( supressExceptions )
 						return Task.FromResult( false );

@@ -44,7 +44,7 @@ namespace MagentoAccess.Services.Rest.v2x
 				await this.ReauthorizeAsync().ConfigureAwait( false );
 				return true;
 			}
-			catch( Exception e )
+			catch( Exception )
 			{
 				if( supressExceptions )
 					return false;
@@ -109,18 +109,11 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		protected async Task ReauthorizeAsync()
 		{
-			try
-			{
-				var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) ).ConfigureAwait( false );
-				var magentoUrl = MagentoUrl.Create( this.Store );
-				this.ProductRepository = new ProductRepository( newToken, magentoUrl );
-				this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
-				this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl );
-			}
-			catch( Exception e )
-			{
-				throw;
-			}
+			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ) ).ConfigureAwait( false );
+			var magentoUrl = MagentoUrl.Create( this.Store );
+			this.ProductRepository = new ProductRepository( newToken, magentoUrl );
+			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl );
+			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl );
 		}
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages => false;
@@ -139,7 +132,7 @@ namespace MagentoAccess.Services.Rest.v2x
 					await Task.WhenAll( task1, task2 ).ConfigureAwait( false );
 					return new GetMagentoInfoResponse( "R2.0.0.0", "CE" );
 				}
-				catch( Exception e )
+				catch( Exception )
 				{
 					if( suppressException )
 						return null;
