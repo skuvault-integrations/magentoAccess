@@ -17,7 +17,7 @@ namespace MagentoAccess
 {
 	public interface IMagentoService
 	{
-		Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, Mark mark2 = null );
+		Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, Mark mark = null );
 
 		Task< IEnumerable< Order > > GetOrdersAsync();
 
@@ -56,6 +56,7 @@ namespace MagentoAccess
 		Func< string > AdditionalLogInfo { get; set; }
 
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null );
+
 		Task< bool > InitAsync( bool supressExc = false );
 	}
 }
