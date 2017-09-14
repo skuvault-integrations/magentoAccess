@@ -106,14 +106,16 @@
     <Compile Include="Models\CreateProducts\CreateProductModel.cs" />
     <Compile Include="Models\CreateProducts\CreateProductResponseModel.cs" />
     <Compile Include="Models\Credentials\MagentoAuthenticatedUserCredentials.cs" />
-    <Compile Include="Models\Credentials\MagentoNonAuthenticatedUserCredentials.cs" />
     <Compile Include="Models\GetMagentoCoreInfo\PingSoapInfo.cs" />
+    <Compile Include="Models\GetOrders\Address.cs" />
+    <Compile Include="Models\GetOrders\Comment.cs" />
+    <Compile Include="Models\GetOrders\Item.cs" />
     <Compile Include="Models\GetOrders\Order.cs" />
     <Compile Include="Models\ConvertToExtensions.cs" />
+    <Compile Include="Models\GetOrders\OrderStatusesEnum.cs" />
     <Compile Include="Models\GetProducts\Category.cs" />
     <Compile Include="Models\GetProducts\MagentoUrl.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
-    <Compile Include="Models\PingRest\MagentoCoreInfo.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
     <Compile Include="Models\Services\Rest\v2x\CatalogStockItemRepository\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\CategoryNode.cs" />
@@ -122,21 +124,6 @@
     <Compile Include="Models\Services\Rest\v2x\Products\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SalesOrderRepository\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SearchCriteria.cs" />
-    <Compile Include="Models\Services\Rest\v1x\BaseResponse\ResponseError.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetOrders\Address.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetOrders\Comment.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetOrders\GetOrdersResponse.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetOrders\Item.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetOrders\Order.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetProducts\GetProductsResponse.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetProducts\Product.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetProduct\GetProductResponse.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetProduct\StockData.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetStockItems\GetStockItemsResponse.cs" />
-    <Compile Include="Models\Services\Rest\v1x\GetStockItems\StockItem.cs" />
-    <Compile Include="Models\Services\Rest\v1x\PutStockItems\PutStockItemsResponse.cs" />
-    <Compile Include="Models\Services\Rest\v1x\PutStockItems\ResponseStockItem.cs" />
-    <Compile Include="Models\Services\Rest\v1x\PutStockItems\StockItem.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\CategoryNode.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\GetCategoryTreeResponse.cs" />
     <Compile Include="Models\Services\Soap\GetOrders\BillingAddress.cs" />
@@ -240,15 +227,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\IWebRequestServices.cs" />
-    <Compile Include="Services\Parsers\MegentoPutInventoryResponseParser.cs" />
-    <Compile Include="Services\Parsers\MegentoInventoryResponseParser.cs" />
-    <Compile Include="Services\Parsers\IMagentoBaseResponseParser.cs" />
-    <Compile Include="Services\Parsers\MagentoBaseResponseParser.cs" />
-    <Compile Include="Services\Parsers\MagentoProductResponseParser.cs" />
-    <Compile Include="Services\Parsers\MagentoProductsResponseParser.cs" />
-    <Compile Include="Services\Parsers\MegentoOrdersResponseParser.cs" />
-    <Compile Include="Services\Rest\v1x\IMagentoServiceLowLevelRest.cs" />
-    <Compile Include="Services\Rest\v1x\MagentoServiceLowLevelRestRest.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Inventory.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Products.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Orders.cs" />

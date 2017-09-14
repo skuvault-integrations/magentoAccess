@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MagentoAccess.Models.Services.Rest.v1x.GetOrders
+namespace MagentoAccess.Models.GetOrders
 {
 	[ Serializable ]
 	public class Comment
