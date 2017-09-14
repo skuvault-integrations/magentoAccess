@@ -9,8 +9,7 @@ namespace MagentoAccess.Services.Soap
 	internal class CustomBehavior : IEndpointBehavior
 	{
 		public bool LogRawMessages { get; set; } = false;
-		public void AddBindingParameters( ServiceEndpoint serviceEndpoint,
-			BindingParameterCollection bindingParameters )
+		public void AddBindingParameters( ServiceEndpoint serviceEndpoint, BindingParameterCollection bindingParameters )
 		{
 			try
 			{
@@ -26,8 +25,7 @@ namespace MagentoAccess.Services.Soap
 			}
 		}
 
-		public void ApplyClientBehavior( ServiceEndpoint serviceEndpoint,
-			ClientRuntime behavior )
+		public void ApplyClientBehavior( ServiceEndpoint serviceEndpoint, ClientRuntime behavior )
 		{
 			try
 			{
@@ -39,11 +37,6 @@ namespace MagentoAccess.Services.Soap
 					if( vsBehaviour != null && vsBehaviour.Any() )
 						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
 				}
-
-				//behavior.CallbackDispatchRuntime.MessageInspectors.Add(new MessageInspector2());
-
-				var inspector = new ClientMessageInspector() { LogRawMessages = this.LogRawMessages };
-				behavior.MessageInspectors.Add( inspector );
 			}
 			catch( Exception )
 			{
