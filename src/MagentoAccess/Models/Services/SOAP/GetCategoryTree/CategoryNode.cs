@@ -26,7 +26,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			Level = category.level;
 			Name = category.name;
 			ParentId = category.parent_id;
-			IsActive = category.is_active;
+			IsActive = category.is_active??0;
 			Childrens = category.children != null ? category.children.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 
@@ -63,7 +63,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			Level = category.level;
 			Name = category.name;
 			ParentId = category.parent_id;
-			IsActive = category.is_active;
+			IsActive = category.is_active??0;
 			Childrens = category.children != null ? category.children.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 
