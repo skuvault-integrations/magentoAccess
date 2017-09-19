@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MagentoAccess.Magento2catalogCategoryManagementV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 {
@@ -26,7 +27,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			Level = category.level;
 			Name = category.name;
 			ParentId = category.parent_id;
-			IsActive = category.is_active??0;
+			IsActive = category.is_active.ToIntOrDefault();
 			Childrens = category.children != null ? category.children.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 
@@ -63,7 +64,7 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			Level = category.level;
 			Name = category.name;
 			ParentId = category.parent_id;
-			IsActive = category.is_active??0;
+			IsActive = category.is_active.ToIntOrDefault();
 			Childrens = category.children != null ? category.children.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
 		}
 
