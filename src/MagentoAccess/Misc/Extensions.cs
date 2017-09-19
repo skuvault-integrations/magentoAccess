@@ -85,12 +85,25 @@ namespace MagentoAccess.Misc
 		{
 			try
 			{
-				var dateTime = long.Parse( srcString, CultureInfo.InvariantCulture );
-				return dateTime;
+				var longOrDefault = long.Parse( srcString, CultureInfo.InvariantCulture );
+				return longOrDefault;
 			}
 			catch
 			{
 				return default(long);
+			}
+		}
+
+		public static int ToIntOrDefault( this string srcString )
+		{
+			try
+			{
+				var intOrDefault = int.Parse( srcString, CultureInfo.InvariantCulture );
+				return intOrDefault;
+			}
+			catch
+			{
+				return default(int);
 			}
 		}
 

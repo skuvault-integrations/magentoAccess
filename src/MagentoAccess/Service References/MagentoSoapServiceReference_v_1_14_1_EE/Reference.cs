@@ -23169,7 +23169,7 @@ namespace MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE {
         
         private string category_idField;
         
-        private int? is_activeField;
+        private string is_activeField;
         
         private string positionField;
         
@@ -23245,7 +23245,7 @@ namespace MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public int? is_active {
+        public string is_active {
             get {
                 return this.is_activeField;
             }
@@ -24126,7 +24126,7 @@ namespace MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE {
         
         private string nameField;
         
-        private int? is_activeField;
+        private string is_activeField;
         
         private int positionField;
         
@@ -24172,7 +24172,7 @@ namespace MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public int? is_active {
+        public string is_active {
             get {
                 return this.is_activeField;
             }
