@@ -27,7 +27,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 				};
 
 				var productsMainPart = ( await productsSelector( 0, 100, x => "%" + x.ToString( "D2" ) ).ConfigureAwait( false ) ).ToList();
-				productsMainPart.AddRange( await productsSelector( 0, 9, x => x.ToString( "D1" ) ).ConfigureAwait( false ) );
+				productsMainPart.AddRange( await productsSelector( 0, 10, x => x.ToString( "D1" ) ).ConfigureAwait( false ) );
 				var soapGetProductsResponse = new SoapGetProductsResponse { Products = productsMainPart };
 
 				return soapGetProductsResponse;
