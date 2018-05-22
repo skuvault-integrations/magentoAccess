@@ -435,7 +435,7 @@ namespace MagentoAccess
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( methodParameters : methodParameters ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( methodParameters : methodParameters ), exception, mark : mark );
 				MagentoLogger.LogTraceException( mexc, mark );
 				throw mexc;
 			}
