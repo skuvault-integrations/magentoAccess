@@ -115,7 +115,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark mark = null )
 		{
 			try
 			{
@@ -138,7 +138,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
@@ -165,13 +165,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 			catch( Exception exc )
 			{
-				throw new MagentoSoapException( $"An error occured during GetOrderAsync(incrementId:{incrementId})", exc );
+				throw new MagentoSoapException( $"An error occured during GetOrderAsync(incrementId:{incrementId}) ", exc, mark );
 			}
 		}
 
-		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order )
+		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark mark = null )
 		{
-			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, mark );
 		}
 	}
 }

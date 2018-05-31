@@ -32,7 +32,7 @@ namespace MagentoAccess.Services.Soap
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId );
-		Task< OrderInfoResponse > GetOrderAsync( Order order );
+		Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark );
 		Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null );
 		Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null );
 		string ToJsonSoapInfo();

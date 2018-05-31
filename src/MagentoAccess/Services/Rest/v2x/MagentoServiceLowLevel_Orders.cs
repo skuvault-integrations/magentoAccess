@@ -50,7 +50,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return new OrderInfoResponse( orderAsync.items.FirstOrDefault() );
 		}
 
-		public Task< OrderInfoResponse > GetOrderAsync( Order order )
+		public Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
 		}

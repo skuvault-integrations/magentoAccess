@@ -405,9 +405,10 @@ namespace MagentoAccess
 				{
 					salesOrderInfoResponses = await orders.ProcessInBatchAsync( 16, async x =>
 					{
-						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( methodParameters : x.ToStringIds() )}", mark );
-						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
-						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}", mark );
+						var childMark = Mark.CreateNew( mark );
+						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( methodParameters : x.ToStringIds() )}", childMark );
+						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x, childMark ).ConfigureAwait( false );
+						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}", childMark );
 						return res;
 					} ).ConfigureAwait( false );
 				}

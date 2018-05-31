@@ -139,7 +139,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order )
+		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
 		}

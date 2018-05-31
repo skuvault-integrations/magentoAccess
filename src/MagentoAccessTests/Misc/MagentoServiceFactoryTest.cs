@@ -145,7 +145,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< OrderInfoResponse > GetOrderAsync( Order order )
+			public Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 			{
 				return null;
 			}

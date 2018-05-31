@@ -43,6 +43,11 @@ namespace MagentoAccess
 			: base( message, exception )
 		{
 		}
+
+		public MagentoSoapException( string message, Exception exception, Mark mark )
+			: base( message, exception, mark )
+		{
+		}
 	}
 
 	public class MagentoRestException: MagentoException

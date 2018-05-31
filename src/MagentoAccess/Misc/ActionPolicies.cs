@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Netco.ActionPolicyServices;
+using Netco.Logging;
 using Netco.Utils;
 
 namespace MagentoAccess.Misc
@@ -33,6 +34,14 @@ namespace MagentoAccess.Misc
 				await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
 			} );
 
+		private static readonly Func< Mark, ActionPolicyAsync > _magentoGetPolicyWithMarkAsync = mark => ActionPolicyAsync.Handle< Exception >()
+			.RetryAsync( 7, async ( ex, i ) =>
+			{
+				MagentoLogger.Log().Trace( ex, "Retrying Magento API get call for the {0} time. Mark: ", i, mark ?? Mark.Blank() );
+				await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
+			} );
+			
+
 		public static ActionPolicy Submit
 		{
 			get { return _magentoSumbitPolicy; }
@@ -51,6 +60,11 @@ namespace MagentoAccess.Misc
 		public static ActionPolicyAsync GetAsync
 		{
 			get { return _magentoGetAsyncPolicy; }
+		}
+
+		public static ActionPolicyAsync GetWithMarkAsync( Mark mark )
+		{
+			return _magentoGetPolicyWithMarkAsync( mark );
 		}
 	}
 }

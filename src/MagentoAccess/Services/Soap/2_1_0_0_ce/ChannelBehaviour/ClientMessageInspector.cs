@@ -40,7 +40,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 				request.Properties.Add( HttpRequestMessageProperty.Name, httpRequestMessage );
 			}
 
-			//Auth Mangeot 2.0
+			//Auth magento 2.0
 			if( httpRequestMessage.Headers.AllKeys.Contains( "Authorization" ) )
 				httpRequestMessage.Headers[ "Authorization" ] = "Bearer " + this.AccessToken;
 			else
