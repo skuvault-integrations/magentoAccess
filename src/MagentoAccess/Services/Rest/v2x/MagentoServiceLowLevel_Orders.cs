@@ -44,7 +44,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		public async Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark )
 		{
 			var orderAsync = await this.SalesOrderRepository.GetOrdersAsync( new List< string > { incrementId }, new PagingModel( 1, 1 ) ).ConfigureAwait( false );
 			return new OrderInfoResponse( orderAsync.items.FirstOrDefault() );
@@ -52,7 +52,7 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		public Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
-			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, childMark );
 		}
 
 		public Task< string > CreateOrder( int shoppingcartid, string store )

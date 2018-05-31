@@ -330,7 +330,7 @@ namespace MagentoAccess
 				var salesOrderInfoResponses = await orderIds.ProcessInBatchAsync( 16, async x =>
 				{
 					MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x )}" );
-					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x ).ConfigureAwait( false );
+					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x, mark ).ConfigureAwait( false );
 					MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x )}" );
 					return res;
 				} ).ConfigureAwait( false );

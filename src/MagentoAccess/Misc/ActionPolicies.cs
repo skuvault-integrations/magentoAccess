@@ -37,7 +37,7 @@ namespace MagentoAccess.Misc
 		private static readonly Func< Mark, ActionPolicyAsync > _magentoGetPolicyWithMarkAsync = mark => ActionPolicyAsync.Handle< Exception >()
 			.RetryAsync( 7, async ( ex, i ) =>
 			{
-				MagentoLogger.Log().Trace( ex, "Retrying Magento API get call for the {0} time. Mark: ", i, mark ?? Mark.Blank() );
+				MagentoLogger.Log().Trace( ex, "Retrying Magento API get call for the {0} time. Mark: {1}", i, mark ?? Mark.Blank() );
 				await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
 			} );
 			

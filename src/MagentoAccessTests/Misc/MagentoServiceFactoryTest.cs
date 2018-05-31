@@ -140,7 +140,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+			public Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark )
 			{
 				return null;
 			}

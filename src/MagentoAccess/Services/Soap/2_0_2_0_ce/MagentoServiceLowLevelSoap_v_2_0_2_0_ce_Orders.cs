@@ -115,7 +115,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark )
 		{
 			try
 			{
@@ -159,7 +159,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
-			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, childMark );
 		}
 	}
 }

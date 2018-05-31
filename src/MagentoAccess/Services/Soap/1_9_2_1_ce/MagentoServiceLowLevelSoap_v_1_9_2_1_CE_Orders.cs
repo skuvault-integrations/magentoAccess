@@ -44,7 +44,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000 ).ConfigureAwait( false );
 		}
 
-		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark )
 		{
 			return await this.GetWithAsync(
 				res => new OrderInfoResponse( res ),
@@ -53,7 +53,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
-			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId );
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, childMark );
 		}
 	}
 }

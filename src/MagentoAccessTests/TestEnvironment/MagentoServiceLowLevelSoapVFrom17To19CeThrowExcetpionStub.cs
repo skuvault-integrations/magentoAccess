@@ -24,7 +24,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< OrderInfoResponse > GetOrderAsync( string incrementId )
+		public override Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark )
 		{
 			throw new Exception();
 		}
