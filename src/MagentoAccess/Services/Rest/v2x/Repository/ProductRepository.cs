@@ -168,13 +168,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 						return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
 				}
-				catch( MagentoException exception )
+				catch( MagentoWebException exception )
 				{
-					var webException = ( exception as MagentoWebException )?.InnerException as WebException;
-					var response = webException?.Response as HttpWebResponse;
-					if( webException?.Status == WebExceptionStatus.ProtocolError && response?.StatusCode == HttpStatusCode.NotFound )
+					if( exception.IsNotFoundException() )
+					{
 						return null;
-					
+					}
 					throw;
 				}
 			} );

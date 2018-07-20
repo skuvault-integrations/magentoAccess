@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Runtime.CompilerServices;
 using Netco.Logging;
 
@@ -63,6 +64,13 @@ namespace MagentoAccess
 		public MagentoWebException( string message, Exception exception )
 			: base( message, exception )
 		{
+		}
+
+		internal bool IsNotFoundException()
+		{
+			var webException = this.InnerException as WebException;
+			var response = webException?.Response as HttpWebResponse;
+			return webException?.Status == WebExceptionStatus.ProtocolError && response?.StatusCode == HttpStatusCode.NotFound;
 		}
 	}
 

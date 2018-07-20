@@ -29,7 +29,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.Method( MagentoWebRequestMethod.Put )
 				.Path( MagentoServicePath.Create(
 					MagentoServicePath.ProductsPath +
-					$"/{productSku}/" +
+					$"/{Uri.EscapeDataString( productSku )}/" +
 					MagentoServicePath.StockItemsPath +
 					$"/{itemId}" ) )
 				.Body( JsonConvert.SerializeObject( stockItem, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore } ) )
@@ -38,9 +38,20 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+				try
 				{
-					return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
+					using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+					{
+						return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
+					}
+				}
+				catch( MagentoWebException exception )
+				{
+					if( exception.IsNotFoundException() )
+					{
+						return false;
+					}
+					throw;
 				}
 			} );
 		}
@@ -58,15 +69,26 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.Create(
 					MagentoServicePath.StockItemsPath +
-					$"/{productSku}" ) )
+					$"/{Uri.EscapeDataString( productSku )}" ) )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+				try
 				{
-					return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+					{
+						return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					}
+				}
+				catch( MagentoWebException exception )
+				{
+					if( exception.IsNotFoundException() )
+					{
+						return null;
+					}
+					throw;
 				}
 			} );
 		}

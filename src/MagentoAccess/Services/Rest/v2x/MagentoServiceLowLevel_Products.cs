@@ -57,7 +57,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			var allCategories = ( await this.ProductRepository.GetCategoriesTreeAsync().ConfigureAwait( false ) ).Flatten();
 			foreach( var product in productsList )
 			{
-				var item = items.First( i => i.id.ToString() == product.ProductId );
+				var item = items.FirstOrDefault( i => i.id.ToString() == product.ProductId );
 				if (item == null)
 					continue;
 				product.Price = item.price;
