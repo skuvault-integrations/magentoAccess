@@ -496,7 +496,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				var res = new magentoInfoResponse();
 				var privateClient = this._clientFactory.GetClient();
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;

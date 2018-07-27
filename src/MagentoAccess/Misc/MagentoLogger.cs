@@ -15,6 +15,8 @@ namespace MagentoAccess.Misc
 			_fvi = FileVersionInfo.GetVersionInfo( assembly.Location );
 		}
 
+		public static string FileVersion => _fvi.FileVersion;
+
 		public static ILogger Log()
 		{
 			return NetcoLogger.GetLogger( "MagentoLogger" );

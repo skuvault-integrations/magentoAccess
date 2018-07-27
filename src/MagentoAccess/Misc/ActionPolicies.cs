@@ -8,12 +8,6 @@ namespace MagentoAccess.Misc
 {
 	internal static class ActionPolicies
 	{
-		private static readonly ActionPolicy _magentoSumbitPolicy = ActionPolicy.Handle< Exception >().Retry( 7, ( ex, i ) =>
-		{
-			MagentoLogger.Log().Trace( ex, "Retrying Magento API submit call for the {0} time", i );
-			SystemUtil.Sleep( TimeSpan.FromSeconds( 0.5 + i ) );
-		} );
-
 		private static readonly ActionPolicyAsync _magentoSumbitAsyncPolicy = ActionPolicyAsync.Handle< Exception >()
 			.RetryAsync( 7, async ( ex, i ) =>
 			{
@@ -37,15 +31,15 @@ namespace MagentoAccess.Misc
 		private static readonly Func< Mark, ActionPolicyAsync > _magentoGetPolicyWithMarkAsync = mark => ActionPolicyAsync.Handle< Exception >()
 			.RetryAsync( 7, async ( ex, i ) =>
 			{
-				MagentoLogger.Log().Trace( ex, "Retrying Magento API get call for the {0} time. Mark: {1}", i, mark ?? Mark.Blank() );
+				MagentoLogger.Log().Trace( ex, "[magento]\t[{0}]\t[Retrying]\t[mark:{1}] Retrying Magento API get call for the {2} time.", MagentoLogger.FileVersion, mark ?? Mark.Blank(), i );
 				await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
 			} );
-			
 
-		public static ActionPolicy Submit
+		public static ActionPolicy Submit { get; } = ActionPolicy.Handle< Exception >().Retry( 7, ( ex, i ) =>
 		{
-			get { return _magentoSumbitPolicy; }
-		}
+			MagentoLogger.Log().Trace( ex, "Retrying Magento API submit call for the {0} time", i );
+			SystemUtil.Sleep( TimeSpan.FromSeconds( 0.5 + i ) );
+		} );
 
 		public static ActionPolicyAsync SubmitAsync
 		{

@@ -44,7 +44,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
