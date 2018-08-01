@@ -30,14 +30,10 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 	internal partial class MagentoServiceLowLevelSoap_v_1_9_2_1_ce : IMagentoServiceLowLevelSoap
 	{
 		public string ApiUser { get; private set; }
-
 		public string ApiKey { get; private set; }
-
 		public string Store { get; private set; }
-
 		public string BaseMagentoUrl { get; set; }
 		public string StoreVersion { get; set; }
-
 		public bool LogRawMessages { get; private set; }
 
 		[ JsonIgnore ]
