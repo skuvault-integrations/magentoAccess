@@ -226,6 +226,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\TsZoey_v_1_9_0_1_CE\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Services\IWebRequestServices.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Inventory.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel_Products.cs" />
@@ -258,6 +263,10 @@
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Factory.cs" />
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
     <Compile Include="Models\GetProducts\CatalogProductInfoRequest.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce_Zoey\ZoeyServiceLowLevelSoap_v_from_1_7_to_1_9_CE.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce_Zoey\ZoeyServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Factory.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce_Zoey\ZoeyServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Orders.cs" />
+    <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce_Zoey\ZoeyServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Products.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE_Products.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_CE_Orders.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory.cs" />
@@ -1776,6 +1785,679 @@
     <None Include="Service References\MagentoSoapServiceReference_v_1_14_1_EE\MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE.storeListResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\Magento.wsdl" />
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.apiEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.associativeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteCouponAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteCouponRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteCustomerAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteCustomerSetResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteLicenseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteLicenseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteOrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquotePaymentListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquotePaymentMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquotePaymentMethodResponseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteProductAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteProductListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteProductMoveToCustomerQuoteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteProductRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteProductUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteShippingListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteShippingMethodEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteShippingMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteTotalsEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.b2bquoteTotalsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.callResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogAssignedProduct.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogAttributeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogAttributeOptionEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryAssignedProductsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryAssignProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryAttributeCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryAttributeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryAttributeOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryEntityNoChildren.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryLevelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryMoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryRemoveProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryTree.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryTreeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryUpdateProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogCategoryUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogInventoryStockItemEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogInventoryStockItemListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogInventoryStockItemMultiUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogInventoryStockItemUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeAddOptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaTypeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeRemoveOptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetAttributeAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetAttributeRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetGroupAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetGroupRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetGroupRenameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeSetRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeTierPriceDeleteByIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeTierPriceInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeTierPriceInfoWithIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeTierPriceUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductAttributeUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCurrentStoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionTypesEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductCustomOptionValueUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductDownloadableLinkAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductDownloadableLinkListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductDownloadableLinkListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductDownloadableLinkRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductGetSpecialPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductImageEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkAssignResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkAttributeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkAttributesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductLinkUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductMultiUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductReturnEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductSetSpecialPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductSpecialPriceReturnEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductTierPriceEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductTierPriceEntityWithId.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductTypeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductTypeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.catalogProductUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.channelintegrationProductUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerAddressCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerAddressDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerAddressEntityItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerAddressInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerAddressListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerAddressUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerCustomerCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerCustomerDeleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerCustomerEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerCustomerInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerCustomerListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerCustomerUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerGroupEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.customerGroupListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.directoryCountryEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.directoryCountryListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.directoryRegionEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.directoryRegionListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.endSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.existsFaltureEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.giftMessageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.giftMessageSetForQuoteItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.giftMessageSetForQuoteProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.giftMessageSetForQuoteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.globalFaultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.loginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.magentoInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.magentoInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.multiCallResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.resourceFaultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.resourcesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCreditmemoAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCreditmemoCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCreditmemoCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCreditmemoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCreditmemoInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderCreditmemoListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderHoldResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceCancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceCaptureResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderInvoiceVoidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderListEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentAddCommentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentAddTrackResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentGetCarriersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentRemoveTrackResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderShipmentSendInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderUnholdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartCouponAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartCouponRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartCreateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartCustomerAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartCustomerSetResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartInfoEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartLicenseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartLicenseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartOrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartPaymentListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartPaymentMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartPaymentMethodResponseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartProductAddResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartProductListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartProductMoveToCustomerQuoteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartProductRemoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartProductUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartShippingListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartShippingMethodEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartShippingMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartTotalsEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.shoppingCartTotalsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.startSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.storeEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.storeInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.storeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\MagentoAccess.TsZoey_v_1_9_0_1_CE.zoeyUtilScheduleFullReindexResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -1797,6 +2479,7 @@
     <WCFMetadataStorage Include="Service References\Magento2salesOrderRepositoryV1_v_2_1_0_0_CE\" />
     <WCFMetadataStorage Include="Service References\MagentoSoapServiceReference\" />
     <WCFMetadataStorage Include="Service References\MagentoSoapServiceReference_v_1_14_1_EE\" />
+    <WCFMetadataStorage Include="Service References\TsZoey_v_1_9_0_1_CE\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\MagentoSoapServiceReference\configuration91.svcinfo" />
@@ -1992,6 +2675,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Service References\V_2_0_2_CE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TsZoey_v_1_9_0_1_CE\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

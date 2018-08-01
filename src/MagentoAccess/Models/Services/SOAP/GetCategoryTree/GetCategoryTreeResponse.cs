@@ -39,6 +39,14 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			this.RootCategory = rootCategory;
 		}
 
+		public GetCategoryTreeResponse( TsZoey_v_1_9_0_1_CE.catalogCategoryTreeResponse catalogCategoryTreeResponse )
+		{
+			if (catalogCategoryTreeResponse == null || catalogCategoryTreeResponse.result == null)
+				return;
+			var rootCategory = new CategoryNode(catalogCategoryTreeResponse.result);
+			RootCategory = rootCategory;
+		}
+
 		public CategoryNode RootCategory { get; set; }
 	}
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using AutoMapper;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
@@ -820,6 +821,168 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Weight = res.weight.ToStringEmptyOnNull( invariantCulture );
 		}
 
+		public OrderInfoResponse( TsZoey_v_1_9_0_1_CE.salesOrderInfoResponse res )
+		{
+			this.AppliedRuleIds = res.result.applied_rule_ids;
+			this.BaseCurrencyCode = res.result.base_currency_code;
+			this.BaseDiscountAmount = res.result.base_discount_amount;
+			this.BaseGrandTotal = res.result.base_grand_total;
+			this.BaseShippingAmount = res.result.base_shipping_amount;
+			this.BaseSubtotal = res.result.base_subtotal;
+			this.BaseTaxAmount = res.result.base_tax_amount;
+			this.BaseToGlobalRate = res.result.base_to_global_rate;
+			this.BaseToOrderRate = res.result.base_to_order_rate;
+			this.BaseTotalCanceled = res.result.base_total_canceled;
+			this.BaseTotalInvoiced = res.result.base_total_invoiced;
+			this.BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
+			this.BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
+			this.BaseTotalPaid = res.result.base_total_paid;
+			this.BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
+			this.BaseTotalRefunded = res.result.base_total_refunded;
+			if( res.result.billing_address != null )
+			{
+				var billingAddress = new BillingAddress
+				{
+					AddressId = res.result.billing_address.address_id,
+					AddressType = res.result.billing_address.address_type,
+					City = res.result.billing_address.city,
+					Company = res.result.billing_address.company,
+					CountryId = res.result.billing_address.country_id,
+					CreatedAt = res.result.billing_address.created_at,
+					Fax = res.result.billing_address.fax,
+					Firstname = res.result.billing_address.firstname,
+					IncrementId = res.result.billing_address.increment_id,
+					IsActive = res.result.billing_address.is_active,
+					Lastname = res.result.billing_address.lastname,
+					ParentId = res.result.billing_address.parent_id,
+					Postcode = res.result.billing_address.postcode,
+					Region = res.result.billing_address.region,
+					RegionId = res.result.billing_address.region_id,
+					Street = res.result.billing_address.street,
+					Telephone = res.result.billing_address.telephone,
+					UpdatedAt = res.result.billing_address.updated_at,
+				};
+				this.BillingAddress = billingAddress;
+			}
+
+			this.BillingAddressId = res.result.billing_address_id;
+			this.BillingFirstname = res.result.billing_firstname;
+			this.BillingLastname = res.result.billing_lastname;
+			this.BillingName = res.result.billing_name;
+			this.CreatedAt = res.result.created_at;
+			this.CustomerEmail = res.result.customer_email;
+			this.CustomerFirstname = res.result.customer_firstname;
+			this.CustomerGroupId = res.result.customer_group_id;
+			this.CustomerId = res.result.customer_id;
+			this.CustomerIsGuest = res.result.customer_is_guest;
+			this.CustomerLastname = res.result.customer_lastname;
+			this.CustomerNoteNotify = res.result.customer_note_notify;
+			this.DiscountAmount = res.result.discount_amount;
+			this.EmailSent = res.result.email_sent;
+			this.GiftMessage = res.result.gift_message;
+			this.GiftMessageId = res.result.gift_message_id;
+			this.GlobalCurrencyCode = res.result.global_currency_code;
+			this.GrandTotal = res.result.grand_total;
+			this.IncrementId = res.result.increment_id;
+			this.IsActive = res.result.is_active;
+			this.IsVirtual = res.result.is_virtual;
+
+			if( res.result.items != null )
+				Items = res.result.items.Select( x => new OrderItemEntity( x ) );
+
+			this.OrderCurrencyCode = res.result.order_currency_code;
+			this.OrderId = res.result.order_id;
+			this.ParentId = res.result.parent_id;
+
+			if( res.result.payment != null )
+			{
+				var payment = new Payment()
+				{
+					AmountOrdered = res.result.payment.amount_ordered,
+					BaseAmountOrdered = res.result.payment.base_amount_ordered,
+					BaseShippingAmount = res.result.payment.base_shipping_amount,
+					CcExpMonth = res.result.payment.cc_exp_month,
+					CcExpYear = res.result.payment.cc_exp_year,
+					CcLast4 = res.result.payment.cc_last4,
+					CcNumberEnc = res.result.payment.cc_number_enc,
+					CcOwner = res.result.payment.cc_owner,
+					CcSsStartMonth = res.result.payment.cc_ss_start_month,
+					CcSsStartYear = res.result.payment.cc_ss_start_year,
+					CcType = res.result.payment.cc_type,
+					CreatedAt = res.result.payment.created_at,
+					IncrementId = res.result.payment.increment_id,
+					IsActive = res.result.payment.is_active,
+					Method = res.result.payment.method,
+					ParentId = res.result.payment.parent_id,
+					PaymentId = res.result.payment.payment_id,
+					PoNumber = res.result.payment.po_number,
+					ShippingAmount = res.result.payment.shipping_amount,
+					UpdatedAt = res.result.payment.updated_at,
+				};
+				this.Payment = payment;
+			}
+
+			this.QuoteId = res.result.quote_id;
+			this.RemoteIp = res.result.remote_ip;
+			if( res.result.shipping_address != null )
+			{
+				this.ShippingAddress = new ShippingAddress()
+				{
+					AddressId = res.result.shipping_address.address_id,
+					AddressType = res.result.shipping_address.address_type,
+					City = res.result.shipping_address.city,
+					Company = res.result.shipping_address.company,
+					CountryId = res.result.shipping_address.country_id,
+					CreatedAt = res.result.shipping_address.created_at,
+					Fax = res.result.shipping_address.fax,
+					Firstname = res.result.shipping_address.firstname,
+					IncrementId = res.result.shipping_address.increment_id,
+					IsActive = res.result.shipping_address.is_active,
+					Lastname = res.result.shipping_address.lastname,
+					ParentId = res.result.shipping_address.parent_id,
+					Postcode = res.result.shipping_address.postcode,
+					Region = res.result.shipping_address.region,
+					RegionId = res.result.shipping_address.region_id,
+					Street = res.result.shipping_address.street,
+					Telephone = res.result.shipping_address.telephone,
+					UpdatedAt = res.result.shipping_address.updated_at,
+				};
+			}
+
+			this.ShippingAddressId = res.result.shipping_address_id;
+			this.ShippingAmount = res.result.shipping_amount;
+			this.ShippingDescription = res.result.shipping_description;
+			this.ShippingFirstname = res.result.shipping_firstname;
+			this.ShippingLastname = res.result.shipping_lastname;
+			this.ShippingMethod = res.result.shipping_method;
+			this.ShippingName = res.result.shipping_name;
+			this.State = res.result.state;
+			this.Status = res.result.status;
+
+			if( res.result.status_history != null )
+			{
+				this.StatusHistory = new List< StatusHistoryRecord >(
+					res.result.status_history.Select( x => new StatusHistoryRecord( x ) ) );
+			}
+
+			this.StoreCurrencyCode = res.result.store_currency_code;
+			this.StoreId = res.result.store_id;
+			this.StoreName = res.result.store_name;
+			this.StoreToBaseRate = res.result.store_to_base_rate;
+			this.StoreToOrderRate = res.result.store_to_order_rate;
+			this.Subtotal = res.result.subtotal;
+			this.TaxAmount = res.result.tax_amount;
+			this.TotalCanceled = res.result.total_canceled;
+			this.TotalInvoiced = res.result.total_invoiced;
+			this.TotalOfflineRefunded = res.result.total_offline_refunded;
+			this.TotalOnlineRefunded = res.result.total_online_refunded;
+			this.TotalPaid = res.result.total_paid;
+			this.TotalQtyOrdered = res.result.total_qty_ordered;
+			this.TotalRefunded = res.result.total_refunded;
+			this.UpdatedAT = res.result.updated_at;
+			this.Weight = res.result.weight;
+		}
+
 		//public OrderInfoResponse( Order response )
 		//{
 		//	throw new NotImplementedException();
@@ -1210,6 +1373,69 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Weight = salesOrderItemEntity.weight.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
 		}
 
+		public OrderItemEntity( TsZoey_v_1_9_0_1_CE.salesOrderItemEntity salesOrderItemEntity )
+		{
+			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, OrderItemEntity >( salesOrderItemEntity, this );
+
+			//this.AmountRefunded = salesOrderItemEntity.amount_refunded;
+			//this.AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
+			//this.BaseAmountRefunded = salesOrderItemEntity.base_amount_refunded;
+			//this.BaseDiscountAmount = salesOrderItemEntity.base_discount_amount;
+			//this.BaseDiscountInvoiced = salesOrderItemEntity.base_discount_invoiced;
+			//this.BaseOriginalPrice = salesOrderItemEntity.base_original_price;
+			//this.BasePrice = salesOrderItemEntity.base_price;
+			//this.BaseRowInvoiced = salesOrderItemEntity.base_row_invoiced;
+			//this.BaseRowTotal = salesOrderItemEntity.base_row_total;
+			//this.BaseTaxAmount = salesOrderItemEntity.base_tax_amount;
+			//this.BaseTaxBeforeDiscount = salesOrderItemEntity.base_tax_before_discount;
+			//this.BaseTaxInvoiced = salesOrderItemEntity.base_tax_invoiced;
+			//this.BaseWeeeTaxAppliedAmount = salesOrderItemEntity.base_weee_tax_applied_amount;
+			//this.BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.base_weee_tax_applied_row_amount;
+			//this.BaseWeeeTaxDisposition = salesOrderItemEntity.base_weee_tax_disposition;
+			//this.BaseWeeeTaxRowDisposition = salesOrderItemEntity.base_weee_tax_row_disposition;
+			//this.Cost = salesOrderItemEntity.cost;
+			//this.CreatedAt = salesOrderItemEntity.created_at;
+			//this.DiscountAmount = salesOrderItemEntity.discount_amount;
+			//this.DiscountInvoiced = salesOrderItemEntity.discount_invoiced;
+			//this.DiscountPercent = salesOrderItemEntity.discount_percent;
+			//this.FreeShipping = salesOrderItemEntity.free_shipping;
+			//this.GiftMessage = salesOrderItemEntity.gift_message;
+			//this.GiftMessageAvailable = salesOrderItemEntity.gift_message_available;
+			//this.GiftMessageId = salesOrderItemEntity.gift_message_id;
+			//this.IsQtyDecimal = salesOrderItemEntity.is_qty_decimal;
+			//this.IsVirtual = salesOrderItemEntity.is_virtual;
+			//this.ItemId = salesOrderItemEntity.item_id;
+			//this.Name = salesOrderItemEntity.name;
+			//this.NoDiscount = salesOrderItemEntity.no_discount;
+			//this.OrderId = salesOrderItemEntity.order_id;
+			//this.OriginalPrice = salesOrderItemEntity.original_price;
+			//this.Price = salesOrderItemEntity.price;
+			//this.ProductId = salesOrderItemEntity.product_id;
+			//this.ProductOptions = salesOrderItemEntity.product_options;
+			//this.ProductType = salesOrderItemEntity.product_type;
+			//this.QtyCanceled = salesOrderItemEntity.qty_canceled;
+			//this.QtyInvoiced = salesOrderItemEntity.qty_invoiced;
+			//this.QtyOrdered = salesOrderItemEntity.qty_ordered;
+			//this.QtyRefunded = salesOrderItemEntity.qty_refunded;
+			//this.QtyShipped = salesOrderItemEntity.qty_shipped;
+			//this.QuoteItemId = salesOrderItemEntity.quote_item_id;
+			//this.RowInvoiced = salesOrderItemEntity.row_invoiced;
+			//this.RowTotal = salesOrderItemEntity.row_total;
+			//this.RowWeight = salesOrderItemEntity.row_weight;
+			//this.Sku = salesOrderItemEntity.sku;
+			//this.TaxAmount = salesOrderItemEntity.tax_amount;
+			//this.TaxBeforeDiscount = salesOrderItemEntity.tax_before_discount;
+			//this.TaxInvoiced = salesOrderItemEntity.tax_invoiced;
+			//this.TaxPercent = salesOrderItemEntity.tax_percent;
+			//this.UpdatedAt = salesOrderItemEntity.updated_at;
+			//this.WeeeTaxApplied = salesOrderItemEntity.weee_tax_applied;
+			//this.WeeeTaxAppliedAmount = salesOrderItemEntity.weee_tax_applied_amount;
+			//this.WeeeTaxAppliedRowAmount = salesOrderItemEntity.weee_tax_applied_row_amount;
+			//this.WeeeTaxDisposition = salesOrderItemEntity.weee_tax_disposition;
+			//this.WeeeTaxRowDisposition = salesOrderItemEntity.weee_tax_row_disposition;
+			//this.Weight = salesOrderItemEntity.weight;
+		}
+
 		public string OrderId { get; set; }
 
 		public string Weight { get; set; }
@@ -1394,6 +1620,11 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.ParentId = salesOrderStatusHistoryEntity.parent_id.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
 			this.Status = salesOrderStatusHistoryEntity.status;
 			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
+		}
+
+		public StatusHistoryRecord( TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity salesOrderStatusHistoryEntity )
+		{
+			Mapper.Map<TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, StatusHistoryRecord>(salesOrderStatusHistoryEntity, this);
 		}
 
 		public object qq { get; set; }

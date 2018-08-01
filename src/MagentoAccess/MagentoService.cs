@@ -785,6 +785,10 @@ namespace MagentoAccess
 						.ForMember( x => x.ShippingMethod, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.method : null ) : null ) : null ) : null ) );
 					;
 
+					cfg.CreateMap<TsZoey_v_1_9_0_1_CE.salesOrderListEntity, Models.Services.Soap.GetOrders.Order>();
+					cfg.CreateMap<TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, Models.Services.Soap.GetOrders.OrderItemEntity>();
+					cfg.CreateMap<TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, MagentoAccess.Models.Services.Soap.GetOrders.StatusHistoryRecord>();
+
 					//.ForAllMembers(x =>
 					//{
 					//	x.NullSubstitute(string.Empty);

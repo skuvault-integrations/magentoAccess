@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
+using MagentoAccess.TsZoey_v_1_9_0_1_CE;
 using Netco.Logging;
 
 namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
@@ -36,7 +35,6 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 				var res = new salesOrderListResponse();
 
 				var privateClient = this._clientFactory.GetClient();
-
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
@@ -85,7 +83,6 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 				var res = new salesOrderListResponse();
 
 				var privateClient = this._clientFactory.GetClient();
-
 
 				await ActionPolicies.GetAsync.Do( async () =>
 				{

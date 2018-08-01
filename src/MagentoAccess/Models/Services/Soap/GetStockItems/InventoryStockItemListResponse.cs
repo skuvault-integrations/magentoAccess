@@ -12,6 +12,7 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 	internal class InventoryStockItemListResponse
 	{
 		public IEnumerable< InventoryStockItem > InventoryStockItems { get; set; }
+
 		public IEnumerable< object > Responses { get; set; }
 
 		public InventoryStockItemListResponse( catalogInventoryStockItemListResponse res )
@@ -49,6 +50,11 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 		public InventoryStockItemListResponse( IEnumerable< InventoryStockItem > toList )
 		{
 			this.InventoryStockItems = toList.Select( x => new InventoryStockItem( x ) );
+		}
+
+		public InventoryStockItemListResponse( TsZoey_v_1_9_0_1_CE.catalogInventoryStockItemListResponse res )
+		{
+			this.InventoryStockItems = res.result.Select( x => new InventoryStockItem( x ) );
 		}
 	}
 
@@ -119,6 +125,14 @@ namespace MagentoAccess.Models.Services.Soap.GetStockItems
 			this.IsInStock = catalogInventoryStockItemEntity.stockStatus.ToString( CultureInfo.InvariantCulture );
 			this.ProductId = catalogInventoryStockItemEntity.productId.ToString( CultureInfo.InvariantCulture );
 			this.Qty = catalogInventoryStockItemEntity.qty.ToString( CultureInfo.InvariantCulture );
+		}
+
+		public InventoryStockItem( TsZoey_v_1_9_0_1_CE.catalogInventoryStockItemEntity catalogInventoryStockItemEntity )
+		{
+			this.IsInStock = catalogInventoryStockItemEntity.is_in_stock;
+			this.ProductId = catalogInventoryStockItemEntity.product_id;
+			this.Qty = catalogInventoryStockItemEntity.qty;
+			this.Sku = catalogInventoryStockItemEntity.sku;
 		}
 	}
 }

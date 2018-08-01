@@ -22,8 +22,14 @@ namespace MagentoAccess.Models.Services.Soap.GetMagentoInfo
 			this.MagentoVersion = magentoVersion;
 		}
 
-		public string MagentoVersion{ get; set; }
+		public GetMagentoInfoResponse( TsZoey_v_1_9_0_1_CE.magentoInfoResponse res )
+		{
+			this.MagentoEdition = res.result.magento_edition;
+			this.MagentoVersion = res.result.magento_version;
+		}
 
-		public string MagentoEdition{ get; set; }
+		public string MagentoVersion { get; set; }
+
+		public string MagentoEdition { get; set; }
 	}
 }

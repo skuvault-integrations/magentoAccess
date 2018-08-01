@@ -7,7 +7,7 @@ using MagentoAccess.Models.Services.Soap.GetProductInfo;
 
 namespace MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList
 {
-	internal class ProductAttributeMediaListResponse: ResponseWithExceptions
+	internal class ProductAttributeMediaListResponse : ResponseWithExceptions
 	{
 		public ProductAttributeMediaListResponse( catalogProductAttributeMediaListResponse res, string productId, string sku )
 		{
@@ -42,9 +42,17 @@ namespace MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList
 			this.MagentoImages = res.catalogProductAttributeMediaGalleryManagementV1GetListResponse.result.Select( x => new MagentoImage( x ) ).ToList();
 		}
 
-		public string ProductId{ get; private set; }
-		public string Sku{ get; private set; }
+		public ProductAttributeMediaListResponse( TsZoey_v_1_9_0_1_CE.catalogProductAttributeMediaListResponse res, string productId, string sku )
+		{
+			this.ProductId = productId;
+			this.Sku = sku;
+			this.MagentoImages = res.result.Select( x => new MagentoImage( x ) ).ToList();
+		}
 
-		public List< MagentoImage > MagentoImages{ get; private set; }
+		public string ProductId { get; private set; }
+
+		public string Sku { get; private set; }
+
+		public List< MagentoImage > MagentoImages { get; private set; }
 	}
 }

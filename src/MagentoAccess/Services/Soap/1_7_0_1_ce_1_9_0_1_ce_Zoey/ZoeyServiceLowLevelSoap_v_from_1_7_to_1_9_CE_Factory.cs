@@ -2,7 +2,7 @@
 
 namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 {
-	internal class ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory: IMagentoServiceLowLevelSoapFactory
+	internal class ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory : IMagentoServiceLowLevelSoapFactory
 	{
 		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials )
 		{
@@ -14,7 +14,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 				credentials.SessionLifeTimeMs,
 				credentials.GetProductsThreadsLimit,
 				credentials.LogRawMessages
-				);
+			);
 		}
 	}
 }

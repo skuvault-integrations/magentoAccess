@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetProducts;
+using MagentoAccess.TsZoey_v_1_9_0_1_CE;
 using Netco.Extensions;
 using Netco.Logging;
 

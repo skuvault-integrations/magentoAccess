@@ -33,10 +33,15 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 	internal partial class MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE: IMagentoServiceLowLevelSoap
 	{
 		public string ApiUser{ get; private set; }
+
 		public string ApiKey{ get; private set; }
+
 		public string Store{ get; private set; }
+
 		public string BaseMagentoUrl{ get; set; }
+
 		public string StoreVersion{ get; set; }
+
 		public bool LogRawMessages { get; private set; }
 
 		[ JsonIgnore ]
@@ -60,8 +65,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 		protected readonly int SessionIdLifeTime;
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages => false;
+
 		public bool GetOrderByIdForFullInformation => true;
+
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
+
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );

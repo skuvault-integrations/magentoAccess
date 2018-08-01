@@ -18,6 +18,12 @@ namespace MagentoAccess.Models.Services.Soap.GetProductAttributeInfo
 				this.Attributes = res.result.options.Select( x => new ProductAttributeInfo( x.label, x.value ) ).ToList();
 		}
 
-		public List< ProductAttributeInfo > Attributes{ get; set; }
+		public CatalogProductAttributeInfoResponse( TsZoey_v_1_9_0_1_CE.catalogProductAttributeInfoResponse res )
+		{
+			if( res?.result?.options != null && res.result.options.Any() )
+				this.Attributes = res.result.options.Select( x => new ProductAttributeInfo( x.label, x.value ) ).ToList();
+		}
+
+		public List< ProductAttributeInfo > Attributes { get; set; }
 	}
 }

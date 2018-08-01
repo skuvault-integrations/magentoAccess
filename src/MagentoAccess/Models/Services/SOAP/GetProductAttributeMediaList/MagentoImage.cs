@@ -67,6 +67,18 @@ namespace MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList
 				return ( MagentoUrlType )0;
 			} ).Aggregate( ( MagentoUrlType )0, ( x, y ) => x | y );
 		}
+
+		public MagentoImage( TsZoey_v_1_9_0_1_CE.catalogProductImageEntity catalogProductImageEntity )
+		{
+			ImageUrl = catalogProductImageEntity.url;
+			this.ImageType = catalogProductImageEntity.types.Select( x =>
+			{
+				MagentoUrlType magentoUrlType;
+				if( Enum.TryParse( x, true, out magentoUrlType ) )
+					return magentoUrlType;
+				return ( MagentoUrlType )0;
+			} ).Aggregate( ( MagentoUrlType )0, ( x, y ) => x | y );
+		}
 	}
 
 	[ Flags ]

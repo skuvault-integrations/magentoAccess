@@ -30,10 +30,15 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 	internal partial class MagentoServiceLowLevelSoap_v_1_9_2_1_ce : IMagentoServiceLowLevelSoap
 	{
 		public string ApiUser { get; private set; }
+
 		public string ApiKey { get; private set; }
+
 		public string Store { get; private set; }
+
 		public string BaseMagentoUrl { get; set; }
+
 		public string StoreVersion { get; set; }
+
 		public bool LogRawMessages { get; private set; }
 
 		[ JsonIgnore ]
@@ -59,6 +64,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public bool GetStockItemsWithoutSkuImplementedWithPages => true;
 
 		public bool GetOrderByIdForFullInformation => true;
+
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
 		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, bool idLifeTimeMs, int sessionIdLifeTimeMs, MagentoConfig config )
