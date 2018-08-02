@@ -196,27 +196,27 @@ namespace MagentoAccess
 			switch ( cfg.Protocol )
 			{
 				case MagentoDefaultProtocol.RestOnly:
-					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
+					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 					break;
 				case MagentoDefaultProtocol.SoapOnly:
-					lowLevelServices.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-					lowLevelServices.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
+					lowLevelServices.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServices.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 					break;
 				case MagentoDefaultProtocol.Default:
 				default:
-					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-					lowLevelServices.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-					lowLevelServices.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
+					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServices.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServices.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 					break;
 			}
 
-			lowLevelServices.Add( MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-			lowLevelServices.Add( MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-			lowLevelServices.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-			lowLevelServices.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
-			lowLevelServices.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials ) );
+			lowLevelServices.Add( MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServices.Add( MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServices.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServices.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServices.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 
-			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServices );
+			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServices, cfg );
 			var defaultVersion = !string.IsNullOrWhiteSpace( magentoConfig?.VersionByDefault ) ? magentoConfig.VersionByDefault : MagentoVersions.M_1_7_0_2;
 			this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( defaultVersion, true, false );
 		}
@@ -820,6 +820,7 @@ namespace MagentoAccess
 		public string EditionByDefault{ get; set; }
 		public MagentoDefaultProtocol Protocol{ get; set; }
 		public ThrowExceptionIfFailed OnUpdateInventory{ get; set; }
+		public bool BindingDecompressionEnabled{ get; set; }
 	}
 
 	public static class MagentoConfigExtension
@@ -831,7 +832,8 @@ namespace MagentoAccess
 				EditionByDefault = "ce",
 				OnUpdateInventory = ThrowExceptionIfFailed.OneItem,
 				Protocol = MagentoDefaultProtocol.SoapOnly,
-				VersionByDefault = "1.9.2.2"
+				VersionByDefault = "1.9.2.2",
+				BindingDecompressionEnabled = false,
 			};
 		}
 	}

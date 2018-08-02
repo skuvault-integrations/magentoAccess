@@ -20,6 +20,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		private readonly string _baseMagentoUrl;
 		private readonly bool _logRawMessages;
+		private readonly MagentoConfig _config;
 
 		private string _session;
 
@@ -31,7 +32,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				if( !string.Equals( this._session, value ) )
 				{
 					this._session = value;
-					this.ReCreateFactories( this._baseMagentoUrl, this._logRawMessages, this._session );
+					this.ReCreateFactories( this._baseMagentoUrl, this._logRawMessages, this._session, this._config );
 				}
 			}
 		}
@@ -44,43 +45,44 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		private Magento2xCommonClientFactory< backendModuleServiceV1PortTypeClient, backendModuleServiceV1PortType > _backendModuleServiceFactory;
 		private Magento2xCommonClientFactory< catalogInventoryStockRegistryV1PortTypeClient, catalogInventoryStockRegistryV1PortType > _catalogInventoryStockRegistryFactory;
 
-		public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, string sessionId )
+		public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, string sessionId, MagentoConfig config )
 		{
 			this._baseMagentoUrl = baseMagentoUrl;
 			this._logRawMessages = logRawMessages;
 			this._session = sessionId;
-			this.ReCreateFactories( baseMagentoUrl, logRawMessages, sessionId );
+			this._config = config;
+			this.ReCreateFactories( baseMagentoUrl, logRawMessages, sessionId, config );
 		}
 
-		private void ReCreateFactories( string baseMagentoUrl, bool logRawMessages, string sessionId )
+		private void ReCreateFactories( string baseMagentoUrl, bool logRawMessages, string sessionId, MagentoConfig config)
 		{
 			this._adminClientFactory = new Magento2xCommonClientFactory< integrationAdminTokenServiceV1PortTypeClient, integrationAdminTokenServiceV1PortType >(
 				( binding, endpoint ) => new integrationAdminTokenServiceV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "integrationAdminTokenServiceV1", MessageVersion.Soap12, logRawMessages, sessionId );
+				baseMagentoUrl, "integrationAdminTokenServiceV1", MessageVersion.Soap12, logRawMessages, sessionId, config );
 
 			this._mediaGalleryFactory = new Magento2xCommonClientFactory< catalogProductAttributeMediaGalleryManagementV1PortTypeClient, catalogProductAttributeMediaGalleryManagementV1PortType >(
 				( binding, endpoint ) => new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "catalogProductAttributeMediaGalleryManagementV1", MessageVersion.Soap11, logRawMessages, sessionId );
+				baseMagentoUrl, "catalogProductAttributeMediaGalleryManagementV1", MessageVersion.Soap11, logRawMessages, sessionId, config );
 
 			this._salesOrderRepositoryFactory = new Magento2xCommonClientFactory< salesOrderRepositoryV1PortTypeClient, salesOrderRepositoryV1PortType >(
 				( binding, endpoint ) => new salesOrderRepositoryV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "salesOrderRepositoryV1", MessageVersion.Soap11, logRawMessages, sessionId );
+				baseMagentoUrl, "salesOrderRepositoryV1", MessageVersion.Soap11, logRawMessages, sessionId, config );
 
 			this._categoriesRepositoryFactory = new Magento2xCommonClientFactory< catalogCategoryManagementV1PortTypeClient, catalogCategoryManagementV1PortType >(
 				( binding, endpoint ) => new catalogCategoryManagementV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "catalogCategoryManagementV1", MessageVersion.Soap11, logRawMessages, sessionId );
+				baseMagentoUrl, "catalogCategoryManagementV1", MessageVersion.Soap11, logRawMessages, sessionId, config );
 
 			this._catalogProductRepositoryFactory = new Magento2xCommonClientFactory< catalogProductRepositoryV1PortTypeClient, catalogProductRepositoryV1PortType >(
 				( binding, endpoint ) => new catalogProductRepositoryV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "catalogProductRepositoryV1", MessageVersion.Soap12, logRawMessages, sessionId );
+				baseMagentoUrl, "catalogProductRepositoryV1", MessageVersion.Soap12, logRawMessages, sessionId, config );
 
 			this._backendModuleServiceFactory = new Magento2xCommonClientFactory< backendModuleServiceV1PortTypeClient, backendModuleServiceV1PortType >(
 				( binding, endpoint ) => new backendModuleServiceV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "backendModuleServiceV1", MessageVersion.Soap12, logRawMessages, sessionId );
+				baseMagentoUrl, "backendModuleServiceV1", MessageVersion.Soap12, logRawMessages, sessionId, config );
 
 			this._catalogInventoryStockRegistryFactory = new Magento2xCommonClientFactory< catalogInventoryStockRegistryV1PortTypeClient, catalogInventoryStockRegistryV1PortType >(
 				( binding, endpoint ) => new catalogInventoryStockRegistryV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "catalogInventoryStockRegistryV1", MessageVersion.Soap11, logRawMessages, sessionId );
+				baseMagentoUrl, "catalogInventoryStockRegistryV1", MessageVersion.Soap11, logRawMessages, sessionId, config );
 		}
 
 		public T CreateClient< T >() where T : class
@@ -224,11 +226,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			private readonly CustomBinding _binding;
 			private readonly EndpointAddress _endpointAddress;
 
-			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, MessageVersion messageVersion, bool logRawMessages, string sessionId ) : base( baseMagentoUrl, logRawMessages )
+			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, MessageVersion messageVersion, bool logRawMessages, string sessionId, MagentoConfig config ) : base( baseMagentoUrl, logRawMessages, config )
 			{
 				this._sessionId = sessionId;
 				this._clientBuilder = clientBuilder;
-				this._binding = CustomBinding( this._baseMagentoUrl, messageVersion );
+				this._binding = CustomBinding( this._baseMagentoUrl, messageVersion, this._config.BindingDecompressionEnabled );
 				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl + servicesName }.BuildUrl( trimTailsSlash : true );
 				this._endpointAddress = new EndpointAddress( endPoint );
 			}

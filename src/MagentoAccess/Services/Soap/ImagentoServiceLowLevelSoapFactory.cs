@@ -5,6 +5,6 @@ namespace MagentoAccess.Services.Soap
 {
 	internal interface IMagentoServiceLowLevelSoapFactory
 	{
-		IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials );
+		IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials, MagentoConfig config );
 	}
 }

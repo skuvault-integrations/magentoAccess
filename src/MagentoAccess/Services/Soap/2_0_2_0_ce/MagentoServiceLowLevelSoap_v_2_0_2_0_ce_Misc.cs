@@ -89,7 +89,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		}
 
 		#region Contract
-		public MagentoServiceLowLevelSoap_v_2_0_2_0_ce( string apiUser, string apiKey, string baseMagentoUrl, bool logRawMessages, string store )
+		public MagentoServiceLowLevelSoap_v_2_0_2_0_ce( string apiUser, string apiKey, string baseMagentoUrl, bool logRawMessages, string store, MagentoConfig config )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
@@ -97,7 +97,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			this.BaseMagentoUrl = baseMagentoUrl;
 			this.LogRawMessages = logRawMessages;
 
-			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, this.ApiKey );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, this.ApiKey, config );
 			this.PullSessionId = async () =>
 			{
 				if( !string.IsNullOrWhiteSpace( this.ApiUser ) && string.Compare( this.ApiUser, "bearer", StringComparison.InvariantCultureIgnoreCase ) != 0 )

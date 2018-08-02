@@ -6,7 +6,7 @@ namespace MagentoAccess.Services.Rest.v2x
 {
 	internal class MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory : IMagentoServiceLowLevelSoapFactory
 	{
-		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials )
+		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials, MagentoConfig config )
 		{
 			return new MagentoServiceLowLevel(
 				credentials.SoapApiUser,
