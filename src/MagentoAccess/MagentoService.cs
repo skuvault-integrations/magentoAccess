@@ -232,7 +232,7 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
-				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false );
+				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false, String.Empty );
 				var soapInfos = await this.DetermineMagentoVersionAsync( mark ).ConfigureAwait( false );
 				var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
 				if( pingSoapInfos.Any() )
@@ -270,10 +270,12 @@ namespace MagentoAccess
 				{
 					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
 						return null;
-					return await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
+					var getMagentoInfoResponse = await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
+					getMagentoInfoResponse.ServiceVersion = kvp.Key;
+					return getMagentoInfoResponse;
 				} ).ConfigureAwait( false );
 				var workingStores = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
-				var pingSoapInfos = workingStores.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
+				var pingSoapInfos = workingStores.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true, x.ServiceVersion ) );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfos.ToJson() ) );
 
@@ -296,7 +298,7 @@ namespace MagentoAccess
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, markLocal ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
-				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks );
+				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks, string.Empty );
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : magentoCoreInfo.ToJson() ), markLocal );
 
 				return magentoCoreInfo;

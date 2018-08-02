@@ -9,7 +9,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 	{
 		private IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
 		{
-			//return Environment.ActiveEnvironmentRows.Select( line => new MagentoServiceSoapCredentials() { MagentoVersion = line.Version, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl });
+			//return Environment.GetActiveConfigs.Select( line => new MagentoServiceSoapCredentials() { MagentoVersion = line.Version, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl });
 			yield break;
 		}
 	}
@@ -24,7 +24,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		{
 			get
 			{
-				return TestEnvironment.ActiveEnvironmentRows.Select( line => new TestCaseData( new BaseTest.MagentoServiceSoapCredentials { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = line.ServiceVersion, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl } ).SetName( line.MagentoVersion ) );
+				return TestStoresConfigsVault.GetActiveConfigs.Select( line => new TestCaseData( new BaseTest.MagentoServiceSoapCredentials { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = line.ServiceVersion, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl } ).SetName( line.MagentoVersion ) );
 				//yield break;
 			}
 		}

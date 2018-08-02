@@ -5,23 +5,23 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
 {
-	public static class TestEnvironment
+	public static class TestStoresConfigsVault
 	{
 		private const string TestCasesFile = @"\..\..\Files\Credentials_magento_TestEnvironment.csv";
-		private static readonly IEnumerable< EnvironmentCredentialRow > _environmentRows;
+		private static readonly IEnumerable< StoreConfig > _environmentRows;
 
-		static TestEnvironment()
+		static TestStoresConfigsVault()
 		{
 			var cc = new CsvContext();
-			_environmentRows = cc.Read< EnvironmentCredentialRow >( TestContext.CurrentContext.TestDirectory + TestCasesFile, new CsvFileDescription { FirstLineHasColumnNames = true } );
+			_environmentRows = cc.Read< StoreConfig >( TestContext.CurrentContext.TestDirectory + TestCasesFile, new CsvFileDescription { FirstLineHasColumnNames = true } );
 		}
 
-		public static IEnumerable< EnvironmentCredentialRow > ActiveEnvironmentRows
+		public static IEnumerable< StoreConfig > GetActiveConfigs
 		{
 			get { return _environmentRows.Where( line => line.Active == "1" ); }
 		}
 
-		public class EnvironmentCredentialRow
+		public class StoreConfig
 		{
 			[ CsvColumn( Name = "Active", FieldIndex = 1 ) ]
 			public string Active { get; set; }
@@ -49,6 +49,12 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 			[ CsvColumn( Name = "MagentoPass", FieldIndex = 9 ) ]
 			public string MagentoPass { get; set; }
+
+			[ CsvColumn( Name = "GetProductThreadsLimit", FieldIndex = 10 ) ]
+			public string GetProductThreadsLimit { get; set; }
+
+			[ CsvColumn( Name = "GetProductDetailsThreadsLimit", FieldIndex = 11 ) ]
+			public string GetProductDetailsThreadsLimit { get; set; }
 		}
 	}
 }

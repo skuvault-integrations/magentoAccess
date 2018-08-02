@@ -31,5 +31,7 @@ namespace MagentoAccess.Models.Services.Soap.GetMagentoInfo
 		public string MagentoVersion { get; set; }
 
 		public string MagentoEdition { get; set; }
+
+		public string ServiceVersion { get; set; }
 	}
 }
