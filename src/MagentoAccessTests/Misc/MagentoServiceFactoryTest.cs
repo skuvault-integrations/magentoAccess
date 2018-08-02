@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetProducts;
@@ -31,7 +32,7 @@ namespace MagentoAccessTests.Misc
 		public string GetMagentoSubVersion_InputIsCorrectVersion_SubversionReturned( int deep, string magentoVer )
 		{
 			//------------ Arrange
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null );
 
 			//------------ Act
 			var version = magentoServiceLowLevelSoapFactory.GetSubVersion( deep, magentoVer );
@@ -69,7 +70,7 @@ namespace MagentoAccessTests.Misc
 				{ s7.Store, s7 },
 				{ s8.Store, s8 },
 			};
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( new MagentoAuthenticatedUserCredentials( "", "", "http://base.url", "", "", "", "", 0, 0, false ), factories );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( new MagentoAuthenticatedUserCredentials( "", "", "http://base.url", "", "", "", "", 0, 0, false ), factories, null );
 
 			//------------ Act
 			var magentoServiceLowLevelSoap = magentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( magentoVer, true, false );

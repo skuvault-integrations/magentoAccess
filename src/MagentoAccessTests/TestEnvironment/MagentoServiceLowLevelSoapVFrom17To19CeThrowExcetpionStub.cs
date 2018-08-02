@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
@@ -15,7 +16,7 @@ namespace MagentoAccessTests.TestEnvironment
 {
 	internal class MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub : MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE
 	{
-		public MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub( string apiUser, string apiKey, string baseMagentoUrl, string store ) : base( apiUser, apiKey, baseMagentoUrl, store, 300000, 30, true )
+		public MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub( string apiUser, string apiKey, string baseMagentoUrl, string store ) : base( apiUser, apiKey, baseMagentoUrl, store, 300000, 30, true, new MagentoConfig() )
 		{
 		}
 

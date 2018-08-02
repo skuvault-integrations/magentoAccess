@@ -16,11 +16,13 @@ namespace MagentoAccess.Services.Soap
 
 		protected readonly string _baseMagentoUrl;
 		protected readonly bool _logRawMessages;
+		protected readonly MagentoConfig _config;
 
-		internal BaseMagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages )
+		internal BaseMagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config )
 		{
 			this._baseMagentoUrl = baseMagentoUrl;
 			this._logRawMessages = logRawMessages;
+			this._config = config;
 		}
 
 		public T GetClient()
@@ -46,7 +48,7 @@ namespace MagentoAccess.Services.Soap
 			return client;
 		}
 
-		protected static CustomBinding CustomBinding( string baseMagentoUrl, MessageVersion messageVersion )
+		protected static CustomBinding CustomBinding( string baseMagentoUrl, MessageVersion messageVersion, bool decompressionEnabled )
 		{
 			var textMessageEncodingBindingElement = new TextMessageEncodingBindingElement
 			{
@@ -59,7 +61,7 @@ namespace MagentoAccess.Services.Soap
 			{
 				httpTransportBindingElement = new HttpsTransportBindingElement
 				{
-					DecompressionEnabled = false,
+					DecompressionEnabled = decompressionEnabled,
 					MaxReceivedMessageSize = 999999999,
 					MaxBufferSize = 999999999,
 					MaxBufferPoolSize = 999999999,
@@ -71,7 +73,7 @@ namespace MagentoAccess.Services.Soap
 			{
 				httpTransportBindingElement = new HttpTransportBindingElement
 				{
-					DecompressionEnabled = false,
+					DecompressionEnabled = decompressionEnabled,
 					MaxReceivedMessageSize = 999999999,
 					MaxBufferSize = 999999999,
 					MaxBufferPoolSize = 999999999,

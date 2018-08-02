@@ -65,7 +65,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public bool GetOrderByIdForFullInformation => true;
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
-		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, bool idLifeTimeMs, int sessionIdLifeTimeMs )
+		public MagentoServiceLowLevelSoap_v_1_9_2_1_ce( string apiUser, string apiKey, string baseMagentoUrl, string store, int getProductsMaxThreads, bool idLifeTimeMs, int sessionIdLifeTimeMs, MagentoConfig config )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
@@ -75,7 +75,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			this._getProductsMaxThreads = getProductsMaxThreads;
 			this.SessionIdLifeTimeMs = sessionIdLifeTimeMs;
-			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, idLifeTimeMs );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, idLifeTimeMs, config );
 			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
@@ -93,14 +93,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 		private sealed class MagentoServiceSoapClientFactory : BaseMagentoServiceSoapClientFactory< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, Mage_Api_Model_Server_Wsi_HandlerPortType >
 		{
-			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages ) : base( baseMagentoUrl, logRawMessages )
+			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config ) : base( baseMagentoUrl, logRawMessages, config )
 			{
 			}
 
 			protected override Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateClient()
 			{
 				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl }.BuildUrl();
-				var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11 );
+				var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11, this._config.BindingDecompressionEnabled );
 				var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
 
 				magentoSoapService.Endpoint.Behaviors.Add( new CustomBehavior() { LogRawMessages = this._logRawMessages } );

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MagentoAccess;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using Netco.Extensions;
 using NUnit.Framework;
@@ -17,7 +18,7 @@ namespace MagentoAccessTests.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 		{
 			//A
 			var apiCallsCount = 0;
-			var magentoServiceLowLevelSoapVFrom17To19Ce = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( "qwe", "qwe", "https://magento.com", "1", 300000, 30, true )
+			var magentoServiceLowLevelSoapVFrom17To19Ce = new MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE( "qwe", "qwe", "https://magento.com", "1", 300000, 30, true, new MagentoConfig() )
 			{
 				PullSessionId = async () =>
 				{

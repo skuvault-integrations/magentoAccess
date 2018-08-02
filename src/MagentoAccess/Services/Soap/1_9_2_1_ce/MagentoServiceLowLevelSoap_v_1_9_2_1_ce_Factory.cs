@@ -5,7 +5,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
 	internal class MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory : IMagentoServiceLowLevelSoapFactory
 	{
-		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials )
+		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials, MagentoConfig config )
 		{
 			return new MagentoServiceLowLevelSoap_v_1_9_2_1_ce(
 				credentials.SoapApiUser,
@@ -14,7 +14,8 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				null,
 				credentials.GetProductsThreadsLimit,
 				credentials.LogRawMessages,
-				credentials.SessionLifeTimeMs 
+				credentials.SessionLifeTimeMs,
+				config
 				);
 		}
 	}

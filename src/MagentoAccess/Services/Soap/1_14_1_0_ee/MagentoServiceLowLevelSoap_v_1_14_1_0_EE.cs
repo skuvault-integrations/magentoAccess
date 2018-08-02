@@ -120,14 +120,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_1_14_1_0_EE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, bool logMessages, int getProductsMaxThreads )
+		public MagentoServiceLowLevelSoap_v_1_14_1_0_EE( string apiUser, string apiKey, string baseMagentoUrl, string store, int sessionIdLifeTime, bool logMessages, int getProductsMaxThreads, MagentoConfig config )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
 
-			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logMessages );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logMessages, config );
 			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
@@ -149,10 +149,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		{
 			private readonly MagentoServiceSoapClientFactoryWithKeepAlive _clientFactoryDefault, _clientFactoryWithoutKeepAlive;
 
-			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages )
+			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config )
 			{
-				this._clientFactoryDefault = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages );
-				this._clientFactoryWithoutKeepAlive = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages, false );
+				this._clientFactoryDefault = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages, config );
+				this._clientFactoryWithoutKeepAlive = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages, config, false );
 			}
 
 			public Mage_Api_Model_Server_Wsi_HandlerPortTypeClient GetClient( bool keepAlive = true )
@@ -169,7 +169,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			{
 				private readonly bool _keepAlive;
 
-				public MagentoServiceSoapClientFactoryWithKeepAlive( string baseMagentoUrl, bool logRawMessages, bool keepAlive = true ) : base( baseMagentoUrl, logRawMessages )
+				public MagentoServiceSoapClientFactoryWithKeepAlive( string baseMagentoUrl, bool logRawMessages, MagentoConfig config, bool keepAlive = true ) : base( baseMagentoUrl, logRawMessages, config )
 				{
 					this._keepAlive = keepAlive;
 				}
@@ -179,7 +179,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 					var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl }.BuildUrl();
 
 					// for cpecific clients, where servers can close connection
-					var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11 );
+					var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11, this._config.BindingDecompressionEnabled );
 					dynamic httpsTransportBindingElement = customBinding.Elements.Find< HttpsTransportBindingElement >();
 					httpsTransportBindingElement = httpsTransportBindingElement ?? customBinding.Elements.Find< HttpTransportBindingElement >();
 					httpsTransportBindingElement.KeepAliveEnabled = this._keepAlive;
