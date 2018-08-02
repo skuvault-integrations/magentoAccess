@@ -23,6 +23,7 @@ using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
+using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using MagentoAccess.Services.Soap._2_0_2_0_ce;
 using MagentoAccess.Services.Soap._2_1_0_0_ce;
@@ -215,6 +216,7 @@ namespace MagentoAccess
 			lowLevelServices.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 			lowLevelServices.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 			lowLevelServices.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServices.Add( MagentoVersions.ZS_1_7_0_1, new ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 
 			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServices, cfg );
 			var defaultVersion = !string.IsNullOrWhiteSpace( magentoConfig?.VersionByDefault ) ? magentoConfig.VersionByDefault : MagentoVersions.M_1_7_0_2;
@@ -270,12 +272,12 @@ namespace MagentoAccess
 						return null;
 					return await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
-				var workingStore = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
-				var pingSoapInfo = workingStore.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
+				var workingStores = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
+				var pingSoapInfos = workingStores.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true ) );
 
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfos.ToJson() ) );
 
-				return pingSoapInfo;
+				return pingSoapInfos;
 			}
 			catch( Exception exception )
 			{
