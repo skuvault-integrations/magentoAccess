@@ -65,6 +65,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
+		public string GetServiceVersion()
+		{
+			return MagentoVersions.ZS_1_7_0_1;
+		}
+
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
@@ -465,7 +470,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 						res = await privateClient.magentoInfoAsync( sessionId.SessionId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new GetMagentoInfoResponse( res );
+				return new GetMagentoInfoResponse( res, this.GetServiceVersion() );
 			}
 			catch( Exception exc )
 			{

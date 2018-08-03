@@ -7,6 +7,7 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
+using salesOrderPaymentEntity = MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderPaymentEntity;
 
 namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
@@ -841,28 +842,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.BaseTotalRefunded = res.result.base_total_refunded;
 			if( res.result.billing_address != null )
 			{
-				var billingAddress = new BillingAddress
-				{
-					AddressId = res.result.billing_address.address_id,
-					AddressType = res.result.billing_address.address_type,
-					City = res.result.billing_address.city,
-					Company = res.result.billing_address.company,
-					CountryId = res.result.billing_address.country_id,
-					CreatedAt = res.result.billing_address.created_at,
-					Fax = res.result.billing_address.fax,
-					Firstname = res.result.billing_address.firstname,
-					IncrementId = res.result.billing_address.increment_id,
-					IsActive = res.result.billing_address.is_active,
-					Lastname = res.result.billing_address.lastname,
-					ParentId = res.result.billing_address.parent_id,
-					Postcode = res.result.billing_address.postcode,
-					Region = res.result.billing_address.region,
-					RegionId = res.result.billing_address.region_id,
-					Street = res.result.billing_address.street,
-					Telephone = res.result.billing_address.telephone,
-					UpdatedAt = res.result.billing_address.updated_at,
-				};
-				this.BillingAddress = billingAddress;
+				this.BillingAddress = new BillingAddress( res.result.billing_address );
 			}
 
 			this.BillingAddressId = res.result.billing_address_id;
@@ -888,7 +868,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.IsVirtual = res.result.is_virtual;
 
 			if( res.result.items != null )
-				Items = res.result.items.Select( x => new OrderItemEntity( x ) );
+				this.Items = res.result.items.Select( x => new OrderItemEntity( x ) );
 
 			this.OrderCurrencyCode = res.result.order_currency_code;
 			this.OrderId = res.result.order_id;
@@ -896,30 +876,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 			if( res.result.payment != null )
 			{
-				var payment = new Payment()
-				{
-					AmountOrdered = res.result.payment.amount_ordered,
-					BaseAmountOrdered = res.result.payment.base_amount_ordered,
-					BaseShippingAmount = res.result.payment.base_shipping_amount,
-					CcExpMonth = res.result.payment.cc_exp_month,
-					CcExpYear = res.result.payment.cc_exp_year,
-					CcLast4 = res.result.payment.cc_last4,
-					CcNumberEnc = res.result.payment.cc_number_enc,
-					CcOwner = res.result.payment.cc_owner,
-					CcSsStartMonth = res.result.payment.cc_ss_start_month,
-					CcSsStartYear = res.result.payment.cc_ss_start_year,
-					CcType = res.result.payment.cc_type,
-					CreatedAt = res.result.payment.created_at,
-					IncrementId = res.result.payment.increment_id,
-					IsActive = res.result.payment.is_active,
-					Method = res.result.payment.method,
-					ParentId = res.result.payment.parent_id,
-					PaymentId = res.result.payment.payment_id,
-					PoNumber = res.result.payment.po_number,
-					ShippingAmount = res.result.payment.shipping_amount,
-					UpdatedAt = res.result.payment.updated_at,
-				};
-				this.Payment = payment;
+				this.Payment = new Payment( res.result.payment );
 			}
 
 			this.QuoteId = res.result.quote_id;
@@ -1376,64 +1333,6 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public OrderItemEntity( TsZoey_v_1_9_0_1_CE.salesOrderItemEntity salesOrderItemEntity )
 		{
 			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, OrderItemEntity >( salesOrderItemEntity, this );
-
-			//this.AmountRefunded = salesOrderItemEntity.amount_refunded;
-			//this.AppliedRuleIds = salesOrderItemEntity.applied_rule_ids;
-			//this.BaseAmountRefunded = salesOrderItemEntity.base_amount_refunded;
-			//this.BaseDiscountAmount = salesOrderItemEntity.base_discount_amount;
-			//this.BaseDiscountInvoiced = salesOrderItemEntity.base_discount_invoiced;
-			//this.BaseOriginalPrice = salesOrderItemEntity.base_original_price;
-			//this.BasePrice = salesOrderItemEntity.base_price;
-			//this.BaseRowInvoiced = salesOrderItemEntity.base_row_invoiced;
-			//this.BaseRowTotal = salesOrderItemEntity.base_row_total;
-			//this.BaseTaxAmount = salesOrderItemEntity.base_tax_amount;
-			//this.BaseTaxBeforeDiscount = salesOrderItemEntity.base_tax_before_discount;
-			//this.BaseTaxInvoiced = salesOrderItemEntity.base_tax_invoiced;
-			//this.BaseWeeeTaxAppliedAmount = salesOrderItemEntity.base_weee_tax_applied_amount;
-			//this.BaseWeeeTaxAppliedRowAmount = salesOrderItemEntity.base_weee_tax_applied_row_amount;
-			//this.BaseWeeeTaxDisposition = salesOrderItemEntity.base_weee_tax_disposition;
-			//this.BaseWeeeTaxRowDisposition = salesOrderItemEntity.base_weee_tax_row_disposition;
-			//this.Cost = salesOrderItemEntity.cost;
-			//this.CreatedAt = salesOrderItemEntity.created_at;
-			//this.DiscountAmount = salesOrderItemEntity.discount_amount;
-			//this.DiscountInvoiced = salesOrderItemEntity.discount_invoiced;
-			//this.DiscountPercent = salesOrderItemEntity.discount_percent;
-			//this.FreeShipping = salesOrderItemEntity.free_shipping;
-			//this.GiftMessage = salesOrderItemEntity.gift_message;
-			//this.GiftMessageAvailable = salesOrderItemEntity.gift_message_available;
-			//this.GiftMessageId = salesOrderItemEntity.gift_message_id;
-			//this.IsQtyDecimal = salesOrderItemEntity.is_qty_decimal;
-			//this.IsVirtual = salesOrderItemEntity.is_virtual;
-			//this.ItemId = salesOrderItemEntity.item_id;
-			//this.Name = salesOrderItemEntity.name;
-			//this.NoDiscount = salesOrderItemEntity.no_discount;
-			//this.OrderId = salesOrderItemEntity.order_id;
-			//this.OriginalPrice = salesOrderItemEntity.original_price;
-			//this.Price = salesOrderItemEntity.price;
-			//this.ProductId = salesOrderItemEntity.product_id;
-			//this.ProductOptions = salesOrderItemEntity.product_options;
-			//this.ProductType = salesOrderItemEntity.product_type;
-			//this.QtyCanceled = salesOrderItemEntity.qty_canceled;
-			//this.QtyInvoiced = salesOrderItemEntity.qty_invoiced;
-			//this.QtyOrdered = salesOrderItemEntity.qty_ordered;
-			//this.QtyRefunded = salesOrderItemEntity.qty_refunded;
-			//this.QtyShipped = salesOrderItemEntity.qty_shipped;
-			//this.QuoteItemId = salesOrderItemEntity.quote_item_id;
-			//this.RowInvoiced = salesOrderItemEntity.row_invoiced;
-			//this.RowTotal = salesOrderItemEntity.row_total;
-			//this.RowWeight = salesOrderItemEntity.row_weight;
-			//this.Sku = salesOrderItemEntity.sku;
-			//this.TaxAmount = salesOrderItemEntity.tax_amount;
-			//this.TaxBeforeDiscount = salesOrderItemEntity.tax_before_discount;
-			//this.TaxInvoiced = salesOrderItemEntity.tax_invoiced;
-			//this.TaxPercent = salesOrderItemEntity.tax_percent;
-			//this.UpdatedAt = salesOrderItemEntity.updated_at;
-			//this.WeeeTaxApplied = salesOrderItemEntity.weee_tax_applied;
-			//this.WeeeTaxAppliedAmount = salesOrderItemEntity.weee_tax_applied_amount;
-			//this.WeeeTaxAppliedRowAmount = salesOrderItemEntity.weee_tax_applied_row_amount;
-			//this.WeeeTaxDisposition = salesOrderItemEntity.weee_tax_disposition;
-			//this.WeeeTaxRowDisposition = salesOrderItemEntity.weee_tax_row_disposition;
-			//this.Weight = salesOrderItemEntity.weight;
 		}
 
 		public string OrderId { get; set; }
@@ -1632,6 +1531,15 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 	internal class Payment
 	{
+		public Payment()
+		{
+		}
+
+		public Payment( salesOrderPaymentEntity resultPayment )
+		{
+			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderPaymentEntity, Payment >( resultPayment, this );
+		}
+
 		public string AmountOrdered { get; set; }
 		public string BaseAmountOrdered { get; set; }
 		public string BaseShippingAmount { get; set; }

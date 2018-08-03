@@ -47,6 +47,7 @@ namespace MagentoAccess.Services.Soap
 		Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store );
 		Task< string > CreateOrder( int shoppingcartid, string store );
 		Task< GetSessionIdResponse > GetSessionId( bool throwException = true );
+		string GetServiceVersion();
 
 		/// <summary>
 		/// Provides additional information about product. (Description,ShortDescription,Price,SpecialPrice,Weight,ProductId,CategoryIds)

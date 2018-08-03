@@ -111,6 +111,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 		#endregion
+		
+		public string GetServiceVersion()
+		{
+			return MagentoVersions.M_1_9_2_0;
+		}
 
 		public Task< bool > InitAsync( bool supressExceptions = false )
 		{
@@ -255,7 +260,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 		{
 			return await this.GetWithAsync(
-				res => new GetMagentoInfoResponse( res ),
+				res => new GetMagentoInfoResponse( res, this.GetServiceVersion() ),
 				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException ).ConfigureAwait(false);
 		}
 

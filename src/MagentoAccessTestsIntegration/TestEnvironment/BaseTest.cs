@@ -75,7 +75,23 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 						ordersModels.Add( new CreateOrderModel() { StoreId = "0", CustomerFirstName = "max", CustomerMail = "qwe@qwe.com", CustomerLastName = "kits", ProductIds = this._productsIds[ credentials.AuthenticatedUserCredentials.SoapApiKey ].Keys.Select( x => x.ToString() ) } );
 					}
 
-					var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.SoapApiKey, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+					var magentoService = this.CreateMagentoService( 
+						credentials.AuthenticatedUserCredentials.SoapApiUser, 
+						credentials.AuthenticatedUserCredentials.SoapApiKey, 
+						"null", 
+						"null", 
+						"null", 
+						"null", 
+						credentials.AuthenticatedUserCredentials.BaseMagentoUrl, 
+						"http://w.com",
+						"http://w.com", 
+						"http://w.com", 
+						credentials.Config.VersionByDefault, 
+						credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, 
+						credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, 
+						false, 
+						credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems 
+						);
 					var creationResult = magentoService.CreateOrderAsync( ordersModels );
 					creationResult.Wait();
 					var ordersIds = creationResult.Result.Select( x => x.OrderId ).ToList();
@@ -123,7 +139,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 							source.Add( new CreateProductModel( "0", sku, name, 1, i == 4 ? "bundle" : "simple" ) );
 						}
-						var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.SoapApiKey, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+						var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 						var creationResult = magentoService.CreateProductAsync( source );
 
 						creationResult.Wait();
@@ -156,7 +172,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 				foreach( var credentials in testStoresCredentials )
 				{
-					var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.SoapApiKey, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+					var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
 					var productsToRemove = this.GetOnlyProductsCreatedForThisTests( magentoService );
 					var productsToRemoveDeleteProductModels = productsToRemove.Select( p => new DeleteProductModel( "0", 0, p.ProductId, "" ) ).ToList();
@@ -174,7 +190,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceCredentialsAndConfig magentoServiceSoapCredentials )
 		{
-			var magentoService = this.CreateMagentoService(magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiUser, magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiKey, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0, magentoServiceSoapCredentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, magentoServiceSoapCredentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, magentoServiceSoapCredentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+			var magentoService = this.CreateMagentoService(magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiUser, magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0, magentoServiceSoapCredentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, magentoServiceSoapCredentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, magentoServiceSoapCredentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 			var getProductsTask = magentoService.GetProductsAsync( new[] { 0, 1 } );
 			getProductsTask.Wait();
 

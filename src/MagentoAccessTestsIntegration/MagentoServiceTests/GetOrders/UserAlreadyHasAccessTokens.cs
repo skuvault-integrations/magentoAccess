@@ -27,8 +27,8 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 
 			// var modifiedFrom = new DateTime( ( firstCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
 			// var modifiedTo = new DateTime( ( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
-			var modifiedFrom = new DateTime( 2016, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
-			var modifiedTo = new DateTime( 2017, 2, 2, 23, 30, 39 ).AddSeconds( -1 );
+			var modifiedFrom = new DateTime( 2018, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
+			var modifiedTo = new DateTime( 2018, 2, 2, 23, 30, 39 ).AddSeconds( -1 );
 			var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS" ) );
 			getOrdersTask.Wait();
 
@@ -39,6 +39,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 
 			// thatWasReturned.Should().BeEquivalentTo( thatMustBeReturned );
 			thatWasReturned.Should().NotBeNullOrEmpty();
+			getOrdersTask.Result.All( x => x.Items.All( y => !string.IsNullOrWhiteSpace( y.Sku ) ) ).Should().BeTrue();
 		}
 	}
 }

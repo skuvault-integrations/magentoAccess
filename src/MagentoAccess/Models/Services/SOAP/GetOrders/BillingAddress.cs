@@ -1,7 +1,19 @@
+using AutoMapper;
+using MagentoAccess.TsZoey_v_1_9_0_1_CE;
+
 namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
 	internal class BillingAddress
 	{
+		public BillingAddress()
+		{
+		}
+
+		public BillingAddress( salesOrderAddressEntity resultBillingAddress )
+		{
+			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderAddressEntity, BillingAddress >( resultBillingAddress, this );
+		}
+
 		public string AddressId { get; set; }
 		public string AddressType { get; set; }
 		public string City { get; set; }

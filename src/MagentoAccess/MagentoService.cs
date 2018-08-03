@@ -58,7 +58,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
 				{
@@ -96,7 +96,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
 				{
@@ -157,7 +157,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 				var productsCreationInfo = await models.ProcessInBatchAsync( 30, async x =>
 				{
@@ -246,8 +246,8 @@ namespace MagentoAccess
 					if( temp != null )
 					{
 						soapInfo = temp;
-						if( !string.IsNullOrWhiteSpace( soapInfo.Version ) )
-							this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( soapInfo.Version, true, false );
+						if( !string.IsNullOrWhiteSpace( soapInfo.StoreVersion ) )
+							this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( soapInfo.StoreVersion, true, false );
 					}
 				}
 
@@ -276,7 +276,8 @@ namespace MagentoAccess
 					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
 						return null;
 					var getMagentoInfoResponse = await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
-					getMagentoInfoResponse.ServiceVersion = kvp.Key;
+					if( getMagentoInfoResponse != null )
+						getMagentoInfoResponse.ServiceVersion = kvp.Key;
 					return getMagentoInfoResponse;
 				} ).ConfigureAwait( false );
 				var workingStores = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
@@ -303,7 +304,7 @@ namespace MagentoAccess
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, markLocal ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
 
-				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks, string.Empty );
+				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks, magentoInfo.ServiceVersion );
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : magentoCoreInfo.ToJson() ), markLocal );
 
 				return magentoCoreInfo;
@@ -331,10 +332,10 @@ namespace MagentoAccess
 				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				//crunch for old versions
-				magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-				                             || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
-				                             || string.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
-				                             || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				magentoServiceLowLevelSoap = string.Equals( pingres.StoreEdition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                             || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                             || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                             || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 				var salesOrderInfoResponses = await orderIds.ProcessInBatchAsync( 16, async x =>
 				{
@@ -388,10 +389,13 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync( Mark.CreateNew( mark ) ).ConfigureAwait( false );
 				//crunch for old versions
-				var magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-				                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
-				                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
-				                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevelSoap = string.Equals( pingres.StoreEdition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+				                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+				                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+				                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) 
+												 || this.Config.UseVersionByDefaultOnly
+					? this.MagentoServiceLowLevelSoap 
+					: this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 				var ordersBriefInfos = await dates.ProcessInBatchAsync( 30, async x =>
 				{
 					var atomicMark = Mark.CreateNew( mark );
@@ -462,7 +466,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters : parameters ), markLocal );
 
 				var pingres = await this.PingSoapAsync( markLocal ).ConfigureAwait( false );
-				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.ServiceUsedVersion, true, false );
 				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : productBriefInfo ), markLocal );
@@ -485,7 +489,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 				IEnumerable< Product > resultProducts;
 				var magentoServiceLowLevelFillProducts = magentoServiceLowLevel as IMagentoServiceLowLevelSoapFillProductsDetails;
@@ -529,9 +533,9 @@ namespace MagentoAccess
 				{
 					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 					//crunch for 1702
-					updateBriefInfo = string.Equals( pingres.Version, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+					updateBriefInfo = string.Equals( pingres.StoreVersion, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
 						? await this.UpdateStockItemsBySoapByThePiece( inventories, markLocal ).ConfigureAwait( false )
-						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false ), markLocal ).ConfigureAwait( false );
+						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false ), markLocal ).ConfigureAwait( false );
 				}
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : markLocal, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
@@ -559,10 +563,10 @@ namespace MagentoAccess
 					if( this.UseSoapOnly )
 					{
 						var pingres = await this.PingSoapAsync().ConfigureAwait( false );
-						var magentoServiceLowLevelSoap = string.Equals( pingres.Edition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-						                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
-						                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
-						                                 || string.Equals( pingres.Edition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.Version, true, false );
+						var magentoServiceLowLevelSoap = string.Equals( pingres.StoreEdition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
+						                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
+						                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
+						                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 						var stockitems = await magentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList(), scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
 						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
@@ -794,9 +798,13 @@ namespace MagentoAccess
 						.ForMember( x => x.ShippingMethod, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.method : null ) : null ) : null ) : null ) );
 					;
 
-					cfg.CreateMap<TsZoey_v_1_9_0_1_CE.salesOrderListEntity, Models.Services.Soap.GetOrders.Order>();
-					cfg.CreateMap<TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, Models.Services.Soap.GetOrders.OrderItemEntity>();
-					cfg.CreateMap<TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, MagentoAccess.Models.Services.Soap.GetOrders.StatusHistoryRecord>();
+					//zoey
+					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderListEntity, Models.Services.Soap.GetOrders.Order >();
+					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, Models.Services.Soap.GetOrders.OrderItemEntity >();
+					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, MagentoAccess.Models.Services.Soap.GetOrders.StatusHistoryRecord >();
+					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, MagentoAccess.Models.Services.Soap.GetOrders.StatusHistoryRecord >();
+					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderAddressEntity, MagentoAccess.Models.Services.Soap.GetOrders.BillingAddress >();
+					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderPaymentEntity, MagentoAccess.Models.Services.Soap.GetOrders.Payment >();
 
 					//.ForAllMembers(x =>
 					//{
