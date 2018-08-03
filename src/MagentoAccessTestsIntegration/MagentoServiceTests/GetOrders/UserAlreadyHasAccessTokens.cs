@@ -16,14 +16,14 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void ReceiveOrders( MagentoServiceSoapCredentials credentials )
+		public void ReceiveOrders( MagentoServiceCredentialsAndConfig credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey, "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
+			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
-			// var firstCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).First();
-			// var lastCreatedItem = this._orders[ credentials.StoreUrl ].OrderBy( x => x.UpdatedAt ).Last();
+			// var firstCreatedItem = this._orders[ credentials.AuthenticatedUserCredentials.SoapApiKey ].OrderBy( x => x.UpdatedAt ).First();
+			// var lastCreatedItem = this._orders[ credentials.AuthenticatedUserCredentials.SoapApiKey ].OrderBy( x => x.UpdatedAt ).Last();
 
 			// var modifiedFrom = new DateTime( ( firstCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
 			// var modifiedTo = new DateTime( ( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
@@ -33,7 +33,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 			getOrdersTask.Wait();
 
 			// ------------ Assert
-			// var thatMustBeReturned = this._orders[ credentials.StoreUrl ].Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.OrderIncrementalId ).ToList();
+			// var thatMustBeReturned = this._orders[ credentials.AuthenticatedUserCredentials.SoapApiKey ].Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.OrderIncrementalId ).ToList();
 			// var thatWasReturned = getOrdersTask.Result.Where( x => x != firstCreatedItem && x != lastCreatedItem ).Select( x => x.OrderIncrementalId ).ToList();
 			var thatWasReturned = getOrdersTask.Result.Select( x => x.OrderIncrementalId ).ToList();
 

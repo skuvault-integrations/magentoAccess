@@ -191,34 +191,39 @@ namespace MagentoAccess
 			this.Config = magentoConfig;
 
 			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
-			var lowLevelServices = new Dictionary< string, IMagentoServiceLowLevelSoap >();
+			var lowLevelServicesList = new Dictionary< string, IMagentoServiceLowLevelSoap >();
 
 			var cfg = this.Config.DefaultIfNull();
-			switch ( cfg.Protocol )
+			switch( cfg.Protocol )
 			{
 				case MagentoDefaultProtocol.RestOnly:
-					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 					break;
 				case MagentoDefaultProtocol.SoapOnly:
-					lowLevelServices.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-					lowLevelServices.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 					break;
 				case MagentoDefaultProtocol.Default:
 				default:
-					lowLevelServices.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-					lowLevelServices.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-					lowLevelServices.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 					break;
 			}
 
-			lowLevelServices.Add( MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServices.Add( MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServices.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServices.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServices.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServices.Add( MagentoVersions.ZS_1_7_0_1, new ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.ZS_1_7_0_1, new ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
 
-			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServices, cfg );
+			if( cfg.UseVersionByDefaultOnly && !string.IsNullOrWhiteSpace( cfg.VersionByDefault ) )
+			{
+				lowLevelServicesList = lowLevelServicesList.Where( x => string.Equals( x.Key, cfg.VersionByDefault, StringComparison.OrdinalIgnoreCase ) ).ToDictionary( x => x.Key, y => y.Value );
+			}
+
+			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServicesList, cfg );
 			var defaultVersion = !string.IsNullOrWhiteSpace( magentoConfig?.VersionByDefault ) ? magentoConfig.VersionByDefault : MagentoVersions.M_1_7_0_2;
 			this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( defaultVersion, true, false );
 		}
@@ -829,6 +834,12 @@ namespace MagentoAccess
 		public MagentoDefaultProtocol Protocol{ get; set; }
 		public ThrowExceptionIfFailed OnUpdateInventory{ get; set; }
 		public bool BindingDecompressionEnabled{ get; set; }
+
+		/// <summary>
+		/// If true - will use internal mechanism only for provided version. In such case, if VersionByDefault is incorrect, detection of real version will be impossible
+		/// If false - Version detection will be able to detect all internal mechanisms which suited to the real store version. Even if these mechanisms are from others store versions
+		/// </summary>
+		public bool UseVersionByDefaultOnly{ get; set; }
 	}
 
 	public static class MagentoConfigExtension

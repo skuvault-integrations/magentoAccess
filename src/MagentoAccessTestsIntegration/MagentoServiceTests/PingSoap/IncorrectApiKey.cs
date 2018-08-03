@@ -13,14 +13,14 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void ThrowException( MagentoServiceSoapCredentials credentials )
+		public void ThrowException( MagentoServiceCredentialsAndConfig credentials )
 		{
 			// ------------ Arrange
 
 			// ------------ Act
 			Action act = () =>
 			{
-				var service = this.CreateMagentoService( credentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, false, ThrowExceptionIfFailed.AllItems );
+				var service = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.SoapApiKey, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
 				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();

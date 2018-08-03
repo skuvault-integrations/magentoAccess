@@ -18,7 +18,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		public static IEnumerable< StoreConfig > GetActiveConfigs
 		{
-			get { return _environmentRows.Where( line => line.Active == "1" ); }
+			get
+			{
+				var activeConfigs = _environmentRows.Where( line => line.Active == "1" ).ToList();
+				return activeConfigs;
+			}
 		}
 
 		public class StoreConfig
@@ -35,10 +39,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			[ CsvColumn( Name = "Rest", FieldIndex = 4 ) ]
 			public string Rest { get; set; }
 
-			[ CsvColumn( Name = "MagentoVersion", FieldIndex = 5 ) ]
+			[ CsvColumn( Name = "RealMagentoVersion", FieldIndex = 5 ) ]
 			public string MagentoVersion { get; set; }
 
-			[ CsvColumn( Name = "ServiceVersion", FieldIndex = 6 ) ]
+			[ CsvColumn( Name = "ServiceVersionShouldBeUsed", FieldIndex = 6 ) ]
 			public string ServiceVersion { get; set; }
 
 			[ CsvColumn( Name = "MagentoUrl", FieldIndex = 7 ) ]
@@ -51,10 +55,13 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			public string MagentoPass { get; set; }
 
 			[ CsvColumn( Name = "GetProductThreadsLimit", FieldIndex = 10 ) ]
-			public string GetProductThreadsLimit { get; set; }
+			public int GetProductThreadsLimit { get; set; }
 
 			[ CsvColumn( Name = "GetProductDetailsThreadsLimit", FieldIndex = 11 ) ]
 			public string GetProductDetailsThreadsLimit { get; set; }
+
+			[ CsvColumn( Name = "UseVersionByDefaultOnly", FieldIndex = 12 ) ]
+			public bool UseVersionByDefaultOnly { get; set; }
 		}
 	}
 }
