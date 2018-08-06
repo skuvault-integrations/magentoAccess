@@ -129,7 +129,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			this.BaseMagentoUrl = baseMagentoUrl;
 			this.LogRawMessages = logRawMessages;
 
-			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, config);
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, config );
 			this._magentoSoapService = this._clientFactory.GetClient();
 			this.Magento1xxxHelper = new Magento1xxxHelper( this );
 			this.PullSessionId = async () =>
