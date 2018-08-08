@@ -107,6 +107,11 @@ namespace MagentoAccessTests.Misc
 
 			public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
+			public string GetServiceVersion()
+			{
+				return string.Empty;
+			}
+
 			public Task< bool > InitAsync( bool supressExceptions = false )
 			{
 				try

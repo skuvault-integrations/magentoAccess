@@ -13,6 +13,7 @@
 		public const string M_2_0_2_0 = "2.0.2.0";
 		public const string M_2_1_0_0 = "2.1.0.0";
 		public const string MR_2_0_0_0 = "R2.0.0.0";
+		public const string ZS_1_7_0_1 = "ZS-1.7.0.1";
 	}
 
 	public static class MagentoEdition

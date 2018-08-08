@@ -39,7 +39,9 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		public string Store{ get; private set; }
 
 		public string BaseMagentoUrl{ get; set; }
+
 		public string StoreVersion{ get; set; }
+
 		public bool LogRawMessages{ get; private set; }
 
 		[ JsonIgnore ]
@@ -68,7 +70,13 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 		}
 
 		public bool GetOrderByIdForFullInformation => true;
+
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
+
+		public string GetServiceVersion()
+		{
+			return MagentoVersions.M_1_14_1_0;
+		}
 
 		private void LogTraceGetResponseException( Exception exception )
 		{
@@ -496,7 +504,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				var res = new magentoInfoResponse();
 				var privateClient = this._clientFactory.GetClient();
 
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
 				{
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
@@ -509,7 +517,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 						res = await privateClient.magentoInfoAsync( sessionId.SessionId ).ConfigureAwait( false );
 				} ).ConfigureAwait( false );
 
-				return new GetMagentoInfoResponse( res );
+				return new GetMagentoInfoResponse( res, this.GetServiceVersion() );
 			}
 			catch( Exception exc )
 			{

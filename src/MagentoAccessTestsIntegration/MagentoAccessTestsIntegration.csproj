@@ -124,7 +124,7 @@
     <Compile Include="Services\Rest\v2x\Repository\RepositoryTestCases.cs" />
     <Compile Include="TestEnvironment\BaseTest.cs" />
     <Compile Include="TestEnvironment\BaseTestSecret.cs" />
-    <Compile Include="TestEnvironment\TestEnvironment.cs" />
+    <Compile Include="TestEnvironment\TestStoresConfigsVault.cs" />
     <Compile Include="TestEnvironment\MagentoAccessToken.cs" />
     <Compile Include="TestEnvironment\MagentoConsumerCredentials.cs" />
     <Compile Include="TestEnvironment\MagentoUrls.cs" />

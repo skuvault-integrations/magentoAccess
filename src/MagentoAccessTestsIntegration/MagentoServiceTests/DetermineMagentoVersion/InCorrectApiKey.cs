@@ -14,10 +14,10 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 	{
 		[ Test ]
 		[ TestCaseSource( typeof( GeneralTestCases ), "TestStoresCredentials" ) ]
-		public void ReceiveNull( MagentoServiceSoapCredentials credentials )
+		public void ReceiveNull( MagentoServiceCredentialsAndConfig credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.SoapApiUser, credentials.SoapApiKey + "_incorrectKey", "null", "null", "null", "null", credentials.StoreUrl, "http://w.com", "http://w.com", "http://w.com", credentials.MagentoVersion, credentials.GetProductsThreadsLimit, credentials.SessionLifeTimeMs, true, ThrowExceptionIfFailed.AllItems );
+			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey + "_incorrectKey", "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, true, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
 			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
@@ -26,7 +26,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 			// ------------ Assert
 			var pingSoapInfo = getOrdersTask.Result;
 
-			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.Version, credentials.MagentoVersion, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeFalse();
+			pingSoapInfo.Any( x => x.SoapWorks && string.Compare( x.StoreVersion, credentials.Config.VersionByDefault, StringComparison.CurrentCultureIgnoreCase ) == 0 ).Should().BeFalse();
 		}
 	}
 }

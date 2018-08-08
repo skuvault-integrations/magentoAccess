@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MagentoAccess;
+using MagentoAccess.Models.Credentials;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.TestEnvironment
 {
 	internal partial class BaseTest
 	{
-		private IEnumerable< MagentoServiceSoapCredentials > GetTestStoresCredentials()
+		private IEnumerable< MagentoServiceCredentialsAndConfig > GetTestStoresCredentials()
 		{
-			//return Environment.ActiveEnvironmentRows.Select( line => new MagentoServiceSoapCredentials() { MagentoVersion = line.Version, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl });
+			//return Environment.GetActiveConfigs.Select( line => new MagentoServiceCredentialsAndConfig() { MagentoVersion = line.Version, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl });
 			yield break;
 		}
 	}
@@ -24,7 +26,31 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		{
 			get
 			{
-				return TestEnvironment.ActiveEnvironmentRows.Select( line => new TestCaseData( new BaseTest.MagentoServiceSoapCredentials { GetProductsThreadsLimit = 30, SessionLifeTimeMs = 3600000, MagentoVersion = line.ServiceVersion, SoapApiKey = line.MagentoPass, SoapApiUser = line.MagentoLogin, StoreUrl = line.MagentoUrl } ).SetName( line.MagentoVersion ) );
+				return TestStoresConfigsVault.GetActiveConfigs.Select( line =>
+				{
+					var magentoServiceCredentialsAndConfig = new BaseTest.MagentoServiceCredentialsAndConfig
+					{
+						AuthenticatedUserCredentials = new MagentoAuthenticatedUserCredentials(
+							line.MagentoLogin,
+							line.MagentoPass,
+							line.MagentoUrl,
+							line.MagentoPass,
+							line.MagentoLogin,
+							line.MagentoLogin,
+							line.MagentoPass,
+							line.GetProductThreadsLimit,
+							3600000,
+							true
+						),
+						Config = new MagentoConfig
+						{
+							UseVersionByDefaultOnly = line.UseVersionByDefaultOnly,
+							VersionByDefault = line.ServiceVersion,
+						}
+					};
+					return new TestCaseData(
+						magentoServiceCredentialsAndConfig ).SetName( line.MagentoVersion );
+				} );
 				//yield break;
 			}
 		}

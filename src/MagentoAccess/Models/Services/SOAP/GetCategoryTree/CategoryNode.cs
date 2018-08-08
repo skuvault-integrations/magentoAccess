@@ -10,8 +10,11 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 	internal class CategoryNode
 	{
 		public int Id { get; set; }
+
 		public int ParentId { get; set; }
+
 		public int Level { get; set; }
+
 		public string Name { get; set; }
 
 		public int IsActive { get; set; }
@@ -92,6 +95,32 @@ namespace MagentoAccess.Models.Services.Soap.GetCategoryTree
 			this.ParentId = category.parentId;
 			this.IsActive = string.Compare( category.isActive, "true", StringComparison.InvariantCultureIgnoreCase ) == 0 ? 1 : 0;
 			this.Childrens = category.childrenData != null ? category.childrenData.Select( x => new CategoryNode( x ) ).Where( x => x != null ).ToList() : new List< CategoryNode >();
+		}
+
+		public CategoryNode( TsZoey_v_1_9_0_1_CE.catalogCategoryTree category )
+		{
+			if (category == null)
+				return;
+			Id = category.category_id;
+			Level = category.level;
+			Name = category.name;
+			ParentId = category.parent_id;
+			IsActive = 1;
+			Childrens = category.children != null ? category.children.Select(x => new CategoryNode(x)).Where(x => x != null).ToList() : new List<CategoryNode>();
+		}
+
+		private CategoryNode( TsZoey_v_1_9_0_1_CE.catalogCategoryEntity category )
+		{
+			if (category == null)
+				return;
+
+			Id = category.category_id;
+			Level = category.level;
+			Name = category.name;
+			ParentId = category.parent_id;
+			IsActive = category.is_active;
+			Childrens = category.children != null ? category.children.Select(x => new CategoryNode(x)).Where(x => x != null).ToList() : new List<CategoryNode>();
+
 		}
 
 		public List< CategoryNode > Flatten()

@@ -110,6 +110,21 @@ namespace MagentoAccess.Models.Services.Soap.GetProductInfo
 			}
 		}
 
+		public CatalogProductInfoResponse( TsZoey_v_1_9_0_1_CE.catalogProductInfoResponse catalogProductInfoResponse )
+		{
+			this.Description = catalogProductInfoResponse.result.description;
+			this.ShortDescription = catalogProductInfoResponse.result.short_description;
+			this.Price = catalogProductInfoResponse.result.price;
+			this.SpecialPrice = catalogProductInfoResponse.result.special_price;
+			this.Weight = catalogProductInfoResponse.result.weight;
+			this.ProductId = catalogProductInfoResponse.result.product_id;
+			this.CategoryIds = catalogProductInfoResponse.result.category_ids;
+			this.UpdatedAt = catalogProductInfoResponse.result.updated_at;
+
+			if( catalogProductInfoResponse.result.additional_attributes != null && catalogProductInfoResponse.result.additional_attributes.Any() )
+				Attributes = catalogProductInfoResponse.result.additional_attributes.Select( x => new ProductAttribute( x.key, x.value ) ).ToList();
+		}
+
 		private string GetCustomAttribute( Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductInterface catalogDataProductInterface, string attributesCode )
 		{
 			var descriptionNodes = ( catalogDataProductInterface.customAttributes.FirstOrDefault( x => string.Equals( x.attributeCode, attributesCode, StringComparison.InvariantCultureIgnoreCase ) ) ?? new Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.FrameworkAttributeInterface() ).value;

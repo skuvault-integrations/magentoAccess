@@ -4,7 +4,6 @@ using System.Linq;
 using MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
-using CatalogDataProductSearchResultsInterface = MagentoAccess.Magento2catalogProductRepositoryV1_v_2_1_0_0_CE.CatalogDataProductSearchResultsInterface;
 
 namespace MagentoAccess.Models.Services.Soap.GetProducts
 {
@@ -38,6 +37,11 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 		public SoapGetProductsResponse()
 		{
 			this.Products = new List< SoapProduct >();
+		}
+
+		public SoapGetProductsResponse( TsZoey_v_1_9_0_1_CE.catalogProductListResponse res )
+		{
+			this.Products = res.result.Select( x => new SoapProduct( x ) );
 		}
 
 		public IEnumerable< SoapProduct > Products { get; set; }
@@ -88,26 +92,37 @@ namespace MagentoAccess.Models.Services.Soap.GetProducts
 		public SoapProduct( Item catalogProductEntity )
 		{
 			this.Name = catalogProductEntity.name;
-			this.ProductId = catalogProductEntity.id.ToString(CultureInfo.InvariantCulture);
+			this.ProductId = catalogProductEntity.id.ToString( CultureInfo.InvariantCulture );
 			this.Sku = catalogProductEntity.sku;
 			this.Type = catalogProductEntity.typeId;
 			this.UpdatedAt = catalogProductEntity.updatedAt;
 		}
 
+		public SoapProduct( TsZoey_v_1_9_0_1_CE.catalogProductEntity catalogProductEntity )
+		{
+			this.CategoryIds = catalogProductEntity.category_ids.ToList();
+			this.Name = catalogProductEntity.name;
+			this.ProductId = catalogProductEntity.product_id;
+			this.Set = catalogProductEntity.set;
+			this.Sku = catalogProductEntity.sku;
+			this.Type = catalogProductEntity.type;
+			this.WebsiteIds = catalogProductEntity.website_ids.ToList();
+		}
+
 		public string UpdatedAt { get; set; }
 
-		public string Type{ get; set; }
+		public string Type { get; set; }
 
-		public List< string > WebsiteIds{ get; set; }
+		public List< string > WebsiteIds { get; set; }
 
-		public string Sku{ get; set; }
+		public string Sku { get; set; }
 
-		public string Set{ get; set; }
+		public string Set { get; set; }
 
-		public string ProductId{ get; set; }
+		public string ProductId { get; set; }
 
-		public string Name{ get; set; }
+		public string Name { get; set; }
 
-		public List< string > CategoryIds{ get; set; }
+		public List< string > CategoryIds { get; set; }
 	}
 }

@@ -201,14 +201,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		//TODO: refactor, remove redundant wrapper
 		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
 		{
-			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait(false);
+			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom, mark ).ConfigureAwait(false);
 		}
 
 		
-		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus, Mark mark = null )
 		{
 			//TODO: filtering by skudoesn't work
-			return await this.GetProductsInSkusAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom, skus ).ConfigureAwait( false );
+			return await this.GetProductsInSkusAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom, skus, mark ).ConfigureAwait( false );
 		}
 
 		private async Task< SoapGetProductsResponse > GetProductsOldAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
@@ -294,17 +294,17 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
 		{
 			try
 			{
 				var pagingModel = new PagingModel( 200, 0 );
-				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom, null ).ConfigureAwait( false );
+				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom, null, mark ).ConfigureAwait( false );
 				if( firstPage == null )
 					return new SoapGetProductsResponse( new List< CatalogDataProductInterface >() );
 
 				var pagesNumbers = pagingModel.GetPages( firstPage.totalCount, limit );
-				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom, null ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom, null, mark ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var pagesWithLimits = pages.SelectMany( x => x.items );
 				var pagesWithLimitsDistinct = pagesWithLimits.GroupBy( x => x.sku ).Select( x => x.First() );
 
@@ -323,13 +323,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsInSkusAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+		private async Task< SoapGetProductsResponse > GetProductsInSkusAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus, Mark mark = null )
 		{
 			try
 			{
 				var pagingModel = new PagingModel( 20, 0 );
 				var pagesNumbers = pagingModel.GetPages( skus );
-				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( 1, pagingModel.ItemsPerPage, updatedFrom, x ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( 1, pagingModel.ItemsPerPage, updatedFrom, x, mark ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var pagesWithLimits = pages.SelectMany( x => x.items );
 				var pagesWithLimitsDistinct = pagesWithLimits.GroupBy( x => x.sku ).Select( x => x.First() );
 
@@ -359,7 +359,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			filters.filterGroups = temp.ToArray();
 		}
 
-		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom, IReadOnlyCollection< string > skus, Mark mark = null )
 		{
 			var parameters = Tuple.Create( currentPage, pageSize, updatedFrom );
 			var cachedR = this.getProductsPageCache.Get( parameters );
@@ -397,7 +397,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				res => res?.catalogProductRepositoryV1GetListResponse.result,
 				//res => new SoapGetProductsResponse(res == null? new List<CatalogDataProductSearchResultsInterface>(): new List<CatalogDataProductSearchResultsInterface>() { res.catalogProductRepositoryV1GetListResponse }),
 				//res => new SoapGetProductsResponse(  res.catalogProductRepositoryV1GetListResponse.result ),
-				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient, this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient, this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient, mark: mark ).ConfigureAwait(false);
 			this.getProductsPageCache.Add( result, parameters, TimeSpan.FromSeconds( 300 ) );
 			return result;
 		}
@@ -767,13 +767,13 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func< TClient, string, Task< TServerResponse > > action, int abortAfter, Func< TClient > clientFactory, Func< TClient, TClient > clientRecreateFactory, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func< TClient, string, Task< TServerResponse > > action, int abortAfter, Func< TClient > clientFactory, Func< TClient, TClient > clientRecreateFactory, bool suppressException = false, Mark mark = null, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
 		{
 			try
 			{
 				var res = new TServerResponse();
 				var privateClient = clientFactory();
-				await ActionPolicies.GetAsync.Do( async () =>
+				await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
 				{
 					privateClient = clientRecreateFactory( privateClient );
 					var sessionId = await this.GetSessionId().ConfigureAwait( false );

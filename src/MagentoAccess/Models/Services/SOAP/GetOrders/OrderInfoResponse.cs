@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using AutoMapper;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;
 using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
+using salesOrderPaymentEntity = MagentoAccess.TsZoey_v_1_9_0_1_CE.salesOrderPaymentEntity;
 
 namespace MagentoAccess.Models.Services.Soap.GetOrders
 {
@@ -820,6 +822,124 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Weight = res.weight.ToStringEmptyOnNull( invariantCulture );
 		}
 
+		public OrderInfoResponse( TsZoey_v_1_9_0_1_CE.salesOrderInfoResponse res )
+		{
+			this.AppliedRuleIds = res.result.applied_rule_ids;
+			this.BaseCurrencyCode = res.result.base_currency_code;
+			this.BaseDiscountAmount = res.result.base_discount_amount;
+			this.BaseGrandTotal = res.result.base_grand_total;
+			this.BaseShippingAmount = res.result.base_shipping_amount;
+			this.BaseSubtotal = res.result.base_subtotal;
+			this.BaseTaxAmount = res.result.base_tax_amount;
+			this.BaseToGlobalRate = res.result.base_to_global_rate;
+			this.BaseToOrderRate = res.result.base_to_order_rate;
+			this.BaseTotalCanceled = res.result.base_total_canceled;
+			this.BaseTotalInvoiced = res.result.base_total_invoiced;
+			this.BaseTotalOfflineRefunded = res.result.base_total_offline_refunded;
+			this.BaseTotalOnlineRefunded = res.result.base_total_online_refunded;
+			this.BaseTotalPaid = res.result.base_total_paid;
+			this.BaseTotalQtyOrdered = res.result.base_total_qty_ordered;
+			this.BaseTotalRefunded = res.result.base_total_refunded;
+			if( res.result.billing_address != null )
+			{
+				this.BillingAddress = new BillingAddress( res.result.billing_address );
+			}
+
+			this.BillingAddressId = res.result.billing_address_id;
+			this.BillingFirstname = res.result.billing_firstname;
+			this.BillingLastname = res.result.billing_lastname;
+			this.BillingName = res.result.billing_name;
+			this.CreatedAt = res.result.created_at;
+			this.CustomerEmail = res.result.customer_email;
+			this.CustomerFirstname = res.result.customer_firstname;
+			this.CustomerGroupId = res.result.customer_group_id;
+			this.CustomerId = res.result.customer_id;
+			this.CustomerIsGuest = res.result.customer_is_guest;
+			this.CustomerLastname = res.result.customer_lastname;
+			this.CustomerNoteNotify = res.result.customer_note_notify;
+			this.DiscountAmount = res.result.discount_amount;
+			this.EmailSent = res.result.email_sent;
+			this.GiftMessage = res.result.gift_message;
+			this.GiftMessageId = res.result.gift_message_id;
+			this.GlobalCurrencyCode = res.result.global_currency_code;
+			this.GrandTotal = res.result.grand_total;
+			this.IncrementId = res.result.increment_id;
+			this.IsActive = res.result.is_active;
+			this.IsVirtual = res.result.is_virtual;
+
+			if( res.result.items != null )
+				this.Items = res.result.items.Select( x => new OrderItemEntity( x ) );
+
+			this.OrderCurrencyCode = res.result.order_currency_code;
+			this.OrderId = res.result.order_id;
+			this.ParentId = res.result.parent_id;
+
+			if( res.result.payment != null )
+			{
+				this.Payment = new Payment( res.result.payment );
+			}
+
+			this.QuoteId = res.result.quote_id;
+			this.RemoteIp = res.result.remote_ip;
+			if( res.result.shipping_address != null )
+			{
+				this.ShippingAddress = new ShippingAddress()
+				{
+					AddressId = res.result.shipping_address.address_id,
+					AddressType = res.result.shipping_address.address_type,
+					City = res.result.shipping_address.city,
+					Company = res.result.shipping_address.company,
+					CountryId = res.result.shipping_address.country_id,
+					CreatedAt = res.result.shipping_address.created_at,
+					Fax = res.result.shipping_address.fax,
+					Firstname = res.result.shipping_address.firstname,
+					IncrementId = res.result.shipping_address.increment_id,
+					IsActive = res.result.shipping_address.is_active,
+					Lastname = res.result.shipping_address.lastname,
+					ParentId = res.result.shipping_address.parent_id,
+					Postcode = res.result.shipping_address.postcode,
+					Region = res.result.shipping_address.region,
+					RegionId = res.result.shipping_address.region_id,
+					Street = res.result.shipping_address.street,
+					Telephone = res.result.shipping_address.telephone,
+					UpdatedAt = res.result.shipping_address.updated_at,
+				};
+			}
+
+			this.ShippingAddressId = res.result.shipping_address_id;
+			this.ShippingAmount = res.result.shipping_amount;
+			this.ShippingDescription = res.result.shipping_description;
+			this.ShippingFirstname = res.result.shipping_firstname;
+			this.ShippingLastname = res.result.shipping_lastname;
+			this.ShippingMethod = res.result.shipping_method;
+			this.ShippingName = res.result.shipping_name;
+			this.State = res.result.state;
+			this.Status = res.result.status;
+
+			if( res.result.status_history != null )
+			{
+				this.StatusHistory = new List< StatusHistoryRecord >(
+					res.result.status_history.Select( x => new StatusHistoryRecord( x ) ) );
+			}
+
+			this.StoreCurrencyCode = res.result.store_currency_code;
+			this.StoreId = res.result.store_id;
+			this.StoreName = res.result.store_name;
+			this.StoreToBaseRate = res.result.store_to_base_rate;
+			this.StoreToOrderRate = res.result.store_to_order_rate;
+			this.Subtotal = res.result.subtotal;
+			this.TaxAmount = res.result.tax_amount;
+			this.TotalCanceled = res.result.total_canceled;
+			this.TotalInvoiced = res.result.total_invoiced;
+			this.TotalOfflineRefunded = res.result.total_offline_refunded;
+			this.TotalOnlineRefunded = res.result.total_online_refunded;
+			this.TotalPaid = res.result.total_paid;
+			this.TotalQtyOrdered = res.result.total_qty_ordered;
+			this.TotalRefunded = res.result.total_refunded;
+			this.UpdatedAT = res.result.updated_at;
+			this.Weight = res.result.weight;
+		}
+
 		//public OrderInfoResponse( Order response )
 		//{
 		//	throw new NotImplementedException();
@@ -1210,6 +1330,11 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Weight = salesOrderItemEntity.weight.ToStringEmptyOnNull( CultureInfo.InvariantCulture );
 		}
 
+		public OrderItemEntity( TsZoey_v_1_9_0_1_CE.salesOrderItemEntity salesOrderItemEntity )
+		{
+			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, OrderItemEntity >( salesOrderItemEntity, this );
+		}
+
 		public string OrderId { get; set; }
 
 		public string Weight { get; set; }
@@ -1396,11 +1521,25 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			//UpdatedAT = salesOrderStatusHistoryEntity.updatedAt;
 		}
 
+		public StatusHistoryRecord( TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity salesOrderStatusHistoryEntity )
+		{
+			Mapper.Map<TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, StatusHistoryRecord>(salesOrderStatusHistoryEntity, this);
+		}
+
 		public object qq { get; set; }
 	}
 
 	internal class Payment
 	{
+		public Payment()
+		{
+		}
+
+		public Payment( salesOrderPaymentEntity resultPayment )
+		{
+			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderPaymentEntity, Payment >( resultPayment, this );
+		}
+
 		public string AmountOrdered { get; set; }
 		public string BaseAmountOrdered { get; set; }
 		public string BaseShippingAmount { get; set; }
