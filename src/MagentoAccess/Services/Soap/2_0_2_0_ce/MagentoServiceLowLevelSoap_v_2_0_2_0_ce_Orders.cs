@@ -12,6 +12,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal partial class MagentoServiceLowLevelSoap_v_2_0_2_0_ce : IMagentoServiceLowLevelSoap
 	{
+		private const int PageSize = 100;
+
 		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 		{
 			try
@@ -28,34 +30,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				{
 					searchCriteria = new FrameworkSearchCriteria()
 					{
-						currentPage = 1,
-						currentPageSpecified = true,
 						filterGroups = frameworkSearchFilterGroups.ToArray(),
 						sortOrders = new FrameworkSortOrder[] { new FrameworkSortOrder() { direction = "ASC", field = "Id" } },
-						pageSize = 100,
-						pageSizeSpecified = true,
 					}
 				};
 
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
+				var allOrders = await this.GetOrdersByFilter( filters, mark ).ConfigureAwait( false );
 
-				var res = new salesOrderRepositoryV1GetListResponse1();
-
-				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
-
-				await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				return new GetOrdersResponse( res );
+				return new GetOrdersResponse( allOrders );
 			}
 			catch( Exception exc )
 			{
@@ -80,34 +62,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				{
 					searchCriteria = new FrameworkSearchCriteria()
 					{
-						currentPage = 1,
-						currentPageSpecified = true,
 						filterGroups = frameworkSearchFilterGroups.ToArray(),
 						sortOrders = new FrameworkSortOrder[] { new FrameworkSortOrder() { direction = "ASC", field = "Id" } },
-						pageSize = 100,
-						pageSizeSpecified = true,
 					}
 				};
 
-				const int maxCheckCount = 2;
-				const int delayBeforeCheck = 1800000;
+				var allOrders = await this.GetOrdersByFilter( filters, null ).ConfigureAwait( false );
 
-				var res = new salesOrderRepositoryV1GetListResponse1();
-
-				var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
-
-				await ActionPolicies.GetAsync.Do( async () =>
-				{
-					var statusChecker = new StatusChecker( maxCheckCount );
-					TimerCallback tcb = statusChecker.CheckStatus;
-
-					privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
-
-					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
-						res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
-				} ).ConfigureAwait( false );
-
-				return new GetOrdersResponse( res );
+				return new GetOrdersResponse( allOrders );
 			}
 			catch( Exception exc )
 			{
@@ -161,5 +123,56 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, childMark );
 		}
+
+		#region Pagination
+		private async Task< IEnumerable< SalesDataOrderInterface > > GetOrdersByFilter( SalesOrderRepositoryV1GetListRequest filters, Mark mark )
+		{
+			filters.searchCriteria.currentPage = 1;
+			filters.searchCriteria.currentPageSpecified = true;
+			filters.searchCriteria.pageSize = PageSize;
+			filters.searchCriteria.pageSizeSpecified = true;
+
+			var firstPage = await this.GetOrdersPageByFilter( filters, mark ).ConfigureAwait( false );
+			var firstPageResult = firstPage.salesOrderRepositoryV1GetListResponse.result;
+
+			var totalOrders = firstPageResult.totalCount;
+			if( totalOrders <= PageSize )
+				return firstPageResult.items;
+
+			var allOrders = new List< SalesDataOrderInterface >( firstPageResult.items );
+			do
+			{
+				filters.searchCriteria.currentPage++;
+				var nextPage = await this.GetOrdersPageByFilter( filters, mark ).ConfigureAwait( false );
+				var nextPageResult = nextPage.salesOrderRepositoryV1GetListResponse.result;
+				if( nextPageResult.items.Length == 0 )
+					break;
+				allOrders.AddRange( nextPageResult.items );
+			} while( allOrders.Count < totalOrders );
+			return allOrders;
+		}
+
+		private async Task< salesOrderRepositoryV1GetListResponse1 > GetOrdersPageByFilter( SalesOrderRepositoryV1GetListRequest filters, Mark mark )
+		{
+			const int maxCheckCount = 2;
+			const int delayBeforeCheck = 1800000;
+
+			var res = new salesOrderRepositoryV1GetListResponse1();
+
+			var privateClient = this._clientFactory.CreateMagentoSalesOrderRepositoryServiceClient();
+
+			await ActionPolicies.GetWithMarkAsync( mark ).Do( async () =>
+			{
+				var statusChecker = new StatusChecker( maxCheckCount );
+				TimerCallback tcb = statusChecker.CheckStatus;
+
+				privateClient = this._clientFactory.RefreshMagentoSalesOrderRepositoryServiceClient( privateClient );
+
+				using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
+					res = await privateClient.salesOrderRepositoryV1GetListAsync( filters ).ConfigureAwait( false );
+			} ).ConfigureAwait( false );
+			return res;
+		}
+		#endregion
 	}
 }
