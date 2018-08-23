@@ -27,4 +27,4 @@ using System.Runtime.InteropServices;
 
 // 2.4.8.0 - magento 2 supported, 8 build, 4 subversion (includes significant features and codechanges)
 
-[ assembly : AssemblyVersion( "2.7.0.0" ) ]
+[ assembly : AssemblyVersion( "2.7.1.0" ) ]
