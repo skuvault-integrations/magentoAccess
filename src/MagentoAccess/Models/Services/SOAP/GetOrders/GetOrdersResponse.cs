@@ -22,15 +22,15 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			this.Orders = orders;
 		}
 
-		public GetOrdersResponse( salesOrderRepositoryV1GetListResponse1 res )
+		public GetOrdersResponse( IEnumerable< SalesDataOrderInterface > items )
 		{
-			var orders = res.salesOrderRepositoryV1GetListResponse.result.items.Select( x => new Order( x ) );
+			var orders = items.Select( x => new Order( x ) );
 			this.Orders = orders;
 		}
 
-		public GetOrdersResponse( Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.salesOrderRepositoryV1GetListResponse1 res )
+		public GetOrdersResponse( IEnumerable< Magento2salesOrderRepositoryV1_v_2_1_0_0_CE.SalesDataOrderInterface > items )
 		{
-			var orders = res.salesOrderRepositoryV1GetListResponse.result.items.Select( x => new Order( x ) );
+			var orders = items.Select( x => new Order( x ) );
 			this.Orders = orders;
 		}
 
