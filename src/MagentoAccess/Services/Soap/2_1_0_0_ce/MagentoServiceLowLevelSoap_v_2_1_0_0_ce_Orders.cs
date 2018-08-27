@@ -34,7 +34,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					}
 				};
 
-				var allOrders = await this.GetOrdersByFilter( filters ).ConfigureAwait( false );;
+				var allOrders = await this.GetOrdersByFilter( filters ).ConfigureAwait( false );
 				return new GetOrdersResponse( allOrders );
 			}
 			catch( Exception exc )
@@ -65,7 +65,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 					}
 				};
 				
-				var allOrders = await this.GetOrdersByFilter( filters ).ConfigureAwait( false );;
+				var allOrders = await this.GetOrdersByFilter( filters ).ConfigureAwait( false );
 
 				return new GetOrdersResponse( allOrders );
 			}
