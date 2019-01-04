@@ -481,12 +481,12 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products )
+		public async Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, Mark mark )
 		{
-			var mark = Mark.CreateNew();
+			var markLocal = mark ?? Mark.CreateNew();
 			try
 			{
-				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : markLocal ) );
 
 				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
@@ -501,17 +501,17 @@ namespace MagentoAccess
 				}
 				else
 				{
-					MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : mark, notes : "Current store version doesn't need fill product details. Return products as is." ) );
+					MagentoLogger.LogTrace( this.CreateMethodCallInfo( mark : markLocal, notes : "Current store version doesn't need fill product details. Return products as is." ) );
 					resultProducts = products;
 					productBriefInfo = $"Count:{products.Count()},Product:{products.ToJson()}";
 				}
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : productBriefInfo ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : markLocal, methodResult : productBriefInfo ) );
 
 				return resultProducts;
 			}
 			catch( Exception exception )
 			{
-				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : markLocal ), exception );
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
