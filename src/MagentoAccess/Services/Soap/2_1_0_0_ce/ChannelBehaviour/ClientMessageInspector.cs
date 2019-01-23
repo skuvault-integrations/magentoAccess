@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.Text.RegularExpressions;
 using System.Xml;
 using MagentoAccess.Misc;
 using Netco.Logging;
@@ -18,6 +19,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 		public bool LogRawMessages { get; set; } = false;
 		private readonly object lockObject = new object();
 		private string replacedUrl;
+		private const string RegexSplitterString = "/soap/[a-zA-Z]*?services=";
+		private Regex urlSplitterRegex = new Regex( RegexSplitterString, RegexOptions.Compiled );
 
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
@@ -49,7 +52,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce.ChannelBehaviour
 			//Crutch for magento 2.0
 			var newValue = channel.RemoteAddress.Uri.ToString();
 			//var protocolUrlPartIndex = newValue.IndexOf( "//", StringComparison.Ordinal ) + 2;
-			var soapUrlPartIndex = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
+			//var soapUrlPartIndex = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
+			var urlPartIndex = this.urlSplitterRegex.Match( newValue );
+			var soapUrlPartIndex = urlPartIndex.Index;
 			var storeUrlWithoutProtocol = newValue.Substring( 0, soapUrlPartIndex ).Trim();
 
 			lock( this.lockObject )

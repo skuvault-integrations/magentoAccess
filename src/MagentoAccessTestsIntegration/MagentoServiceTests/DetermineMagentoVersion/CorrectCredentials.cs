@@ -32,6 +32,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 				credentials.AuthenticatedUserCredentials.SessionLifeTimeMs,
 				false,
 				credentials.Config.UseVersionByDefaultOnly,
+				credentials.Config.StoreCode,
 				ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
@@ -68,6 +69,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 				credentials.AuthenticatedUserCredentials.SessionLifeTimeMs,
 				false,
 				credentials.Config.UseVersionByDefaultOnly,
+				credentials.Config.StoreCode,
 				ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act

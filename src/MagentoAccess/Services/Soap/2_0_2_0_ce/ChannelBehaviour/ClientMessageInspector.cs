@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using MagentoAccess.Misc;
@@ -17,6 +18,8 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 		public bool LogRawMessages { get; set; } = false;
 		private readonly object lockObject = new object();
 		private string replacedUrl;
+		private const string RegexSplitterString = "/soap/[a-zA-Z]*?services=";
+		private Regex urlSplitterRegex = new Regex(RegexSplitterString, RegexOptions.Compiled);
 
 		public object BeforeSendRequest( ref Message request, IClientChannel channel )
 		{
@@ -48,7 +51,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 			//Crutch for magento 2.0
 			var newValue = channel.RemoteAddress.Uri.ToString();
 			var urlWithoutProtocolIndex1 = newValue.IndexOf( "//", StringComparison.Ordinal ) + 2;
-			var urlWithoutProtocolIndex2 = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
+			//var urlWithoutProtocolIndex2 = newValue.IndexOf( "/soap/default?services=", StringComparison.Ordinal );
+
+			var urlPartIndex = this.urlSplitterRegex.Match( newValue );
+			var urlWithoutProtocolIndex2 = urlPartIndex.Index;
+
 			var storeUrlWithoutProtocol = newValue.Substring( urlWithoutProtocolIndex1, urlWithoutProtocolIndex2 - urlWithoutProtocolIndex1 ).Trim();
 
 			lock( this.lockObject )
@@ -66,6 +73,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 			using( var reader = request.GetReaderAtBodyContents() )
 			{
 				var content = reader.ReadOuterXml();
+
 				var contentWithChanges = content.Replace( magentoCe, newValue );
 				var xmlReader = XmlReader.Create( this.GenerateStreamFromString( contentWithChanges ) );
 				var newMessage = Message.CreateMessage( request.Version, null, xmlReader );
