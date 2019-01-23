@@ -573,7 +573,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 					var statusChecker = new StatusChecker( maxCheckCount );
 					TimerCallback tcb = statusChecker.CheckStatus;
 
-					privateClient = this._clientFactory.RefresMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( privateClient );
+					privateClient = this._clientFactory.RefreshMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( privateClient );
 
 					var catalogProductAttributeMediaGalleryManagementV1GetListRequest = new CatalogProductAttributeMediaGalleryManagementV1GetListRequest() { sku = getProductAttributeMediaListRequest.Sku };
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )

@@ -837,6 +837,7 @@ namespace MagentoAccess
 
 	public class MagentoConfig
 	{
+		public string StoreCode{ get; set; }
 		public string VersionByDefault{ get; set; }
 		public string EditionByDefault{ get; set; }
 		public MagentoDefaultProtocol Protocol{ get; set; }

@@ -16,7 +16,9 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal class MagentoServiceSoapClientFactory
 	{
-		protected const string SoapApiUrl = "soap/default?services=";
+		protected const string SoapApiUrlPart1 = "soap/";
+		protected const string SoapApiUrlPart2 = "?services=";
+		protected const string DefaultStoreCode = "default";
 
 		private readonly string _baseMagentoUrl;
 		private readonly bool _logRawMessages;
@@ -193,7 +195,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return this.CreateClient< catalogProductAttributeMediaGalleryManagementV1PortTypeClient >();
 		}
 
-		public catalogProductAttributeMediaGalleryManagementV1PortTypeClient RefresMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( catalogProductAttributeMediaGalleryManagementV1PortTypeClient client )
+		public catalogProductAttributeMediaGalleryManagementV1PortTypeClient RefreshMagentocatalogProductAttributeMediaGalleryRepositoryServiceClient( catalogProductAttributeMediaGalleryManagementV1PortTypeClient client )
 		{
 			return this.RefreshClient( client );
 		}
@@ -231,7 +233,9 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				this._sessionId = sessionId;
 				this._clientBuilder = clientBuilder;
 				this._binding = CustomBinding( this._baseMagentoUrl, messageVersion, this._config.BindingDecompressionEnabled );
-				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl + servicesName }.BuildUrl( trimTailsSlash : true );
+
+				var storeCode = string.IsNullOrWhiteSpace( config.StoreCode ) ? DefaultStoreCode : config.StoreCode;
+				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrlPart1 + storeCode + SoapApiUrlPart2 + servicesName }.BuildUrl( trimTailsSlash : true );
 				this._endpointAddress = new EndpointAddress( endPoint );
 			}
 

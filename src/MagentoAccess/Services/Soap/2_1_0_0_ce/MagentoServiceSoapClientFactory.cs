@@ -16,7 +16,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
 	internal class MagentoServiceSoapClientFactory
 	{
-		protected const string SoapApiUrl = "soap/default?services=";
+		protected const string SoapApiUrlPart1 = "soap/";
+		protected const string SoapApiUrlPart2 = "?services=";
+		protected const string DefaultStoreCode = "default";
 
 		private readonly string _baseMagentoUrl;
 		private readonly bool _logRawMessages;
@@ -54,7 +56,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.ReCreateFactories( baseMagentoUrl, logRawMessages, sessionId, config );
 		}
 
-		private void ReCreateFactories( string baseMagentoUrl, bool logRawMessages, string sessionId, MagentoConfig config)
+		private void ReCreateFactories( string baseMagentoUrl, bool logRawMessages, string sessionId, MagentoConfig config )
 		{
 			this._adminClientFactory = new Magento2xCommonClientFactory< integrationAdminTokenServiceV1PortTypeClient, integrationAdminTokenServiceV1PortType >(
 				( binding, endpoint ) => new integrationAdminTokenServiceV1PortTypeClient( binding, endpoint ),
@@ -231,7 +233,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				this._sessionId = sessionId;
 				this._clientBuilder = clientBuilder;
 				this._binding = CustomBinding( this._baseMagentoUrl, messageVersion, this._config.BindingDecompressionEnabled );
-				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl + servicesName }.BuildUrl( trimTailsSlash : true );
+
+				var storeCode = string.IsNullOrWhiteSpace( config.StoreCode ) ? DefaultStoreCode : config.StoreCode;
+				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrlPart1 + storeCode + SoapApiUrlPart2 + servicesName }.BuildUrl( trimTailsSlash : true );
 				this._endpointAddress = new EndpointAddress( endPoint );
 			}
 
