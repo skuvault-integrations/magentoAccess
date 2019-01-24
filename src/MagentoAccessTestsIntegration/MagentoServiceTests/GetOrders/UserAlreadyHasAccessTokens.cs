@@ -19,7 +19,9 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 		public void ReceiveOrders( MagentoServiceCredentialsAndConfig credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+			//var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, credentials.Config.StoreCode, ThrowExceptionIfFailed.AllItems );
+			//var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, "en", ThrowExceptionIfFailed.AllItems );
+			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, "default", ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
 			// var firstCreatedItem = this._orders[ credentials.AuthenticatedUserCredentials.SoapApiKey ].OrderBy( x => x.UpdatedAt ).First();
@@ -27,8 +29,9 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetOrders
 
 			// var modifiedFrom = new DateTime( ( firstCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( 1 );
 			// var modifiedTo = new DateTime( ( lastCreatedItem.UpdatedAt ).Ticks, DateTimeKind.Utc ).AddSeconds( -1 );
-			var modifiedFrom = new DateTime( 2018, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
-			var modifiedTo = new DateTime( 2018, 2, 2, 23, 30, 39 ).AddSeconds( -1 );
+			var dateTime = DateTime.Now;
+			var modifiedFrom = dateTime.AddDays(-59); // new DateTime( 2018, 1, 28, 23, 23, 59 ).AddSeconds( 1 );
+			var modifiedTo = dateTime; //new DateTime( 2019, 2, 2, 23, 30, 39 ).AddSeconds( -1 );
 			var getOrdersTask = magentoService.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS" ) );
 			getOrdersTask.Wait();
 
