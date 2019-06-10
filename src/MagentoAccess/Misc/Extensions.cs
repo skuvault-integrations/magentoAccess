@@ -273,28 +273,26 @@ namespace MagentoAccess.Misc
 
 		public static MagentoStoreVersion ParseMagentoStoreInfoString( this string storeVersionRaw )
 		{
-			MagentoStoreVersion magentoStoreVersion = null;
+			if ( string.IsNullOrEmpty( storeVersionRaw ) )
+				return null;
 
-			if ( !string.IsNullOrEmpty( storeVersionRaw ) )
+			// format example: Magento/2.2 (Community)
+			var regExp = new Regex( @"Magento/([1-9]{1}\.[0-9]{1,2}(\.[0-9]{1,2})?)\s+\(([a-zA-Z]+)\)" );
+			var match = regExp.Match( storeVersionRaw );
+
+			if ( match.Success )
 			{
-				// format example: Magento/2.2 (Community)
-				var regExp = new Regex( @"Magento/([1-9]{1}\.[0-9]{1,2}(\.[0-9]{1,2})?)\s+\(([a-zA-Z]+)\)" );
-				var match = regExp.Match( storeVersionRaw );
+				var storeVersion = match.Groups[1].Value;
+				var storeEdition = match.Groups[3].Value;
 
-				if ( match.Success )
+				return new MagentoStoreVersion()
 				{
-					var storeVersion = match.Groups[1].Value;
-					var storeEdition = match.Groups[3].Value;
-
-					magentoStoreVersion = new MagentoStoreVersion()
-					{
-						Version = new Version( storeVersion ), 
-						MagentoEdition = storeEdition.Contains( "CE" ) || storeEdition.Contains( MagentoEdition.Community ) ? MagentoEdition.Community : MagentoEdition.Enterprise
-					};
-				}
+					Version = new Version( storeVersion ), 
+					MagentoEdition = storeEdition.Contains( MagentoEdition.CommunityAbbr ) || storeEdition.Contains( MagentoEdition.Community ) ? MagentoEdition.Community : MagentoEdition.Enterprise
+				};
 			}
 
-			return magentoStoreVersion;
+			return null;
 		}
 	}
 

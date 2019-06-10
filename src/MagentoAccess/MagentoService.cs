@@ -274,19 +274,18 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
-				var storeVersion = await GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
+				var storeVersion = await this.GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
 
-				if ( storeVersion != null )
+				// use Magento Rest API for version higher than 2.1+
+				if ( storeVersion != null && storeVersion.Version.Major == 2 && storeVersion.Version.Minor > 1 )
 				{
-					// use Magento Rest API for version higher than 2.1+
-					if ( storeVersion.Version.Major == 2 && storeVersion.Version.Minor > 1 )
-					{
-						var restService = magentoLowLevelServices.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
+					var restService = magentoLowLevelServices.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
 						
-						if ( restService.Value != null )
+					if ( restService.Value != null )
+					{
+						if ( await restService.Value.InitAsync( true ).ConfigureAwait( false ) )
 						{
-							if ( await restService.Value.InitAsync( true ).ConfigureAwait( false ) )
-								return new PingSoapInfo[] { new PingSoapInfo( storeVersion.Version.ToString(), storeVersion.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
+							return new PingSoapInfo[] { new PingSoapInfo( storeVersion.Version.ToString(), storeVersion.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
 						}
 					}
 				}
@@ -323,7 +322,6 @@ namespace MagentoAccess
 		private async Task< MagentoStoreVersion > GetMagentoStoreVersionAsync( Mark mark = null )
 		{
 			mark = mark ?? Mark.CreateNew();
-			MagentoStoreVersion magentoStoreVersion = null;
 
 			try
 			{
@@ -342,7 +340,7 @@ namespace MagentoAccess
 				// only Magento 2.0+ version support this feature
 			}
 
-			return magentoStoreVersion;
+			return null;
 		}
 
 		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
