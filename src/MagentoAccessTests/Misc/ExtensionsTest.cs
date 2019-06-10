@@ -28,6 +28,50 @@ namespace MagentoAccessTests.Misc
 		}
 
 		[ Test ]
+		public void ParseMagentoStoreCommunityVersion()
+		{
+			var storeVersionRaw = "Magento/2.2 (Community)";
+
+			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
+
+			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 2 ) ) );
+			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+		}
+
+		[ Test ]
+		public void ParseMagentoStoreCommunityVersionWithAbbr()
+		{
+			var storeVersionRaw = "Magento/2.2 (CE)";
+
+			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
+
+			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 2 ) ) );
+			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+		}
+
+		[ Test ]
+		public void ParseMagentoStoreEnterpiseVersion()
+		{
+			var storeVersionRaw = "Magento/2.2 (Enterpise)";
+
+			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
+
+			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 2 ) ) );
+			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Enterprise ));
+		}
+
+		[ Test ]
+		public void ParseMagentoStoreCommunityVersionWithBuildInfo()
+		{
+			var storeVersionRaw = "Magento/2.9.15 (Community)";
+
+			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
+
+			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 9, 15 ) ) );
+			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+		}
+
+		[ Test ]
 		[ TestCaseSource( typeof( BatchTestCases ), "Cases" ) ]
 		public void Batch( BatchTestCase batchCase )
 		{

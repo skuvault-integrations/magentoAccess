@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce;
 using MagentoAccess.Services.Soap._1_9_2_1_ce;
@@ -36,6 +37,19 @@ namespace MagentoAccess.Services.Soap
 
 			var factories = this._factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
 			factories.Add( "1.9.3.x", new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config ) );
+			
+			Version storeVersion;
+			
+			if ( Version.TryParse( magentoVersion, out storeVersion ) )
+			{
+				// use Rest API for version higher than 2.1.0
+				if ( storeVersion.Major == 2 && storeVersion.Minor > 1 )
+				{
+					var restService = factories.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
+					factories.Add( storeVersion.ToString(), restService.Value );
+				}
+			}
+
 			if( tryToSelectSuitable && !factories.ContainsKey( magentoVersion ) )
 			{
 				// try to use similar version
@@ -55,7 +69,6 @@ namespace MagentoAccess.Services.Soap
 					return null;
 
 				// try to use 1.7- 1.9 low level service if can't detect version
-				new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config );
 				this._factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config ) );
 				factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config ) );
 			}

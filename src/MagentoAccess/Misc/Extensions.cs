@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using MagentoAccess.Models.GetOrders;
@@ -268,6 +269,32 @@ namespace MagentoAccess.Misc
 			{
 				yield return source.Current;
 			}
+		}
+
+		public static MagentoStoreVersion ParseMagentoStoreInfoString( this string storeVersionRaw )
+		{
+			MagentoStoreVersion magentoStoreVersion = null;
+
+			if ( !string.IsNullOrEmpty( storeVersionRaw ) )
+			{
+				// format example: Magento/2.2 (Community)
+				var regExp = new Regex( @"Magento/([1-9]{1}\.[0-9]{1,2}(\.[0-9]{1,2})?)\s+\(([a-zA-Z]+)\)" );
+				var match = regExp.Match( storeVersionRaw );
+
+				if ( match.Success )
+				{
+					var storeVersion = match.Groups[1].Value;
+					var storeEdition = match.Groups[3].Value;
+
+					magentoStoreVersion = new MagentoStoreVersion()
+					{
+						Version = new Version( storeVersion ), 
+						MagentoEdition = storeEdition.Contains( "CE" ) || storeEdition.Contains( MagentoEdition.Community ) ? MagentoEdition.Community : MagentoEdition.Enterprise
+					};
+				}
+			}
+
+			return magentoStoreVersion;
 		}
 	}
 
