@@ -274,10 +274,10 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
-				var storeVersion = await this.GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
+				var storeVersionFromApi = await this.GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
 
 				// use Magento Rest API for version higher than 2.1+
-				if ( storeVersion != null && storeVersion.Version.Major == 2 && storeVersion.Version.Minor > 1 )
+				if ( storeVersionFromApi != null && storeVersionFromApi.Version.Major == 2 && storeVersionFromApi.Version.Minor > 1 )
 				{
 					var restService = magentoLowLevelServices.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
 						
@@ -285,12 +285,12 @@ namespace MagentoAccess
 					{
 						if ( await restService.Value.InitAsync( true ).ConfigureAwait( false ) )
 						{
-							return new PingSoapInfo[] { new PingSoapInfo( storeVersion.Version.ToString(), storeVersion.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
+							return new PingSoapInfo[] { new PingSoapInfo( storeVersionFromApi.Version.ToString(), storeVersionFromApi.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
 						}
 					}
 				}
 
-				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
+				var legacyStoreVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
 				{
 					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
 						return null;
@@ -299,7 +299,7 @@ namespace MagentoAccess
 						getMagentoInfoResponse.ServiceVersion = kvp.Key;
 					return getMagentoInfoResponse;
 				} ).ConfigureAwait( false );
-				var workingStores = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
+				var workingStores = legacyStoreVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
 				var pingSoapInfos = workingStores.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true, x.ServiceVersion ) );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfos.ToJson() ) );
@@ -315,10 +315,11 @@ namespace MagentoAccess
 		}
 
 		/// <summary>
-		///	In Magento 2.0+ we can check version via url
+		///	Detects Magento store version using url http(s)://magento_store_base_url/magento_version.
+		///	This feature works only for Magento 2.0+
 		/// </summary>
 		/// <param name="mark"></param>
-		/// <returns></returns>
+		/// <returns>store version if the correspondent point is accessible otherwise null</returns>
 		private async Task< MagentoStoreVersion > GetMagentoStoreVersionAsync( Mark mark = null )
 		{
 			mark = mark ?? Mark.CreateNew();
@@ -337,7 +338,7 @@ namespace MagentoAccess
 			}
 			catch ( Exception )
 			{
-				// only Magento 2.0+ version support this feature
+				// only Magento 2.0+ supports this feature
 			}
 
 			return null;
