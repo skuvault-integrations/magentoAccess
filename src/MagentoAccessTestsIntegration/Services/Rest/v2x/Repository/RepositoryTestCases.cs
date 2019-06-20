@@ -32,9 +32,9 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			string login = TestContext.Parameters["login"];
 			string password = TestContext.Parameters["password"];
 
-			if (!( string.IsNullOrEmpty( url )
-				  || string.IsNullOrEmpty( login )
-				  || string.IsNullOrEmpty( password ) ) )
+			if ( !string.IsNullOrWhiteSpace( url )
+				  && !string.IsNullOrWhiteSpace( login )
+				  && !string.IsNullOrWhiteSpace( password ) ) 
 				return new TestCaseData[] { new TestCaseData( new RepositoryTestCase() { Url = MagentoUrl.Create( url ), MagentoLogin = MagentoLogin.Create( login ), MagentoPass = MagentoPass.Create( password ) } ) };
 			
 			return null;
