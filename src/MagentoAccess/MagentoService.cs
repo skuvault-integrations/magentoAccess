@@ -276,8 +276,10 @@ namespace MagentoAccess
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
 				var storeVersionFromApi = await this.GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
 
-				// use Magento Rest API for version higher than 2.1+
-				if ( storeVersionFromApi != null && storeVersionFromApi.Version.Major == 2 && storeVersionFromApi.Version.Minor > 1 )
+				// use Magento Rest API for version higher than 2.1+ or when version is not set (prerelease)
+				if ( storeVersionFromApi != null 
+					&& ( storeVersionFromApi.Version.Major == 2 && storeVersionFromApi.Version.Minor > 1
+						|| storeVersionFromApi.Version == new Version( 1, 0 ) ) )
 				{
 					var restService = magentoLowLevelServices.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
 						

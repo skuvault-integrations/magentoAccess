@@ -276,6 +276,10 @@ namespace MagentoAccess.Misc
 			if ( string.IsNullOrEmpty( storeVersionRaw ) )
 				return null;
 
+			// version not specified (prerelease version)
+			if ( storeVersionRaw.ToLower().Contains("no version set") )
+				return new MagentoStoreVersion() { Version = new Version( 1, 0 ), MagentoEdition = MagentoEdition.Community };
+
 			// format example: Magento/2.2 (Community)
 			var regExp = new Regex( @"Magento/([1-9]{1}\.[0-9]{1,2}(\.[0-9]{1,2})?)\s+\(([a-zA-Z]+)\)" );
 			var match = regExp.Match( storeVersionRaw );

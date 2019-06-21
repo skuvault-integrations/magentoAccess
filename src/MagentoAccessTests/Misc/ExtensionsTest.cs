@@ -72,6 +72,17 @@ namespace MagentoAccessTests.Misc
 		}
 
 		[ Test ]
+		public void ParseMagentoStoreVersionWhenItsNotSpecified()
+		{
+			var storeVersionRaw = "Magento/No version set (parsed as 1.0 (Community)";
+
+			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
+
+			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 1, 0 ) ) );
+			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+		}
+
+		[ Test ]
 		[ TestCaseSource( typeof( BatchTestCases ), "Cases" ) ]
 		public void Batch( BatchTestCase batchCase )
 		{
