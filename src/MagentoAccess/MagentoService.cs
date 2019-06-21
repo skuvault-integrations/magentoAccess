@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -46,6 +47,7 @@ namespace MagentoAccess
 		public SaveAccessToken AfterGettingToken{ get; set; }
 		public Func< string > AdditionalLogInfo{ get; set; }
 		public MagentoConfig Config{ get; set; }
+		private MagentoAuthenticatedUserCredentials Credentials { get; set; }
 
 		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models )
 		{
@@ -189,6 +191,7 @@ namespace MagentoAccess
 		{
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 			this.Config = magentoConfig;
+			this.Credentials = magentoAuthenticatedUserCredentials;
 
 			//all methods should use factory, but it takes time to convert them, since there are a lot of errors in magento which we should avoid
 			var lowLevelServicesList = new Dictionary< string, IMagentoServiceLowLevelSoap >();
@@ -271,7 +274,25 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
-				var storesVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
+				var storeVersionFromApi = await this.GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
+
+				// use Magento Rest API for version higher than 2.1+ or when version is not set (prerelease)
+				if ( storeVersionFromApi != null 
+					&& ( storeVersionFromApi.Version.Major == 2 && storeVersionFromApi.Version.Minor > 1
+						|| storeVersionFromApi.Version == new Version( 1, 0 ) ) )
+				{
+					var restService = magentoLowLevelServices.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
+						
+					if ( restService.Value != null )
+					{
+						if ( await restService.Value.InitAsync( true ).ConfigureAwait( false ) )
+						{
+							return new PingSoapInfo[] { new PingSoapInfo( storeVersionFromApi.Version.ToString(), storeVersionFromApi.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
+						}
+					}
+				}
+
+				var legacyStoreVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
 				{
 					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
 						return null;
@@ -280,7 +301,7 @@ namespace MagentoAccess
 						getMagentoInfoResponse.ServiceVersion = kvp.Key;
 					return getMagentoInfoResponse;
 				} ).ConfigureAwait( false );
-				var workingStores = storesVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
+				var workingStores = legacyStoreVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
 				var pingSoapInfos = workingStores.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true, x.ServiceVersion ) );
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfos.ToJson() ) );
@@ -293,6 +314,36 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceException( mexc );
 				throw mexc;
 			}
+		}
+
+		/// <summary>
+		///	Detects Magento store version using url http(s)://magento_store_base_url/magento_version.
+		///	This feature works only for Magento 2.0+
+		/// </summary>
+		/// <param name="mark"></param>
+		/// <returns>store version if the correspondent point is accessible otherwise null</returns>
+		private async Task< MagentoStoreVersion > GetMagentoStoreVersionAsync( Mark mark = null )
+		{
+			mark = mark ?? Mark.CreateNew();
+
+			try
+			{
+				using( var httpClient = new HttpClient() {  BaseAddress = new Uri( this.Credentials.BaseMagentoUrl ) } )
+				{
+					MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+					var storeVersionRaw = await httpClient.GetStringAsync( "magento_version" ).ConfigureAwait( false );
+					MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : storeVersionRaw ) );
+
+					if ( !string.IsNullOrEmpty( storeVersionRaw ) )
+						return storeVersionRaw.ParseMagentoStoreInfoString();
+				}
+			}
+			catch ( Exception )
+			{
+				// only Magento 2.0+ supports this feature
+			}
+
+			return null;
 		}
 
 		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
