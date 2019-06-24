@@ -42,8 +42,8 @@ namespace MagentoAccess.Services.Soap
 			
 			if ( Version.TryParse( magentoVersion, out storeVersion ) )
 			{
-				// use Rest API for version higher than 2.1.0
-				if ( storeVersion.Major == 2 && storeVersion.Minor > 1 )
+				// use Rest API for version higher than 2.1.0 or default not specified version - 1.0
+				if ( storeVersion.Major == 2 && storeVersion.Minor > 1 || storeVersion.Major == 1 )
 				{
 					var restService = factories.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
 					factories.Add( storeVersion.ToString(), restService.Value );

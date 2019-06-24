@@ -13,6 +13,8 @@ namespace MagentoAccess.Services
 {
 	internal class WebRequestServices : IWebRequestServices
 	{
+		private const int requestTimeoutMs = 5 * 60 * 1000;
+
 		#region BaseRequests
 		[ Obsolete ]
 		public WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters )
@@ -54,6 +56,7 @@ namespace MagentoAccess.Services
 				serviceRequest.Method = method;
 				serviceRequest.ContentType = "application/json";
 				serviceRequest.KeepAlive = true;
+				serviceRequest.Timeout = requestTimeoutMs;
 
 				rawHeaders?.ForEach( k => serviceRequest.Headers.Add( k.Key, k.Value ) );
 
