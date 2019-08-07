@@ -132,6 +132,9 @@ namespace MagentoAccess.Services.Rest.v2x
 			{
 				try
 				{
+					if ( this.ProductRepository == null || this.SalesOrderRepository == null )
+						await ReauthorizeAsync().ConfigureAwait( false );
+
 					var task1 = this.ProductRepository.GetProductsAsync( DateTime.UtcNow, mark );
 					var task2 = this.SalesOrderRepository.GetOrdersAsync( DateTime.UtcNow.AddMinutes( -1 ), DateTime.UtcNow, new PagingModel( 10, 1 ), mark );
 					await Task.WhenAll( task1, task2 ).ConfigureAwait( false );
