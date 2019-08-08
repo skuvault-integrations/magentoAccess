@@ -31,6 +31,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				case WebExceptionStatus.ConnectionClosed:
 				case WebExceptionStatus.ConnectFailure:
 				case WebExceptionStatus.Timeout:
+				case WebExceptionStatus.SecureChannelFailure:
 					return true;
 				default:
 					return false;
