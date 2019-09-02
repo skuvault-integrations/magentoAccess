@@ -95,7 +95,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
 				{
-					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					
+					if ( response.items != null )
+						response.items = response.items.Where( i => i.sku != null ).ToList();
+
+					return response;
 				}
 			} ).ConfigureAwait( false );
 		}
