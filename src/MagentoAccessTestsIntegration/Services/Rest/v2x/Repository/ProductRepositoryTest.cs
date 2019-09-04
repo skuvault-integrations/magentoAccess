@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Misc;
+using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Services.Rest.v2x.Repository;
 using NUnit.Framework;
 
@@ -70,6 +73,24 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			bundleProducts.SelectMany( x => x.items ).Count().Should().BeGreaterThan( 0 );
 			simpleProducts.SelectMany( x => x.items ).Should().OnlyContain( x => x.typeId == "simple" );
 			bundleProducts.SelectMany( x => x.items ).Should().OnlyContain( x => x.typeId == "bundle" );
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public void GetProductsByDefaultFilter_StoreContainsProducts_ReceiveProducts( RepositoryTestCase testCase )
+		{
+			//------------ Arrange
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var productRepository = new ProductRepository( token, testCase.Url );
+
+			//------------ Act
+			var productPages = productRepository.GetProductsAsync( DateTime.MinValue, null, false ).WaitResult();
+
+			//------------ Assert
+			token.Token.Should().NotBeNullOrWhiteSpace();
+			productPages.Count.Should().BeGreaterOrEqualTo( 0 );
+			productPages.Any( page => page.items.Any( i => i.sku == null ) ).Should().BeFalse();
 		}
 	}
 }
