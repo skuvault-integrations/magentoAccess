@@ -98,7 +98,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
 					if ( response.items != null )
-						response.items = response.items.Where( i => i.sku != null ).ToList();
+						response.items = response.items.Where( i => !string.IsNullOrWhiteSpace( i.sku ) ).ToList();
 
 					return response;
 				}
