@@ -29,7 +29,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
 				var products = await this.CatalogStockItemRepository.PutStockItemsAsync(
-					stockItems.Select( x => Tuple.Create( x.Sku, x.ItemId, new RootObject() { stockItem = new StockItem { qty = x.Qty, minQty = x.MinQty } } ) ),
+					stockItems.Select( x => Tuple.Create( x.Sku, x.ItemId, new RootObject() { stockItem = new StockItem { qty = x.Qty, minQty = x.MinQty, isInStock = x.Qty > 0 } } ) ),
 					mark ).ConfigureAwait( false );
 				return products.Select( x => new RpcInvoker.RpcRequestResponse< PutStockItem, object >( ( PutStockItem )null, new RpcInvoker.RpcResponse< object >( RpcInvoker.SoapErrorCode.Success, x, null ) ) );
 			} );

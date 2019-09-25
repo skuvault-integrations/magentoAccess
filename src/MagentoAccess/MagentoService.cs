@@ -727,9 +727,9 @@ namespace MagentoAccess
 			}
 
 			if( stockItemsOnly )
-				resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) );
+				resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt, stockItemEntity.IsInStock == "True" ) );
 			else
-				resultProducts = ( from productEntity in products join stockItemEntity in stockItems on productEntity.ProductId equals stockItemEntity.ProductId into productsList from stockItemEntity in productsList.DefaultIfEmpty() select new Product( productEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity == null ? "0" : stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt ) );
+				resultProducts = ( from productEntity in products join stockItemEntity in stockItems on productEntity.ProductId equals stockItemEntity.ProductId into productsList from stockItemEntity in productsList.DefaultIfEmpty() select new Product( productEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity == null ? "0" : stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt, stockItemEntity.IsInStock == "True" ) );
 			resultProducts = resultProducts.Where( p => !string.IsNullOrWhiteSpace( p.Sku ) );
 
 			if( includeDetails )
