@@ -36,5 +36,51 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.UpdateInventory
 			// ------------ Assert
 			inventoryToUpdate.Should().BeEquivalentTo( updatedInventory );
 		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( InterchangeabilityTestCases ), nameof(InterchangeabilityTestCases.TestStoresCredentials) ) ]
+		public async Task UpdateInventoryWhenItWasOutOfStock( MagentoServiceCredentialsAndConfig credentialsRest, MagentoServiceCredentialsAndConfig credentialsSoap )
+		{
+			var sku = "testsku1";
+			var newQuantity = 99;
+			var magentoServiceRest = this.CreateMagentoService( credentialsRest.AuthenticatedUserCredentials.SoapApiUser, credentialsRest.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentialsRest.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentialsRest.Config.VersionByDefault, credentialsRest.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentialsRest.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentialsRest.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+
+			// update to zero quantity first
+			var updateSkuQuantityToZeroRequest = new InventoryBySku() { Sku = sku, Qty = 0 };
+			await magentoServiceRest.UpdateInventoryBySkuAsync( new InventoryBySku[] { updateSkuQuantityToZeroRequest } );
+
+			var updateSkuQuantityRequest = new InventoryBySku() { Sku = sku, Qty = newQuantity };
+			await magentoServiceRest.UpdateInventoryBySkuAsync( new InventoryBySku[] { updateSkuQuantityRequest } );
+
+			var searchProductsResult = magentoServiceRest.GetProductsAsync( new[] { 0, 1 }, skus : new string[] { sku }, includeDetails : false ).Result;
+			var updatedProduct = searchProductsResult.First();
+
+			// ------------ Assert
+			updatedProduct.Qty.Should().Be( updateSkuQuantityRequest.Qty.ToString() );
+			updatedProduct.IsInStock.Should().Be( true );
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( InterchangeabilityTestCases ), nameof(InterchangeabilityTestCases.TestStoresCredentials) ) ]
+		public async Task UpdateInventoryWhenItWasInStock( MagentoServiceCredentialsAndConfig credentialsRest, MagentoServiceCredentialsAndConfig credentialsSoap )
+		{
+			var sku = "testsku1";
+			var previousQuantity = 99;
+			var newQuantity = 0;
+			var magentoServiceRest = this.CreateMagentoService( credentialsRest.AuthenticatedUserCredentials.SoapApiUser, credentialsRest.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentialsRest.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentialsRest.Config.VersionByDefault, credentialsRest.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentialsRest.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentialsRest.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
+
+			var updateSkuQuantityToZeroRequest = new InventoryBySku() { Sku = sku, Qty = previousQuantity };
+			await magentoServiceRest.UpdateInventoryBySkuAsync( new InventoryBySku[] { updateSkuQuantityToZeroRequest } );
+
+			var updateSkuQuantityRequest = new InventoryBySku() { Sku = sku, Qty = newQuantity };
+			await magentoServiceRest.UpdateInventoryBySkuAsync( new InventoryBySku[] { updateSkuQuantityRequest } );
+
+			var searchProductsResult = magentoServiceRest.GetProductsAsync( new[] { 0, 1 }, skus : new string[] { sku }, includeDetails : false ).Result;
+			var updatedProduct = searchProductsResult.First();
+
+			// ------------ Assert
+			updatedProduct.Qty.Should().Be( updateSkuQuantityRequest.Qty.ToString() );
+			updatedProduct.IsInStock.Should().Be( false );
+		}
 	}
 }

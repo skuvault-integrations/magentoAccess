@@ -33,7 +33,7 @@ namespace MagentoAccess.Models.GetProducts
 			this.ProductType = productType ?? rp.ProductType;
 		}
 
-		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description, string productType, string updatedAt )
+		public Product( string productId, string entityId, string name, string sku, string qty, decimal price, string description, string productType, string updatedAt, bool isInStock = true )
 		{
 			this.ProductId = productId;
 			this.EntityId = entityId;
@@ -44,6 +44,7 @@ namespace MagentoAccess.Models.GetProducts
 			this.Price = price;
 			this.Description = description;
 			this.ProductType = productType;
+			this.IsInStock = isInStock;
 		}
 
 		public string Upc{ get; set; }
@@ -63,6 +64,7 @@ namespace MagentoAccess.Models.GetProducts
 		public Category[] Categories{ get; set; }
 		public string ProductType{ get; set; }
 		public string UpdatedAt { get; set; }
+		public bool IsInStock { get; set; }
 
 		//category_ids have many
 		public bool Equals( Product other )
