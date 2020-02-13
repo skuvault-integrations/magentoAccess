@@ -122,6 +122,7 @@
     <Compile Include="Models\Services\Rest\v2x\Products\CategoryNode.cs" />
     <Compile Include="Models\Services\Rest\v2x\Error.cs" />
     <Compile Include="Models\Services\Rest\v2x\LaxPropertyNameMatchingConverter.cs" />
+    <Compile Include="Models\Services\Rest\v2x\Products\ProductAttribute.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SalesOrderRepository\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SearchCriteria.cs" />

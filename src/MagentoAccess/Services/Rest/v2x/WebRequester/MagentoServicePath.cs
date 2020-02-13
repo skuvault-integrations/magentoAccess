@@ -6,6 +6,7 @@
 		public const string ProductsPath = "products";
 		public const string StockItemsPath = "stockItems";
 		public const string OrdersPath = "orders";
+		public const string ManufacturersPath = "products/attributes/manufacturer";
 		public const string IntegrationPath = "integration/admin/token";
 
 		public string RepositoryPath { get; private set; }
@@ -49,6 +50,11 @@
 		public static MagentoServicePath CreateOrdersServicePath()
 		{
 			return Create( OrdersPath );
+		}
+
+		public static MagentoServicePath CreateManufacturersServicePath()
+		{
+			return Create( ManufacturersPath );
 		}
 		
 		public static MagentoServicePath CreateIntegrationServicePath()
