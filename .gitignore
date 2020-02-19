@@ -22,6 +22,8 @@ Thumbs.db
 *.lib
 *.sbr
 obj/
+src/packages/
+src/.vs
 [Rr]elease*/
 _ReSharper*/
 _dotCover*/

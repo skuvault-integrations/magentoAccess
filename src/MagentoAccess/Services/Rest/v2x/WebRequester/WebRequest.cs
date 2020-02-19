@@ -16,6 +16,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 		public MagentoWebRequestBody Body { get; private set; } = MagentoWebRequestBody.Empty;
 		public SearchCriteria Parameters { get; private set; } // TODO: create special class
 		public AuthorizationToken AuthorizationToken { get; set; } = AuthorizationToken.Empty;
+		private readonly Dictionary< string, string > CommonHeaders = new Dictionary< string, string > { { "user-agent", MagentoService.UserAgentHeader } };
 
 		public static WebRequestBuilder Create()
 		{
@@ -29,7 +30,8 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			var body = this.Body.ToString();
 			var method = this.MagentoWebRequestMethod.ToString();
 			var parameters = this.Parameters?.ToString();
-			var rawHeaders = new Dictionary< string, string > { { "Authorization", $"Bearer {this.AuthorizationToken}" } };
+			var rawHeaders = this.CommonHeaders;
+			rawHeaders.Add( "Authorization", $"Bearer {this.AuthorizationToken}" );
 			var requestAsync = await webRequestServices.CreateCustomRequestAsync(
 				serviceUrl,
 				body,

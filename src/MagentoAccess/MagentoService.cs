@@ -20,6 +20,7 @@ using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using MagentoAccess.Services;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
@@ -48,6 +49,7 @@ namespace MagentoAccess
 		public Func< string > AdditionalLogInfo{ get; set; }
 		public MagentoConfig Config{ get; set; }
 		private MagentoAuthenticatedUserCredentials Credentials { get; set; }
+		public const string UserAgentHeader = "SkuVault Inc. MagentoAccessLibrary, C#";
 
 		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models )
 		{
@@ -328,7 +330,7 @@ namespace MagentoAccess
 
 			try
 			{
-				using( var httpClient = new HttpClient() {  BaseAddress = new Uri( this.Credentials.BaseMagentoUrl ) } )
+				using( var httpClient = CreateHttpClient() )
 				{
 					MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 					var storeVersionRaw = await httpClient.GetStringAsync( "magento_version" ).ConfigureAwait( false );
@@ -344,6 +346,16 @@ namespace MagentoAccess
 			}
 
 			return null;
+		}
+
+		private HttpClient CreateHttpClient()
+		{
+			var httpClient = new HttpClient
+			{
+				BaseAddress = new Uri( this.Credentials.BaseMagentoUrl )
+			};
+			httpClient.DefaultRequestHeaders.Add( "user-agent", UserAgentHeader );
+			return httpClient;
 		}
 
 		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
