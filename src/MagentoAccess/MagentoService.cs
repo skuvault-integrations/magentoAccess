@@ -354,7 +354,7 @@ namespace MagentoAccess
 			{
 				BaseAddress = new Uri( this.Credentials.BaseMagentoUrl )
 			};
-			httpClient.DefaultRequestHeaders.Add( "user-agent", UserAgentHeader );
+			httpClient.DefaultRequestHeaders.Add( "User-Agent", UserAgentHeader );
 			return httpClient;
 		}
 

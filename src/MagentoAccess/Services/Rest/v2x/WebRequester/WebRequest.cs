@@ -16,7 +16,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 		public MagentoWebRequestBody Body { get; private set; } = MagentoWebRequestBody.Empty;
 		public SearchCriteria Parameters { get; private set; } // TODO: create special class
 		public AuthorizationToken AuthorizationToken { get; set; } = AuthorizationToken.Empty;
-		private readonly Dictionary< string, string > CommonHeaders = new Dictionary< string, string > { { "user-agent", MagentoService.UserAgentHeader } };
+		private readonly Dictionary< string, string > CommonHeaders = new Dictionary< string, string > { { "User-Agent", MagentoService.UserAgentHeader } };
 
 		public static WebRequestBuilder Create()
 		{
