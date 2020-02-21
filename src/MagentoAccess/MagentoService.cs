@@ -49,7 +49,7 @@ namespace MagentoAccess
 		public Func< string > AdditionalLogInfo{ get; set; }
 		public MagentoConfig Config{ get; set; }
 		private MagentoAuthenticatedUserCredentials Credentials { get; set; }
-		public const string UserAgentHeader = "SkuVault Inc. MagentoAccessLibrary, C#";
+		public const string UserAgentHeader = "SkuVault MagentoAccessLibrary C#";
 
 		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models )
 		{
@@ -354,7 +354,7 @@ namespace MagentoAccess
 			{
 				BaseAddress = new Uri( this.Credentials.BaseMagentoUrl )
 			};
-			httpClient.DefaultRequestHeaders.Add( "User-Agent", UserAgentHeader );
+			httpClient.DefaultRequestHeaders.TryAddWithoutValidation( "User-Agent", UserAgentHeader );
 			return httpClient;
 		}
 
