@@ -55,6 +55,7 @@ namespace MagentoAccess.Services.Rest.v2x
 				return productsList;
 
 			var allCategories = ( await this.ProductRepository.GetCategoriesTreeAsync().ConfigureAwait( false ) ).Flatten();
+			var allManufacturers = await this.ProductRepository.GetManufacturersAsync().ConfigureAwait( false );
 			foreach( var product in productsList )
 			{
 				var item = items.FirstOrDefault( i => i.id.ToString() == product.ProductId );
@@ -73,7 +74,18 @@ namespace MagentoAccess.Services.Rest.v2x
 				
 				var manufacturer = item.customAttributes.FirstOrDefault( att => att.attributeCode == "manufacturer" );
 				if( manufacturer != null )
+				{
 					product.Manufacturer = manufacturer.value ?? string.Empty;
+
+					if ( allManufacturers.options != null && allManufacturers.options.Any() )
+					{
+						var manufacturerOption = allManufacturers.options.Where( o => o.value != null && o.value.Equals( product.Manufacturer ) ).FirstOrDefault();
+						if ( manufacturerOption != null )
+						{
+							product.Manufacturer = manufacturerOption.label;
+						}
+					}
+				}
 				
 				var upcAttribute = item.customAttributes.FirstOrDefault( att => att.attributeCode == "upc" );
 				if( upcAttribute != null )

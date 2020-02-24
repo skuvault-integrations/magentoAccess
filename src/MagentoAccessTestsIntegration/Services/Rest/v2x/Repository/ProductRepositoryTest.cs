@@ -92,5 +92,23 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			productPages.Count.Should().BeGreaterOrEqualTo( 0 );
 			productPages.Any( page => page.items.Any( i => i.sku == null ) ).Should().BeFalse();
 		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public void GetProductsManufacturers( RepositoryTestCase testCase )
+		{
+			//------------ Arrange
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var productRepository = new ProductRepository( token, testCase.Url );
+
+			//------------ Act
+			var productsManufacturers = productRepository.GetManufacturersAsync().WaitResult();
+
+			//------------ Assert
+			token.Token.Should().NotBeNullOrWhiteSpace();
+			productsManufacturers.Should().NotBeNull();
+			productsManufacturers.options.Count.Should().BeGreaterThan( 0 );
+		}
 	}
 }
