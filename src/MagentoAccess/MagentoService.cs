@@ -332,7 +332,8 @@ namespace MagentoAccess
 			{
 				using( var httpClient = CreateHttpClient() )
 				{
-					MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+					string additionalInfo = "headers: " + httpClient.DefaultRequestHeaders.ToJson();
+					MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark, additionalInfo: additionalInfo ) );
 					var storeVersionRaw = await httpClient.GetStringAsync( "magento_version" ).ConfigureAwait( false );
 					MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : storeVersionRaw ) );
 
