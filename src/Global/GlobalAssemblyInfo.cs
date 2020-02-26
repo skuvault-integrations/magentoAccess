@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [ assembly : ComVisible( false ) ]
 [ assembly : AssemblyProduct( "MagentoAccess" ) ]
 [ assembly : AssemblyCompany( "SkuVault Inc." ) ]
-[ assembly : AssemblyCopyright( "Copyright (C) 2019 SkuVault Inc." ) ]
+[ assembly : AssemblyCopyright( "Copyright (C) 2020 SkuVault Inc." ) ]
 [ assembly : AssemblyDescription( "Magento webservices API wrapper." ) ]
 [ assembly : AssemblyTrademark( "" ) ]
 [ assembly : AssemblyCulture( "" ) ]

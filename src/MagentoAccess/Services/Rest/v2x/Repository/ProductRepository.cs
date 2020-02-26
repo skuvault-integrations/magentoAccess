@@ -200,5 +200,22 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				}
 			} );
 		}
+
+		public async Task< ProductAttribute > GetManufacturersAsync()
+		{
+			var webRequest = ( WebRequest )WebRequest.Create()
+				.Method( MagentoWebRequestMethod.Get )
+				.Path( MagentoServicePath.CreateManufacturersServicePath() )
+				.AuthToken( this.Token )
+				.Url( this.Url );
+
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			{
+				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				{
+					return JsonConvert.DeserializeObject< ProductAttribute >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
+		}
 	}
 }
