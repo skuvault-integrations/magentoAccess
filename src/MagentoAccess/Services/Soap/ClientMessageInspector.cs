@@ -1,3 +1,4 @@
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
@@ -34,6 +35,11 @@ namespace MagentoAccess.Services.Soap
 				httpRequestMessage = new HttpRequestMessageProperty();
 				httpRequestMessage.Headers.Add( "Accept-Encoding", "" );
 				request.Properties.Add( HttpRequestMessageProperty.Name, httpRequestMessage );
+			}
+
+			if ( !httpRequestMessage.Headers.AllKeys.Contains( "User-Agent" ) )
+			{
+				httpRequestMessage.Headers.Add( "User-Agent", MagentoService.UserAgentHeader );
 			}
 
 			return null;
