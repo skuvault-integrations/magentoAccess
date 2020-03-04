@@ -45,11 +45,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce.ChannelBehaviour
 			else
 				httpRequestMessage.Headers.Add( "Authorization", "Bearer " + this.AccessToken );
 
-			if ( !httpRequestMessage.Headers.AllKeys.Contains( "User-Agent" ) ) 
-			{ 
-				httpRequestMessage.Headers.Add( "User-Agent", MagentoService.UserAgentHeader );
-			}
-
 			//Crutch for magento 2.0
 			var newValue = channel.RemoteAddress.Uri.ToString();
 			var urlWithoutProtocolIndex1 = newValue.IndexOf( "//", StringComparison.Ordinal ) + 2;
