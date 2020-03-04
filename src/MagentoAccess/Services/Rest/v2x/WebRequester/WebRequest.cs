@@ -37,7 +37,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 				method,
 				parameters ).ConfigureAwait( false );
 
-			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{parameters}',headers:{rawHeaders.ToJson()},body:'{body}'", mark );
+			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{parameters}',headers:{requestAsync.Headers.ToJson()},body:'{body}'", mark );
 			return await webRequestServices.GetResponseStreamAsync( requestAsync, mark ).ConfigureAwait( false );
 		}
 
