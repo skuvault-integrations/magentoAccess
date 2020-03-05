@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x;
@@ -29,15 +30,16 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			var body = this.Body.ToString();
 			var method = this.MagentoWebRequestMethod.ToString();
 			var parameters = this.Parameters?.ToString();
-			var rawHeaders = new Dictionary< string, string > { { "Authorization", $"Bearer {this.AuthorizationToken}" }  };
+			var authorizationHeader = new Dictionary< string, string > { { "Authorization", $"Bearer {this.AuthorizationToken}" }  };
 			var requestAsync = await webRequestServices.CreateCustomRequestAsync(
 				serviceUrl,
 				body,
-				rawHeaders, //TODO:create VO with builder!!!
+				authorizationHeader, //TODO:create VO with builder!!!
 				method,
 				parameters ).ConfigureAwait( false );
 
-			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{parameters}',headers:{requestAsync.Headers.ToJson()},body:'{body}'", mark );
+			var requestHeadersForLog = requestAsync.Headers.AllKeys.Select( k => new { name = k, value = requestAsync.Headers [ k ] } );
+			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{parameters}',headers:{requestHeadersForLog.ToJson()},body:'{body}'", mark );
 			return await webRequestServices.GetResponseStreamAsync( requestAsync, mark ).ConfigureAwait( false );
 		}
 
