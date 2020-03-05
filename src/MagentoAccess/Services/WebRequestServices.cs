@@ -59,6 +59,7 @@ namespace MagentoAccess.Services
 				serviceRequest.Timeout = requestTimeoutMs;
 
 				rawHeaders?.ForEach( k => serviceRequest.Headers.Add( k.Key, k.Value ) );
+				serviceRequest.UserAgent = MagentoService.UserAgentHeader;
 
 				if( ( serviceRequest.Method == WebRequestMethods.Http.Post || serviceRequest.Method == WebRequestMethods.Http.Put ) && !string.IsNullOrWhiteSpace( body ) )
 				{
