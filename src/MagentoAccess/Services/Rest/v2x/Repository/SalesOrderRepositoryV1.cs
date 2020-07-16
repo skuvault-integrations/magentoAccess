@@ -117,7 +117,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				var pagingModel = new PagingModel( 10, 1 );
 				var itemsFirstPage = await this.GetOrdersAsync( ch, pagingModel ).ConfigureAwait( false );
 				var pagesToProcess = pagingModel.GetPages( itemsFirstPage.total_count );
-				var tailItems = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetOrdersAsync( ch, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( ch, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 				var resultItemsInChunk = new List< RootObject >() { itemsFirstPage };
 				resultItemsInChunk.AddRange( tailItems );
@@ -132,7 +132,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var pagingModel = new PagingModel( 100, 1 );
 			var itemsFirstPage = await this.GetOrdersAsync( updatedFrom, updatedTo, pagingModel ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( itemsFirstPage.total_count );
-			var tailItems = await pagesToProcess.ProcessInBatchAsync( 10, async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultItems = new List< RootObject >() { itemsFirstPage };
 			resultItems.AddRange( tailItems );

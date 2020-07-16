@@ -58,7 +58,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items, Mark mark = null )
 		{
-			var tailProducts = await items.ProcessInBatchAsync( 10, async x => await this.PutStockItemAsync( x.Item1, x.Item2, x.Item3, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await items.ProcessInBatchAsync( 5, async x => await this.PutStockItemAsync( x.Item1, x.Item2, x.Item3, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			return tailProducts;
 		}
@@ -95,7 +95,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku, Mark mark = null )
 		{
-			var tailProducts = await productSku.ProcessInBatchAsync( 10, async x => await this.GetStockItemAsync( x, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await productSku.ProcessInBatchAsync( 5, async x => await this.GetStockItemAsync( x, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			return tailProducts;
 		}
