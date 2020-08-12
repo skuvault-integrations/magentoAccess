@@ -15,6 +15,7 @@ using MagentoAccess.Models.Services.Soap.GetSessionId;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using Netco.Logging;
+using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Soap
 {
@@ -29,6 +30,7 @@ namespace MagentoAccess.Services.Soap
 		bool GetOrdersUsesEntityInsteadOfIncrementId { get; }
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds );
+		Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark );

@@ -9,6 +9,7 @@ using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.GetShipments;
 using Netco.Logging;
 
 namespace MagentoAccess
@@ -32,6 +33,8 @@ namespace MagentoAccess
 		Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models );
 
 		Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds );
+
+		Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null );
 
 		Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, Mark mark = null );
 

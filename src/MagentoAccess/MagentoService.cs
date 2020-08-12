@@ -20,6 +20,7 @@ using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using MagentoAccess.Models.GetShipments;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
@@ -510,6 +511,37 @@ namespace MagentoAccess
 				}
 
 				return resultOrders;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( methodParameters : methodParameters ), exception, mark : mark );
+				MagentoLogger.LogTraceException( mexc, mark );
+				throw mexc;
+			}
+		}
+		#endregion
+
+		#region getShipments
+		public async Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+		{
+			var modifiedDateFromUtc = TimeZoneInfo.ConvertTimeToUtc( modifiedFrom );
+			var modifiedDateToToUtc = TimeZoneInfo.ConvertTimeToUtc( modifiedTo );
+			var methodParameters = $"{{modifiedDateFrom:{modifiedDateFromUtc},modifiedDateTo:{modifiedDateToToUtc}}}";
+
+			mark = mark ?? Mark.CreateNew();
+
+			try
+			{
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters ), mark );
+				
+				var pingres = await this.PingSoapAsync( mark ).ConfigureAwait( false );
+				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.ServiceUsedVersion, true, false );
+				var shipments = await magentoServiceLowLevel.GetOrdersShipmentsAsync( modifiedDateFromUtc, modifiedDateToToUtc, mark ).ConfigureAwait( false );
+
+				var shipmentsSummary = $"Count:{shipments.Count()},Shipments:{shipments.ToJson()}";
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : shipmentsSummary ), mark );
+
+				return shipments;
 			}
 			catch( Exception exception )
 			{

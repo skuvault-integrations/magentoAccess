@@ -7,11 +7,14 @@ using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Services.Soap;
 using Netco.Extensions;
 using Netco.Logging;
+using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Rest.v2x
 {
 	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
 	{
+		private const int ShipmentsPerPage = 100;
+
 		public async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
@@ -53,6 +56,24 @@ namespace MagentoAccess.Services.Rest.v2x
 		public Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, childMark );
+		}
+
+		public async Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+		{
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				var result = new Dictionary< string, IEnumerable< Shipment > >();
+				var page = new PagingModel( ShipmentsPerPage, 1 );
+				var shipmentsFirstPage = await this.SalesOrderRepository.GetOrdersShipmentsAsync( modifiedFrom, modifiedTo, page, mark ).ConfigureAwait( false );
+
+				var pages = page.GetPages( shipmentsFirstPage.TotalCount ).Select( pageIndex => new PagingModel( ShipmentsPerPage, pageIndex ) );
+				var shipmentsPages = await pages.ProcessInBatchAsync( 4, async pageIndex => await this.SalesOrderRepository.GetOrdersShipmentsAsync( modifiedFrom, modifiedTo, pageIndex, mark ).ConfigureAwait( false ) ).ConfigureAwait( false );
+
+				var shipments = shipmentsPages.Where( sp => sp.Items != null ).SelectMany( sp => sp.Items ).ToList();
+				shipments.AddRange( shipmentsFirstPage.Items );
+
+				return shipments.Select( s => new Shipment( s ) ).GroupBy( shipment => shipment.OrderId.ToString() ).ToDictionary( gr => gr.Key, gr => gr.AsEnumerable() );
+			} );
 		}
 
 		public Task< string > CreateOrder( int shoppingcartid, string store )

@@ -6,6 +6,7 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using Netco.Logging;
+using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
@@ -125,6 +126,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark mark = null )
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, mark );
+		}
+
+		public Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+		{
+			return Task.FromResult( new Dictionary< string, IEnumerable< Shipment > >() );
 		}
 
 		#region Pagination

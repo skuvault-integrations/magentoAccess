@@ -7,6 +7,7 @@ using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.TsZoey_v_1_9_0_1_CE;
 using Netco.Logging;
+using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 {
@@ -138,6 +139,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, childMark );
+		}
+
+		public Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+		{
+			return Task.FromResult( new Dictionary< string, IEnumerable< Shipment > >() );
 		}
 	}
 }

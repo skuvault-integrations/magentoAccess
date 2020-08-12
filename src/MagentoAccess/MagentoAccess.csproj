@@ -117,6 +117,7 @@
     <Compile Include="Models\GetProducts\Category.cs" />
     <Compile Include="Models\GetProducts\MagentoUrl.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
+    <Compile Include="Models\GetShipments\Shipment.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
     <Compile Include="Models\Services\Rest\v2x\CatalogStockItemRepository\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\CategoryNode.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Models\Services\Rest\v2x\Products\ProductAttribute.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SalesOrderRepository\RootObject.cs" />
+    <Compile Include="Models\Services\Rest\v2x\SalesOrderRepository\ShipmentsResponse.cs" />
     <Compile Include="Models\Services\Rest\v2x\SearchCriteria.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\CategoryNode.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\GetCategoryTreeResponse.cs" />

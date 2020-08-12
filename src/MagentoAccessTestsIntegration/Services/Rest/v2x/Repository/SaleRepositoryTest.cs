@@ -86,5 +86,19 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			items2.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 1 );
 			items2.SelectMany( y => y.items ).Count().Should().Be( items.SelectMany( y => y.items ).Count() );
 		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public void GetOrdersShipmentsAsync_StoreContainsShipments_ReceiveModifiedShipments( RepositoryTestCase credentials )
+		{
+			var adminRepository = new IntegrationAdminTokenRepository( credentials.Url );
+			var token = adminRepository.GetTokenAsync( credentials.MagentoLogin, credentials.MagentoPass ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( token, credentials.Url );
+
+			var page = new PagingModel( 100, 1 );
+			var shipments = salesOrderRepositoryV1.GetOrdersShipmentsAsync( DateTime.MinValue, DateTime.UtcNow, page ).WaitResult();
+
+			shipments.Items.Should().NotBeNullOrEmpty();
+		}
 	}
 }
