@@ -44,7 +44,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, string searchField = "increment_id" )
 		{
 			var ordersIdsAgregated = string.Empty;
 			try
@@ -52,7 +52,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				ordersIdsAgregated = string.Join( ",", ordersIds );
 				var frameworkSearchFilterGroups = new List< FrameworkSearchFilterGroup >
 				{
-					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "increment_id", conditionType = "eq", value = ordersIdsAgregated } } },
+					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = searchField, conditionType = "eq", value = ordersIdsAgregated } } },
 				};
 				if( string.IsNullOrWhiteSpace( this.Store ) )
 					frameworkSearchFilterGroups.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );

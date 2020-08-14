@@ -132,7 +132,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+			public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, string searchField )
 			{
 				return null;
 			}

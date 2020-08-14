@@ -35,7 +35,7 @@ namespace MagentoAccessTests.TestEnvironment
 			throw new Exception();
 		}
 
-		public override Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public override Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, string searchField )
 		{
 			throw new Exception();
 		}

@@ -60,7 +60,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, string searchField = "increment_id" )
 		{
 			var ordersIdsAgregated = string.Empty;
 			try
@@ -76,7 +76,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					filters.complex_filter[ 1 ] = new complexFilter { key = "store_id", value = new associativeEntity { key = "in", value = this.Store } };
 				}
 
-				filters.complex_filter[ 0 ] = new complexFilter { key = "increment_id", value = new associativeEntity { key = "in", value = ordersIdsAgregated } };
+				filters.complex_filter[ 0 ] = new complexFilter { key = searchField, value = new associativeEntity { key = "in", value = ordersIdsAgregated } };
 
 				const int maxCheckCount = 2;
 				const int delayBeforeCheck = 1800000;

@@ -8,17 +8,23 @@ namespace MagentoAccess.Models.GetShipments
 	public class Shipment
 	{
 		public string Id { get; set; }
-		public long OrderId { get; set; }
+		public string OrderId { get; set; }
+		public string OrderIncrementId { get; set; }
 		public DateTime CreatedAtUtc { get; set; }
 		public IEnumerable< ShipmentItem > Items { get; set; }
 		public string Carrier { get; set; }
 		public string TrackingNumber { get; set; }
 		public string Note { get; set; }
 
+		public Shipment()
+		{
+		}
+
 		internal Shipment( ShipmentResponse response )
 		{
 			this.Id = response.Id;
 			this.OrderId = response.OrderId;
+			this.OrderIncrementId = response.OrderIncrementId;
 			this.CreatedAtUtc = response.CreatedAt;
 			this.Items = response.Items.Select( i => new ShipmentItem( i ) ).ToList();
 
@@ -41,6 +47,10 @@ namespace MagentoAccess.Models.GetShipments
 		public string Sku { get; set; }
 		public int Quantity { get; set; }
 		public decimal? Weight { get; set; }
+
+		public ShipmentItem()
+		{
+		}
 
 		internal ShipmentItem( ShipmentResponseItem item )
 		{

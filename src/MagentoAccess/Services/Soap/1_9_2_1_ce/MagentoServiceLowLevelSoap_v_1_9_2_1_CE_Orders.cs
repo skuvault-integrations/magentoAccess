@@ -30,12 +30,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000 ).ConfigureAwait( false );
 		}
 
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, string searchField = "increment_id" )
 		{
 			var ordersIdsAgregated = string.Join( ",", ordersIds );
 
 			var filters = new filters();
-			AddFilter( filters, ordersIdsAgregated, "increment_id", "in" );
+			AddFilter( filters, ordersIdsAgregated, searchField, "in" );
 
 			if( !string.IsNullOrWhiteSpace( this.Store ) )
 				AddFilter( filters, this.Store, "store_id", "in" );

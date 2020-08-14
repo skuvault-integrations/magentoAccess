@@ -27,7 +27,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			this.Token = token;
 		}
 
-		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page )
+		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, string searchField = "increment_id" )
 		{
 			var idsList = ids as IList< string > ?? ids.ToList();
 			if( ids == null || !idsList.Any() )
@@ -41,7 +41,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					{
 						filters = new List< Filter >()
 						{
-							new Filter( "increment_id", string.Join( ",", idsList ), Filter.ConditionType.In )
+							new Filter( searchField, string.Join( ",", idsList ), Filter.ConditionType.In )
 						}
 					}
 				},
