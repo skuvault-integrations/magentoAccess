@@ -47,5 +47,7 @@ namespace MagentoAccess
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null );
 
 		Task< bool > InitAsync( bool supressExc = false );
+
+		bool IsRestAPIUsed { get; set; }
 	}
 }

@@ -21,6 +21,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetShipments
 			var shipments = magentoService.GetOrdersShipmentsAsync( DateTime.MinValue, DateTime.UtcNow ).WaitResult();
 			shipments.Should().NotBeNull();
 			shipments.Count.Should().BeGreaterThan( 0 );
+			magentoService.IsRestAPIUsed.Should().Be( true );
 		}
 	}
 }
