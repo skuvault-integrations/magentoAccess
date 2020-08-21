@@ -60,7 +60,7 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public decimal? Weight { get; set; } 
 
 		[ DataMember( Name = "qty" ) ]
-		public int Quantity { get; set; }
+		public int? Quantity { get; set; }
 	}
 
 	[ DataContract ]
