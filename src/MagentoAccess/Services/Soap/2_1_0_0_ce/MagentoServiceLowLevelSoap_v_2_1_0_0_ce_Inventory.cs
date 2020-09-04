@@ -317,6 +317,11 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
+		public Task< SoapProduct > GetProductBySkuAsync( string sku, Mark mark = null )
+		{
+			throw new NotImplementedException();
+		}
+
 
 		private static void AddFilter( FrameworkSearchCriteriaInterface filters, string value, string key, string valueKey )
 		{
