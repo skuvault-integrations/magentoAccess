@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
@@ -182,6 +181,60 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					throw;
 				}
 			} );
+		}
+
+		public async Task< IEnumerable< RootObject > > GetProductsBySkusAsync( IEnumerable< string > skus, Mark mark )
+		{
+			if( skus == null )
+				return new List< RootObject >();
+
+			const int productSkusPerBatch = 20;
+			const int batchesInParallel = 5;
+			var skusBatches = skus.Where( x => !string.IsNullOrWhiteSpace( x ) ).Slice( productSkusPerBatch );
+			var resultBatches = await skusBatches.ProcessInBatchAsync( batchesInParallel, async skusInBatch => 
+			{ 
+				return await this.GetProductsBySkusBatchAsync( skusInBatch, mark ).ConfigureAwait( false );
+			} ).ConfigureAwait( false );
+			return resultBatches.Where( x => x != null );
+		}
+
+		private async Task< RootObject > GetProductsBySkusBatchAsync( IEnumerable< string > skus, Mark mark )
+		{
+			if( skus == null )
+				return null;
+
+			var filterGroups = new List< FilterGroup >
+			{
+				new FilterGroup
+				{
+					filters = new List< Filter > { new Filter( "sku", string.Join( ",", skus ), Filter.ConditionType.In ) }
+				}
+			};
+
+			var parameters = new SearchCriteria
+			{
+				filter_groups = filterGroups
+			};
+
+			var webRequest = ( WebRequest )WebRequest.Create()
+				.Method( MagentoWebRequestMethod.Get )
+				.Path( MagentoServicePath.CreateProductsServicePath() )
+				.Parameters( parameters )
+				.AuthToken( this.Token )
+				.Url( this.Url );
+
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			{
+				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+				{
+					var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					
+					if ( response.items != null )
+						response.items = response.items.Where( i => !string.IsNullOrWhiteSpace( i.sku ) ).ToList();
+
+					return response;
+				}
+			} ).ConfigureAwait( false );
 		}
 
 		public async Task< CategoryNode > GetCategoriesTreeAsync()

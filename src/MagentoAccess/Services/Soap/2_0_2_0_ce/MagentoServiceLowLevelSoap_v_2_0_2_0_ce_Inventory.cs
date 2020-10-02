@@ -348,7 +348,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public Task< SoapProduct > GetProductBySkuAsync( string sku, Mark mark = null )
+		public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, Mark mark = null )
 		{
 			throw new NotImplementedException();
 		}

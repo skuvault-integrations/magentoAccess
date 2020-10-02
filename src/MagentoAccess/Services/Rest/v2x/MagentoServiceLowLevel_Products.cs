@@ -27,12 +27,12 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public async Task< SoapProduct > GetProductBySkuAsync( string sku, Mark mark = null )
+		public async Task< SoapGetProductsResponse > GetProductsBySkusAsync( IEnumerable< string > skus, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
-				var item = await this.ProductRepository.GetProductAsync( sku ).ConfigureAwait( false );
-				return item != null ? new SoapProduct( item ) : null;
+				var products = await this.ProductRepository.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
+				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
 			} );
 		}
 

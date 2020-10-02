@@ -756,10 +756,11 @@ namespace MagentoAccess
 
 		private async static Task< IEnumerable< SoapProduct > > GetProductsBySkusViaRestAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< string > skus, Mark mark )
 		{
-			var products = await skus.ProcessInBatchAsync( 5, async sku =>
-				await magentoServiceLowLevelSoap.GetProductBySkuAsync( sku, mark ).ConfigureAwait( false )
-			);
-			return products.ToList();
+			var products = await magentoServiceLowLevelSoap.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
+			if( products?.Products == null || !products.Products.Any() )
+				return new List< SoapProduct >();
+
+			return products.Products;
 		}
 
 		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, Mark mark )

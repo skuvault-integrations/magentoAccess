@@ -141,7 +141,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< SoapProduct > GetProductBySkuAsync( string sku, Mark mark = null )
+			public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, Mark mark = null )
 			{
 				return null;
 			}

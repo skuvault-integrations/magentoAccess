@@ -21,7 +21,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 				if ( cliTestStoreCredentials != null )
 					return cliTestStoreCredentials;
 
-				return TestEnvironment.TestStoresConfigsVault.GetActiveConfigs.Where( line => line.V2 == "1" && line.Rest == "1" ).Select( line =>
+				return GetActiveConfigs.Where( line => line.V2 == "1" && line.Rest == "1" ).Select( line =>
 					new TestCaseData( new RepositoryTestCase { MagentoPass = MagentoPass.Create( line.MagentoPass ), MagentoLogin = MagentoLogin.Create( line.MagentoLogin ), Url = MagentoUrl.Create( line.MagentoUrl ) } ).SetName( line.MagentoVersion ) );
 			}
 		}
