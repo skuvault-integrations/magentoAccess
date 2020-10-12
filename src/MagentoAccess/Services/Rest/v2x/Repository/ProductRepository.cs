@@ -185,7 +185,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< IEnumerable< RootObject > > GetProductsBySkusAsync( IEnumerable< string > skus, Mark mark )
 		{
-			if( skus == null )
+			if( skus == null || !skus.Any() )
 				return new List< RootObject >();
 
 			const int productSkusPerBatch = 20;

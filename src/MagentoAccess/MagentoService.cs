@@ -754,7 +754,7 @@ namespace MagentoAccess
 			return resultProducts;
 		}
 
-		private async static Task< IEnumerable< SoapProduct > > GetProductsBySkusViaRestAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< string > skus, Mark mark )
+		private static async Task< IEnumerable< SoapProduct > > GetProductsBySkusViaRestAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< string > skus, Mark mark )
 		{
 			var products = await magentoServiceLowLevelSoap.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
 			if( products?.Products == null || !products.Products.Any() )
