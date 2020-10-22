@@ -289,7 +289,7 @@ namespace MagentoAccess
 					{
 						if ( await restService.Value.InitAsync( true ).ConfigureAwait( false ) )
 						{
-							return new PingSoapInfo[] { new PingSoapInfo( storeVersionFromApi.Version.ToString(), storeVersionFromApi.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
+							return new [] { new PingSoapInfo( storeVersionFromApi.Version.ToString(), storeVersionFromApi.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 ) };
 						}
 					}
 				}
@@ -531,7 +531,7 @@ namespace MagentoAccess
 
 				var pingres = await this.PingSoapAsync( markLocal ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.ServiceUsedVersion, true, false );
-				var resultProducts = await this.GetProductsBySoap( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
+				var resultProducts = await GetProductsViaSoapAsync( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : productBriefInfo ), markLocal );
 
@@ -683,11 +683,9 @@ namespace MagentoAccess
 			return dates;
 		}
 
-		private async Task< IEnumerable< Product > > GetProductsBySoap( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded, IEnumerable< int > scopes, DateTime? updatedFrom, IEnumerable< string > skus, bool stockItemsOnly, Mark mark = null )
+		private static async Task< IEnumerable< Product > > GetProductsViaSoapAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded, IEnumerable< int > scopes, DateTime? updatedFrom, IEnumerable< string > skus, bool stockItemsOnly, Mark mark = null )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
-			IEnumerable< Product > resultProducts = new List< Product >();
-
 			SoapGetProductsResponse catalogProductListResponse;
 			if( skus != null && skus.Any() )
 			{
@@ -698,9 +696,10 @@ namespace MagentoAccess
 				}
 				else
 				{
-					catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, mark ).ConfigureAwait( false );
-					var soapProducts = ( from p in catalogProductListResponse.Products join s in skus on p.Sku equals s select p ).ToList();
-					catalogProductListResponse.Products = soapProducts;
+					catalogProductListResponse = new SoapGetProductsResponse
+					{
+						Products = await GetProductsBySkusViaRestAsync( magentoServiceLowLevelSoap, skus, mark )
+					};
 				}
 			}
 			else
@@ -708,8 +707,8 @@ namespace MagentoAccess
 				catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, mark ).ConfigureAwait( false );
 			}
 
-			if( catalogProductListResponse?.Products == null )
-				return resultProducts;
+			if( catalogProductListResponse?.Products == null || !catalogProductListResponse.Products.Any() )
+				return new List< Product >();
 
 			var products = catalogProductListResponse.Products.ToList();
 			List< InventoryStockItem > stockItems;
@@ -739,6 +738,7 @@ namespace MagentoAccess
 				stockItems = getStockItemsAsync.ToList();
 			}
 
+			IEnumerable< Product > resultProducts;
 			if( stockItemsOnly )
 				resultProducts = ( from stockItemEntity in stockItems join productEntity in products on stockItemEntity.ProductId equals productEntity.ProductId select new Product( stockItemEntity.ProductId, productEntity.ProductId, productEntity.Name, productEntity.Sku, stockItemEntity.Qty, 0, null, productEntity.Type, productEntity.UpdatedAt, stockItemEntity.IsInStock == "True" ) );
 			else
@@ -752,6 +752,15 @@ namespace MagentoAccess
 					resultProducts = ( await fillService.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
 			}
 			return resultProducts;
+		}
+
+		private static async Task< IEnumerable< SoapProduct > > GetProductsBySkusViaRestAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< string > skus, Mark mark )
+		{
+			var products = await magentoServiceLowLevelSoap.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
+			if( products?.Products == null || !products.Products.Any() )
+				return new List< SoapProduct >();
+
+			return products.Products;
 		}
 
 		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, Mark mark )

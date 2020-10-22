@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MagentoAccess.Misc;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Models.Services.Soap.GetProductAttributeMediaList;
@@ -24,6 +23,15 @@ namespace MagentoAccess.Services.Rest.v2x
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
 				var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded, mark ).ConfigureAwait( false );
+				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
+			} );
+		}
+
+		public async Task< SoapGetProductsResponse > GetProductsBySkusAsync( IEnumerable< string > skus, Mark mark = null )
+		{
+			return await this.RepeatOnAuthProblemAsync.Get( async () =>
+			{
+				var products = await this.ProductRepository.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
 				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
 			} );
 		}
