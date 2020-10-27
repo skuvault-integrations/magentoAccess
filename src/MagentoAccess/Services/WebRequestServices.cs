@@ -35,14 +35,16 @@ namespace MagentoAccess.Services
 		#endregion
 
 		#region ResponseHanding
-		public string GetCurrentHttpClientHeadersRaw()
+		private string GetCurrentHttpClientHeadersRaw()
 		{
-			return JsonConvert.SerializeObject( this._httpClient.DefaultRequestHeaders.Select( kv => new { kv.Key, kv.Value } ) );
+			return JsonConvert.SerializeObject( this._httpClient.DefaultRequestHeaders.Select( kv => new { Header = kv.Key, Value = kv.Value.FirstOrDefault() } ) );
 		}
 
-		public Task< Stream > GetResponseStreamAsync( string method, string url, string authorizationToken, CancellationToken cancellationToken, string body = null, int? operationTimeout = null )
+		public Task< Stream > GetResponseStreamAsync( string method, string url, string authorizationToken, CancellationToken cancellationToken, string body = null, int? operationTimeout = null, Action< string > logHeaders = null )
 		{
 			var httpClient = GetConfiguredHttpClient( authorizationToken );
+
+			logHeaders?.Invoke( GetCurrentHttpClientHeadersRaw() );
 
 			if ( method == WebRequestMethods.Http.Get )
 				return GetRawResponseStreamAsync( httpClient, url, cancellationToken, operationTimeout );
