@@ -1,10 +1,11 @@
 ﻿using MagentoAccess.Models.Credentials;
+using MagentoAccess.Misc;
 
 namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal class MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory : IMagentoServiceLowLevelSoapFactory
 	{
-		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials, MagentoConfig config )
+		public IMagentoServiceLowLevelSoap CreateMagentoLowLevelService( MagentoAuthenticatedUserCredentials credentials, MagentoConfig config, MagentoTimeouts operationsTimeouts )
 		{
 			return new MagentoServiceLowLevelSoap_v_2_0_2_0_ce(
 				credentials.SoapApiUser,

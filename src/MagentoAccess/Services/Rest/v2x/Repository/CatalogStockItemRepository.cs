@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
@@ -16,14 +17,16 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
+		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public CatalogStockItemRepository( AuthorizationToken token, MagentoUrl url )
+		public CatalogStockItemRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
 		{
 			this.Url = url;
 			this.Token = token;
+			this.OperationsTimeouts = operationsTimeouts;
 		}
 
-		public async Task< bool > PutStockItemAsync( string productSku, string itemId, RootObject stockItem, Mark mark = null )
+		public async Task< bool > PutStockItemAsync( string productSku, string itemId, RootObject stockItem, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Put )
@@ -33,6 +36,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					MagentoServicePath.StockItemsPath +
 					$"/{itemId}" ) )
 				.Body( JsonConvert.SerializeObject( stockItem, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore } ) )
+				.Timeout( OperationsTimeouts[ MagentoOperationEnum.UpdateStockItemQuantity ] )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
@@ -40,7 +44,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				try
 				{
-					using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
 					}
@@ -56,20 +60,21 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			} );
 		}
 
-		public async Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items, Mark mark = null )
+		public async Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items, CancellationToken cancellationToken, Mark mark = null )
 		{
-			var tailProducts = await items.ProcessInBatchAsync( 5, async x => await this.PutStockItemAsync( x.Item1, x.Item2, x.Item3, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await items.ProcessInBatchAsync( 5, async x => await this.PutStockItemAsync( x.Item1, x.Item2, x.Item3, cancellationToken, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			return tailProducts;
 		}
 
-		public async Task< StockItem > GetStockItemAsync( string productSku, Mark mark = null )
+		public async Task< StockItem > GetStockItemAsync( string productSku, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var webRequest = ( WebRequest )WebRequest.Create()
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.Create(
 					MagentoServicePath.StockItemsPath +
 					$"/{Uri.EscapeDataString( productSku )}" ) )
+				.Timeout( OperationsTimeouts[ MagentoOperationEnum.GetStockItemQuantity ] )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
@@ -77,7 +82,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				try
 				{
-					using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -93,9 +98,9 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			} );
 		}
 
-		public async Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku, Mark mark = null )
+		public async Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku, CancellationToken cancellationToken, Mark mark = null )
 		{
-			var tailProducts = await productSku.ProcessInBatchAsync( 5, async x => await this.GetStockItemAsync( x, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailProducts = await productSku.ProcessInBatchAsync( 5, async x => await this.GetStockItemAsync( x, cancellationToken, mark.CreateChildOrNull() ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			return tailProducts;
 		}

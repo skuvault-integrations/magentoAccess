@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess;
@@ -30,13 +31,13 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 			var modifiedTo = new DateTime( 2017, 7, 2, 23, 30, 39 ).AddSeconds( -1 );
 
 			var swR = Stopwatch.StartNew();
-			var getOrdersTaskRest = magentoServiceRest.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS" ) );
+			var getOrdersTaskRest = magentoServiceRest.GetOrdersAsync( modifiedFrom, modifiedTo, CancellationToken.None, new Mark( "TEST-GET-ORDERS" ) );
 			getOrdersTaskRest.Wait();
 			swR.Stop();
 
 			Task.Delay( 10000 ).Wait();
 			var swS = Stopwatch.StartNew();
-			var getOrdersTask2 = magentoServiceSoap.GetOrdersAsync( modifiedFrom, modifiedTo, new Mark( "TEST-GET-ORDERS-2" ) );
+			var getOrdersTask2 = magentoServiceSoap.GetOrdersAsync( modifiedFrom, modifiedTo, CancellationToken.None, new Mark( "TEST-GET-ORDERS-2" ) );
 			getOrdersTask2.Wait();
 			swS.Stop();
 
