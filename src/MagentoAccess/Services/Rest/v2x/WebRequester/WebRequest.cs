@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x;
@@ -17,30 +20,27 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 		public MagentoWebRequestBody Body { get; private set; } = MagentoWebRequestBody.Empty;
 		public SearchCriteria Parameters { get; private set; } // TODO: create special class
 		public AuthorizationToken AuthorizationToken { get; set; } = AuthorizationToken.Empty;
+		public int? Timeout { get; set; }
 
 		public static WebRequestBuilder Create()
 		{
 			return new WebRequestBuilder( new WebRequest() );
 		}
 
-		public async Task< Stream > RunAsync( Mark mark = null )
+		public Task< Stream > RunAsync( CancellationToken cancellationToken, Mark mark = null )
 		{
 			var webRequestServices = new WebRequestServices();
 			var serviceUrl = this.Url.ToString().TrimEnd( '/' ) + MagentoRestPath + this.MagentoServicePath.ToString();
+			if ( this.Parameters != null )
+				serviceUrl = $"{serviceUrl.TrimEnd( '/', '?' )}/?{this.Parameters}";
+
 			var body = this.Body.ToString();
 			var method = this.MagentoWebRequestMethod.ToString();
-			var parameters = this.Parameters?.ToString();
-			var authorizationHeader = new Dictionary< string, string > { { "Authorization", $"Bearer {this.AuthorizationToken}" }  };
-			var requestAsync = await webRequestServices.CreateCustomRequestAsync(
-				serviceUrl,
-				body,
-				authorizationHeader, //TODO:create VO with builder!!!
-				method,
-				parameters ).ConfigureAwait( false );
 
-			var requestHeadersForLog = requestAsync.Headers.AllKeys.Select( k => new { name = k, value = requestAsync.Headers [ k ] } );
-			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{parameters}',headers:{requestHeadersForLog.ToJson()},body:'{body}'", mark );
-			return await webRequestServices.GetResponseStreamAsync( requestAsync, mark ).ConfigureAwait( false );
+			var clientHeaders = webRequestServices.GetCurrentHttpClientHeadersRaw();
+			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{this.Parameters}',headers:{clientHeaders},body:'{body}', timeout:'{this.Timeout}'", mark );
+
+			return webRequestServices.GetResponseStreamAsync( method, serviceUrl, this.AuthorizationToken.Token, cancellationToken, body, this.Timeout );
 		}
 
 		public class WebRequestBuilder
@@ -85,6 +85,12 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			public WebRequestBuilder Parameters( SearchCriteria parameters )
 			{
 				this.WebRequest.Parameters = parameters;
+				return this;
+			}
+
+			public WebRequestBuilder Timeout( int timeout )
+			{
+				this.WebRequest.Timeout = timeout;
 				return this;
 			}
 

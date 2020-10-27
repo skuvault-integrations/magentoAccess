@@ -34,7 +34,7 @@ namespace MagentoAccessTests.Services.Soap._1_7_0_1_ce_1_9_0_1_ce
 			}
 
 			//A
-			var getSessionTasks = list.ProcessInBatchAsync( tasksCount, async x => await magentoServiceLowLevelSoapVFrom17To19Ce.GetSessionId( false ).ConfigureAwait( false ) );
+			var getSessionTasks = list.ProcessInBatchAsync( tasksCount, async x => await magentoServiceLowLevelSoapVFrom17To19Ce.GetSessionId( CancellationToken.None, false ).ConfigureAwait( false ) );
 			getSessionTasks.Wait();
 
 			//A

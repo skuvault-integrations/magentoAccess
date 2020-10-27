@@ -13,6 +13,7 @@ using FilterGroup = MagentoAccess.Models.Services.Rest.v2x.FilterGroup;
 using SearchCriteria = MagentoAccess.Models.Services.Rest.v2x.SearchCriteria;
 using Netco.Extensions;
 using Netco.Logging;
+using System.Threading;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
@@ -20,14 +21,16 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
+		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public SalesOrderRepositoryV1( AuthorizationToken token, MagentoUrl url )
+		public SalesOrderRepositoryV1( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
 		{
 			this.Url = url;
 			this.Token = token;
+			this.OperationsTimeouts = operationsTimeouts;
 		}
 
-		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page )
+		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, CancellationToken cancellationToken )
 		{
 			var idsList = ids as IList< string > ?? ids.ToList();
 			if( ids == null || !idsList.Any() )
@@ -53,19 +56,20 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.CreateOrdersServicePath() )
 				.Parameters( parameters )
+				.Timeout( OperationsTimeouts[ MagentoOperationEnum.GetOrdersByIds ] )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( Mark.CreateNew() ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
 			} );
 		}
 
-		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, Mark mark = null )
+		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var parameters = new SearchCriteria()
 			{
@@ -94,19 +98,20 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.CreateOrdersServicePath() )
 				.Parameters( parameters )
+				.Timeout( OperationsTimeouts[ MagentoOperationEnum.GetModifiedOrders ] )
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( mark ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}
 			} ).ConfigureAwait( false );
 		}
 
-		public async Task< IEnumerable< RootObject > > GetOrdersAsync( IEnumerable< string > productSku )
+		public async Task< IEnumerable< RootObject > > GetOrdersAsync( IEnumerable< string > productSku, CancellationToken cancellationToken )
 		{
 			var chunks = productSku.ToList().SplitToChunks( 20 );
 			if( !chunks.Any() )
@@ -115,9 +120,9 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var resultItems = await chunks.ProcessInBatchAsync( 5, async ch =>
 			{
 				var pagingModel = new PagingModel( 10, 1 );
-				var itemsFirstPage = await this.GetOrdersAsync( ch, pagingModel ).ConfigureAwait( false );
+				var itemsFirstPage = await this.GetOrdersAsync( ch, pagingModel, cancellationToken ).ConfigureAwait( false );
 				var pagesToProcess = pagingModel.GetPages( itemsFirstPage.total_count );
-				var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( ch, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( ch, new PagingModel( pagingModel.ItemsPerPage, x ), cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 				var resultItemsInChunk = new List< RootObject >() { itemsFirstPage };
 				resultItemsInChunk.AddRange( tailItems );
@@ -127,12 +132,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			return resultItems.SelectMany( x => x );
 		}
 
-		public async Task< List< RootObject > > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo )
+		public async Task< List< RootObject > > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, CancellationToken cancellationToken )
 		{
 			var pagingModel = new PagingModel( 100, 1 );
-			var itemsFirstPage = await this.GetOrdersAsync( updatedFrom, updatedTo, pagingModel ).ConfigureAwait( false );
+			var itemsFirstPage = await this.GetOrdersAsync( updatedFrom, updatedTo, pagingModel, cancellationToken ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( itemsFirstPage.total_count );
-			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ) ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ), cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultItems = new List< RootObject >() { itemsFirstPage };
 			resultItems.AddRange( tailItems );
