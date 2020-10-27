@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class IntegrationAdminTokenRepository : BaseRepository, IIntegrationAdminTokenRepository
+	public class IntegrationAdminTokenRepository : IIntegrationAdminTokenRepository
 	{
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
@@ -23,22 +23,19 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 		public async Task< AuthorizationToken > GetTokenAsync( MagentoLogin token, MagentoPass url, CancellationToken cancellationToken )
 		{
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () =>
+				using( var v = await ( ( WebRequest )
+					WebRequest.Create()
+						.Method( MagentoWebRequestMethod.Post )
+						.Timeout( OperationsTimeouts[ MagentoOperationEnum.GetToken ] )
+						.Url( this.Url )
+						.Path( MagentoServicePath.CreateIntegrationServicePath() )
+						.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = url.Password } ) ) )
+					.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
-					using( var v = await ( ( WebRequest )
-						WebRequest.Create()
-							.Method( MagentoWebRequestMethod.Post )
-							.Timeout( OperationsTimeouts[ MagentoOperationEnum.GetToken ] )
-							.Url( this.Url )
-							.Path( MagentoServicePath.CreateIntegrationServicePath() )
-							.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = url.Password } ) ) )
-						.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
-					{
-						return AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-					}
-				} );
+					return AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
 			} ).ConfigureAwait( false );
 		}
 

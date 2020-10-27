@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class CatalogStockItemRepository : BaseRepository, ICatalogStockItemRepository
+	public class CatalogStockItemRepository : ICatalogStockItemRepository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
@@ -40,27 +40,23 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () =>
+				try
 				{
-					try
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
-						{
-							var response = new StreamReader( v, Encoding.UTF8 ).ReadToEnd();
-							return JsonConvert.DeserializeObject< int >( response ) > 0;
-						}
+						return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
 					}
-					catch( MagentoWebException exception )
+				}
+				catch( MagentoWebException exception )
+				{
+					if( exception.IsNotFoundException() )
 					{
-						if( exception.IsNotFoundException() )
-						{
-							return false;
-						}
-						throw;
+						return false;
 					}
-				} );
+					throw;
+				}
 			} );
 		}
 
@@ -82,26 +78,23 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () =>
+				try
 				{
-					try
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
-						{
-							return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-						}
+						return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
-					catch( MagentoWebException exception )
+				}
+				catch( MagentoWebException exception )
+				{
+					if( exception.IsNotFoundException() )
 					{
-						if( exception.IsNotFoundException() )
-						{
-							return null;
-						}
-						throw;
+						return null;
 					}
-				} );
+					throw;
+				}
 			} );
 		}
 

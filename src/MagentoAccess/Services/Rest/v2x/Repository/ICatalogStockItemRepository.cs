@@ -14,6 +14,5 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		Task< IEnumerable< bool > > PutStockItemsAsync( IEnumerable< Tuple< string, string, RootObject > > items, CancellationToken cancellationToken, Mark mark = null );
 		Task< StockItem > GetStockItemAsync( string productSku, CancellationToken cancellationToken, Mark mark = null );
 		Task< IEnumerable< StockItem > > GetStockItemsAsync( IEnumerable< string > productSku, CancellationToken cancellationToken, Mark mark = null );
-		DateTime LastNetworkActivityTime { get; }
 	}
 }

@@ -35,17 +35,14 @@ namespace MagentoAccess.Services
 		#endregion
 
 		#region ResponseHanding
-		private string GetCurrentHttpClientHeadersRaw()
+		public string GetCurrentHttpClientHeadersRaw()
 		{
-			return JsonConvert.SerializeObject( this._httpClient.DefaultRequestHeaders.Select( kv => new { Header = kv.Key, Value = kv.Value.FirstOrDefault() } ) );
+			return JsonConvert.SerializeObject( this._httpClient.DefaultRequestHeaders.Select( kv => new { kv.Key, kv.Value } ) );
 		}
 
-		public Task< Stream > GetResponseStreamAsync( string method, string url, string authorizationToken, CancellationToken cancellationToken, string body = null, int? operationTimeout = null, Action< string > logHeaders = null )
+		public Task< Stream > GetResponseStreamAsync( string method, string url, string authorizationToken, CancellationToken cancellationToken, string body = null, int? operationTimeout = null )
 		{
 			var httpClient = GetConfiguredHttpClient( authorizationToken );
-
-			if ( logHeaders != null )
-				logHeaders( GetCurrentHttpClientHeadersRaw() );
 
 			if ( method == WebRequestMethods.Http.Get )
 				return GetRawResponseStreamAsync( httpClient, url, cancellationToken, operationTimeout );
@@ -99,8 +96,6 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
-				responseMessage.EnsureSuccessStatusCode();
-
 				using( var dataStream = await new TaskFactory< Stream >().StartNew( () => responseMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult() ).ConfigureAwait( false ) )
 				{
 					var memoryStream = new MemoryStream();
@@ -117,7 +112,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception ex )
 			{
-				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex, responseMessage.StatusCode );
+				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex );
 			}
 		}
 		#endregion

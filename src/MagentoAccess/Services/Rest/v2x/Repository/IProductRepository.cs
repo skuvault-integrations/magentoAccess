@@ -22,6 +22,5 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		Task< Item > GetProductAsync( string sku, CancellationToken cancellationToken );
 		Task< CategoryNode > GetCategoriesTreeAsync( CancellationToken cancellationToken );
 		Task< ProductAttribute > GetManufacturersAsync( CancellationToken cancellationToken );
-		DateTime LastNetworkActivityTime { get; }
 	}
 }

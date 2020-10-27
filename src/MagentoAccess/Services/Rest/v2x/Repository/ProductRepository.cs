@@ -17,7 +17,7 @@ using WebRequest = MagentoAccess.Services.Rest.v2x.WebRequester.WebRequest;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class ProductRepository : BaseRepository, IProductRepository
+	public class ProductRepository : IProductRepository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
@@ -94,20 +94,17 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () =>
+				using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
-					{
-						var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
-						if ( response.items != null )
-							response.items = response.items.Where( i => !string.IsNullOrWhiteSpace( i.sku ) ).ToList();
+					if ( response.items != null )
+						response.items = response.items.Where( i => !string.IsNullOrWhiteSpace( i.sku ) ).ToList();
 
-						return response;
-					}
-				} );
+					return response;
+				}
 			} ).ConfigureAwait( false );
 		}
 
@@ -171,26 +168,23 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () =>
+				try
 				{
-					try
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
-						{
-							return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-						}
+						return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
-					catch( MagentoWebException exception )
+				}
+				catch( MagentoWebException exception )
+				{
+					if( exception.IsNotFoundException() )
 					{
-						if( exception.IsNotFoundException() )
-						{
-							return null;
-						}
-						throw;
+						return null;
 					}
-				} );
+					throw;
+				}
 			} );
 		}
 
@@ -235,20 +229,17 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () => 
+				using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
-					{
-						var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
-						if ( response.items != null )
-							response.items = response.items.Where( i => !string.IsNullOrWhiteSpace( i.sku ) ).ToList();
+					if ( response.items != null )
+						response.items = response.items.Where( i => !string.IsNullOrWhiteSpace( i.sku ) ).ToList();
 
-						return response;
-					}
-				} );
+					return response;
+				}
 			} ).ConfigureAwait( false );
 		}
 
@@ -261,15 +252,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () => 
+				using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
-					{
-						return JsonConvert.DeserializeObject< CategoryNode >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-					}
-				} );
+					return JsonConvert.DeserializeObject< CategoryNode >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
 			} );
 		}
 
@@ -282,15 +270,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				return TrackNetworkActivityTime( async () => 
+				using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
-					{
-						return JsonConvert.DeserializeObject< ProductAttribute >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-					}
-				} );
+					return JsonConvert.DeserializeObject< ProductAttribute >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
 			} );
 		}
 	}

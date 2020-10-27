@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,12 +37,10 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			var body = this.Body.ToString();
 			var method = this.MagentoWebRequestMethod.ToString();
 
-			var logClientHeadersBeforeRequest = new Action< string >( clientHeaders =>
-			{
-				MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{this.Parameters}',headers:{clientHeaders},body:'{body}', timeout:'{this.Timeout} ms'", mark );
-			} );
+			var clientHeaders = webRequestServices.GetCurrentHttpClientHeadersRaw();
+			MagentoLogger.LogTraceRequestMessage( $"method:'{method}',url:'{serviceUrl}',parameters:'{this.Parameters}',headers:{clientHeaders},body:'{body}', timeout:'{this.Timeout}'", mark );
 
-			return webRequestServices.GetResponseStreamAsync( method, serviceUrl, this.AuthorizationToken.Token, cancellationToken, body, this.Timeout, logClientHeadersBeforeRequest );
+			return webRequestServices.GetResponseStreamAsync( method, serviceUrl, this.AuthorizationToken.Token, cancellationToken, body, this.Timeout );
 		}
 
 		public class WebRequestBuilder
