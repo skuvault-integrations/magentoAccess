@@ -70,6 +70,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			return MagentoVersions.ZS_1_7_0_1;
 		}
 
+		public DateTime? LastActivityTime
+		{
+			get { return null; }
+		}
+
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );

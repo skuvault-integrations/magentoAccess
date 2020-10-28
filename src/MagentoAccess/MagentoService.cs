@@ -907,6 +907,16 @@ namespace MagentoAccess
 			}
 		}
 		
+		/// <summary>
+		///	Last service's network activity time. Can be used to monitor service's state.
+		/// </summary>
+		public DateTime LastActivityTime
+		{
+			get
+			{
+				return MagentoServiceLowLevelSoap.LastActivityTime ?? DateTime.UtcNow;
+			}
+		}
 	}
 
 	public class MagentoConfig

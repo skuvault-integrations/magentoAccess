@@ -117,6 +117,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return MagentoVersions.M_1_9_2_0;
 		}
 
+		public DateTime? LastActivityTime
+		{
+			get { return null; }
+		}
+
 		public Task< bool > InitAsync( bool supressExceptions = false )
 		{
 			try

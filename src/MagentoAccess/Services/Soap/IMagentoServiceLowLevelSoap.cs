@@ -28,6 +28,11 @@ namespace MagentoAccess.Services.Soap
 		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
 		bool GetOrderByIdForFullInformation { get; }
 		bool GetOrdersUsesEntityInsteadOfIncrementId { get; }
+		/// <summary>
+		///	This property can be used by the client to monitor the last access library's network activity time.
+		/// </summary>
+		DateTime? LastActivityTime { get; }
+
 		Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null );
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, CancellationToken cancellationToken, Mark mark = null );

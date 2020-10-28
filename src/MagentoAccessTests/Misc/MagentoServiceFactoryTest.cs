@@ -113,6 +113,11 @@ namespace MagentoAccessTests.Misc
 				return string.Empty;
 			}
 
+			public DateTime? LastActivityTime
+			{
+				get { return null; }
+			}
+
 			public Task< bool > InitAsync( bool supressExceptions = false )
 			{
 				try
