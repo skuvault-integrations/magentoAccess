@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +38,17 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		public string GetServiceVersion(){
 			return MagentoVersions.MR_2_0_0_0;
+		}
+
+		public DateTime? LastActivityTime
+		{
+			get 
+			{ 
+				return new[] { ProductRepository?.LastNetworkActivityTime, 
+								IntegrationAdminTokenRepository?.LastNetworkActivityTime,
+								CatalogStockItemRepository?.LastNetworkActivityTime,
+								SalesOrderRepository?.LastNetworkActivityTime }.Max() ?? DateTime.UtcNow; 
+			}
 		}
 
 		public async Task< bool > InitAsync( bool supressExceptions = false )

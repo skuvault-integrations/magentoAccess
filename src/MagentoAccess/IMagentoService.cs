@@ -45,5 +45,10 @@ namespace MagentoAccess
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null );
 
 		Task< bool > InitAsync( bool supressExc = false );
+
+		/// <summary>
+		///	This property can be used by the client to monitor the last access library's network activity time.
+		/// </summary>
+		DateTime LastActivityTime { get; }
 	}
 }

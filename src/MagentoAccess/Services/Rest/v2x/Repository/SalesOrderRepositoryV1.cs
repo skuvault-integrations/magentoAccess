@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class SalesOrderRepositoryV1 : ISalesOrderRepositoryV1
+	public class SalesOrderRepositoryV1 : BaseRepository, ISalesOrderRepositoryV1
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
@@ -60,12 +60,15 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
 			{
-				using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
+				return TrackNetworkActivityTime( async () =>
 				{
-					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-				}
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ) )
+					{
+						return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					}
+				} );
 			} );
 		}
 
@@ -102,12 +105,15 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
 			{
-				using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+				return TrackNetworkActivityTime( async () =>
 				{
-					return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
-				}
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+					{
+						return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+					}
+				} );
 			} ).ConfigureAwait( false );
 		}
 
