@@ -44,7 +44,8 @@ namespace MagentoAccess.Services
 		{
 			var httpClient = GetConfiguredHttpClient( authorizationToken );
 
-			logHeaders?.Invoke( GetCurrentHttpClientHeadersRaw() );
+			if ( logHeaders != null )
+				logHeaders( GetCurrentHttpClientHeadersRaw() );
 
 			if ( method == WebRequestMethods.Http.Get )
 				return GetRawResponseStreamAsync( httpClient, url, cancellationToken, operationTimeout );
