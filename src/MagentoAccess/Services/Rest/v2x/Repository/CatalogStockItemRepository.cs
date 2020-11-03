@@ -48,7 +48,8 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					{
 						using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 						{
-							return JsonConvert.DeserializeObject< int >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() ) == 1;
+							var response = new StreamReader( v, Encoding.UTF8 ).ReadToEnd();
+							return JsonConvert.DeserializeObject< int >( response ) > 0;
 						}
 					}
 					catch( MagentoWebException exception )
