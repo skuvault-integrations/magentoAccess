@@ -99,6 +99,8 @@ namespace MagentoAccess.Services
 		{
 			try
 			{
+				responseMessage.EnsureSuccessStatusCode();
+
 				using( var dataStream = await new TaskFactory< Stream >().StartNew( () => responseMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult() ).ConfigureAwait( false ) )
 				{
 					var memoryStream = new MemoryStream();
@@ -115,7 +117,7 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception ex )
 			{
-				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex );
+				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex, responseMessage.StatusCode );
 			}
 		}
 		#endregion
