@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using MagentoAccess.Models.Services.Rest.v2x.CatalogStockItemRepository;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.Repository;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Extensions;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
@@ -72,6 +74,65 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			stockItem3Updated.Should().OnlyContain( x => x.qty == 100500 );
 			stockItem3Updated.Should().OnlyContain( x => x.isInStock == false );
 			products.items.Should().OnlyContain( x => x.typeId == "simple" );
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public void WhenPutStockItemAsyncIsCalled_ThenStockItemUpdatedQuantityIsExpected( RepositoryTestCase testCase )
+		{
+			var testSku = "G-788-11504";
+			var newTestSkuQuantity = new Random().Next( 1, 100 );
+			
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url, _defaultOperationsTimeouts );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass, CancellationToken.None ).WaitResult();
+			var productRepository = new ProductRepository( token, testCase.Url, _defaultOperationsTimeouts );
+			var stockRepository = new CatalogStockItemRepository( token, testCase.Url, _defaultOperationsTimeouts );
+
+			var testItem = productRepository.GetProductAsync( testSku, CancellationToken.None ).WaitResult();
+			testItem.Should().NotBeNull();
+
+			var testItemStock = stockRepository.GetStockItemAsync( testItem.sku, CancellationToken.None ).WaitResult();
+
+			var isUpdateSuccessfull = stockRepository.PutStockItemAsync( testItem.sku, testItemStock.itemId.Value.ToString(), new RootObject { stockItem = new StockItem { qty = newTestSkuQuantity, isInStock = true } }, CancellationToken.None ).WaitResult();
+			var updatedTestItemStock = stockRepository.GetStockItemAsync( testItem.sku, CancellationToken.None ).WaitResult();
+
+			isUpdateSuccessfull.Should().Be( true );
+			updatedTestItemStock.qty.Value.Should().Be( newTestSkuQuantity );
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		[ Ignore( "Because there are tons of update tests" ) ]
+		public async Task GivenHugeAmountOfSkusToUpdate_WhenPutStockItemAsyncIsCalled_ThenStockItemUpdatedQuantityIsExpected( RepositoryTestCase testCase )
+		{
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url, _defaultOperationsTimeouts );
+			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass, CancellationToken.None ).WaitResult();
+			var productRepository = new ProductRepository( token, testCase.Url, _defaultOperationsTimeouts );
+			var stockRepository = new CatalogStockItemRepository( token, testCase.Url, _defaultOperationsTimeouts );
+
+			var rand = new Random();
+			var skus = new List< string >();
+			int maxSkusAmount = 500;
+			var skuPrefix = "G-788-";
+			for( int i = 1; i <= maxSkusAmount; i++ )
+			{
+				skus.Add( skuPrefix + i.ToString() );
+			}
+
+			var results = await skus.ProcessInBatchAsync( 10, async testSku =>
+			{
+				var testItem = await productRepository.GetProductAsync( testSku, CancellationToken.None );
+				if ( testItem == null )
+					return false;
+
+				var testItemStock = await stockRepository.GetStockItemAsync( testItem.sku, CancellationToken.None );
+				var newQuantity = rand.Next( 1, 100 );
+				var isUpdateSuccessfull = await stockRepository.PutStockItemAsync( testItem.sku, testItemStock.itemId.Value.ToString(), new RootObject { stockItem = new StockItem { qty = newQuantity, isInStock = true } }, CancellationToken.None );
+
+				return isUpdateSuccessfull;
+			} );
+
+			results.Should().NotContain( false );
 		}
 	}
 }
