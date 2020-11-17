@@ -24,6 +24,8 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 					{
 						case HttpStatusCode.NotFound:
 						case HttpStatusCode.BadRequest:
+						case HttpStatusCode.ServiceUnavailable:
+						case HttpStatusCode.BadGateway:
 							return true;
 						default:
 							return false;
@@ -32,6 +34,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				case WebExceptionStatus.ConnectFailure:
 				case WebExceptionStatus.Timeout:
 				case WebExceptionStatus.SecureChannelFailure:
+				case WebExceptionStatus.RequestCanceled:
 					return true;
 				default:
 					return false;
