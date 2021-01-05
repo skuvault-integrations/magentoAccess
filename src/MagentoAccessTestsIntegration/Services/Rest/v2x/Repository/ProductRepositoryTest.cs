@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using FluentAssertions;
 using MagentoAccess.Misc;
-using MagentoAccess.Models.Services.Rest.v2x.Products;
 using MagentoAccess.Services.Rest.v2x.Repository;
+using MagentoAccess.Services.Rest.v2x.WebRequester;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
@@ -14,13 +14,18 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 	[ Category( "v2LowLevelReadSmoke" ) ]
 	internal class ProductRepositoryTest
 	{
+		private static AuthorizationToken GetToken( RepositoryTestCase testCase )
+		{
+			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
+			return adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+		}
+
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
 		public void GetProducts_StoreContainsProducts_ReceiveProducts( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var token = GetToken( testCase );
 			var productRepository = new ProductRepository( token, testCase.Url );
 
 			//------------ Act
@@ -37,8 +42,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		public void GetProductsByUpdatedAt_StoreContainsProducts_ReceiveProducts( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var token = GetToken( testCase );
 			var productRepository = new ProductRepository( token, testCase.Url );
 			var products = productRepository.GetProductsAsync().WaitResult();
 			var allproductsSortedByDate = products.SelectMany( x => x.items ).OrderBy( y => y.updatedAt );
@@ -59,8 +63,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		public void GetProductsByType_StoreContainsProducts_ReceiveProducts( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var token = GetToken( testCase );
 			var productRepository = new ProductRepository( token, testCase.Url );
 
 			//------------ Act
@@ -80,8 +83,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		public void GetProductsByDefaultFilter_StoreContainsProducts_ReceiveProducts( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var token = GetToken( testCase );
 			var productRepository = new ProductRepository( token, testCase.Url );
 
 			//------------ Act
@@ -98,8 +100,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		public void GetProductsManufacturers( RepositoryTestCase testCase )
 		{
 			//------------ Arrange
-			var adminRepository = new IntegrationAdminTokenRepository( testCase.Url );
-			var token = adminRepository.GetTokenAsync( testCase.MagentoLogin, testCase.MagentoPass ).WaitResult();
+			var token = GetToken( testCase );
 			var productRepository = new ProductRepository( token, testCase.Url );
 
 			//------------ Act
@@ -109,6 +110,21 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 			token.Token.Should().NotBeNullOrWhiteSpace();
 			productsManufacturers.Should().NotBeNull();
 			productsManufacturers.options.Count.Should().BeGreaterThan( 0 );
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public void GetProductsBySkusAsync( RepositoryTestCase testCase )
+		{
+			var productRepository = new ProductRepository( GetToken( testCase ), testCase.Url );
+			var skus = new List< string >{ "testsku1", "testsku2" };
+			const int batchesCount = 1;
+
+			var result = productRepository.GetProductsBySkusAsync( skus, Mark.Blank() ).Result.ToList();
+
+			result.Count.Should().Be( batchesCount );
+			result.First().items.Count.Should().Be( skus.Count );
+			result.First().items.First().sku.Should().Be( skus.First() );
 		}
 	}
 }

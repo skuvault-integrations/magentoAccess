@@ -32,6 +32,7 @@ namespace MagentoAccess.Services.Soap
 		Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, string searchField = "increment_id" );
 		Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null );
 		Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null );
+		Task< SoapGetProductsResponse > GetProductsBySkusAsync( IEnumerable< string > skus, Mark mark = null );
 		Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null );
 		Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark );
 		Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark );

@@ -145,5 +145,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				res => new SoapGetProductsResponse( res ),
 				async ( client, session ) => await client.catalogProductListAsync( session, filters, store ).ConfigureAwait( false ), 600000 ).ConfigureAwait( false );
 		}
+
+		public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, Mark mark = null )
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
