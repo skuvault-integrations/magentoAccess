@@ -93,6 +93,20 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 		[ Test ]
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
+		public void GetOrdersShipmentsAsync_StoreContainsShipments_ReceiveModifiedShipments( RepositoryTestCase credentials )
+		{
+			var adminRepository = new IntegrationAdminTokenRepository( credentials.Url, _defaultOperationsTimeouts );
+			var token = adminRepository.GetTokenAsync( credentials.MagentoLogin, credentials.MagentoPass, CancellationToken.None ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( token, credentials.Url, _defaultOperationsTimeouts );
+
+			var page = new PagingModel( 100, 1 );
+			var shipments = salesOrderRepositoryV1.GetOrdersShipmentsAsync( DateTime.MinValue, DateTime.UtcNow, page, CancellationToken.None ).WaitResult();
+
+			shipments.Items.Should().NotBeNullOrEmpty();
+		}
+
+		[ Test ]
+		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
 		public void GivenTooSmallTimeout_WhenGetOrdersAsyncIsCalled_ThenTimeoutExceptionIsExcepted( RepositoryTestCase testCase )
 		{
 			var specificTimeouts = new MagentoTimeouts();

@@ -7,6 +7,7 @@ using MagentoAccess.MagentoSoapServiceReference;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using Netco.Logging;
+using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 {
@@ -30,12 +31,12 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				async ( client, session ) => await client.salesOrderListAsync( session, filters ).ConfigureAwait( false ), 600000, cancellationToken ).ConfigureAwait( false );
 		}
 
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken, string searchField = "increment_id" )
 		{
 			var ordersIdsAgregated = string.Join( ",", ordersIds );
 
 			var filters = new filters();
-			AddFilter( filters, ordersIdsAgregated, "increment_id", "in" );
+			AddFilter( filters, ordersIdsAgregated, searchField, "in" );
 
 			if( !string.IsNullOrWhiteSpace( this.Store ) )
 				AddFilter( filters, this.Store, "store_id", "in" );
@@ -55,6 +56,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, CancellationToken cancellationToken, Mark childMark )
 		{
 			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, cancellationToken, childMark );
+		}
+
+		public Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )
+		{
+			return Task.FromResult( new Dictionary< string, IEnumerable< Shipment > >() );
 		}
 	}
 }

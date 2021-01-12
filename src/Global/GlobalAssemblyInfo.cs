@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [ assembly : ComVisible( false ) ]
 [ assembly : AssemblyProduct( "MagentoAccess" ) ]
 [ assembly : AssemblyCompany( "SkuVault Inc." ) ]
-[ assembly : AssemblyCopyright( "Copyright (C) 2020 SkuVault Inc." ) ]
+[ assembly : AssemblyCopyright( "Copyright (C) 2021 SkuVault Inc." ) ]
 [ assembly : AssemblyDescription( "Magento webservices API wrapper." ) ]
 [ assembly : AssemblyTrademark( "" ) ]
 [ assembly : AssemblyCulture( "" ) ]
@@ -27,4 +27,4 @@ using System.Runtime.InteropServices;
 
 // 2.9.0.0 - magento 2 supported, 9 build, 0 subversion (includes significant features and codechanges)
 
-[ assembly : AssemblyVersion( "2.15.4.0" ) ]
+[ assembly : AssemblyVersion( "2.17.0.0" ) ]
