@@ -99,7 +99,8 @@ namespace MagentoAccess.Misc
 		{
 			get
 			{
-				if ( _timeouts.TryGetValue( operation, out MagentoOperationTimeout timeout ) )
+				MagentoOperationTimeout timeout;
+				if ( _timeouts.TryGetValue( operation, out timeout ) )
 					return timeout.TimeoutInMs;
 
 				return DefaultOperationTimeout.TimeoutInMs;
