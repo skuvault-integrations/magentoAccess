@@ -1019,7 +1019,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public string Weight { get; private set; }
 	}
 
-	internal class OrderItemEntity
+	public class OrderItemEntity
 	{
 		public OrderItemEntity( )
 		{
@@ -1333,6 +1333,15 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 		public OrderItemEntity( TsZoey_v_1_9_0_1_CE.salesOrderItemEntity salesOrderItemEntity )
 		{
 			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderItemEntity, OrderItemEntity >( salesOrderItemEntity, this );
+		}
+
+		public OrderItemEntity( TsZoey_v_1_9_0_1_CE.salesOrderInvoiceItemEntity salesOrderInvoiceItemEntity, string discountAmount )
+		{
+			this.Price = salesOrderInvoiceItemEntity.price;
+			this.QtyOrdered = salesOrderInvoiceItemEntity.qty;
+			this.Sku = salesOrderInvoiceItemEntity.sku;
+			this.DiscountAmount = discountAmount;
+			this.TaxAmount = salesOrderInvoiceItemEntity.tax_amount;
 		}
 
 		public string OrderId { get; set; }
