@@ -107,30 +107,7 @@ namespace MagentoAccess.Models.GetOrders
 			this.GrandTotal = order.GrandTotal.ToDecimalOrDefault();
 			this.OrderIncrementalId = order.IncrementId;
 			this.OrderId = order.OrderId;
-			this.Items = order.Items.Select( x => new Item
-				{
-					BaseDiscountAmount = x.BaseDiscountAmount.ToDecimalOrDefault(),
-					BaseOriginalPrice = x.BaseOriginalPrice.ToDecimalOrDefault(),
-					Sku = x.Sku,
-					Name = x.Name,
-					BaseTaxAmount = x.BaseTaxAmount.ToDecimalOrDefault(),
-					ItemId = x.ItemId,
-					BasePrice = x.BasePrice.ToDecimalOrDefault(),
-					BaseRowTotal = x.BaseRowTotal.ToDecimalOrDefault(),
-					DscountAmount = x.DiscountAmount.ToDecimalOrDefault(),
-					OriginalPrice = x.OriginalPrice.ToDecimalOrDefault(),
-					Price = x.Price.ToDecimalOrDefault(),
-					ProductType = x.ProductType,
-					QtyCanceled = x.QtyCanceled.ToDecimalOrDefault(),
-					QtyInvoiced = x.QtyInvoiced.ToDecimalOrDefault(),
-					QtyOrdered = x.QtyOrdered.ToDecimalOrDefault(),
-					QtyShipped = x.QtyShipped.ToDecimalOrDefault(),
-					QtyRefunded = x.QtyRefunded.ToDecimalOrDefault(),
-					RowTotal = x.RowTotal.ToDecimalOrDefault(),
-					TaxAmount = x.TaxAmount.ToDecimalOrDefault(),
-					TaxPercent = x.TaxPercent.ToDecimalOrDefault(),
-				}
-			).ToList();
+			this.Items = order.Items.ToSvOrderItems().ToList();
 			this.PaymentMethod = order.Payment?.Method;
 			this.StoreName = order.StoreName;
 			this.Subtotal = order.Subtotal.ToDecimalOrDefault();
@@ -212,7 +189,7 @@ namespace MagentoAccess.Models.GetOrders
 					ItemId = x.item_id,
 					BasePrice = x.base_price.ToDecimalOrDefault(),
 					BaseRowTotal = x.base_row_total.ToDecimalOrDefault(),
-					DscountAmount = x.discount_amount.ToDecimalOrDefault(),
+					DiscountAmount = x.discount_amount.ToDecimalOrDefault(),
 					OriginalPrice = x.original_price.ToDecimalOrDefault(),
 					Price = x.price.ToDecimalOrDefault(),
 					ProductType = x.product_type,
@@ -453,6 +430,36 @@ namespace MagentoAccess.Models.GetOrders
 			var conntinueFlag = true;
 			conntinueFlag = o1Sorted.SequenceEqual( o2Sorted );
 			return conntinueFlag;
+		}
+
+		internal static IEnumerable< Item > ToSvOrderItems( this IEnumerable< OrderItemEntity > items )
+		{
+			if ( items == null )
+				return new List< Item >();
+			return items.Select( x => new Item
+				{
+					BaseDiscountAmount = x.BaseDiscountAmount.ToDecimalOrDefault(),
+					BaseOriginalPrice = x.BaseOriginalPrice.ToDecimalOrDefault(),
+					Sku = x.Sku,
+					Name = x.Name,
+					BaseTaxAmount = x.BaseTaxAmount.ToDecimalOrDefault(),
+					ItemId = x.ItemId,
+					BasePrice = x.BasePrice.ToDecimalOrDefault(),
+					BaseRowTotal = x.BaseRowTotal.ToDecimalOrDefault(),
+					DiscountAmount = x.DiscountAmount.ToDecimalOrDefault(),
+					OriginalPrice = x.OriginalPrice.ToDecimalOrDefault(),
+					Price = x.Price.ToDecimalOrDefault(),
+					ProductType = x.ProductType,
+					QtyCanceled = x.QtyCanceled.ToDecimalOrDefault(),
+					QtyInvoiced = x.QtyInvoiced.ToDecimalOrDefault(),
+					QtyOrdered = x.QtyOrdered.ToDecimalOrDefault(),
+					QtyShipped = x.QtyShipped.ToDecimalOrDefault(),
+					QtyRefunded = x.QtyRefunded.ToDecimalOrDefault(),
+					RowTotal = x.RowTotal.ToDecimalOrDefault(),
+					TaxAmount = x.TaxAmount.ToDecimalOrDefault(),
+					TaxPercent = x.TaxPercent.ToDecimalOrDefault()
+				}
+			);
 		}
 	}
 }

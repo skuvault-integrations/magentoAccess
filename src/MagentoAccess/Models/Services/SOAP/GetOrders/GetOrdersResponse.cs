@@ -42,7 +42,7 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 
 		public GetOrdersResponse( TsZoey_v_1_9_0_1_CE.salesOrderListResponse res )
 		{
-			var orders = res.result.Select( x => new Order( x ) );
+			var orders = res.result.Select( x => new Order( x, x.order_invoices ) );
 			this.Orders = orders;
 		}
 
@@ -775,6 +775,12 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			Mapper.Map< TsZoey_v_1_9_0_1_CE.salesOrderListEntity, Order >( salesOrderListEntity, this );
 		}
 
+		public Order( TsZoey_v_1_9_0_1_CE.salesOrderListEntity salesOrderListEntity, TsZoey_v_1_9_0_1_CE.salesOrderInvoiceEntity[] orderInvoices )
+		: this( salesOrderListEntity )
+		{
+			this.Items = orderInvoices.ToOrderItemEntities();
+		}
+
 		public IEnumerable< OrderItemEntity > Items { get; private set; }
 
 		public string AdjustmentNegative { get; private set; }
@@ -962,6 +968,22 @@ namespace MagentoAccess.Models.Services.Soap.GetOrders
 			{
 				return "incrementId:, OrderId:";
 			}
+		}
+	}
+
+	public static class ZoeyOrdersExtensions
+	{ 
+		public static IEnumerable< OrderItemEntity > ToOrderItemEntities( this TsZoey_v_1_9_0_1_CE.salesOrderInvoiceEntity[] orderInvoices )
+		{
+			if ( orderInvoices != null )
+			{
+				return orderInvoices.Where( x => x.items != null ).SelectMany( invoice => invoice.items
+					.Select( invoiceItem => new OrderItemEntity( invoiceItem,
+						invoice.items.Length == 1 ? invoice.discount_amount : string.Empty ) ) );
+						//If there's only one invoiceItem per invoice then we can save the invoice's discount_amount into invoiceItem.
+						//Otherwise, we have to leave it blank. Zoey doesn't return discount_amount for each invoiceItem
+			}
+			return new List< OrderItemEntity >();
 		}
 	}
 }

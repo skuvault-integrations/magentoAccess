@@ -38,7 +38,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 		protected Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface > getProductsPageCache = new Cache< Tuple< int, int, DateTime? >, CatalogDataProductSearchResultsInterface >();
 
-		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
@@ -125,7 +125,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
+		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, CancellationToken cancellationToken, Mark markForLog )
 		{
 			var productsBriefInfo = new List< PutStockItem > { putStockItem }.ToJson();
 
@@ -200,9 +200,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		}
 
 		//TODO: refactor, remove redundant wrapper
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, CancellationToken cancellationToken, Mark mark = null )
 		{
-			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom ).ConfigureAwait(false);
+			return await this.GetProductsAsync( int.MaxValue, productType, productTypeShouldBeExcluded, updatedFrom, cancellationToken ).ConfigureAwait(false);
 		}
 
 		private async Task< SoapGetProductsResponse > GetProductsOldAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
@@ -288,17 +288,17 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom )
+		private async Task< SoapGetProductsResponse > GetProductsAsync( int limit, string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, CancellationToken cancellationToken )
 		{
 			try
 			{
 				var pagingModel = new PagingModel( 200, 0 );
-				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false );
+				var firstPage = await this.GetProductsPageAsync( pagingModel.CurrentPage, pagingModel.ItemsPerPage, updatedFrom, cancellationToken ).ConfigureAwait( false );
 				if( firstPage == null )
 					return new SoapGetProductsResponse( new List< CatalogDataProductInterface >() );
 
 				var pagesNumbers = pagingModel.GetPages( firstPage.totalCount, limit );
-				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var pages = await pagesNumbers.ProcessInBatchAsync( 4, async x => await this.GetProductsPageAsync( x, pagingModel.ItemsPerPage, updatedFrom, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var pagesWithLimits = pages.SelectMany( x => x.items );
 				var pagesWithLimitsDistinct = pagesWithLimits.GroupBy( x => x.sku ).Select( x => x.First() );
 
@@ -317,7 +317,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, Mark mark = null )
+		public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, CancellationToken cancellationToken, Mark mark = null )
 		{
 			throw new NotImplementedException();
 		}
@@ -333,7 +333,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			filters.filterGroups = temp.ToArray();
 		}
 
-		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom )
+		private async Task< CatalogDataProductSearchResultsInterface > GetProductsPageAsync( int currentPage, int pageSize, DateTime? updatedFrom, CancellationToken cancellationToken )
 		{
 			var parameters = Tuple.Create( currentPage, pageSize, updatedFrom );
 			var cachedR = this.getProductsPageCache.Get( parameters );
@@ -369,7 +369,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				res => res?.catalogProductRepositoryV1GetListResponse.result,
 				//res => new SoapGetProductsResponse(res == null? new List<CatalogDataProductSearchResultsInterface>(): new List<CatalogDataProductSearchResultsInterface>() { res.catalogProductRepositoryV1GetListResponse }),
 				//res => new SoapGetProductsResponse(  res.catalogProductRepositoryV1GetListResponse.result ),
-				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient, this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogProductRepositoryV1GetListAsync( catalogProductRepositoryV1GetListRequest ).ConfigureAwait( false ), 1800000, this._clientFactory.CreateMagentoCatalogProductRepositoryServiceClient, this._clientFactory.RefreshMagentoCatalogProductRepositoryServiceClient, cancellationToken ).ConfigureAwait(false);
 			this.getProductsPageCache.Add( result, parameters, TimeSpan.FromSeconds( 300 ) );
 			return result;
 		}
@@ -458,13 +458,13 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{
 			try
 			{
-				var inventory = await this.GetStockItemsWithoutSkuAsync( skusOrIds, scopes ).ConfigureAwait( false );
+				var inventory = await this.GetStockItemsWithoutSkuAsync( skusOrIds, scopes, cancellationToken ).ConfigureAwait( false );
 
-				var products = await this.GetProductsAsync( null, false, null ).ConfigureAwait( false );
+				var products = await this.GetProductsAsync( null, false, null, cancellationToken ).ConfigureAwait( false );
 
 				var inventoryWithSku = ( from pr in products.Products
 					join inv in inventory.InventoryStockItems on pr.ProductId equals inv.ProductId
@@ -479,17 +479,17 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuOldAsync( IEnumerable< string > skusOrIds )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuOldAsync( IEnumerable< string > skusOrIds, CancellationToken cancellationToken )
 		{
 			try
 			{
 				var pageSize = 500;
 				var scope = 1;
-				var res = await this.GetStockItemsPageAsync( 1, pageSize, scope ).ConfigureAwait( false );
+				var res = await this.GetStockItemsPageAsync( 1, pageSize, scope, cancellationToken ).ConfigureAwait( false );
 				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount == 0 )//crutch for sandbox
 				{
 					scope = 0;
-					res = await this.GetStockItemsPageAsync( 1, pageSize, scope ).ConfigureAwait( false );
+					res = await this.GetStockItemsPageAsync( 1, pageSize, scope, cancellationToken ).ConfigureAwait( false );
 				}
 
 				if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= pageSize )
@@ -498,7 +498,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				var pagingModel = new PagingModel( pageSize, 0 );
 				var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x =>
 				{
-					var pageResp = await this.GetStockItemsPageAsync( x, pageSize, scope ).ConfigureAwait( false );
+					var pageResp = await this.GetStockItemsPageAsync( x, pageSize, scope, cancellationToken ).ConfigureAwait( false );
 					return Tuple.Create( x, pageResp.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result );
 				} ).ConfigureAwait( false );
 				var inventory = new InventoryStockItemListResponse( responses );
@@ -518,19 +518,19 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 		/// <param name="scopes"></param>
 		/// <param name="mark"></param>
 		/// <returns>Union of scope items (the minimal qty item will be in the union)</returns>
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{
 			try
 			{
 				Func< int, int, Task< InventoryStockItemListResponse > > getInventoryFromStock = async ( ps, sc ) =>
 				{
 					const int currentPage = 1;
-					var res = await this.GetStockItemsPageAsync( currentPage, ps, sc ).ConfigureAwait( false );
+					var res = await this.GetStockItemsPageAsync( currentPage, ps, sc, cancellationToken ).ConfigureAwait( false );
 					if( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount <= ps )
 						return new InventoryStockItemListResponse( new[] { Tuple.Create( currentPage, res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) } );
 
 					var pagingModel = new PagingModel( ps, 0 );
-					var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x => Tuple.Create( x, ( await this.GetStockItemsPageAsync( x, ps, sc ).ConfigureAwait( false ) ).catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) ).ConfigureAwait( false );
+					var responses = await pagingModel.GetPages( res.catalogInventoryStockRegistryV1GetLowStockItemsResponse.result.totalCount ).ProcessInBatchAsync( 10, async x => Tuple.Create( x, ( await this.GetStockItemsPageAsync( x, ps, sc, cancellationToken ).ConfigureAwait( false ) ).catalogInventoryStockRegistryV1GetLowStockItemsResponse.result ) ).ConfigureAwait( false );
 					return new InventoryStockItemListResponse( responses );
 				};
 
@@ -609,25 +609,25 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageAsync( int currentPage, int pageSize, int scopeId )
+		private async Task< catalogInventoryStockRegistryV1GetLowStockItemsResponse1 > GetStockItemsPageAsync( int currentPage, int pageSize, int scopeId, CancellationToken cancellationToken )
 		{
 			var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetLowStockItemsRequest() { currentPage = currentPage, currentPageSpecified = true, pageSize = pageSize, pageSizeSpecified = true, qty = 999999999999, scopeId = scopeId };
 
 			return await this.GetWithAsync(
 				res => res,
-				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient, this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetLowStockItemsAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient, this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient, cancellationToken ).ConfigureAwait(false);
 		}
 
-		private async Task< catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 > GetStockItemBySkuAsync( string sku )
+		private async Task< catalogInventoryStockRegistryV1GetStockItemBySkuResponse1 > GetStockItemBySkuAsync( string sku, CancellationToken cancellationToken )
 		{
 			var catalogInventoryStockRegistryV1GetStockItemBySkuRequest = new CatalogInventoryStockRegistryV1GetStockItemBySkuRequest() { productSku = sku };
 
 			return await this.GetWithAsync(
 				res => res,
-				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient, this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient ).ConfigureAwait( false );
+				async ( client, session ) => await client.catalogInventoryStockRegistryV1GetStockItemBySkuAsync( catalogInventoryStockRegistryV1GetStockItemBySkuRequest ).ConfigureAwait( false ), 600000, this._clientFactory.CreateMagentoCatalogInventoryStockServiceClient, this._clientFactory.RefreshMagentoCatalogInventoryStockServiceClient, cancellationToken ).ConfigureAwait( false );
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, CancellationToken cancellationToken, bool throwException = true )
 		{
 			try
 			{
@@ -660,7 +660,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
+		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( CancellationToken cancellationToken, string rootCategory = "1" )
 		{
 			try
 			{
@@ -692,7 +692,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, bool throwException = true )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, CancellationToken cancellationToken, bool throwException = true )
 		{
 			try
 			{
@@ -730,7 +730,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
+		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute, CancellationToken cancellationToken )
 		{
 			try
 			{
@@ -760,7 +760,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts, CancellationToken cancellationToken )
 		{
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
@@ -772,8 +772,8 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			//var productAttributes = this.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
 			//productAttributes.Wait();
 
-			var productsInfo = await resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), false ).ConfigureAwait( false ) ).ConfigureAwait( false );
-			var categoriesTreeResponse = await this.GetCategoriesTreeAsync().ConfigureAwait( false );
+			var productsInfo = await resultProductslist.ProcessInBatchAsync( batchSize, async x => await this.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), cancellationToken, false ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var categoriesTreeResponse = await this.GetCategoriesTreeAsync( cancellationToken ).ConfigureAwait( false );
 
 			productsInfo = productsInfo.Where( x => x.Exc == null );
 			var magentoCategoriesList = categoriesTreeResponse.RootCategory == null ? new List< CategoryNode >() : categoriesTreeResponse.RootCategory.Flatten();
@@ -836,7 +836,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func< TClient, string, Task< TServerResponse > > action, int abortAfter, Func< TClient > clientFactory, Func< TClient, TClient > clientRecreateFactory, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse, TClient >( Func< TServerResponse, TResult > converter, Func< TClient, string, Task< TServerResponse > > action, int abortAfter, Func< TClient > clientFactory, Func< TClient, TClient > clientRecreateFactory, CancellationToken cancellationToken, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TClient : class
 		{
 			try
 			{
@@ -845,7 +845,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					privateClient = clientRecreateFactory( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
 						abortAfter,
