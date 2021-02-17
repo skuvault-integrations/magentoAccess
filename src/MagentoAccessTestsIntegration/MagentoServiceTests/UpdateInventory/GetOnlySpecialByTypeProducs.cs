@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess;
@@ -31,7 +30,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 
 			// ------------ Act
 			//get products
-			var getProductsTask1 = magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false, mark : new Mark( nameof( InventoryUpdated ) + "_s" ) );
+			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false, mark : new Mark( nameof( InventoryUpdated ) + "_s" ) );
 			Task.WhenAll( getProductsTask1 ).Wait();
 			var initialSkus = getProductsTask1.Result./*Where( x => x.Sku.Contains( "estSku1" ) ).*/ToList();
 			var src = initialSkus.ToInventory( x => ( int )x.Qty.ToDecimalOrDefault() );
@@ -39,11 +38,11 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			inventories.ForEach( x => x.Qty = val );
 
 			//update
-			var updateInventoryTask = magentoService.UpdateInventoryAsync( inventories, CancellationToken.None );
+			var updateInventoryTask = magentoService.UpdateInventoryAsync( inventories );
 			Task.WhenAll( updateInventoryTask ).Wait();
 
 			//get products
-			var getProductsTask3 = magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false, mark : new Mark( nameof( InventoryUpdated ) + "_s" ) );
+			var getProductsTask3 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, productType : "simple", excludeProductByType : false, mark : new Mark( nameof( InventoryUpdated ) + "_s" ) );
 			Task.WhenAll( getProductsTask3 ).Wait();
 			var resultSku = getProductsTask3.Result/*.Where( x => x.Sku.Contains( "estSku1" ) )*/;
 

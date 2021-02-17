@@ -61,25 +61,16 @@ namespace MagentoAccess
 
 	public class MagentoWebException: MagentoException
 	{
-		public HttpStatusCode? StatusCode { get; private set; }
-
-		public MagentoWebException( string message, Exception exception, HttpStatusCode? statusCode )
-			: base( message, exception )
-		{
-			this.StatusCode = statusCode;
-		}
-
 		public MagentoWebException( string message, Exception exception )
-			: this( message, exception, null )
+			: base( message, exception )
 		{
 		}
 
 		internal bool IsNotFoundException()
 		{
-			if ( this.StatusCode == HttpStatusCode.NotFound )
-				return true;
-
-			return false;
+			var webException = this.InnerException as WebException;
+			var response = webException?.Response as HttpWebResponse;
+			return webException?.Status == WebExceptionStatus.ProtocolError && response?.StatusCode == HttpStatusCode.NotFound;
 		}
 	}
 

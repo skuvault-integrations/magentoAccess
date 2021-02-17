@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.MagentoSoapServiceReference_v_1_14_1_EE;
 using MagentoAccess.Misc;
@@ -35,10 +34,10 @@ namespace MagentoAccess.Services.Soap
 			var resultProductslist = resultProducts as IList< ProductDetails > ?? resultProducts.ToList();
 			var attributes = new string[] { ProductAttributeCodes.Cost, ProductAttributeCodes.Manufacturer, ProductAttributeCodes.Upc };
 
-			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 5, async x => await this._magentoServiceLowLevelSoap.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ), CancellationToken.None ).ConfigureAwait( false ) );
-			var productAttributesTask = this._magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer, CancellationToken.None );
-			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 5, async x => await this._magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ), CancellationToken.None ).ConfigureAwait( false ) );
-			var categoriesTreeResponseTask = this._magentoServiceLowLevelSoap.GetCategoriesTreeAsync( CancellationToken.None );
+			var productsInfoTask = resultProductslist.ProcessInBatchAsync( 5, async x => await this._magentoServiceLowLevelSoap.GetProductInfoAsync( new CatalogProductInfoRequest( attributes, x.Sku, x.ProductId ) ).ConfigureAwait( false ) );
+			var productAttributesTask = this._magentoServiceLowLevelSoap.GetManufacturersInfoAsync( ProductAttributeCodes.Manufacturer );
+			var mediaListResponsesTask = resultProductslist.ProcessInBatchAsync( 5, async x => await this._magentoServiceLowLevelSoap.GetProductAttributeMediaListAsync( new GetProductAttributeMediaListRequest( x.ProductId, x.Sku ) ).ConfigureAwait( false ) );
+			var categoriesTreeResponseTask = this._magentoServiceLowLevelSoap.GetCategoriesTreeAsync();
 			await Task.WhenAll( productAttributesTask, productsInfoTask, mediaListResponsesTask, categoriesTreeResponseTask ).ConfigureAwait( false );
 
 			var productsInfo = productsInfoTask.Result;

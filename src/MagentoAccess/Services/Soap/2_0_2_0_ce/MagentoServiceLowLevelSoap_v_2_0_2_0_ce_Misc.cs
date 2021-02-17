@@ -56,11 +56,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return MagentoVersions.M_2_0_2_0;
 		}
 
-		public DateTime? LastActivityTime
-		{
-			get { return null; }
-		}
-
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
@@ -134,21 +129,21 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return $"{{BaseMagentoUrl:{( string.IsNullOrWhiteSpace( this.BaseMagentoUrl ) ? PredefinedValues.NotAvailable : this.BaseMagentoUrl )}, ApiUser:{( string.IsNullOrWhiteSpace( this.ApiUser ) ? PredefinedValues.NotAvailable : this.ApiUser )},ApiKey:{( string.IsNullOrWhiteSpace( this.ApiKey ) ? PredefinedValues.NotAvailable : this.ApiKey )},ApiToken:{( string.IsNullOrWhiteSpace( this._sessionId ) ? PredefinedValues.NotAvailable : this._sessionId )},Store:{( string.IsNullOrWhiteSpace( this.Store ) ? PredefinedValues.NotAvailable : this.Store )}}}";
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken cancellationToken, Mark mark = null )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
 		{
 			try
 			{
 				// Magento doesn't provide method to receive magento vesrion, since Magento2.0 thats why we use backEndMoodules API
 				
-				var sessionIdRespnse = await this.GetSessionId( cancellationToken, !suppressException ).ConfigureAwait( false );
+				var sessionIdRespnse = await this.GetSessionId( !suppressException ).ConfigureAwait( false );
 				if( sessionIdRespnse == null )
 				{
 					MagentoLogger.LogTrace( "Can't get session id. Possible reasons: incorrect credentials, user was blocked." );
 					return null;
 				}
 				//var modules = await this.GetBackEndModulesAsync().ConfigureAwait( false );
-				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ), cancellationToken, mark ).ConfigureAwait( false );
-				var getProductsRes = await this.GetProductsAsync( 1, null, false, null, cancellationToken, mark ).ConfigureAwait( false );
+				var getOrdersResponse = await this.GetOrdersAsync( DateTime.Now, DateTime.Now.AddHours( 1 ), mark ).ConfigureAwait( false );
+				var getProductsRes = await this.GetProductsAsync( 1, null, false, null, mark ).ConfigureAwait( false );
 
 				//var saveMethodResult = await this.SaveOrderMethodExistAsync().ConfigureAwait( false );
 				return /*modules?.Modules != null && modules.Modules.Count > 0 &&*/ getOrdersResponse.Orders.Count() >= 0 && getProductsRes.Products.Count() >= 0 ? new GetMagentoInfoResponse( "2.0.2.0", "CE", this.GetServiceVersion() ) : null;
@@ -161,7 +156,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken cancellationToken, bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
 		{
 			try
 			{
@@ -195,7 +190,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		#endregion
 
 		#region JustForTesting
-		public async Task< int > CreateCart( string storeid, CancellationToken cancellationToken )
+		public async Task< int > CreateCart( string storeid )
 		{
 			//try
 			//{
@@ -212,7 +207,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
-		public async Task< string > CreateOrder( int shoppingcartid, string store, CancellationToken cancellationToken )
+		public async Task< string > CreateOrder( int shoppingcartid, string store )
 		{
 			//try
 			//{
@@ -230,7 +225,6 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		}
 
 		public async Task< int > CreateCustomer(
-			CancellationToken cancellationToken,
 			string email = "na@na.com",
 			string firstname = "firstname",
 			string lastname = "lastname",
@@ -265,7 +259,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( 0 ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store, CancellationToken cancellationToken )
+		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store )
 		{
 			//try
 			//{
@@ -303,7 +297,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store, CancellationToken cancellationToken )
+		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
 		{
 			//try
 			//{
@@ -330,7 +324,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store, CancellationToken cancellationToken )
+		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
 		{
 			//try
 			//{
@@ -382,7 +376,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > DeleteCustomer( int customerId, CancellationToken cancellationToken )
+		public async Task< bool > DeleteCustomer( int customerId )
 		{
 			//try
 			//{
@@ -399,7 +393,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store, CancellationToken cancellationToken )
+		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
 		{
 			//try
 			//{
@@ -420,7 +414,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
+		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
 		{
 			//try
 			//{
@@ -451,7 +445,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			return await Task.FromResult( false ).ConfigureAwait( false );
 		}
 
-		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
+		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
 		{
 			//try
 			//{
@@ -489,7 +483,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, CancellationToken cancellationToken, Mark markForLog )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
 		{
 			var stockItem = new CreatteProductModel( name, sku, isInStock, productType );
 			var methodParameters = stockItem.ToJson();
@@ -561,7 +555,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			}
 		}
 
-		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType, CancellationToken cancellationToken )
+		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
 		{
 			//try
 			//{

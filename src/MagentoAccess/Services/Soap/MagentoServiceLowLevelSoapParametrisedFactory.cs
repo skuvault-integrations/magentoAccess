@@ -13,14 +13,12 @@ namespace MagentoAccess.Services.Soap
 		private readonly Dictionary< string, IMagentoServiceLowLevelSoap > _factories;
 		private readonly MagentoAuthenticatedUserCredentials _magentoAuthenticatedUserCredentials;
 		private readonly MagentoConfig _config;
-		private readonly MagentoTimeouts _operationsTimeouts;
 
-		public MagentoServiceLowLevelSoapFactory( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, Dictionary< string, IMagentoServiceLowLevelSoap > factories, MagentoConfig config, MagentoTimeouts operationsTimeouts )
+		public MagentoServiceLowLevelSoapFactory( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, Dictionary< string, IMagentoServiceLowLevelSoap > factories, MagentoConfig config )
 		{
 			this._magentoAuthenticatedUserCredentials = magentoAuthenticatedUserCredentials;
 			this._factories = factories;
 			this._config = config.DefaultIfNull();
-			this._operationsTimeouts = operationsTimeouts;
 		}
 
 		public IEnumerable< KeyValuePair< string, IMagentoServiceLowLevelSoap > > GetAll()
@@ -38,7 +36,7 @@ namespace MagentoAccess.Services.Soap
 			};
 
 			var factories = this._factories.OrderBy( x => x.Key ).ToDictionary( x => x.Key, y => y.Value );
-			factories.Add( "1.9.3.x", new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config, this._operationsTimeouts ) );
+			factories.Add( "1.9.3.x", new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config ) );
 			
 			Version storeVersion;
 			
@@ -71,8 +69,8 @@ namespace MagentoAccess.Services.Soap
 					return null;
 
 				// try to use 1.7- 1.9 low level service if can't detect version
-				this._factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config, this._operationsTimeouts ) );
-				factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config, this._operationsTimeouts ) );
+				this._factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config ) );
+				factories.Add( magentoVersion, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( this._magentoAuthenticatedUserCredentials, this._config ) );
 			}
 			return getMagentoLowLevelServiceAndConfigureIt( factories, magentoVersion );
 		}

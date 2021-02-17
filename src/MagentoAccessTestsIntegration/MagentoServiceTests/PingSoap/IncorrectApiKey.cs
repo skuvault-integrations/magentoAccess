@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -23,7 +22,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 			{
 				var service = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, "incorrectKey", "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
-				var magentoInfoAsyncTask = service.PingSoapAsync( CancellationToken.None );
+				var magentoInfoAsyncTask = service.PingSoapAsync();
 				magentoInfoAsyncTask.Wait();
 			};
 

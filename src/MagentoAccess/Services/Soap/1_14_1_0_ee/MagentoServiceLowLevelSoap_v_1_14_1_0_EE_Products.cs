@@ -14,14 +14,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 {
 	internal partial class MagentoServiceLowLevelSoap_v_1_14_1_0_EE : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapGetProductsBySku, IMagentoServiceLowLevelSoapFillProductsDetails
 	{
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, CancellationToken cancellationToken, Mark mark = null )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
 		{
 			try
 			{
 				Func< int, int, Func< int, string >, Task< List< SoapProduct > > > productsSelector = async ( start1, count1, selector1 ) =>
 				{
 					var sourceList = Enumerable.Range( start1, count1 ).Select( selector1 ).ToList();
-					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+					var productsResponses = await sourceList.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 					var prods = productsResponses.SelectMany( x => x.Products ).ToList();
 					return prods;
 				};
@@ -38,13 +38,13 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus, CancellationToken cancellationToken, Mark mark = null )
+		public virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus, Mark mark = null )
 		{
 			try
 			{
 				var skusList = skus.ToList();
 				var skusListChunks = skusList.SplitToChunks( 10 );
-				var responses = await skusListChunks.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsPageAsync( productType, productTypeShouldBeExcluded, x, updatedFrom, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var responses = await skusListChunks.ProcessInBatchAsync( this._getProductsMaxThreads, async x => await this.GetProductsPageAsync( productType, productTypeShouldBeExcluded, x, updatedFrom ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var soapGetProductsResponse = new SoapGetProductsResponse { Products = responses.SelectMany( x => x.Products ) };
 				return soapGetProductsResponse;
 			}
@@ -54,7 +54,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		protected virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, string productIdLike, DateTime? updatedFrom, CancellationToken cancellationToken )
+		protected virtual async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, string productIdLike, DateTime? updatedFrom )
 
 		{
 			Func< bool, Task< catalogProductListResponse > > call = async ( keepAlive ) =>
@@ -81,7 +81,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 				privateClient = this._clientFactory.RefreshClient( privateClient, keepAlive );
 
-				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
+				var sessionId = await this.GetSessionId().ConfigureAwait( false );
 
 				using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					res = await privateClient.catalogProductListAsync( sessionId.SessionId, filters, store ).ConfigureAwait( false );
@@ -127,7 +127,7 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		protected virtual async Task< SoapGetProductsResponse > GetProductsPageAsync( string productType, bool productTypeShouldBeExcluded, IEnumerable< string > skus, DateTime? updatedFrom, CancellationToken cancellationToken )
+		protected virtual async Task< SoapGetProductsResponse > GetProductsPageAsync( string productType, bool productTypeShouldBeExcluded, IEnumerable< string > skus, DateTime? updatedFrom )
 		{
 			var inCondition = string.Join( ",", ( skus ?? Enumerable.Empty< string >() ) );
 			var filters = new filters { filter = new associativeEntity[ 0 ], complex_filter = new complexFilter[ 0 ] };
@@ -143,10 +143,10 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 			return await this.GetWithAsync(
 				res => new SoapGetProductsResponse( res ),
-				async ( client, session ) => await client.catalogProductListAsync( session, filters, store ).ConfigureAwait( false ), 600000, cancellationToken ).ConfigureAwait( false );
+				async ( client, session ) => await client.catalogProductListAsync( session, filters, store ).ConfigureAwait( false ), 600000 ).ConfigureAwait( false );
 		}
 
-		public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, CancellationToken cancellationToken, Mark mark = null )
+		public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, Mark mark = null )
 		{
 			throw new NotImplementedException();
 		}

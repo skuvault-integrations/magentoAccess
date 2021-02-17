@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -37,7 +36,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 
 			// ------------ Act
 			magentoService.InitAsync( false ).Wait();
-			var getOrdersTask = magentoService.DetermineMagentoVersionAsync( CancellationToken.None );
+			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
 			getOrdersTask.Wait();
 
 			// ------------ Assert
@@ -72,7 +71,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 				ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
-			var getOrdersTask = magentoService.DetermineMagentoVersionAndSetupServiceAsync( CancellationToken.None );
+			var getOrdersTask = magentoService.DetermineMagentoVersionAndSetupServiceAsync();
 			getOrdersTask.Wait();
 
 			// ------------ Assert

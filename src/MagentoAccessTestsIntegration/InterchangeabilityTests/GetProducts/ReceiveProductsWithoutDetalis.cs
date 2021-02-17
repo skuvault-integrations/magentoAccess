@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess;
@@ -25,13 +24,13 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 
 			// ------------ Act
 			var swR = Stopwatch.StartNew();
-			var getProductsTaskRest = magentoServiceRest.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : false );
+			var getProductsTaskRest = magentoServiceRest.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
 			getProductsTaskRest.Wait();
 			swR.Stop();
 
 			Task.Delay( 500 ).Wait();
 			var swS = Stopwatch.StartNew();
-			var getProductsTaskSoap = magentoServiceSoap.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : false );
+			var getProductsTaskSoap = magentoServiceSoap.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
 			getProductsTaskSoap.Wait();
 			swS.Stop();
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess;
@@ -25,21 +24,21 @@ namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 			var magentoServiceRest = this.CreateMagentoService( credentialsRest.AuthenticatedUserCredentials.SoapApiUser, credentialsRest.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentialsRest.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentialsRest.Config.VersionByDefault, credentialsRest.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentialsRest.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentialsRest.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 			var magentoServiceSoap = this.CreateMagentoService( credentialsSoap.AuthenticatedUserCredentials.SoapApiUser, credentialsSoap.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentialsSoap.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentialsSoap.Config.VersionByDefault, credentialsSoap.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentialsSoap.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentialsRest.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
-			var getProductsSoapTask = magentoServiceSoap.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : false );
+			var getProductsSoapTask = magentoServiceSoap.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
 			getProductsSoapTask.Wait();
 			var productsList = getProductsSoapTask.Result;
 
 			// ------------ Act
 			var swR = Stopwatch.StartNew();
 			var productsListRest = productsList.Select( p => p.DeepClone() );
-			var fillProductsDetailsRest = magentoServiceRest.FillProductsDetailsAsync( productsListRest, CancellationToken.None );
+			var fillProductsDetailsRest = magentoServiceRest.FillProductsDetailsAsync( productsListRest );
 			fillProductsDetailsRest.Wait();
 			swR.Stop();
 
 			Task.Delay( 500 ).Wait();
 			var swS = Stopwatch.StartNew();
 			var productsListSoap = productsList.Select( p => p.DeepClone() );
-			var fillProductsDetailsSoap = magentoServiceSoap.FillProductsDetailsAsync( productsListSoap, CancellationToken.None );
+			var fillProductsDetailsSoap = magentoServiceSoap.FillProductsDetailsAsync( productsListSoap );
 			fillProductsDetailsSoap.Wait();
 			swS.Stop();
 

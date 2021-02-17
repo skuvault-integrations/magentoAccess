@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -20,7 +19,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
-			var getProductsTask = magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : false );
+			var getProductsTask = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : false );
 			getProductsTask.Wait();
 
 			// ------------ Assert

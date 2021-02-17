@@ -15100,10 +15100,6 @@ namespace MagentoAccess.TsZoey_v_1_9_0_1_CE {
         
         private string zoey_order_commentField;
         
-        private salesOrderInvoiceEntity[] order_invoicesField;
-        
-        private salesOrderShipmentEntity[] order_shipmentsField;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string increment_id {
@@ -17157,7 +17153,7 @@ namespace MagentoAccess.TsZoey_v_1_9_0_1_CE {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=172)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=171)]
         public string zoey_order_comment {
             get {
                 return this.zoey_order_commentField;
@@ -17165,32 +17161,6 @@ namespace MagentoAccess.TsZoey_v_1_9_0_1_CE {
             set {
                 this.zoey_order_commentField = value;
                 this.RaisePropertyChanged("zoey_order_comment");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=176)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("complexObjectArray", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
-        public salesOrderInvoiceEntity[] order_invoices {
-            get {
-                return this.order_invoicesField;
-            }
-            set {
-                this.order_invoicesField = value;
-                this.RaisePropertyChanged("order_invoices");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=177)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("complexObjectArray", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
-        public salesOrderShipmentEntity[] order_shipments {
-            get {
-                return this.order_shipmentsField;
-            }
-            set {
-                this.order_shipmentsField = value;
-                this.RaisePropertyChanged("order_shipments");
             }
         }
         
@@ -18899,7 +18869,7 @@ namespace MagentoAccess.TsZoey_v_1_9_0_1_CE {
         private salesOrderStatusHistoryEntity[] status_historyField;
         
         private string zoey_order_commentField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string increment_id {
@@ -19777,7 +19747,7 @@ namespace MagentoAccess.TsZoey_v_1_9_0_1_CE {
                 this.RaisePropertyChanged("zoey_order_comment");
             }
         }
-               
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {

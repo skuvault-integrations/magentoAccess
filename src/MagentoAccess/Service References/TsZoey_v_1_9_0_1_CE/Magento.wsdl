@@ -2590,8 +2590,6 @@
           <xsd:element minOccurs="0" name="telephone" type="xsd:string" />
           <xsd:element minOccurs="0" name="postcode" type="xsd:string" />
           <xsd:element minOccurs="0" name="zoey_order_comment" type="xsd:string" />
-          <xsd:element minOccurs="0" name="order_invoices" type="typens:salesOrderInvoiceEntityArray" />
-          <xsd:element minOccurs="0" name="order_shipments" type="typens:salesOrderShipmentEntityArray" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="salesOrderListEntityArray">

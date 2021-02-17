@@ -1,107 +1,154 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
+using Netco.Extensions;
 using Netco.Logging;
-using Newtonsoft.Json;
 
 namespace MagentoAccess.Services
 {
 	internal class WebRequestServices : IWebRequestServices
 	{
-		private HttpClient _httpClient = new HttpClient();
-		private const int _maxHttpTimeoutInMinutes = 30;
+		private const int requestTimeoutMs = 5 * 60 * 1000;
 
 		#region BaseRequests
-		public HttpClient GetConfiguredHttpClient( string authorizationToken )
+		[ Obsolete ]
+		public WebRequest CreateServiceGetRequest( string serviceUrl, Dictionary< string, string > rawUrlParameters )
 		{
-			this._httpClient.Timeout = new TimeSpan( 0, _maxHttpTimeoutInMinutes, 0 );
-			
-			this._httpClient.DefaultRequestHeaders.Remove( "Authorization" );
-			this._httpClient.DefaultRequestHeaders.Add( "Authorization", $"Bearer { authorizationToken }" );
+			var parametrizedServiceUrl = serviceUrl;
 
-			this._httpClient.DefaultRequestHeaders.Add( "User-Agent", MagentoService.UserAgentHeader );
+			if( rawUrlParameters.Any() )
+			{
+				parametrizedServiceUrl += "?" + rawUrlParameters.Keys.Aggregate( string.Empty,
+					( accum, item ) => accum + "&" + string.Format( "{0}={1}", item, rawUrlParameters[ item ] ) );
+			}
 
-			// Keep-Alive: true
-			this._httpClient.DefaultRequestHeaders.ConnectionClose = false;
+			var serviceRequest = ( HttpWebRequest )WebRequest.Create( parametrizedServiceUrl );
+			serviceRequest.Method = WebRequestMethods.Http.Get;
+			//
+			serviceRequest.ContentType = "text/html";
+			serviceRequest.KeepAlive = true;
+			serviceRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+			serviceRequest.CookieContainer = new CookieContainer();
+			serviceRequest.CookieContainer.Add( new Uri( "http://192.168.0.104" ), new Cookie( "PHPSESSID", "mfl1c4qsrjs647chj2ummgo886" ) );
+			serviceRequest.CookieContainer.Add( new Uri( "http://192.168.0.104" ), new Cookie( "adminhtml", "mk8rlurr9c4kaecnneakg55rv7" ) );
+			serviceRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+			//
+			return serviceRequest;
+		}
 
-			return this._httpClient;
+		public async Task< WebRequest > CreateServiceGetRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders )
+		{
+			return await this.CreateCustomRequestAsync( serviceUrl, body, rawHeaders ).ConfigureAwait( false );
+		}
+
+		public async Task< WebRequest > CreateCustomRequestAsync( string serviceUrl, string body, Dictionary< string, string > rawHeaders, string method = WebRequestMethods.Http.Get, string parameters = null )
+		{
+			try
+			{
+				var compositeUrl = string.IsNullOrEmpty( parameters ) ? serviceUrl : $"{serviceUrl.TrimEnd( '/', '?' )}/?{parameters}";
+
+				var serviceRequest = ( HttpWebRequest )WebRequest.Create( compositeUrl );
+				serviceRequest.Method = method;
+				serviceRequest.ContentType = "application/json";
+				serviceRequest.KeepAlive = true;
+				serviceRequest.Timeout = requestTimeoutMs;
+
+				rawHeaders?.ForEach( k => serviceRequest.Headers.Add( k.Key, k.Value ) );
+				serviceRequest.UserAgent = MagentoService.UserAgentHeader;
+
+				if( ( serviceRequest.Method == WebRequestMethods.Http.Post || serviceRequest.Method == WebRequestMethods.Http.Put ) && !string.IsNullOrWhiteSpace( body ) )
+				{
+					var encodedBody = new UTF8Encoding().GetBytes( body );
+					serviceRequest.ContentLength = encodedBody.Length;
+					using( var newStream = await serviceRequest.GetRequestStreamAsync().ConfigureAwait( false ) )
+						newStream.Write( encodedBody, 0, encodedBody.Length );
+				}
+				return serviceRequest;
+			}
+			catch( Exception exc )
+			{
+				var methodParameters = $@"{{Url:'{serviceUrl}', Body:'{body}', Headers:{rawHeaders.ToJson()}}}";
+				throw new MagentoWebException( $"Exception occured. {this.CreateMethodCallInfo( methodParameters )}", exc );
+			}
+		}
+
+		public void PopulateRequestByBody( string body, HttpWebRequest webRequest )
+		{
+			try
+			{
+				if( !string.IsNullOrWhiteSpace( body ) )
+				{
+					var encodedBody = new UTF8Encoding().GetBytes( body );
+
+					webRequest.ContentLength = encodedBody.Length;
+					webRequest.ContentType = "text/xml";
+					var getRequestStremTask = webRequest.GetRequestStreamAsync();
+					getRequestStremTask.Wait();
+					using( var newStream = getRequestStremTask.Result )
+						newStream.Write( encodedBody, 0, encodedBody.Length );
+				}
+			}
+			catch( Exception exc )
+			{
+				var webrequestUrl = "null";
+
+				if( webRequest != null )
+				{
+					if( webRequest.RequestUri != null )
+					{
+						if( webRequest.RequestUri.AbsoluteUri != null )
+							webrequestUrl = webRequest.RequestUri.AbsoluteUri;
+					}
+				}
+
+				throw new MagentoWebException( $"Exception occured on PopulateRequestByBody(body:{body ?? "null"}, webRequest:{webrequestUrl})", exc );
+			}
 		}
 		#endregion
 
 		#region ResponseHanding
-		private string GetCurrentHttpClientHeadersRaw()
-		{
-			return JsonConvert.SerializeObject( this._httpClient.DefaultRequestHeaders.Select( kv => new { Header = kv.Key, Value = kv.Value.FirstOrDefault() } ) );
-		}
-
-		public Task< Stream > GetResponseStreamAsync( string method, string url, string authorizationToken, CancellationToken cancellationToken, string body = null, int? operationTimeout = null, Action< string > logHeaders = null )
-		{
-			var httpClient = GetConfiguredHttpClient( authorizationToken );
-
-			if ( logHeaders != null )
-				logHeaders( GetCurrentHttpClientHeadersRaw() );
-
-			if ( method == WebRequestMethods.Http.Get )
-				return GetRawResponseStreamAsync( httpClient, url, cancellationToken, operationTimeout );
-			else if ( method == WebRequestMethods.Http.Post )
-				return PostAndGetRawResponseStreamAsync( httpClient, url, body, cancellationToken, operationTimeout );
-			else if ( method == WebRequestMethods.Http.Put )
-				return PutAndGetRawResponseStreamAsync( httpClient, url, body, cancellationToken, operationTimeout );
-
-			throw new MagentoWebException( $"Http method {method} isn't supported", null );
-		}
-
-		private async Task< Stream > GetRawResponseStreamAsync( HttpClient client, string url, CancellationToken token, int? operationTimeout = null )
-		{
-			using( var cts = CancellationTokenSource.CreateLinkedTokenSource( token ) )
-			{
-				if ( operationTimeout != null )
-					cts.CancelAfter( operationTimeout.Value );
-
-				var httpResponse = await client.GetAsync( url, cts.Token ).ConfigureAwait( false );
-				return await HandleResponseAsync( httpResponse, url );
-			}
-		}
-
-		private async Task< Stream > PostAndGetRawResponseStreamAsync( HttpClient client, string url, string body, CancellationToken token, int? operationTimeout = null )
-		{
-			using( var cts = CancellationTokenSource.CreateLinkedTokenSource( token ) )
-			{
-				if ( operationTimeout != null )
-					cts.CancelAfter( operationTimeout.Value );
-
-				var content = new StringContent( body, Encoding.UTF8, "application/json" );
-				var httpResponse = await client.PostAsync( url, content, cts.Token ).ConfigureAwait( false );
-				return await HandleResponseAsync( httpResponse, url );
-			}
-		}
-
-		private async Task< Stream > PutAndGetRawResponseStreamAsync( HttpClient client, string url, string body, CancellationToken token, int? operationTimeout = null )
-		{
-			using( var cts = CancellationTokenSource.CreateLinkedTokenSource( token ) )
-			{
-				if ( operationTimeout != null )
-					cts.CancelAfter( operationTimeout.Value );
-
-				var content = new StringContent( body, Encoding.UTF8, "application/json" );
-				var httpResponse = await client.PutAsync( url, content, cts.Token ).ConfigureAwait( false );
-				return await HandleResponseAsync( httpResponse, url );
-			}
-		}
-
-		private async Task< Stream > HandleResponseAsync( HttpResponseMessage responseMessage, string url, Mark mark = null )
+		public Stream GetResponseStream( WebRequest webRequest )
 		{
 			try
 			{
-				responseMessage.EnsureSuccessStatusCode();
+				using( var response = ( HttpWebResponse )webRequest.GetResponse() )
+				using( var dataStream = response.GetResponseStream() )
+				{
+					var memoryStream = new MemoryStream();
+					if( dataStream != null )
+						dataStream.CopyTo( memoryStream, 0x100 );
+					memoryStream.Position = 0;
+					return memoryStream;
+				}
+			}
+			catch( Exception ex )
+			{
+				var webrequestUrl = "null";
 
-				using( var dataStream = await new TaskFactory< Stream >().StartNew( () => responseMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult() ).ConfigureAwait( false ) )
+				if( webRequest != null )
+				{
+					if( webRequest.RequestUri != null )
+					{
+						if( webRequest.RequestUri.AbsoluteUri != null )
+							webrequestUrl = webRequest.RequestUri.AbsoluteUri;
+					}
+				}
+
+				throw new MagentoWebException( $"Exception occured on GetResponseStream( webRequest:{webrequestUrl})", ex );
+			}
+		}
+
+		public async Task< Stream > GetResponseStreamAsync( WebRequest webRequest, Mark mark = null )
+		{
+			try
+			{
+				using( var response = ( HttpWebResponse )await webRequest.GetResponseAsync().ConfigureAwait( false ) )
+				using( var dataStream = await new TaskFactory< Stream >().StartNew( () => response != null ? response.GetResponseStream() : null ).ConfigureAwait( false ) )
 				{
 					var memoryStream = new MemoryStream();
 					if( dataStream != null )
@@ -117,7 +164,12 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception ex )
 			{
-				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex, responseMessage.StatusCode );
+				var webrequestUrl = PredefinedValues.NotAvailable;
+
+				if( webRequest?.RequestUri?.AbsoluteUri != null )
+					webrequestUrl = webRequest.RequestUri.AbsoluteUri;
+
+				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{webrequestUrl})", ex );
 			}
 		}
 		#endregion

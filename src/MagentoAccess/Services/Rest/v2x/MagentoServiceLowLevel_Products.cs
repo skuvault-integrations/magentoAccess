@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.Services.Rest.v2x.Products;
@@ -19,52 +18,52 @@ namespace MagentoAccess.Services.Rest.v2x
 	{
 		private const string ImagePath = "/pub/media/catalog/product";
 		
-		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, CancellationToken cancellationToken, Mark mark = null )
+		public async Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
-				var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded, cancellationToken, mark ).ConfigureAwait( false );
+				var products = await this.ProductRepository.GetProductsAsync( updatedFrom ?? DateTime.MinValue, productType, productTypeShouldBeExcluded, mark ).ConfigureAwait( false );
 				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
 			} );
 		}
 
-		public async Task< SoapGetProductsResponse > GetProductsBySkusAsync( IEnumerable< string > skus, CancellationToken cancellationToken, Mark mark = null )
+		public async Task< SoapGetProductsResponse > GetProductsBySkusAsync( IEnumerable< string > skus, Mark mark = null )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
-				var products = await this.ProductRepository.GetProductsBySkusAsync( skus, cancellationToken, mark ).ConfigureAwait( false );
+				var products = await this.ProductRepository.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
 				return new SoapGetProductsResponse( products.SelectMany( x => x.items ).ToList() );
 			} );
 		}
 
-		public Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, CancellationToken cancellationToken, Mark markForLog = null )
+		public Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog = null )
 		{
 			return null;
 		}
 
-		public Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType, CancellationToken cancellationToken )
+		public Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
 		{
 			return null;
 		}
 
-		public Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, CancellationToken cancellationToken, bool throwException = true )
+		public Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, bool throwException = true )
 		{
 			return null;
 		}
 
-		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts, CancellationToken cancellationToken )
+		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
 		{
 			var productsList = resultProducts.ToList();
 			
 			if( !productsList.Any() )
 				return productsList;
 
-			var items = await productsList.Select( p => p.Sku ).ProcessInBatchAsync( 10, async sku => await this.ProductRepository.GetProductAsync( sku, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var items = await productsList.Select( p => p.Sku ).ProcessInBatchAsync( 10, async sku => await this.ProductRepository.GetProductAsync( sku ).ConfigureAwait( false ) ).ConfigureAwait( false );
 			if( !items.Any() )
 				return productsList;
 
-			var allCategories = ( await this.ProductRepository.GetCategoriesTreeAsync( cancellationToken ).ConfigureAwait( false ) ).Flatten();
-			var allManufacturers = await this.ProductRepository.GetManufacturersAsync( cancellationToken ).ConfigureAwait( false );
+			var allCategories = ( await this.ProductRepository.GetCategoriesTreeAsync().ConfigureAwait( false ) ).Flatten();
+			var allManufacturers = await this.ProductRepository.GetManufacturersAsync().ConfigureAwait( false );
 			foreach( var product in productsList )
 			{
 				var item = items.FirstOrDefault( i => i.id.ToString() == product.ProductId );
@@ -129,7 +128,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return productsList;
 		}
 
-		public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, CancellationToken cancellationToken, bool throwException = true )
+		public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
 		{
 			return null;
 		}

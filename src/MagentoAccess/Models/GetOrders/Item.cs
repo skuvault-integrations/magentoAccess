@@ -22,7 +22,7 @@ namespace MagentoAccess.Models.GetOrders
 		public decimal TaxPercent { get; set; }
 		public decimal TaxAmount { get; set; }
 		public decimal BaseTaxAmount { get; set; }
-		public decimal DiscountAmount { get; set; }
+		public decimal DscountAmount { get; set; }
 		public decimal BaseDiscountAmount { get; set; }
 		public decimal RowTotal { get; set; }
 		public decimal BaseRowTotal { get; set; }
@@ -64,7 +64,7 @@ namespace MagentoAccess.Models.GetOrders
 			          && Equals( this.TaxPercent, item.TaxPercent )
 			          && Equals( this.TaxAmount, item.TaxAmount )
 			          && Equals( this.BaseTaxAmount, item.BaseTaxAmount )
-			          && Equals( this.DiscountAmount, item.DiscountAmount )
+			          && Equals( this.DscountAmount, item.DscountAmount )
 			          && Equals( this.BaseDiscountAmount, item.BaseDiscountAmount )
 			          && Equals( this.RowTotal, item.RowTotal )
 			          && Equals( this.BaseRowTotal, item.BaseRowTotal )

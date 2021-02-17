@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MagentoAccess.Misc;
 using Netco.ActionPolicyServices;
@@ -11,23 +10,32 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	{
 		public static ActionPolicyAsync RepeatOnChannelProblemAsync { get; } = ActionPolicyAsync.From( ( exception =>
 		{
-			var magentoWebException = exception as MagentoWebException;
-			if ( magentoWebException != null 
-				&& magentoWebException.StatusCode != null )
-			{
-				switch( magentoWebException.StatusCode )
-				{
-					case HttpStatusCode.NotFound:
-					case HttpStatusCode.BadRequest:
-					case HttpStatusCode.ServiceUnavailable:
-					case HttpStatusCode.BadGateway:
-						return true;
-					default:
-						return false;
-				}
-			}
+			var webException = ( exception as MagentoWebException )?.InnerException as WebException;
+			if( webException == null )
+				return false;
 
-			return false;
+			switch( webException.Status )
+			{
+				case WebExceptionStatus.ProtocolError:
+					var response = webException.Response as HttpWebResponse;
+					if( response == null )
+						return false;
+					switch( response.StatusCode )
+					{
+						case HttpStatusCode.NotFound:
+						case HttpStatusCode.BadRequest:
+							return true;
+						default:
+							return false;
+					}
+				case WebExceptionStatus.ConnectionClosed:
+				case WebExceptionStatus.ConnectFailure:
+				case WebExceptionStatus.Timeout:
+				case WebExceptionStatus.SecureChannelFailure:
+					return true;
+				default:
+					return false;
+			}
 		} ) )
 			.RetryAsync( 7, async ( ex, i ) =>
 			{

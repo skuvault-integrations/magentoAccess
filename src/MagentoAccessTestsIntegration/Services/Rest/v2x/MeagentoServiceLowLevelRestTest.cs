@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using MagentoAccess.Models.Services.Rest.v2x;
 using MagentoAccess.Services.Rest.v2x.WebRequester;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -39,7 +38,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x
 				.Parameters( sc )
 				.Url( MagentoUrl.Create( "http://xxx" ) )
 				;
-			var res = qwe.RunAsync( CancellationToken.None );
+			var res = qwe.RunAsync();
 			res.Wait();
 		}
 

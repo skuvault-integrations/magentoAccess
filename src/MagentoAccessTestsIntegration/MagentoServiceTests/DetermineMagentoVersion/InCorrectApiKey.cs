@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
@@ -21,7 +20,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey + "_incorrectKey", "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, true, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
-			var getOrdersTask = magentoService.DetermineMagentoVersionAsync( CancellationToken.None );
+			var getOrdersTask = magentoService.DetermineMagentoVersionAsync();
 			getOrdersTask.Wait();
 
 			// ------------ Assert
