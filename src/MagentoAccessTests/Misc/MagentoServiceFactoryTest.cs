@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.GetShipments;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
@@ -32,7 +34,7 @@ namespace MagentoAccessTests.Misc
 		public string GetMagentoSubVersion_InputIsCorrectVersion_SubversionReturned( int deep, string magentoVer )
 		{
 			//------------ Arrange
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( null, null, null, null );
 
 			//------------ Act
 			var version = magentoServiceLowLevelSoapFactory.GetSubVersion( deep, magentoVer );
@@ -70,7 +72,7 @@ namespace MagentoAccessTests.Misc
 				{ s7.Store, s7 },
 				{ s8.Store, s8 },
 			};
-			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( new MagentoAuthenticatedUserCredentials( "", "", "http://base.url", "", "", "", "", 0, 0, false ), factories, null );
+			var magentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( new MagentoAuthenticatedUserCredentials( "", "", "http://base.url", "", "", "", "", 0, 0, false ), factories, null, null );
 
 			//------------ Act
 			var magentoServiceLowLevelSoap = magentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( magentoVer, true, false );
@@ -112,6 +114,11 @@ namespace MagentoAccessTests.Misc
 				return string.Empty;
 			}
 
+			public DateTime? LastActivityTime
+			{
+				get { return null; }
+			}
+
 			public Task< bool > InitAsync( bool supressExceptions = false )
 			{
 				try
@@ -126,47 +133,47 @@ namespace MagentoAccessTests.Misc
 				}
 			}
 
-			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )
 			{
 				return null;
 			}
 
-			public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+			public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken, string searchField )
 			{
 				return null;
 			}
 
-			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, Mark mark = null )
+			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, CancellationToken cancellationToken, Mark mark = null )
 			{
 				return null;
 			}
 
-			public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, Mark mark = null )
+			public Task< SoapGetProductsResponse > GetProductsBySkusAsync(  IEnumerable< string > skus, CancellationToken cancellationToken, Mark mark = null )
 			{
 				return null;
 			}
 
-			public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+			public Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 			{
 				return null;
 			}
 
-			public Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark childMark )
+			public Task< OrderInfoResponse > GetOrderAsync( string incrementId, CancellationToken cancellationToken, Mark childMark )
 			{
 				return null;
 			}
 
-			public Task< OrderInfoResponse > GetOrderAsync( Order order, Mark childMark )
+			public Task< OrderInfoResponse > GetOrderAsync( Order order, CancellationToken cancellationToken, Mark childMark )
 			{
 				return null;
 			}
 
-			Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > IMagentoServiceLowLevelSoap.PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark )
+			Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > IMagentoServiceLowLevelSoap.PutStockItemsAsync( List< PutStockItem > stockItems, CancellationToken cancellationToken, Mark mark )
 			{
 				throw new NotImplementedException();
 			}
 
-			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+			public Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken cancellationToken, Mark mark = null )
 			{
 				return null;
 			}
@@ -176,92 +183,97 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
+			public Task< bool > PutStockItemAsync( PutStockItem putStockItem, CancellationToken cancellationToken, Mark markForLog )
 			{
 				return null;
 			}
 
-			public Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
+			public Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, CancellationToken cancellationToken, Mark markForLog )
 			{
 				return null;
 			}
 
-			public Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
+			public Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< int > CreateCart( string storeid )
+			public Task< int > CreateCart( string storeid, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
+			public Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
+			public Task< bool > ShoppingCartAddressSet( int shoppingCart, string store, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
+			public Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
+			public Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
+			public Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< string > CreateOrder( int shoppingcartid, string store )
+			public Task< string > CreateOrder( int shoppingcartid, string store, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+			public Task< GetSessionIdResponse > GetSessionId( CancellationToken cancellationToken, bool throwException = true )
 			{
 				return null;
 			}
 
-			public Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, bool throwException = true )
+			public Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest catalogProductInfoRequest, CancellationToken cancellationToken, bool throwException = true )
 			{
 				return null;
 			}
 
-			public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
+			public Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, CancellationToken cancellationToken, bool throwException = true )
 			{
 				return null;
 			}
 
-			public Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
+			public Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( CancellationToken cancellationToken, string rootCategory = "1" )
 			{
 				return null;
 			}
 
-			public Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
+			public Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+			public Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts, CancellationToken cancellationToken )
 			{
 				return null;
 			}
 
-			public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+			public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 			{
 				throw new NotImplementedException();
 			}
 
 			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+			{
+				throw new NotImplementedException();
+			}
+
+			public Task<Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )
 			{
 				throw new NotImplementedException();
 			}

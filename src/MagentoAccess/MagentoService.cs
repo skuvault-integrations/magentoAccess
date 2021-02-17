@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration.Conventions;
@@ -20,6 +21,7 @@ using MagentoAccess.Models.Services.Soap.GetOrders;
 using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
+using MagentoAccess.Models.GetShipments;
 using MagentoAccess.Services;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
@@ -40,6 +42,8 @@ namespace MagentoAccess
 	public class MagentoService: IMagentoService
 	{
 		public bool UseSoapOnly{ get; set; }
+		public bool IsRestAPIUsed { get; set; }
+
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap{ get; set; }
 		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory{ get; set; }
 
@@ -51,7 +55,7 @@ namespace MagentoAccess
 		private MagentoAuthenticatedUserCredentials Credentials { get; set; }
 		public const string UserAgentHeader = "SkuVault MagentoAccessLibrary C#";
 
-		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models )
+		public async Task< IEnumerable< CreateProductModelResult > > CreateProductAsync( IEnumerable< CreateProductModel > models, CancellationToken token )
 		{
 			var methodParameters = models.ToJson();
 			var mark = Mark.CreateNew();
@@ -60,7 +64,7 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
 
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 				//crunch for old versions
 				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
@@ -69,7 +73,7 @@ namespace MagentoAccess
 					MagentoLogger.LogTrace( $"CreatingProduct: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToJson() )}" );
 
 					var res = new CreateProductModelResult( x );
-					res.Result = await magentoServiceLowLevelSoap.CreateProduct( x.StoreId, x.Name, x.Sku, x.IsInStock, x.ProductType ).ConfigureAwait( false );
+					res.Result = await magentoServiceLowLevelSoap.CreateProduct( x.StoreId, x.Name, x.Sku, x.IsInStock, x.ProductType, token ).ConfigureAwait( false );
 
 					MagentoLogger.LogTrace( $"ProductCreated: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() )}" );
 					return res;
@@ -89,7 +93,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models )
+		public async Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models, CancellationToken token )
 		{
 			var methodParameters = models.ToJson();
 			var mark = Mark.CreateNew();
@@ -98,7 +102,7 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
 
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 				//crunch for old versions
 				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
@@ -108,26 +112,26 @@ namespace MagentoAccess
 
 					var res = new CreateOrderModelResult( x );
 
-					var shoppingCartIdTask = magentoServiceLowLevelSoap.CreateCart( x.StoreId );
+					var shoppingCartIdTask = magentoServiceLowLevelSoap.CreateCart( x.StoreId, token );
 					shoppingCartIdTask.Wait();
 					var _shoppingCartId = shoppingCartIdTask.Result;
 
-					var shoppingCartCustomerSetTask = magentoServiceLowLevelSoap.ShoppingCartGuestCustomerSet( _shoppingCartId, x.CustomerFirstName, x.CustomerMail, x.CustomerLastName, x.StoreId );
+					var shoppingCartCustomerSetTask = magentoServiceLowLevelSoap.ShoppingCartGuestCustomerSet( _shoppingCartId, x.CustomerFirstName, x.CustomerMail, x.CustomerLastName, x.StoreId, token );
 					shoppingCartCustomerSetTask.Wait();
 
-					var shoppingCartAddressSet = magentoServiceLowLevelSoap.ShoppingCartAddressSet( _shoppingCartId, x.StoreId );
+					var shoppingCartAddressSet = magentoServiceLowLevelSoap.ShoppingCartAddressSet( _shoppingCartId, x.StoreId, token );
 					shoppingCartAddressSet.Wait();
 
-					var productTask = magentoServiceLowLevelSoap.ShoppingCartAddProduct( _shoppingCartId, x.ProductIds.First(), x.StoreId );
+					var productTask = magentoServiceLowLevelSoap.ShoppingCartAddProduct( _shoppingCartId, x.ProductIds.First(), x.StoreId, token );
 					productTask.Wait();
 
-					var shippingMenthodTask = magentoServiceLowLevelSoap.ShoppingCartSetShippingMethod( _shoppingCartId, x.StoreId );
+					var shippingMenthodTask = magentoServiceLowLevelSoap.ShoppingCartSetShippingMethod( _shoppingCartId, x.StoreId, token );
 					shippingMenthodTask.Wait();
 
-					var paymentMenthodTask = magentoServiceLowLevelSoap.ShoppingCartSetPaymentMethod( _shoppingCartId, x.StoreId );
+					var paymentMenthodTask = magentoServiceLowLevelSoap.ShoppingCartSetPaymentMethod( _shoppingCartId, x.StoreId, token );
 					paymentMenthodTask.Wait();
 
-					var orderIdTask = magentoServiceLowLevelSoap.CreateOrder( _shoppingCartId, x.StoreId );
+					var orderIdTask = magentoServiceLowLevelSoap.CreateOrder( _shoppingCartId, x.StoreId, token );
 					orderIdTask.Wait();
 					res.OrderId = orderIdTask.Result;
 					Task.Delay( 1000 );
@@ -150,7 +154,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models )
+		public async Task< IEnumerable< DeleteProductModelResult > > DeleteProductAsync( IEnumerable< DeleteProductModel > models, CancellationToken token )
 		{
 			var methodParameters = models.ToJson();
 			var mark = Mark.CreateNew();
@@ -159,7 +163,7 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
 
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 				//crunch for old versions
 				var magentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
@@ -168,7 +172,7 @@ namespace MagentoAccess
 					MagentoLogger.LogTrace( $"DeleteProduct: {this.CreateMethodCallInfo( mark : mark, methodParameters : x.ToJson() )}" );
 
 					var res = new DeleteProductModelResult( x );
-					res.Result = await magentoServiceLowLevelSoap.DeleteProduct( x.StoreId, x.CategoryId, x.ProductId, x.IdentiferType ).ConfigureAwait( false );
+					res.Result = await magentoServiceLowLevelSoap.DeleteProduct( x.StoreId, x.CategoryId, x.ProductId, x.IdentiferType, token ).ConfigureAwait( false );
 
 					MagentoLogger.LogTrace( $"ProductDeleted: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() )}" );
 					return res;
@@ -189,9 +193,9 @@ namespace MagentoAccess
 		}
 
 		#region constructor
-		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, MagentoConfig magentoConfig )
+		public MagentoService( MagentoAuthenticatedUserCredentials magentoAuthenticatedUserCredentials, MagentoConfig magentoConfig, MagentoTimeouts operationsTimeouts )
 		{
-			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+			ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 			this.Config = magentoConfig;
 			this.Credentials = magentoAuthenticatedUserCredentials;
 
@@ -202,40 +206,40 @@ namespace MagentoAccess
 			switch( cfg.Protocol )
 			{
 				case MagentoDefaultProtocol.RestOnly:
-					lowLevelServicesList.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
 					break;
 				case MagentoDefaultProtocol.SoapOnly:
-					lowLevelServicesList.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-					lowLevelServicesList.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
 					break;
 				case MagentoDefaultProtocol.Default:
 				default:
-					lowLevelServicesList.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-					lowLevelServicesList.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-					lowLevelServicesList.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+					lowLevelServicesList.Add( MagentoVersions.MR_2_0_0_0, new MagentoServiceLowLevelSoap_v_r_2_0_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_0_2_0, new MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+					lowLevelServicesList.Add( MagentoVersions.M_2_1_0_0, new MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
 					break;
 			}
 
-			lowLevelServicesList.Add( MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServicesList.Add( MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServicesList.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServicesList.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServicesList.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
-			lowLevelServicesList.Add( MagentoVersions.ZS_1_7_0_1, new ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_9_2_0, new MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_9_0_1, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_8_1_0, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_7_0_2, new MagentoServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+			lowLevelServicesList.Add( MagentoVersions.M_1_14_1_0, new MagentoServiceLowLevelSoap_v_1_14_1_0_EE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
+			lowLevelServicesList.Add( MagentoVersions.ZS_1_7_0_1, new ZoeyServiceLowLevelSoap_v_1_7_to_1_9_0_1_CE_Factory().CreateMagentoLowLevelService( magentoAuthenticatedUserCredentials, cfg, operationsTimeouts ) );
 
 			if( cfg.UseVersionByDefaultOnly && !string.IsNullOrWhiteSpace( cfg.VersionByDefault ) )
 			{
 				lowLevelServicesList = lowLevelServicesList.Where( x => string.Equals( x.Key, cfg.VersionByDefault, StringComparison.OrdinalIgnoreCase ) ).ToDictionary( x => x.Key, y => y.Value );
 			}
 
-			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServicesList, cfg );
+			this.MagentoServiceLowLevelSoapFactory = new MagentoServiceLowLevelSoapFactory( magentoAuthenticatedUserCredentials, lowLevelServicesList, cfg, operationsTimeouts );
 			var defaultVersion = !string.IsNullOrWhiteSpace( magentoConfig?.VersionByDefault ) ? magentoConfig.VersionByDefault : MagentoVersions.M_1_7_0_2;
 			this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( defaultVersion, true, false );
 		}
 		#endregion
 
 		#region ping
-		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark = null )
+		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null )
 		{
 			mark = mark ?? Mark.CreateNew();
 			try
@@ -243,7 +247,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false, String.Empty );
-				var soapInfos = await this.DetermineMagentoVersionAsync( mark ).ConfigureAwait( false );
+				var soapInfos = await this.DetermineMagentoVersionAsync( token, mark ).ConfigureAwait( false );
 				var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
 				if( pingSoapInfos.Any() )
 				{
@@ -268,7 +272,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark = null )
+		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( CancellationToken token, Mark mark = null )
 		{
 			mark = mark ?? Mark.CreateNew();
 			try
@@ -298,7 +302,7 @@ namespace MagentoAccess
 				{
 					if( !await kvp.Value.InitAsync( true ).ConfigureAwait( false ) )
 						return null;
-					var getMagentoInfoResponse = await kvp.Value.GetMagentoInfoAsync( true ).ConfigureAwait( false );
+					var getMagentoInfoResponse = await kvp.Value.GetMagentoInfoAsync( true, token ).ConfigureAwait( false );
 					if( getMagentoInfoResponse != null )
 						getMagentoInfoResponse.ServiceVersion = kvp.Key;
 					return getMagentoInfoResponse;
@@ -359,14 +363,15 @@ namespace MagentoAccess
 			return httpClient;
 		}
 
-		public async Task< PingSoapInfo > PingSoapAsync( Mark mark = null )
+		public async Task< PingSoapInfo > PingSoapAsync( CancellationToken token, Mark mark = null )
 		{
 			var markLocal = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo(), markLocal );
-				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, markLocal ).ConfigureAwait( false );
+				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, token, markLocal ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
+				this.IsRestAPIUsed = magentoInfo.MagentoVersion == MagentoVersions.MR_2_0_0_0;
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks, magentoInfo.ServiceVersion );
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : magentoCoreInfo.ToJson() ), markLocal );
@@ -383,7 +388,7 @@ namespace MagentoAccess
 		#endregion
 
 		#region getOrders
-		public async Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds )
+		public async Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds, CancellationToken token )
 		{
 			var methodParameters = orderIds.ToJson();
 
@@ -394,7 +399,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters, mark ) );
 
 				IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap;
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 				//crunch for old versions
 				magentoServiceLowLevelSoap = string.Equals( pingres.StoreEdition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
 				                             || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
@@ -404,7 +409,7 @@ namespace MagentoAccess
 				var salesOrderInfoResponses = await orderIds.ProcessInBatchAsync( 16, async x =>
 				{
 					MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( mark : mark, methodParameters : x )}" );
-					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x, mark ).ConfigureAwait( false );
+					var res = await magentoServiceLowLevelSoap.GetOrderAsync( x, token, mark ).ConfigureAwait( false );
 					MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x )}" );
 					return res;
 				} ).ConfigureAwait( false );
@@ -434,7 +439,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, Mark mark = null )
+		public async Task< IEnumerable< Order > > GetOrdersAsync( DateTime dateFrom, DateTime dateTo, CancellationToken token, Mark mark = null )
 		{
 			var dateFromUtc = TimeZoneInfo.ConvertTimeToUtc( dateFrom );
 			var dateToUtc = TimeZoneInfo.ConvertTimeToUtc( dateTo );
@@ -451,7 +456,7 @@ namespace MagentoAccess
 
 				var dates = SplitToDates( dateFromUtc, dateToUtc, interval, intervalOverlapping );
 
-				var pingres = await this.PingSoapAsync( Mark.CreateNew( mark ) ).ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token, Mark.CreateNew( mark ) ).ConfigureAwait( false );
 				//crunch for old versions
 				var magentoServiceLowLevelSoap = string.Equals( pingres.StoreEdition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
 				                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
@@ -465,7 +470,7 @@ namespace MagentoAccess
 					var atomicMark = Mark.CreateNew( mark );
 					MagentoLogger.LogTrace( $"OrdersRequested: {this.CreateMethodCallInfo( methodParameters : $"{x.Item1},{x.Item2}" )}", atomicMark );
 
-					var res = await magentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2, atomicMark ).ConfigureAwait( false );
+					var res = await magentoServiceLowLevelSoap.GetOrdersAsync( x.Item1, x.Item2, token, atomicMark ).ConfigureAwait( false );
 
 					MagentoLogger.LogTrace( $"OrdersReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : $"{x.Item1},{x.Item2}" )}", atomicMark );
 					return res;
@@ -484,7 +489,7 @@ namespace MagentoAccess
 					{
 						var childMark = Mark.CreateNew( mark );
 						MagentoLogger.LogTrace( $"OrderRequested: {this.CreateMethodCallInfo( methodParameters : x.ToStringIds() )}", childMark );
-						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x, childMark ).ConfigureAwait( false );
+						var res = await magentoServiceLowLevelSoap.GetOrderAsync( x, token, childMark ).ConfigureAwait( false );
 						MagentoLogger.LogTrace( $"OrderReceived: {this.CreateMethodCallInfo( methodResult : res.ToJson(), methodParameters : x.ToStringIds() )}", childMark );
 						return res;
 					} ).ConfigureAwait( false );
@@ -520,8 +525,39 @@ namespace MagentoAccess
 		}
 		#endregion
 
+		#region getShipments
+		public async Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )
+		{
+			var modifiedDateFromUtc = TimeZoneInfo.ConvertTimeToUtc( modifiedFrom );
+			var modifiedDateToToUtc = TimeZoneInfo.ConvertTimeToUtc( modifiedTo );
+			var methodParameters = $"{{modifiedDateFrom:{modifiedDateFromUtc},modifiedDateTo:{modifiedDateToToUtc}}}";
+
+			mark = mark ?? Mark.CreateNew();
+
+			try
+			{
+				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters ), mark );
+				
+				var pingres = await this.PingSoapAsync( cancellationToken, mark ).ConfigureAwait( false );
+				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.ServiceUsedVersion, true, false );
+				var shipments = await magentoServiceLowLevel.GetOrdersShipmentsAsync( modifiedDateFromUtc, modifiedDateToToUtc, cancellationToken, mark ).ConfigureAwait( false );
+
+				var shipmentsSummary = $"Count:{shipments.Count()},Shipments:{shipments.ToJson()}";
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : shipmentsSummary ), mark );
+
+				return shipments;
+			}
+			catch( Exception exception )
+			{
+				var mexc = new MagentoCommonException( this.CreateMethodCallInfo( methodParameters : methodParameters ), exception, mark : mark );
+				MagentoLogger.LogTraceException( mexc, mark );
+				throw mexc;
+			}
+		}
+		#endregion
+
 		#region getProducts
-		public async Task< IEnumerable< Product > > GetProductsAsync( IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true, Mark mark = null )
+		public async Task< IEnumerable< Product > > GetProductsAsync( CancellationToken token, IEnumerable< int > scopes = null, bool includeDetails = false, string productType = null, bool excludeProductByType = false, DateTime? updatedFrom = null, IEnumerable< string > skus = null, bool stockItemsOnly = true, Mark mark = null )
 		{
 			var markLocal = mark ?? Mark.CreateNew();
 			var parameters = $"includeDetails:{includeDetails},productType:{productType},excludeProductByType:{excludeProductByType},updatedFrom:{updatedFrom}";
@@ -529,9 +565,9 @@ namespace MagentoAccess
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( methodParameters : parameters ), markLocal );
 
-				var pingres = await this.PingSoapAsync( markLocal ).ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token, markLocal ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.ServiceUsedVersion, true, false );
-				var resultProducts = await GetProductsViaSoapAsync( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, markLocal ).ConfigureAwait( false );
+				var resultProducts = await GetProductsViaSoapAsync( magentoServiceLowLevel, includeDetails, productType, excludeProductByType, scopes ?? new[] { 0, 1 }, updatedFrom, skus, stockItemsOnly, token, markLocal ).ConfigureAwait( false );
 				var productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : productBriefInfo ), markLocal );
 
@@ -545,14 +581,14 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, Mark mark )
+		public async Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, CancellationToken token, Mark mark )
 		{
 			var markLocal = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : markLocal ) );
 
-				var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+				var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
 				IEnumerable< Product > resultProducts;
@@ -560,7 +596,7 @@ namespace MagentoAccess
 				string productBriefInfo;
 				if( magentoServiceLowLevelFillProducts != null )
 				{
-					resultProducts = ( await magentoServiceLowLevelFillProducts.FillProductDetails( products.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Select( y => y.ToProduct() );
+					resultProducts = ( await magentoServiceLowLevelFillProducts.FillProductDetails( products.Select( x => new ProductDetails( x ) ), token ).ConfigureAwait( false ) ).Select( y => y.ToProduct() );
 					productBriefInfo = $"Count:{resultProducts.Count()},Product:{resultProducts.ToJson()}";
 				}
 				else
@@ -583,7 +619,7 @@ namespace MagentoAccess
 		#endregion
 
 		#region updateInventory
-		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products, Mark mark = null )
+		public async Task UpdateInventoryAsync( IEnumerable< Inventory > products, CancellationToken token, Mark mark = null )
 		{
 			var productsBriefInfo = products.ToJson();
 			var markLocal = mark ?? Mark.CreateNew();
@@ -595,11 +631,11 @@ namespace MagentoAccess
 				var updateBriefInfo = PredefinedValues.NotAvailable;
 				if( inventories.Any() )
 				{
-					var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+					var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 					//crunch for 1702
 					updateBriefInfo = string.Equals( pingres.StoreVersion, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
-						? await this.UpdateStockItemsBySoapByThePiece( inventories, markLocal ).ConfigureAwait( false )
-						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false ), markLocal ).ConfigureAwait( false );
+						? await this.UpdateStockItemsBySoapByThePiece( inventories, token, markLocal ).ConfigureAwait( false )
+						: await this.UpdateStockItemsBySoap( inventories, this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false ), token, markLocal ).ConfigureAwait( false );
 				}
 
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : markLocal, methodParameters : productsBriefInfo, methodResult : updateBriefInfo ) );
@@ -612,7 +648,7 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory, IEnumerable< int > scopes = null )
+		public async Task UpdateInventoryBySkuAsync( IEnumerable< InventoryBySku > inventory, CancellationToken token, IEnumerable< int > scopes = null )
 		{
 			var mark = Mark.CreateNew();
 			var productsBriefInfo = inventory.ToJson();
@@ -626,21 +662,21 @@ namespace MagentoAccess
 				{
 					if( this.UseSoapOnly )
 					{
-						var pingres = await this.PingSoapAsync().ConfigureAwait( false );
+						var pingres = await this.PingSoapAsync( token ).ConfigureAwait( false );
 						var magentoServiceLowLevelSoap = string.Equals( pingres.StoreEdition, MagentoVersions.M_1_7_0_2, StringComparison.CurrentCultureIgnoreCase )
 						                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_8_1_0, StringComparison.CurrentCultureIgnoreCase )
 						                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_9_0_1, StringComparison.CurrentCultureIgnoreCase )
 						                                 || string.Equals( pingres.StoreEdition, MagentoVersions.M_1_14_1_0, StringComparison.CurrentCultureIgnoreCase ) ? this.MagentoServiceLowLevelSoap : this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.StoreVersion, true, false );
 
-						var stockitems = await magentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList(), scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
+						var stockitems = await magentoServiceLowLevelSoap.GetStockItemsAsync( inventory.Select( x => x.Sku ).ToList(), scopes ?? new[] { 0, 1 }, token ).ConfigureAwait( false );
 						var productsWithSkuQtyId = from i in inventory join s in stockitems.InventoryStockItems on i.Sku equals s.Sku select new Inventory() { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty };
-						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
+						await this.UpdateInventoryAsync( productsWithSkuQtyId, token ).ConfigureAwait( false );
 					}
 					else
 					{
-						var products = await this.GetProductsAsync( scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
+						var products = await this.GetProductsAsync( token, scopes ?? new[] { 0, 1 } ).ConfigureAwait( false );
 						var productsWithSkuQtyId = from i in inventory join s in products on i.Sku equals s.Sku select new Inventory { ItemId = s.ProductId, ProductId = s.ProductId, Qty = i.Qty, Sku = s.Sku };
-						await this.UpdateInventoryAsync( productsWithSkuQtyId ).ConfigureAwait( false );
+						await this.UpdateInventoryAsync( productsWithSkuQtyId, token ).ConfigureAwait( false );
 					}
 				}
 
@@ -683,7 +719,7 @@ namespace MagentoAccess
 			return dates;
 		}
 
-		private static async Task< IEnumerable< Product > > GetProductsViaSoapAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded, IEnumerable< int > scopes, DateTime? updatedFrom, IEnumerable< string > skus, bool stockItemsOnly, Mark mark = null )
+		private static async Task< IEnumerable< Product > > GetProductsViaSoapAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, bool includeDetails, string productType, bool productTypeShouldBeExcluded, IEnumerable< int > scopes, DateTime? updatedFrom, IEnumerable< string > skus, bool stockItemsOnly, CancellationToken cancellationToken, Mark mark = null )
 		{
 			const int stockItemsListMaxChunkSize = 1000;
 			SoapGetProductsResponse catalogProductListResponse;
@@ -692,19 +728,19 @@ namespace MagentoAccess
 				var magentoServiceLowLevelSoapGetProductsBySku = magentoServiceLowLevelSoap as IMagentoServiceLowLevelSoapGetProductsBySku;
 				if( magentoServiceLowLevelSoapGetProductsBySku != null )
 				{
-					catalogProductListResponse = await magentoServiceLowLevelSoapGetProductsBySku.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, skus as IReadOnlyCollection< string >, mark ).ConfigureAwait( false );
+					catalogProductListResponse = await magentoServiceLowLevelSoapGetProductsBySku.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, skus as IReadOnlyCollection< string >, cancellationToken, mark ).ConfigureAwait( false );
 				}
 				else
 				{
 					catalogProductListResponse = new SoapGetProductsResponse
 					{
-						Products = await GetProductsBySkusViaRestAsync( magentoServiceLowLevelSoap, skus, mark )
+						Products = await GetProductsBySkusViaRestAsync( magentoServiceLowLevelSoap, skus, cancellationToken, mark )
 					};
 				}
 			}
 			else
 			{
-				catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, mark ).ConfigureAwait( false );
+				catalogProductListResponse = await magentoServiceLowLevelSoap.GetProductsAsync( productType, productTypeShouldBeExcluded, updatedFrom, cancellationToken, mark ).ConfigureAwait( false );
 			}
 
 			if( catalogProductListResponse?.Products == null || !catalogProductListResponse.Products.Any() )
@@ -714,7 +750,7 @@ namespace MagentoAccess
 			List< InventoryStockItem > stockItems;
 			if( magentoServiceLowLevelSoap.GetStockItemsWithoutSkuImplementedWithPages )
 			{
-				var inventory = await magentoServiceLowLevelSoap.GetStockItemsWithoutSkuAsync( products.Select( x => x.Sku ), scopes ).ConfigureAwait( false );
+				var inventory = await magentoServiceLowLevelSoap.GetStockItemsWithoutSkuAsync( products.Select( x => x.Sku ), scopes, cancellationToken ).ConfigureAwait( false );
 				stockItems = inventory.InventoryStockItems.ToList();
 			}
 			else
@@ -732,7 +768,7 @@ namespace MagentoAccess
 				var getStockItemsAsync = new List< InventoryStockItem >();
 				foreach( var productsDevidedByChunk in productsDevidedByChunks )
 				{
-					var catalogInventoryStockItemListResponse = await magentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList(), scopes, mark ).ConfigureAwait( false );
+					var catalogInventoryStockItemListResponse = await magentoServiceLowLevelSoap.GetStockItemsAsync( productsDevidedByChunk.Select( x => x.Sku ).ToList(), scopes, cancellationToken, mark ).ConfigureAwait( false );
 					getStockItemsAsync.AddRange( catalogInventoryStockItemListResponse.InventoryStockItems.ToList() );
 				}
 				stockItems = getStockItemsAsync.ToList();
@@ -749,25 +785,25 @@ namespace MagentoAccess
 			{
 				var fillService = ( magentoServiceLowLevelSoap as IMagentoServiceLowLevelSoapFillProductsDetails );
 				if( fillService != null )
-					resultProducts = ( await fillService.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ) ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
+					resultProducts = ( await fillService.FillProductDetails( resultProducts.Select( x => new ProductDetails( x ) ), cancellationToken ).ConfigureAwait( false ) ).Where( x => x != null ).Select( y => y.ToProduct() );
 			}
 			return resultProducts;
 		}
 
-		private static async Task< IEnumerable< SoapProduct > > GetProductsBySkusViaRestAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< string > skus, Mark mark )
+		private static async Task< IEnumerable< SoapProduct > > GetProductsBySkusViaRestAsync( IMagentoServiceLowLevelSoap magentoServiceLowLevelSoap, IEnumerable< string > skus, CancellationToken cancellationToken, Mark mark )
 		{
-			var products = await magentoServiceLowLevelSoap.GetProductsBySkusAsync( skus, mark ).ConfigureAwait( false );
+			var products = await magentoServiceLowLevelSoap.GetProductsBySkusAsync( skus, cancellationToken, mark ).ConfigureAwait( false );
 			if( products?.Products == null || !products.Products.Any() )
 				return new List< SoapProduct >();
 
 			return products.Products;
 		}
 
-		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, Mark mark )
+		private async Task< string > UpdateStockItemsBySoapByThePiece( IList< Inventory > inventories, CancellationToken cancellationToken, Mark mark )
 		{
 			var productToUpdate = inventories.Select( x => new PutStockItem( x ) ).ToList();
 
-			var batchResponses = await productToUpdate.ProcessInBatchAsync( 5, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemAsync( x, mark ).ConfigureAwait( false ), new List< PutStockItem > { x } ) ).ConfigureAwait( false );
+			var batchResponses = await productToUpdate.ProcessInBatchAsync( 5, async x => new Tuple< bool, List< PutStockItem > >( await this.MagentoServiceLowLevelSoap.PutStockItemAsync( x, cancellationToken, mark ).ConfigureAwait( false ), new List< PutStockItem > { x } ) ).ConfigureAwait( false );
 
 			var updateBriefInfo = batchResponses.Where( x => x.Item1 ).SelectMany( y => y.Item2 ).ToJson();
 
@@ -781,14 +817,14 @@ namespace MagentoAccess
 			return updateBriefInfo;
 		}
 
-		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories, IMagentoServiceLowLevelSoap magentoService, Mark markForLog = null )
+		private async Task< string > UpdateStockItemsBySoap( IList< Inventory > inventories, IMagentoServiceLowLevelSoap magentoService, CancellationToken cancellationToken, Mark markForLog = null )
 		{
 			const int productsUpdateMaxChunkSize = 50;
 			var productToUpdate = inventories.Select( x => new PutStockItem( x ) ).ToList();
 
 			var productsDevidedToChunks = productToUpdate.SplitToChunks( productsUpdateMaxChunkSize );
 
-			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > >, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, markForLog.CreateChildOrNull() ).ConfigureAwait( false ), x ) ).ConfigureAwait( false );
+			var batchResponses = await productsDevidedToChunks.ProcessInBatchAsync( 1, async x => new Tuple< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > >, List< PutStockItem > >( await magentoService.PutStockItemsAsync( x, cancellationToken, markForLog.CreateChildOrNull() ).ConfigureAwait( false ), x ) ).ConfigureAwait( false );
 
 			var batchResponsesList = batchResponses as IList< Tuple< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > >, List< PutStockItem > > > ?? batchResponses.ToList();
 			var updateBriefInfo = batchResponsesList.SelectMany( x => x.Item1 ).Where( y => y.Response.ErrorCode == RpcInvoker.SoapErrorCode.Success ).ToJson();
@@ -906,6 +942,16 @@ namespace MagentoAccess
 			}
 		}
 		
+		/// <summary>
+		///	Last service's network activity time. Can be used to monitor service's state.
+		/// </summary>
+		public DateTime LastActivityTime
+		{
+			get
+			{
+				return MagentoServiceLowLevelSoap.LastActivityTime ?? DateTime.UtcNow;
+			}
+		}
 	}
 
 	public class MagentoConfig

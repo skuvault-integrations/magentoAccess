@@ -117,6 +117,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			return MagentoVersions.M_1_9_2_0;
 		}
 
+		public DateTime? LastActivityTime
+		{
+			get { return null; }
+		}
+
 		public Task< bool > InitAsync( bool supressExceptions = false )
 		{
 			try
@@ -131,7 +136,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken cancellationToken, bool throwException = true )
 		{
 			try
 			{
@@ -175,57 +180,57 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			filters.complex_filter = temp.ToArray();
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{
 			return await this.GetWithAsync(
 				x => new InventoryStockItemListResponse( x ),
-				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000 ).ConfigureAwait( false );
+				async ( client, session ) => await client.catalogInventoryStockItemListAsync( session, skusOrIds.ToArray() ).ConfigureAwait( false ), 60000, cancellationToken ).ConfigureAwait( false );
 		}
 		
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest request, bool throwException = true )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest request, CancellationToken cancellationToken, bool throwException = true )
 		{
 			return await this.GetWithAsync(
 				x => new ProductAttributeMediaListResponse( x, request.ProductId, request.Sku ),
-				async ( client, session ) => await client.catalogProductAttributeMediaListAsync( session, request.ProductId, "0", "1" ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogProductAttributeMediaListAsync( session, request.ProductId, "0", "1" ).ConfigureAwait( false ), 25000, cancellationToken ).ConfigureAwait(false);
 		}
 
-		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
+		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( CancellationToken cancellationToken, string rootCategory = "1" )
 		{
 			return await this.GetWithAsync(
 				x => new GetCategoryTreeResponse( x ),
-				async ( client, session ) => await client.catalogCategoryTreeAsync( session, rootCategory, "0" ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogCategoryTreeAsync( session, rootCategory, "0" ).ConfigureAwait( false ), 25000, cancellationToken ).ConfigureAwait(false);
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request, bool throwException = true )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request, CancellationToken cancellationToken, bool throwException = true )
 		{
 			var attributes = new catalogProductRequestAttributes { additional_attributes = request.custAttributes ?? new string[ 0 ] };
 			return await this.GetWithAsync(
 				x => new CatalogProductInfoResponse( x ),
-				async ( client, session ) => await client.catalogProductInfoAsync( session, request.ProductId, "0", attributes, "1" ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogProductInfoAsync( session, request.ProductId, "0", attributes, "1" ).ConfigureAwait( false ), 25000, cancellationToken ).ConfigureAwait(false);
 		}
 
-		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
+		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute, CancellationToken cancellationToken )
 		{
 			return await this.GetWithAsync(
 				x => new CatalogProductAttributeInfoResponse( x ),
-				async ( client, session ) => await client.catalogProductAttributeInfoAsync( session, attribute ).ConfigureAwait( false ), 25000 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogProductAttributeInfoAsync( session, attribute ).ConfigureAwait( false ), 25000, cancellationToken ).ConfigureAwait(false);
 		}
 
-		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+		public virtual async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts, CancellationToken cancellationToken )
 		{
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
-		public async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+		public async Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var pages = new PagingModel( 1000, 0 ).GetPages( skusOrIds ).ToList();
 
-			var pagesResult = await pages.ProcessInBatchAsync( 4, async x => await this.GetStockItemsAsync( x, scopes ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var pagesResult = await pages.ProcessInBatchAsync( 4, async x => await this.GetStockItemsAsync( x, scopes, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
 			var result = new InventoryStockItemListResponse( pagesResult.SelectMany( x => x.InventoryStockItems ).ToList() );
 			return result;
 		}
 
-		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			var stockItemsProcessed = stockItems.Select( x =>
@@ -239,14 +244,15 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			var stockItemsAsync = await this.GetWithSafeAsync(
 				res => ( object )res.result,
 				async ( client, session ) => await client.catalogInventoryStockItemMultiUpdateAsync( session, stockItemsProcessed.Select( x => x.Item1.ProductId ).ToArray(), stockItemsProcessed.Select( x => x.Item2 ).ToArray() ).ConfigureAwait( false ),
-				600000 ).ConfigureAwait( false );
+				600000,
+				cancellationToken ).ConfigureAwait( false );
 
 			var results = stockItems.Select( x => new RpcInvoker.RpcRequestResponse< PutStockItem, object >( x, stockItemsAsync ) );
 
 			return results;
 		}
 
-		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
+		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, CancellationToken cancellationToken, Mark markForLog )
 		{
 			var catalogInventoryStockItemUpdateEntity = putStockItem.Qty > 0 ?
 				new catalogInventoryStockItemUpdateEntity() { is_in_stock = 1, is_in_stockSpecified = true, qty = putStockItem.Qty.ToString() } :
@@ -254,14 +260,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 
 			return await this.GetWithAsync(
 				res => res.result > 0,
-				async ( client, session ) => await client.catalogInventoryStockItemUpdateAsync( session, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false ), 600000 ).ConfigureAwait(false);
+				async ( client, session ) => await client.catalogInventoryStockItemUpdateAsync( session, putStockItem.ProductId, catalogInventoryStockItemUpdateEntity ).ConfigureAwait( false ), 600000, cancellationToken ).ConfigureAwait(false);
 		}
 		
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken cancellationToken, Mark mark = null )
 		{
 			return await this.GetWithAsync(
 				res => new GetMagentoInfoResponse( res, this.GetServiceVersion() ),
-				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, suppressException ).ConfigureAwait(false);
+				async ( client, session ) => await client.magentoInfoAsync( session ).ConfigureAwait( false ), 600000, cancellationToken, suppressException ).ConfigureAwait(false);
 		}
 
 		protected void LogTraceGetResponseException( Exception exception )
@@ -270,11 +276,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		}
 
 		#region JustForTesting
-		public async Task< int > CreateCart( string storeid )
+		public async Task< int > CreateCart( string storeid, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.shoppingCartCreateAsync( sessionId.SessionId, storeid ).ConfigureAwait( false );
 
@@ -286,11 +292,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< string > CreateOrder( int shoppingcartid, string store )
+		public async Task< string > CreateOrder( int shoppingcartid, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.shoppingCartOrderAsync( sessionId.SessionId, shoppingcartid, store, null ).ConfigureAwait( false );
 
@@ -303,6 +309,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		}
 
 		public async Task< int > CreateCustomer(
+			CancellationToken cancellationToken,
 			string email = "na@na.com",
 			string firstname = "firstname",
 			string lastname = "lastname",
@@ -314,7 +321,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var customerCustomerEntityToCreate = new customerCustomerEntityToCreate
 				{
@@ -336,11 +343,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store )
+		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var cutomers = await this._magentoSoapService.customerCustomerListAsync( sessionId.SessionId, new filters() ).ConfigureAwait( false );
 
@@ -373,11 +380,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
+		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var customer = new shoppingCartCustomerEntity
 				{
@@ -399,11 +406,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
+		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var customerAddressEntities = new shoppingCartCustomerAddressEntity[ 2 ];
 
@@ -450,11 +457,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > DeleteCustomer( int customerId )
+		public async Task< bool > DeleteCustomer( int customerId, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.customerCustomerDeleteAsync( sessionId.SessionId, customerId ).ConfigureAwait( false );
 
@@ -466,11 +473,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
+		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var shoppingCartProductEntities = new shoppingCartProductEntity[ 1 ];
 
@@ -486,11 +493,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
+		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var cartPaymentMethodEntity = new shoppingCartPaymentMethodEntity
 				{
@@ -516,11 +523,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
+		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.shoppingCartShippingListAsync( sessionId.SessionId, shoppingCartId, store ).ConfigureAwait( false );
 
@@ -537,14 +544,14 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, CancellationToken cancellationToken, Mark markForLog )
 		{
 			try
 			{
 				var result = 0;
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 					var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
 					var catalogProductCreateEntity = new catalogProductCreateEntity
 					{
@@ -573,11 +580,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
+		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 				var res = await this._magentoSoapService.catalogCategoryRemoveProductAsync( sessionId.SessionId, categoryId, productId, identiferType ).ConfigureAwait( false );
 
 				//product id
@@ -606,11 +613,11 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, CancellationToken cancellationToken, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
 		{
 			try
 			{
-				return await this.GetWithUnsafeAsync( converter, action, abortAfter ).ConfigureAwait( false );
+				return await this.GetWithUnsafeAsync( converter, action, abortAfter, cancellationToken ).ConfigureAwait( false );
 			}
 			catch( Exception exc )
 			{
@@ -620,15 +627,15 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			}
 		}
 
-		private async Task< RpcInvoker.RpcResponse< TResult > > GetWithSafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TResult : class
+		private async Task< RpcInvoker.RpcResponse< TResult > > GetWithSafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, CancellationToken cancellationToken, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new() where TResult : class
 		{
 			var withSafeAsync = await RpcInvoker.SuppressExceptions(
-				async () => await this.GetWithUnsafeAsync( converter, action, abortAfter ).ConfigureAwait( false )
+				async () => await this.GetWithUnsafeAsync( converter, action, abortAfter, cancellationToken ).ConfigureAwait( false )
 				).ConfigureAwait( false );
 			return withSafeAsync;
 		}
 
-		private async Task< TResult > GetWithUnsafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter ) where TServerResponse : new()
+		private async Task< TResult > GetWithUnsafeAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, CancellationToken cancellationToken ) where TServerResponse : new()
 		{
 			var res = new TServerResponse();
 			var privateClient = this._clientFactory.GetClient();
@@ -636,7 +643,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			await ActionPolicies.GetAsync.Do( async () =>
 			{
 				privateClient = this._clientFactory.RefreshClient( privateClient );
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var temp = await ClientBaseActionRunner.RunWithAbortAsync(
 					abortAfter,

@@ -87,6 +87,7 @@
     <Compile Include="Misc\Cache.cs" />
     <Compile Include="Misc\ICreateCallInfoExtensions.cs" />
     <Compile Include="Misc\MagentoStoreVersion.cs" />
+    <Compile Include="Misc\MagentoTimeouts.cs" />
     <Compile Include="Misc\PagingModel.cs" />
     <Compile Include="Misc\RpcInvoker.cs" />
     <Compile Include="Models\CreateOrders\CreateOrderModel.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Models\GetProducts\Category.cs" />
     <Compile Include="Models\GetProducts\MagentoUrl.cs" />
     <Compile Include="Models\GetProducts\Product.cs" />
+    <Compile Include="Models\GetShipments\Shipment.cs" />
     <Compile Include="Models\PutInventory\Inventory.cs" />
     <Compile Include="Models\Services\Rest\v2x\CatalogStockItemRepository\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\CategoryNode.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Models\Services\Rest\v2x\Products\ProductAttribute.cs" />
     <Compile Include="Models\Services\Rest\v2x\Products\RootObject.cs" />
     <Compile Include="Models\Services\Rest\v2x\SalesOrderRepository\RootObject.cs" />
+    <Compile Include="Models\Services\Rest\v2x\SalesOrderRepository\ShipmentsResponse.cs" />
     <Compile Include="Models\Services\Rest\v2x\SearchCriteria.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\CategoryNode.cs" />
     <Compile Include="Models\Services\Soap\GetCategoryTree\GetCategoryTreeResponse.cs" />
@@ -240,6 +243,7 @@
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevel.cs" />
     <Compile Include="Services\Rest\v2x\MagentoServiceLowLevelSoap_v_2_1_0_0_ce_Factory.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ActionPolicies.cs" />
+    <Compile Include="Services\Rest\v2x\Repository\BaseRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\ISalesOrderRepositoryV1.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IIntegrationAdminTokenRepository.cs" />
     <Compile Include="Services\Rest\v2x\Repository\IntegrationAdminTokenRepository.cs" />

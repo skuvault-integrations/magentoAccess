@@ -6,6 +6,7 @@ using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_1_0_0_CE;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Soap.GetOrders;
 using Netco.Logging;
+using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
@@ -13,7 +14,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 	{
 		private const int PageSize = 100;
 
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )
 		{
 			try
 			{
@@ -43,7 +44,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds )
+		public virtual async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken, string searchField = "increment_id" )
 		{
 			var ordersIdsAgregated = string.Empty;
 			try
@@ -51,7 +52,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 				ordersIdsAgregated = string.Join( ",", ordersIds );
 				var frameworkSearchFilterGroups = new List< FrameworkSearchFilterGroup >
 				{
-					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "increment_id", conditionType = "eq", value = ordersIdsAgregated } } },
+					new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = searchField, conditionType = "eq", value = ordersIdsAgregated } } },
 				};
 				if( string.IsNullOrWhiteSpace( this.Store ) )
 					frameworkSearchFilterGroups.Add( new FrameworkSearchFilterGroup() { filters = new[] { new FrameworkFilter() { field = "store_Id", conditionType = "eq", value = this.Store } } } );
@@ -75,7 +76,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId, Mark mark = null )
+		public virtual async Task< OrderInfoResponse > GetOrderAsync( string incrementId, CancellationToken cancellationToken, Mark mark = null )
 		{
 			try
 			{
@@ -122,9 +123,14 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			}
 		}
 
-		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, Mark mark = null )
+		public virtual Task< OrderInfoResponse > GetOrderAsync( Order order, CancellationToken cancellationToken, Mark mark = null )
 		{
-			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, mark );
+			return this.GetOrderAsync( this.GetOrdersUsesEntityInsteadOfIncrementId ? order.OrderId : order.incrementId, cancellationToken, mark );
+		}
+
+		public Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )
+		{
+			return Task.FromResult( new Dictionary< string, IEnumerable< Shipment > >() );
 		}
 
 		#region Pagination
