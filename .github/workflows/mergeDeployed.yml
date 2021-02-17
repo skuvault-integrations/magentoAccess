@@ -1,4 +1,4 @@
-name: Merge branch with labeled
+name: Merge released branch with master
 on:
   pull_request:
     types: [labeled]
