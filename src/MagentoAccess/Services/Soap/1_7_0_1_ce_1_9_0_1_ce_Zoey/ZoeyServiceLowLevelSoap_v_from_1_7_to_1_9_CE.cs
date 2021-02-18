@@ -70,6 +70,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			return MagentoVersions.ZS_1_7_0_1;
 		}
 
+		public DateTime? LastActivityTime
+		{
+			get { return null; }
+		}
+
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
@@ -89,7 +94,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< GetSessionIdResponse > GetSessionId( bool throwException = true )
+		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken cancellationToken, bool throwException = true )
 		{
 			try
 			{
@@ -173,7 +178,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			filters.complex_filter = temp.ToArray();
 		}
 
-		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( string rootCategory = "1" )
+		public virtual async Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( CancellationToken cancellationToken, string rootCategory = "1" )
 		{
 			try
 			{
@@ -189,7 +194,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -205,7 +210,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, bool throwException = true )
+		public virtual async Task< ProductAttributeMediaListResponse > GetProductAttributeMediaListAsync( GetProductAttributeMediaListRequest getProductAttributeMediaListRequest, CancellationToken cancellationToken, bool throwException = true )
 		{
 			try
 			{
@@ -221,7 +226,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -237,7 +242,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute )
+		public virtual async Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute, CancellationToken cancellationToken )
 		{
 			try
 			{
@@ -253,7 +258,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 					try // this try catch block is crunch for 1.7
 					{
 						using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
@@ -279,17 +284,17 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts )
+		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts, CancellationToken cancellationToken )
 		{
 			return await this.Magento1xxxHelper.FillProductDetails( resultProducts ).ConfigureAwait( false );
 		}
 
-		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+		public Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request, bool throwException = true )
+		public virtual async Task< CatalogProductInfoResponse > GetProductInfoAsync( CatalogProductInfoRequest request, CancellationToken cancellationToken, bool throwException = true )
 		{
 			try
 			{
@@ -305,7 +310,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 					var attributes = new catalogProductRequestAttributes { additional_attributes = request.custAttributes ?? new string[ 0 ] };
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
@@ -322,7 +327,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, Mark mark = null )
+		public virtual async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{
 			try
 			{
@@ -340,7 +345,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -357,7 +362,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, Mark mark = null )
+		public virtual async Task< IEnumerable< RpcInvoker.RpcRequestResponse< PutStockItem, object > > > PutStockItemsAsync( List< PutStockItem > stockItems, CancellationToken cancellationToken, Mark mark = null )
 		{
 			var methodParameters = stockItems.ToJson();
 			try
@@ -380,7 +385,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -404,7 +409,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, Mark markForLog )
+		public virtual async Task< bool > PutStockItemAsync( PutStockItem putStockItem, CancellationToken cancellationToken, Mark markForLog )
 		{
 			try
 			{
@@ -424,7 +429,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 					{
@@ -448,7 +453,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, Mark mark = null )
+		public virtual async Task< GetMagentoInfoResponse > GetMagentoInfoAsync( bool suppressException, CancellationToken cancellationToken, Mark mark = null )
 		{
 			try
 			{
@@ -464,7 +469,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 					TimerCallback tcb = statusChecker.CheckStatus;
 
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					using( var stateTimer = new Timer( tcb, privateClient, 1000, delayBeforeCheck ) )
 						res = await privateClient.magentoInfoAsync( sessionId.SessionId ).ConfigureAwait( false );
@@ -481,11 +486,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 		}
 
 		#region JustForTesting
-		public async Task< int > CreateCart( string storeid )
+		public async Task< int > CreateCart( string storeid, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.shoppingCartCreateAsync( sessionId.SessionId, storeid ).ConfigureAwait( false );
 
@@ -497,11 +502,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< string > CreateOrder( int shoppingcartid, string store )
+		public async Task< string > CreateOrder( int shoppingcartid, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.shoppingCartOrderAsync( sessionId.SessionId, shoppingcartid, store, null ).ConfigureAwait( false );
 
@@ -514,6 +519,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 		}
 
 		public async Task< int > CreateCustomer(
+			CancellationToken cancellationToken,
 			string email = "na@na.com",
 			string firstname = "firstname",
 			string lastname = "lastname",
@@ -525,7 +531,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var customerCustomerEntityToCreate = new customerCustomerEntityToCreate
 				{
@@ -547,11 +553,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store )
+		public async Task< bool > ShoppingCartCustomerSet( int shoppingCart, int customerId, string customerPass, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var cutomers = await this._magentoSoapService.customerCustomerListAsync( sessionId.SessionId, new filters() ).ConfigureAwait( false );
 
@@ -584,11 +590,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store )
+		public async Task< bool > ShoppingCartGuestCustomerSet( int shoppingCart, string customerfirstname, string customerMail, string customerlastname, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var customer = new shoppingCartCustomerEntity
 				{
@@ -610,11 +616,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store )
+		public async Task< bool > ShoppingCartAddressSet( int shoppingCart, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var customerAddressEntities = new shoppingCartCustomerAddressEntity[ 2 ];
 
@@ -661,11 +667,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > DeleteCustomer( int customerId )
+		public async Task< bool > DeleteCustomer( int customerId, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.customerCustomerDeleteAsync( sessionId.SessionId, customerId ).ConfigureAwait( false );
 
@@ -677,11 +683,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store )
+		public async Task< bool > ShoppingCartAddProduct( int shoppingCartId, string productId, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var shoppingCartProductEntities = new shoppingCartProductEntity[ 1 ];
 
@@ -697,11 +703,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store )
+		public async Task< bool > ShoppingCartSetPaymentMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var cartPaymentMethodEntity = new shoppingCartPaymentMethodEntity
 				{
@@ -727,11 +733,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store )
+		public async Task< bool > ShoppingCartSetShippingMethod( int shoppingCartId, string store, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 				var res = await this._magentoSoapService.shoppingCartShippingListAsync( sessionId.SessionId, shoppingCartId, store ).ConfigureAwait( false );
 
@@ -748,14 +754,14 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, Mark markForLog )
+		public async Task< int > CreateProduct( string storeId, string name, string sku, int isInStock, string productType, CancellationToken cancellationToken, Mark markForLog )
 		{
 			try
 			{
 				var result = 0;
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 					var res0 = await this._magentoSoapService.catalogCategoryAttributeCurrentStoreAsync( sessionId.SessionId, storeId ).ConfigureAwait( false );
 
 					var catalogProductCreateEntity = new catalogProductCreateEntity
@@ -786,11 +792,11 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType )
+		public async Task< bool > DeleteProduct( string storeId, int categoryId, string productId, string identiferType, CancellationToken cancellationToken )
 		{
 			try
 			{
-				var sessionId = await this.GetSessionId().ConfigureAwait( false );
+				var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 				var res = await this._magentoSoapService.catalogCategoryRemoveProductAsync( sessionId.SessionId, categoryId, productId, identiferType ).ConfigureAwait( false );
 
 				//product id
@@ -819,7 +825,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			}
 		}
 
-		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
+		private async Task< TResult > GetWithAsync< TResult, TServerResponse >( Func< TServerResponse, TResult > converter, Func< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, string, Task< TServerResponse > > action, int abortAfter, CancellationToken cancellationToken, bool suppressException = false, [ CallerMemberName ] string callerName = null ) where TServerResponse : new()
 		{
 			try
 			{
@@ -829,7 +835,7 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 				await ActionPolicies.GetAsync.Do( async () =>
 				{
 					privateClient = this._clientFactory.RefreshClient( privateClient );
-					var sessionId = await this.GetSessionId().ConfigureAwait( false );
+					var sessionId = await this.GetSessionId( cancellationToken ).ConfigureAwait( false );
 
 					var temp = await ClientBaseActionRunner.RunWithAbortAsync(
 						abortAfter,
