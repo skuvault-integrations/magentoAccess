@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DotNetOpenAuth.Messaging;
 using MagentoAccess;
@@ -39,7 +40,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				getProductsMaxThreads,
 				sessionLifeTime,
 				true
-			), new MagentoConfig() { VersionByDefault = magentoVersionByDefault, OnUpdateInventory = onUpdateInventory, UseVersionByDefaultOnly = useDefaultVersionOnly} );
+			), new MagentoConfig() { VersionByDefault = magentoVersionByDefault, OnUpdateInventory = onUpdateInventory, UseVersionByDefaultOnly = useDefaultVersionOnly }, new MagentoTimeouts() );
 			magentoService.InitAsync( supressExc ).Wait();
 			return magentoService;
 		}
@@ -92,10 +93,10 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 						false, 
 						credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems 
 						);
-					var creationResult = magentoService.CreateOrderAsync( ordersModels );
+					var creationResult = magentoService.CreateOrderAsync( ordersModels, CancellationToken.None );
 					creationResult.Wait();
 					var ordersIds = creationResult.Result.Select( x => x.OrderId ).ToList();
-					var ordersTask = magentoService.GetOrdersAsync( ordersIds );
+					var ordersTask = magentoService.GetOrdersAsync( ordersIds, CancellationToken.None );
 					ordersTask.Wait();
 
 					if( this._orders == null )
@@ -140,7 +141,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 							source.Add( new CreateProductModel( "0", sku, name, 1, i == 4 ? "bundle" : "simple" ) );
 						}
 						var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
-						var creationResult = magentoService.CreateProductAsync( source );
+						var creationResult = magentoService.CreateProductAsync( source, CancellationToken.None );
 
 						creationResult.Wait();
 						this._productsIds[ credentials.AuthenticatedUserCredentials.SoapApiKey ] = new Dictionary< int, string >();
@@ -177,7 +178,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 					var productsToRemove = this.GetOnlyProductsCreatedForThisTests( magentoService );
 					var productsToRemoveDeleteProductModels = productsToRemove.Select( p => new DeleteProductModel( "0", 0, p.ProductId, "" ) ).ToList();
 
-					var deleteres = magentoService.DeleteProductAsync( productsToRemoveDeleteProductModels );
+					var deleteres = magentoService.DeleteProductAsync( productsToRemoveDeleteProductModels, CancellationToken.None );
 
 					deleteres.Wait();
 				}
@@ -191,7 +192,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( MagentoServiceCredentialsAndConfig magentoServiceSoapCredentials )
 		{
 			var magentoService = this.CreateMagentoService(magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiUser, magentoServiceSoapCredentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", magentoServiceSoapCredentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", MagentoVersions.M_2_0_2_0, magentoServiceSoapCredentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, magentoServiceSoapCredentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, magentoServiceSoapCredentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
-			var getProductsTask = magentoService.GetProductsAsync( new[] { 0, 1 } );
+			var getProductsTask = magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 } );
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();
@@ -201,7 +202,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 
 		protected IEnumerable< Product > GetOnlyProductsCreatedForThisTests( IMagentoService service )
 		{
-			var getProductsTask = service.GetProductsAsync( new[] { 0, 1 } );
+			var getProductsTask = service.GetProductsAsync( CancellationToken.None, new[] { 0, 1 } );
 			getProductsTask.Wait();
 
 			var allProductsinMagent = getProductsTask.Result.ToList();

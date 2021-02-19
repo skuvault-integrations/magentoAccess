@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MagentoAccess;
@@ -23,8 +24,8 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			var updatedFrom = DateTime.UtcNow.AddMonths( -15 );
 
 			// ------------ Act
-			var getProductsTask1 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true, updatedFrom : updatedFrom );
-			var getProductsTask2 = magentoService.GetProductsAsync( new[] { 0, 1 }, includeDetails : true );
+			var getProductsTask1 = magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : true, updatedFrom : updatedFrom );
+			var getProductsTask2 = magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 }, includeDetails : true );
 			Task.WhenAll( getProductsTask1, getProductsTask2 ).Wait();
 
 			// ------------ Assert

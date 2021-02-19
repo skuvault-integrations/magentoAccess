@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using MagentoAccess;
+using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.PutInventory;
 using MagentoAccess.Services.Soap;
@@ -37,6 +39,7 @@ namespace MagentoAccessTests
 		private const int GetProductsThreadsLimit = 4;
 		private const int SessionLifeTime = 3590;
 		private const bool LogRawMessages = true;
+		private MagentoTimeouts OperationsTimeouts = new MagentoTimeouts();
 
 		[ TestFixtureSetUp ]
 		public void Setup()
@@ -48,34 +51,34 @@ namespace MagentoAccessTests
 		public void GetOrdersAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig() ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig(), OperationsTimeouts ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
 
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetOrdersAsync( default(DateTime), default(DateTime) ).ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetOrdersAsync( default(DateTime), default(DateTime), CancellationToken.None ).ConfigureAwait( false ) );
 		}
 
 		[ Test ]
 		public void GetProductsAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig() ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig(), OperationsTimeouts ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetProductsAsync( new[] { 0, 1 } ).ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 } ).ConfigureAwait( false ) );
 		}
 
 		[ Test ]
 		public void PingSoapAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig() ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig(), OperationsTimeouts ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.PingSoapAsync().ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.PingSoapAsync( CancellationToken.None ).ConfigureAwait( false ) );
 		}
 
 
@@ -83,11 +86,11 @@ namespace MagentoAccessTests
 		public void UpdateInventoryAsync_ByDateExceptionOccured_ExceptionThrown()
 		{
 			//------------ Arrange
-			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig() ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
+			var magentoService = new MagentoService( this._magentoAuthenticatedUserCredentials, new MagentoConfig(), OperationsTimeouts ) { MagentoServiceLowLevelSoap = this._magentoServiceLowLevelSoapThrowExceptionsStub };
 
 			//------------ Act
 			//------------ Assert
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.UpdateInventoryAsync( new List< Inventory > { new Inventory() } ).ConfigureAwait( false ) );
+			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.UpdateInventoryAsync( new List< Inventory > { new Inventory() }, CancellationToken.None ).ConfigureAwait( false ) );
 		}
 	}
 }
