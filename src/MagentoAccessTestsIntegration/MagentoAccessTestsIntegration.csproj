@@ -105,6 +105,7 @@
     <Content Include="InterchangeabilityTests\Readme.txt" />
     <Content Include="MagentoServiceTests\Readme.txt" />
     <Compile Include="MagentoServiceTests\FillProductsDetails\GetProducsAndFillProductsDetails.cs" />
+    <Compile Include="MagentoServiceTests\GetShipments\GetShipmentsTest.cs" />
     <Compile Include="MagentoServiceTests\UpdateInventory\GetOnlySpecialByTypeProducs.cs" />
     <Compile Include="MagentoServiceTests\GetProductsAsync\GetProducsWithUpdateTimeAndSkusFilter.cs" />
     <Compile Include="MagentoServiceTests\GetProductsAsync\GetProducsWithUpdateTimeFilter.cs" />

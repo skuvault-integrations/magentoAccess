@@ -149,5 +149,46 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			resultItems.AddRange( tailItems );
 			return resultItems;
 		}
+
+		public Task< ShipmentsResponse > GetOrdersShipmentsAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken token, Mark mark = null )
+		{
+			var parameters = new SearchCriteria()
+			{
+				filter_groups = new List< FilterGroup >()
+				{
+					new FilterGroup()
+					{
+						filters = new List< Filter >()
+						{
+							new Filter( "updated_at", updatedFrom.ToRestParameterString(), Filter.ConditionType.From )
+						}
+					},
+					new FilterGroup()
+					{
+						filters = new List< Filter >()
+						{
+							new Filter( "updated_at", updatedTo.ToRestParameterString(), Filter.ConditionType.To )
+						}
+					}
+				},
+				current_page = page.CurrentPage,
+				page_size = page.ItemsPerPage,
+			};
+
+			var webRequest = ( WebRequest )WebRequest.Create()
+				.Method( MagentoWebRequestMethod.Get )
+				.Path( MagentoServicePath.CreateShipmentsServicePath() )
+				.Parameters( parameters )
+				.AuthToken( this.Token )
+				.Url( this.Url );
+
+			return ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			{
+				using( var v = await webRequest.RunAsync( token, mark ).ConfigureAwait( false ) )
+				{
+					return JsonConvert.DeserializeObject< ShipmentsResponse >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
+				}
+			} );
+		}
 	}
 }

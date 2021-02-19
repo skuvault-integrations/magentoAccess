@@ -10,6 +10,7 @@ using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.GetShipments;
 using Netco.Logging;
 
 namespace MagentoAccess
@@ -33,6 +34,8 @@ namespace MagentoAccess
 		Task< IEnumerable< CreateOrderModelResult > > CreateOrderAsync( IEnumerable< CreateOrderModel > models, CancellationToken token );
 
 		Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds, CancellationToken token );
+
+		Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken token, Mark mark = null );
 
 		Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, CancellationToken token, Mark mark = null );
 

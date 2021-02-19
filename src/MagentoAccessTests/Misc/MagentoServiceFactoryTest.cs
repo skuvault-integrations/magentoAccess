@@ -6,6 +6,7 @@ using MagentoAccess;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 using MagentoAccess.Models.GetProducts;
+using MagentoAccess.Models.GetShipments;
 using MagentoAccess.Models.Services.Soap.GetCategoryTree;
 using MagentoAccess.Models.Services.Soap.GetMagentoInfo;
 using MagentoAccess.Models.Services.Soap.GetOrders;
@@ -268,6 +269,11 @@ namespace MagentoAccessTests.Misc
 			}
 
 			public Task< SoapGetProductsResponse > GetProductsAsync( string productType, bool productTypeShouldBeExcluded, DateTime? updatedFrom, IReadOnlyCollection< string > skus )
+			{
+				throw new NotImplementedException();
+			}
+
+			public Task<Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
 			{
 				throw new NotImplementedException();
 			}
