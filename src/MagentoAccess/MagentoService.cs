@@ -42,6 +42,8 @@ namespace MagentoAccess
 	public class MagentoService: IMagentoService
 	{
 		public bool UseSoapOnly{ get; set; }
+		public bool IsRestAPIUsed { get; set; }
+
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap{ get; set; }
 		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory{ get; set; }
 
@@ -369,6 +371,7 @@ namespace MagentoAccess
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo(), markLocal );
 				var magentoInfo = await this.MagentoServiceLowLevelSoap.GetMagentoInfoAsync( false, token, markLocal ).ConfigureAwait( false );
 				var soapWorks = !string.IsNullOrWhiteSpace( magentoInfo.MagentoVersion ) || !string.IsNullOrWhiteSpace( magentoInfo.MagentoEdition );
+				this.IsRestAPIUsed = magentoInfo.MagentoVersion == MagentoVersions.MR_2_0_0_0;
 
 				var magentoCoreInfo = new PingSoapInfo( magentoInfo.MagentoVersion, magentoInfo.MagentoEdition, soapWorks, magentoInfo.ServiceVersion );
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : magentoCoreInfo.ToJson() ), markLocal );
