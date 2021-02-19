@@ -95,12 +95,12 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 		[ TestCaseSource( typeof( RepositoryTestCases ), "TestCases" ) ]
 		public void GetOrdersShipmentsAsync_StoreContainsShipments_ReceiveModifiedShipments( RepositoryTestCase credentials )
 		{
-			var adminRepository = new IntegrationAdminTokenRepository( credentials.Url );
-			var token = adminRepository.GetTokenAsync( credentials.MagentoLogin, credentials.MagentoPass ).WaitResult();
-			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( token, credentials.Url );
+			var adminRepository = new IntegrationAdminTokenRepository( credentials.Url, new MagentoTimeouts() );
+			var token = adminRepository.GetTokenAsync( credentials.MagentoLogin, credentials.MagentoPass, CancellationToken.None ).WaitResult();
+			var salesOrderRepositoryV1 = new SalesOrderRepositoryV1( token, credentials.Url, new MagentoTimeouts() );
 
 			var page = new PagingModel( 100, 1 );
-			var shipments = salesOrderRepositoryV1.GetOrdersShipmentsAsync( DateTime.MinValue, DateTime.UtcNow, page ).WaitResult();
+			var shipments = salesOrderRepositoryV1.GetOrdersShipmentsAsync( DateTime.MinValue, DateTime.UtcNow, page, CancellationToken.None ).WaitResult();
 
 			shipments.Items.Should().NotBeNullOrEmpty();
 		}

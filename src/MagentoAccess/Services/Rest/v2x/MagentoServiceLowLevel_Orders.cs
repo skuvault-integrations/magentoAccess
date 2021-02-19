@@ -33,7 +33,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			} );
 		}
 
-		public async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken )
+		public async Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken, string searchField )
 		{
 			return await this.RepeatOnAuthProblemAsync.Get( async () =>
 			{
@@ -41,7 +41,7 @@ namespace MagentoAccess.Services.Rest.v2x
 				var page = new PagingModel( itemsPerPage, 1 );
 				var pagesData = page.GetPages( ordersIds );
 				var pages = pagesData.Select( ( x, i ) => Tuple.Create( new PagingModel( itemsPerPage, i ), x ) );
-				var sales = await pages.ProcessInBatchAsync( 4, async x => await this.SalesOrderRepository.GetOrdersAsync( x.Item2, x.Item1, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+				var sales = await pages.ProcessInBatchAsync( 4, async x => await this.SalesOrderRepository.GetOrdersAsync( x.Item2, x.Item1, cancellationToken, searchField ).ConfigureAwait( false ) ).ConfigureAwait( false );
 				var result = Enumerable.ToList( sales );
 
 				return new GetOrdersResponse( result.ToArray() );
@@ -73,7 +73,11 @@ namespace MagentoAccess.Services.Rest.v2x
 				var shipments = shipmentsPages.Where( sp => sp.Items != null ).SelectMany( sp => sp.Items ).ToList();
 				shipments.AddRange( shipmentsFirstPage.Items );
 
-				return shipments.Select( s => new Shipment( s ) ).GroupBy( shipment => shipment.OrderId.ToString() ).ToDictionary( gr => gr.Key, gr => gr.AsEnumerable() );
+				var ordersIds = shipments.Select( s => s.OrderId ).Distinct();
+				var orders = await this.GetOrdersAsync( ordersIds, token, "entity_id" ).ConfigureAwait( false );
+				shipments = orders.Orders.Join( shipments, o => o.OrderId, s => s.OrderId, ( order, shipment ) => { shipment.OrderIncrementId = order.incrementId; return shipment; } ).ToList();
+
+				return shipments.Select( s => new Shipment( s ) ).GroupBy( shipment => shipment.OrderIncrementId ).ToDictionary( gr => gr.Key, gr => gr.AsEnumerable() );
 			} );
 		}
 

@@ -30,7 +30,9 @@ namespace MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository
 		public string Id { get; set; }
 
 		[ DataMember( Name = "order_id" ) ]
-		public long OrderId { get; set; }
+		public string OrderId { get; set; }
+
+		public string OrderIncrementId { get; set; }
 
 		[ DataMember( Name = "items" ) ]
 		public IEnumerable< ShipmentResponseItem > Items { get; set; }

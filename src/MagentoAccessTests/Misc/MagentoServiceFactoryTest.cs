@@ -138,7 +138,7 @@ namespace MagentoAccessTests.Misc
 				return null;
 			}
 
-			public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken )
+			public Task< GetOrdersResponse > GetOrdersAsync( IEnumerable< string > ordersIds, CancellationToken cancellationToken, string searchField )
 			{
 				return null;
 			}
@@ -273,7 +273,7 @@ namespace MagentoAccessTests.Misc
 				throw new NotImplementedException();
 			}
 
-			public Task<Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, Mark mark = null )
+			public Task<Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken token, Mark mark = null )
 			{
 				throw new NotImplementedException();
 			}

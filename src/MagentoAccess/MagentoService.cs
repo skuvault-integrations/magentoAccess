@@ -537,7 +537,7 @@ namespace MagentoAccess
 				
 				var pingres = await this.PingSoapAsync( token, mark ).ConfigureAwait( false );
 				var magentoServiceLowLevel = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( pingres.ServiceUsedVersion, true, false );
-				var shipments = await magentoServiceLowLevel.GetOrdersShipmentsAsync( modifiedDateFromUtc, modifiedDateToToUtc, mark ).ConfigureAwait( false );
+				var shipments = await magentoServiceLowLevel.GetOrdersShipmentsAsync( modifiedDateFromUtc, modifiedDateToToUtc, token, mark ).ConfigureAwait( false );
 
 				var shipmentsSummary = $"Count:{shipments.Count()},Shipments:{shipments.ToJson()}";
 				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( methodResult : shipmentsSummary ), mark );
