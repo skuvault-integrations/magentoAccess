@@ -49,6 +49,8 @@ namespace MagentoAccess
 
 		Task< bool > InitAsync( bool supressExc = false );
 
+		bool IsRestAPIUsed { get; set; }
+
 		/// <summary>
 		///	This property can be used by the client to monitor the last access library's network activity time.
 		/// </summary>
