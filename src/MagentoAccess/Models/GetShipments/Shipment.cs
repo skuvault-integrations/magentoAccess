@@ -26,7 +26,7 @@ namespace MagentoAccess.Models.GetShipments
 			this.OrderId = response.OrderId;
 			this.OrderIncrementId = response.OrderIncrementId;
 			this.CreatedAtUtc = response.CreatedAt;
-			this.Items = response.Items.Select( i => new ShipmentItem( i ) ).ToList();
+			this.Items = response.Items?.Select( i => new ShipmentItem( i ) )?.ToList() ?? new List< ShipmentItem >();
 
 			var trackingInfo = response.Tracks;
 			if ( trackingInfo != null && trackingInfo.Any() )
@@ -55,7 +55,7 @@ namespace MagentoAccess.Models.GetShipments
 		internal ShipmentItem( ShipmentResponseItem item )
 		{
 			this.Sku = item.Sku;
-			this.Quantity = item.Quantity;
+			this.Quantity = item.Quantity ?? 0;
 			this.Weight = item.Weight;
 		}
 	}
