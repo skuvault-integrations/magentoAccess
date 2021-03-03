@@ -10,6 +10,7 @@ using MagentoAccess.Models.GetMagentoCoreInfo;
 using MagentoAccess.Models.GetOrders;
 using MagentoAccess.Models.GetProducts;
 using MagentoAccess.Models.PutInventory;
+using MagentoAccess.Models.GetShipments;
 using Netco.Logging;
 
 namespace MagentoAccess
@@ -34,6 +35,8 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Order > > GetOrdersAsync( IEnumerable< string > orderIds, CancellationToken token );
 
+		Task< Dictionary< string, IEnumerable< Shipment > > > GetOrdersShipmentsAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken token, Mark mark = null );
+
 		Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, CancellationToken token, Mark mark = null );
 
 		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( CancellationToken token, Mark mark = null );
@@ -45,6 +48,8 @@ namespace MagentoAccess
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null );
 
 		Task< bool > InitAsync( bool supressExc = false );
+
+		bool IsRestAPIUsed { get; set; }
 
 		/// <summary>
 		///	This property can be used by the client to monitor the last access library's network activity time.

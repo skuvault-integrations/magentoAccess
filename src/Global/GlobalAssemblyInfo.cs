@@ -27,4 +27,4 @@ using System.Runtime.InteropServices;
 
 // 2.9.0.0 - magento 2 supported, 9 build, 0 subversion (includes significant features and codechanges)
 
-[ assembly : AssemblyVersion( "2.15.4.0" ) ]
+[ assembly : AssemblyVersion( "2.17.2.0" ) ]
