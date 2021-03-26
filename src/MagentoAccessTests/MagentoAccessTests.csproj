@@ -94,6 +94,7 @@
     <Compile Include="Misc\ExtensionsTest.cs" />
     <Compile Include="Misc\MagentoServiceFactoryTest.cs" />
     <Compile Include="Misc\MagentoTimeoutsTests.cs" />
+    <Compile Include="Models\GetOrders\OrderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Rest\v2x\PagingModelTest.cs" />
     <Compile Include="Services\Rest\v2x\SearchCriteriaTest.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Services\Soap\1_7_0_1_ce_1_9_0_1_ce\MagentoServiceLowLevelSoap_v_from_1_7_to_1_9_CE_Test.cs" />
     <Compile Include="Services\Soap\1_9_2_1_ce\MagentoServiceLowLevelSoap_v_1_9_2_1_ce_Test.cs" />
     <Compile Include="Services\Soap\2_0_2_0_ce\MagentoServiceLowLevelSoap_v_2_0_2_0_ce_Test.cs" />
+    <Compile Include="Models\GetOrders\Zoey_1_7_to_1_9_CE\ZoeyOrdersExtensionsTests.cs" />
     <Compile Include="TestEnvironment\MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub.cs" />
   </ItemGroup>
   <ItemGroup>
