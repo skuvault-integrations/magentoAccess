@@ -30,7 +30,7 @@ namespace MagentoAccess.Services.Rest.v2x
 		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
 		protected ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
 		protected ISalesOrderRepositoryV1 SalesOrderRepository { get; set; }
-		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
+		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }	//TODO GUARD-2311 This is only called from very few places in MagentoAccess\Services\Rest\v2x\MagentoServiceLowLevel_Products.cs
 
 		protected SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
 
@@ -74,6 +74,14 @@ namespace MagentoAccess.Services.Rest.v2x
 		{
 			this.RepeatOnAuthProblemAsync = ActionPolicyAsync.From( ( exception =>
 			{
+				//TODO GUARD-2311 Option 3 (seems most promising):
+				//	1. Rename to RetryOnErrorsAsync, since we'll handle all errors, not just Unauthorized.
+				//	2. Change this to ActionPolicyAsync.Handle< Exception >().RetryAsync...
+				//		So that we handle all errors
+				//	2. Move the logic that determines whether it's a 401/Unauthorized to a new method IsUnauthorized( exception ) and call it from .Retry (below)
+				//	3. Change all places where RepeatOnChannelProblemAsync is called to instead use this. Would need to call it from this class, instead of repositories
+				//Pros: Only one retry policy
+				//Cons: Potential side-effects since would do retry at a different level
 				var webException = ( exception as MagentoWebException )?.InnerException as WebException;
 				if( webException == null )
 					return false;
@@ -86,8 +94,8 @@ namespace MagentoAccess.Services.Rest.v2x
 							return false;
 						switch( response.StatusCode )
 						{
-							case HttpStatusCode.Unauthorized:
-								return true;
+							case HttpStatusCode.Unauthorized:	
+								return true;	//This apparently means that we'll retry below on 401/Unauthorized
 							default:
 								return false;
 						}
@@ -95,25 +103,33 @@ namespace MagentoAccess.Services.Rest.v2x
 						return false;
 				}
 			} ) )
+				//TODO GUARD-2311 Option 3: Change to 7, since that's what MagentoAccess\Services\Rest\v2x\Repository\ActionPolicies.cs > RepeatOnChannelProblemAsync did
 				.RetryAsync( 3, async ( ex, i ) =>
 				{
-					await this._reauthorizeLock.WaitAsync();
-					var reauthorizationsCountPropagation = this.reauthorizationsCount;
-					this._reauthorizeLock.Release();
-					await this._reauthorizeLock.WaitAsync();
-					try
-					{
-						if( reauthorizationsCountPropagation != this.reauthorizationsCount )
-							return;
-						Interlocked.Increment( ref this.reauthorizationsCount );
-						MagentoLogger.Log().Trace( ex, "Retrying Magento API call due to authorization problem for the {0} time", i );
-						await this.ReauthorizeAsync().ConfigureAwait( false );
-						await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
-					}
-					finally
-					{
+					//TODO GUARD-2311 Option 3
+					//if ( IsUnauthorized( exception ) )
+					//{
+						await this._reauthorizeLock.WaitAsync();
+						var reauthorizationsCountPropagation = this.reauthorizationsCount;
 						this._reauthorizeLock.Release();
-					}
+						await this._reauthorizeLock.WaitAsync();
+						try
+						{
+							if( reauthorizationsCountPropagation != this.reauthorizationsCount )
+								return;
+							Interlocked.Increment( ref this.reauthorizationsCount );
+							MagentoLogger.Log().Trace( ex, "Retrying Magento API call due to authorization problem for the {0} time", i );
+							await this.ReauthorizeAsync().ConfigureAwait( false );
+							await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
+						}
+						finally
+						{
+							this._reauthorizeLock.Release();
+						}
+					//}
+					//else
+					//	MagentoLogger.Log().Trace( ex, "Retrying Magento API call due to an error for the {0} time", i );
+					//	await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
 				} );
 		}
 

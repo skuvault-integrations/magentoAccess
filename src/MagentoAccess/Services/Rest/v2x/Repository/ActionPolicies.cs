@@ -7,6 +7,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 {
 	internal static class ActionPolicies
 	{
+		//TODO GUARD-2311 Option 3: Replace all calls to RepeatOnChannelProblemAsync with calls to RepeatOnAuthProblemAsync and delete this file
 		public static ActionPolicyAsync RepeatOnChannelProblemAsync { get; } = ActionPolicyAsync.Handle< Exception >()
 			.RetryAsync( 7, async ( ex, i ) =>
 			{

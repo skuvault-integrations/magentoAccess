@@ -19,7 +19,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 {
 	public class ProductRepository : BaseRepository, IProductRepository
 	{
-		private AuthorizationToken Token { get; }
+		private AuthorizationToken Token { get; }	//TODO GUARD-2311 If need to update (Option 2), then change to { get; private set }
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
@@ -171,6 +171,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
+			//TODO GUARD-2311 REST Products Sync (FillProductDetails) calls this
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
@@ -183,15 +184,46 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 						}
 					}
 					catch( MagentoWebException exception )
-					{
+					{						
 						if( exception.IsNotFoundException() )
 						{
 							return null;
+						}
+						//TODO GUARD-2311 Option 2: Get new token if 401/Unauthorized response
+						if ( GetNewTokenIfUnauthorized( exception, this.Token ) )
+						{
+							//Question: If Unauthorized, should we return here or just let it rethrow?
 						}
 						throw;
 					}
 				} );
 			} );
+		}
+
+		/// <param name="exception">Response exception details</param>
+		/// <param name="token">If Unauthorized, will get the new token and save here</param>
+		/// <returns>True if 401/Unauthorized response, False otherwise</returns>
+		private bool GetNewTokenIfUnauthorized( MagentoWebException exception, AuthorizationToken token )
+		{
+			//TODO GUARD-2311 Might also need to check inner exception as done in
+			//MagentoAccess\Services\Rest\v2x\MagentoServiceLowLevel.csReauthorizeAsync > this.RepeatOnAuthProblemAsync = .....RetryAsync
+			if ( exception.StatusCode == System.Net.HttpStatusCode.Unauthorized )
+			{
+				//TODO GUARD-2311 Option 2
+				//	1. Get new token (see two alternatives below)
+				//		Similar to MagentoAccess.Services.Rest.v2x > MagentoServiceLowLevel > ReauthorizeAsync() but would create a new method in that would call the below method and return the new token
+				//		IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ), CancellationToken.None )
+				//	2. Then save the new token into this.Token
+				//Pros:	1. Retrying at the lowest level, in a repository
+				//		2. Would then be able to eliminate RepeatOnAuthProblemAsync, once this code is called from all places RepeatOnAuthProblemAsync is used
+				//			Therefore, wouldn't have multiple retry policies used on the same call
+				//Downside: 1. To just get the new token we would need pass in here the following - IntegrationAdminTokenRepository, ApiUser, ApiKey
+				//		Or just a delegate to IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ), CancellationToken.None )
+				//		Which seems to be a reversal of control, since normally MagentoServiceLowLevel calls the repository, not vice versa
+				//		2. There are a lot of places this logic would need to be called from, in this repository and others
+				return true;
+			}
+			return false;
 		}
 
 		public async Task< IEnumerable< RootObject > > GetProductsBySkusAsync( IEnumerable< string > skus, CancellationToken cancellationToken, Mark mark )
@@ -261,6 +293,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
+			//TODO GUARD-2311 REST Products Sync (FillProductDetails) calls this
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () => 
@@ -282,6 +315,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
+			//TODO GUARD-2311 REST Products Sync (FillProductDetails) calls this
 			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () => 

@@ -52,6 +52,7 @@ namespace MagentoAccess.Services.Rest.v2x
 			return null;
 		}
 
+		//TODO GUARD-2311 Calls in this method to this.ProductRepository.Get... are failing with 401/Unathorized after tokens expire in 4 hours
 		public async Task< IEnumerable< ProductDetails > > FillProductDetails( IEnumerable< ProductDetails > resultProducts, CancellationToken cancellationToken )
 		{
 			var productsList = resultProducts.ToList();
@@ -59,10 +60,25 @@ namespace MagentoAccess.Services.Rest.v2x
 			if( !productsList.Any() )
 				return productsList;
 
-			var items = await productsList.Select( p => p.Sku ).ProcessInBatchAsync( 10, async sku => await this.ProductRepository.GetProductAsync( sku, cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			//TODO GUARD-2311 Option 1 (Fewer side-effects): Wrap calls to this.ProductRepository....() methods in this.RepeatOnAuthProblemAsync
+			//Pros: The simplest code change and least likely to cause side-effects.
+			//Downsides: 1) Will have to wrap this around each this.ProductRepository....() method individually
+			//	2) The RepeatOnChannelProblemAsync in this.ProductRepository.GetProductAsync will first retry 7 times without updating the token :(.
+			//		Then the outer RepeatOnAuthProblemAsync will kick in and refresh the token
+			//If we keep both RepeatOnChannelProblemAsync & RepeatOnAuthProblemAsync retries,
+			//	then it seems that RepeatOnAuthProblemAsync should be the innermost retry, but refreshing the token from repositories would be cumber some (see options 2 & 3)
+			var items = await productsList.Select( p => p.Sku ).ProcessInBatchAsync( 10, async sku => 
+			{
+				return await this.RepeatOnAuthProblemAsync.Get( async () =>
+				{
+					return await this.ProductRepository.GetProductAsync( sku, cancellationToken ).ConfigureAwait( false );
+				} );
+			} ).ConfigureAwait( false );
 			if( !items.Any() )
 				return productsList;
 
+			//TODO GUARD-2311 If implement Option 1 (above) then will need to wrap these calls in this.RepeatOnAuthProblemAsync individually
+			//	To fix it more broadly, and not just the Products Pull issue in GUARD-2311, we would have to apply this change to calls in other methods here (used by other syncs) and other repositories
 			var allCategories = ( await this.ProductRepository.GetCategoriesTreeAsync( cancellationToken ).ConfigureAwait( false ) ).Flatten();
 			var allManufacturers = await this.ProductRepository.GetManufacturersAsync( cancellationToken ).ConfigureAwait( false );
 			foreach( var product in productsList )
