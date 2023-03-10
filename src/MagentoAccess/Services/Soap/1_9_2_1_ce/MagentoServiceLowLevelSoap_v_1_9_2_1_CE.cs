@@ -122,7 +122,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 			get { return null; }
 		}
 
-		public Task< bool > InitAsync( bool supressExceptions = false )
+		public Task< bool > InitAsync( bool supressExceptions = false, string relativeUrl = "" )
 		{
 			try
 			{

@@ -23,11 +23,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public ProductRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
+		public ProductRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts, string relativeUrl = "" )
 		{
 			this.Url = url;
 			this.Token = token;
 			this.OperationsTimeouts = operationsTimeouts;
+			this.RelativeUrl = relativeUrl;
 		}
 
 		public async Task< RootObject > GetProductsAsync( PagingModel page, CancellationToken cancellationToken )
@@ -98,7 +99,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
 					{
 						var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
@@ -177,7 +178,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				{
 					try
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
+						using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
 						{
 							return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 						}
@@ -239,7 +240,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				return TrackNetworkActivityTime( async () => 
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
 					{
 						var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
@@ -265,7 +266,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				return TrackNetworkActivityTime( async () => 
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< CategoryNode >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -286,7 +287,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				return TrackNetworkActivityTime( async () => 
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< ProductAttribute >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}

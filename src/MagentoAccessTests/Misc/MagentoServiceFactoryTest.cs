@@ -119,7 +119,7 @@ namespace MagentoAccessTests.Misc
 				get { return null; }
 			}
 
-			public Task< bool > InitAsync( bool supressExceptions = false )
+			public Task< bool > InitAsync( bool supressExceptions = false, string relativeUrl = "" )
 			{
 				try
 				{

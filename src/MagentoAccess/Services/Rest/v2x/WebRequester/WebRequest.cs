@@ -28,10 +28,14 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			return new WebRequestBuilder( new WebRequest() );
 		}
 
-		public Task< Stream > RunAsync( CancellationToken cancellationToken, Mark mark = null )
+		public Task< Stream > RunAsync( CancellationToken cancellationToken, Mark mark = null, string relativeUrl = "" )
 		{
 			var webRequestServices = new WebRequestServices();
-			var serviceUrl = this.Url.ToString().TrimEnd( '/' ) + MagentoRestPath + this.MagentoServicePath.ToString();
+			/// <summary>
+			/// if relativeUrl is specified then it will be used instead of the default Magento REST endpoint (see GUARD-2824)
+			/// </summary>
+			var magentoRestPath = string.IsNullOrWhiteSpace( relativeUrl ) ? MagentoRestPath : relativeUrl;
+			var serviceUrl = this.Url.ToString().TrimEnd( '/' ) + magentoRestPath + this.MagentoServicePath.ToString();
 			if ( this.Parameters != null )
 				serviceUrl = $"{serviceUrl.TrimEnd( '/', '?' )}/?{this.Parameters}";
 

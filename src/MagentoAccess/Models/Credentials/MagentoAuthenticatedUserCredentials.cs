@@ -2,7 +2,9 @@
 {
 	public class MagentoAuthenticatedUserCredentials
 	{
-		public MagentoAuthenticatedUserCredentials( string accessToken, string accessTokenSecret, string baseMagentoUrl, string consumerSckretKey, string consumerKey, string soapApiUser, string soapApiKey, int getProductsThreadsLimit, int sessionLifeTimeMs, bool logRawMessages )
+		public MagentoAuthenticatedUserCredentials( string accessToken, string accessTokenSecret, string baseMagentoUrl, 
+			string consumerSckretKey, string consumerKey, string soapApiUser, string soapApiKey, int getProductsThreadsLimit, 
+			int sessionLifeTimeMs, bool logRawMessages, string relativeUrl = "" )
 		{
 			this.AccessTokenSecret = accessTokenSecret;
 			this.AccessToken = accessToken;
@@ -14,6 +16,7 @@
 			this.GetProductsThreadsLimit = getProductsThreadsLimit;
 			this.SessionLifeTimeMs = sessionLifeTimeMs;
 			this.LogRawMessages = logRawMessages;
+			this.RelativeUrl = relativeUrl;
 		}
 
 		//public MagentoAuthenticatedUserCredentials( string accessToken, string accessTokenSecret, string baseMagentoUrl, string consumerSckretKey, string consumerKey, string soapApiUser, string soapApiKey ) : this( accessToken, accessTokenSecret, baseMagentoUrl, consumerSckretKey, consumerKey, soapApiUser, soapApiKey, 4, 3590 )
@@ -30,5 +33,6 @@
 		public int GetProductsThreadsLimit { get; private set; }
 		public int SessionLifeTimeMs { get; private set; }
 		public bool LogRawMessages { get; private set; }
+		public string RelativeUrl { get; set; }
 	}
 }

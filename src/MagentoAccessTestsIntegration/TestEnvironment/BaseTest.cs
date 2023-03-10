@@ -27,7 +27,11 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected ConcurrentDictionary< string, Dictionary< int, string > > _productsIds;
 		protected MagentoServiceLowLevelSoap_v_1_9_2_1_ce _magentoLowLevelSoapForCreatingTestEnvironment;
 
-		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, string accessTokenUrl, string magentoVersionByDefault, int getProductsMaxThreads, int sessionLifeTime, bool supressExc, bool useDefaultVersionOnly, ThrowExceptionIfFailed onUpdateInventory = ThrowExceptionIfFailed.OneItem)
+		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, 
+			string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, 
+			string accessTokenUrl, string magentoVersionByDefault, int getProductsMaxThreads, int sessionLifeTime, bool supressExc, 
+			bool useDefaultVersionOnly, ThrowExceptionIfFailed onUpdateInventory = ThrowExceptionIfFailed.OneItem,
+			string relativeUrl ="" )
 		{
 			var magentoService = new MagentoService( new MagentoAuthenticatedUserCredentials(
 				accessToken,
@@ -40,8 +44,9 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				getProductsMaxThreads,
 				sessionLifeTime,
 				true
-			), new MagentoConfig() { VersionByDefault = magentoVersionByDefault, OnUpdateInventory = onUpdateInventory, UseVersionByDefaultOnly = useDefaultVersionOnly }, new MagentoTimeouts() );
-			magentoService.InitAsync( supressExc ).Wait();
+			), new MagentoConfig() { VersionByDefault = magentoVersionByDefault, OnUpdateInventory = onUpdateInventory, 
+				UseVersionByDefaultOnly = useDefaultVersionOnly }, new MagentoTimeouts() );
+			magentoService.InitAsync( supressExc, relativeUrl ).Wait();
 			return magentoService;
 		}
 

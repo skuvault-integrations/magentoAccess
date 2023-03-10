@@ -24,6 +24,7 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string Store { get; }
 		public bool LogRawMessages { get; }
 		public string StoreVersion { get; set; }
+		public string RelativeUrl { get; set; }
 		public MagentoTimeouts OperationsTimeouts { get; set; }
 		
 		protected IProductRepository ProductRepository { get; set; }
@@ -51,14 +52,16 @@ namespace MagentoAccess.Services.Rest.v2x
 			}
 		}
 
-		public async Task< bool > InitAsync( bool supressExceptions = false )
+		public async Task< bool > InitAsync( bool supressExceptions = false, string relativeUrl = "" )
 		{
 			try
 			{
+				this.RelativeUrl = relativeUrl;
+
 				if( this.IntegrationAdminTokenRepository != null )
 					return true;
 
-				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( MagentoUrl.Create( this.Store ), this.OperationsTimeouts );
+				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( MagentoUrl.Create( this.Store ), this.OperationsTimeouts, RelativeUrl );
 				await this.ReauthorizeAsync().ConfigureAwait( false );
 				return true;
 			}
@@ -117,7 +120,7 @@ namespace MagentoAccess.Services.Rest.v2x
 				} );
 		}
 
-		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, MagentoTimeouts operationsTimeouts, bool logRawMessages ):this()
+		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, MagentoTimeouts operationsTimeouts, bool logRawMessages ) :this()
 		{
 			this.ApiUser = soapApiUser;
 			this.ApiKey = soapApiKey;
@@ -128,11 +131,12 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		protected async Task ReauthorizeAsync()
 		{
-			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
+			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), 
+				MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
 			var magentoUrl = MagentoUrl.Create( this.Store );
-			this.ProductRepository = new ProductRepository( newToken, magentoUrl, OperationsTimeouts );
-			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl, OperationsTimeouts );
-			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl, OperationsTimeouts );
+			this.ProductRepository = new ProductRepository( newToken, magentoUrl, OperationsTimeouts, RelativeUrl );
+			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl, OperationsTimeouts, RelativeUrl );
+			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl, OperationsTimeouts, RelativeUrl );
 		}
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages => false;

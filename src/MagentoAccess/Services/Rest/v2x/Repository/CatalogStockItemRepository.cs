@@ -19,11 +19,12 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public CatalogStockItemRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
+		public CatalogStockItemRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts, string relativeUrl = "" )
 		{
 			this.Url = url;
 			this.Token = token;
 			this.OperationsTimeouts = operationsTimeouts;
+			this.RelativeUrl = relativeUrl;
 		}
 
 		public async Task< bool > PutStockItemAsync( string productSku, string itemId, RootObject stockItem, CancellationToken cancellationToken, Mark mark = null )
@@ -46,7 +47,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				{
 					try
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+						using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
 						{
 							var response = new StreamReader( v, Encoding.UTF8 ).ReadToEnd();
 							return JsonConvert.DeserializeObject< int >( response ) > 0;
@@ -88,7 +89,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				{
 					try
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+						using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
 						{
 							return JsonConvert.DeserializeObject< StockItem >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 						}

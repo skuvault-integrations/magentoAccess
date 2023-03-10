@@ -23,14 +23,16 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public SalesOrderRepositoryV1( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
+		public SalesOrderRepositoryV1( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts, string relativeUrl = "" )
 		{
 			this.Url = url;
 			this.Token = token;
 			this.OperationsTimeouts = operationsTimeouts;
+			this.RelativeUrl = relativeUrl;
 		}
 
-		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, CancellationToken cancellationToken, string searchField = "increment_id" )
+		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, CancellationToken cancellationToken, 
+			string searchField = "increment_id" )
 		{
 			var idsList = ids as IList< string > ?? ids.ToList();
 			if( ids == null || !idsList.Any() )
@@ -64,7 +66,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ) )
 					{
 						return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -72,7 +74,8 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			} );
 		}
 
-		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken cancellationToken, Mark mark = null )
+		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken cancellationToken, 
+			Mark mark = null )
 		{
 			var parameters = new SearchCriteria()
 			{
@@ -109,7 +112,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -143,14 +146,17 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var pagingModel = new PagingModel( 100, 1 );
 			var itemsFirstPage = await this.GetOrdersAsync( updatedFrom, updatedTo, pagingModel, cancellationToken ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( itemsFirstPage.total_count );
-			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ), cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5,
+				async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ), 
+					cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultItems = new List< RootObject >() { itemsFirstPage };
 			resultItems.AddRange( tailItems );
 			return resultItems;
 		}
 
-		public Task< ShipmentsResponse > GetOrdersShipmentsAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken token, Mark mark = null )
+		public Task< ShipmentsResponse > GetOrdersShipmentsAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken token, 
+			Mark mark = null )
 		{
 			var parameters = new SearchCriteria()
 			{
@@ -184,7 +190,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 
 			return ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( token, mark ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( token, mark, RelativeUrl ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< ShipmentsResponse >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}

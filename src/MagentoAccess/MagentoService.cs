@@ -846,11 +846,11 @@ namespace MagentoAccess
 		}
 		#endregion
 
-		public async Task< bool > InitAsync( bool supressExc = false )
+		public async Task< bool > InitAsync( bool supressExc = false, string relativeUrl = "" )
 		{
 			try
 			{
-				var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
+				var initTask = this.MagentoServiceLowLevelSoap.InitAsync( relativeUrl: relativeUrl );
 				//Mapper.Initialize( cfg => cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >() );
 
 				Mapper.Initialize( cfg =>
