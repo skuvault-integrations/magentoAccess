@@ -9,8 +9,8 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 	public abstract class BaseRepository
 	{
 		/// <summary>
-		/// RelativeUrl is used instead of the default path to Magento REST endpoint ('/index.php/rest/V1/')
-		/// in case a main website implements a redirect (ignoring index.php for example)
+		/// RelativeUrl could be used instead of the default path to Magento REST endpoint ('/index.php/rest/V1/')
+		/// in case a masketplace website has a redirect policy (to ignoring of index.php for example)
 		/// please see details in the GUARD-2824
 		/// </summary>
 		public string RelativeUrl { get; set; }
