@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using MagentoAccess.Exceptions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x;
 using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x.WebRequester
 {
-	public class WebRequest
+	public sealed class WebRequest
 	{
-		private const string MagentoRestPath = "/index.php/rest/V1/";// TODO: remove from here, this class unresponsible for this
 		public MagentoUrl Url { get; private set; } = MagentoUrl.SandBox;
 		public MagentoWebRequestMethod MagentoWebRequestMethod { get; private set; } = MagentoWebRequestMethod.Get;
 		public MagentoServicePath MagentoServicePath { get; private set; } = MagentoServicePath.CreateProductsServicePath();
@@ -28,16 +24,14 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			return new WebRequestBuilder( new WebRequest() );
 		}
 
-		public Task< Stream > RunAsync( CancellationToken cancellationToken, Mark mark = null, string relativeUrl = "" )
+		public Task< Stream > RunAsync( CancellationToken cancellationToken, Mark mark = null )
 		{
 			var webRequestServices = new WebRequestServices();
-			/// <summary>
-			/// if relativeUrl is specified then it will be used instead of the default Magento REST endpoint (see GUARD-2824)
-			/// </summary>
-			var magentoRestPath = string.IsNullOrWhiteSpace( relativeUrl ) ? MagentoRestPath : relativeUrl;
-			var serviceUrl = this.Url.ToString().TrimEnd( '/' ) + magentoRestPath + this.MagentoServicePath.ToString();
+			var serviceUrl = this.Url.ToString().TrimEnd('/') + "/" + this.MagentoServicePath;
 			if ( this.Parameters != null )
+			{
 				serviceUrl = $"{serviceUrl.TrimEnd( '/', '?' )}/?{this.Parameters}";
+			}
 
 			var body = this.Body.ToString();
 			var method = this.MagentoWebRequestMethod.ToString();

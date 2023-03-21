@@ -25,6 +25,12 @@ namespace MagentoAccess.Services.Soap
 		string ApiUser { get; }
 		string ApiKey { get; }
 		string Store { get; }
+
+		/// <summary>
+		/// Default REST/SOAP Api Url
+		/// </summary>
+		string DefaultApiUrl { get; }
+		
 		string StoreVersion { get; set; }
 		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
 		bool GetOrderByIdForFullInformation { get; }
@@ -70,7 +76,7 @@ namespace MagentoAccess.Services.Soap
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( CancellationToken token, string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute, CancellationToken token );
 		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null );
-		Task< bool > InitAsync( bool supressExceptions = false, string relativeUrl = "" );
+		Task< bool > InitAsync( bool suppressExceptions = false );
 	}
 
 	internal interface IMagentoServiceLowLevelSoapGetProductsBySku

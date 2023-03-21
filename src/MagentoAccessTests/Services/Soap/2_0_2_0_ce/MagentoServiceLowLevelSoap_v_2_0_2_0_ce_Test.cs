@@ -18,7 +18,8 @@ namespace MagentoAccessTests.Services.Soap._2_0_2_0_ce
 		{
 			//A
 			var apiCallsCount = 0;
-			var magentoServiceLowLevelSoapV2020Ce = new MagentoServiceLowLevelSoap_v_2_0_2_0_ce( "qwe", "qwe", "https://magento.com", true, "1", new MagentoConfig() )
+			var magentoServiceLowLevelSoapV2020Ce = new MagentoServiceLowLevelSoap_v_2_0_2_0_ce( "qwe", "qwe", 
+				"https://magento.com", true, "1", new MagentoConfig() )
 			{
 				PullSessionId = async () =>
 				{

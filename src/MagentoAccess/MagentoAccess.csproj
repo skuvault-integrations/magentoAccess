@@ -301,6 +301,7 @@
     <Compile Include="Services\Soap\IMagentoServiceLowLevelSoap.cs" />
     <Compile Include="Services\Soap\IMagentoServiceLowLevelSoapFactory.cs" />
     <Compile Include="Services\Soap\CustomBehavior.cs" />
+    <Compile Include="Services\Soap\MagentoServiceLowLevelSoapBase.cs" />
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapCustomMessageEncoder.cs" />
     <Compile Include="Services\Soap\MagentoServiceLowLevelSoapParametrisedFactory.cs" />
     <Compile Include="Services\Soap\StatusChecker.cs" />

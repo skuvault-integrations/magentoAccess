@@ -16,7 +16,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 {
 	internal class MagentoServiceSoapClientFactory
 	{
-		protected const string SoapApiUrl = "soap/default?services=";
+		public const string SoapApiUrl = "soap/default?services=";
 
 		private readonly string _baseMagentoUrl;
 		private readonly bool _logRawMessages;
@@ -54,7 +54,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			this.ReCreateFactories( baseMagentoUrl, logRawMessages, sessionId, config );
 		}
 
-		private void ReCreateFactories( string baseMagentoUrl, bool logRawMessages, string sessionId, MagentoConfig config)
+		private void ReCreateFactories( string baseMagentoUrl, bool logRawMessages, string sessionId, MagentoConfig config )
 		{
 			this._adminClientFactory = new Magento2xCommonClientFactory< integrationAdminTokenServiceV1PortTypeClient, integrationAdminTokenServiceV1PortType >(
 				( binding, endpoint ) => new integrationAdminTokenServiceV1PortTypeClient( binding, endpoint ),
@@ -226,7 +226,9 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 			private readonly CustomBinding _binding;
 			private readonly EndpointAddress _endpointAddress;
 
-			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, MessageVersion messageVersion, bool logRawMessages, string sessionId, MagentoConfig config ) : base( baseMagentoUrl, logRawMessages, config )
+			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, 
+				MessageVersion messageVersion, bool logRawMessages, string sessionId, MagentoConfig config ) 
+				: base( baseMagentoUrl, "", logRawMessages, config )
 			{
 				this._sessionId = sessionId;
 				this._clientBuilder = clientBuilder;

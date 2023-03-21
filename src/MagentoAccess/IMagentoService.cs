@@ -47,9 +47,14 @@ namespace MagentoAccess
 
 		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null );
 
-		Task< bool > InitAsync( bool supressExc = false, string relativeUrl = "" );
+		Task< bool > InitAsync( bool suppressExc = false );
 
 		bool IsRestAPIUsed { get; set; }
+
+		/// <summary>
+		/// Default REST/SOAP Api Url
+		/// </summary>
+		string DefaultApiUrl { get; }
 
 		/// <summary>
 		///	This property can be used by the client to monitor the last access library's network activity time.

@@ -4,16 +4,17 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 {
 	public class MagentoUrl
 	{
-		public Url Url { get; private set; }
+		public Url Url { get; }
 
 		private MagentoUrl( string url )
 		{
 			this.Url = new Url( url );
 		}
-
-		public static MagentoUrl Create( string url )
+		
+		public static MagentoUrl Create( string shopBaseUrl, string relativeUrl )
 		{
-			return new MagentoUrl( url );
+			var url = shopBaseUrl?.TrimEnd( '/' ) + relativeUrl;
+			return new MagentoUrl( url.Trim() );
 		}
 
 		public override string ToString()
@@ -21,6 +22,6 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			return this.Url.Value;
 		}
 
-		public static MagentoUrl SandBox { get; } = new MagentoUrl( "http://127.0.0.1/" );
+		public static MagentoUrl SandBox { get; } = new MagentoUrl( "http://127.0.0.1/index.php/rest/V1/" );
 	}
 }

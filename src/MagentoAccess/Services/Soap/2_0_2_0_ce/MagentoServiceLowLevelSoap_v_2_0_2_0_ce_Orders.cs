@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using MagentoAccess.Magento2salesOrderRepositoryV1_v_2_0_2_0_CE;

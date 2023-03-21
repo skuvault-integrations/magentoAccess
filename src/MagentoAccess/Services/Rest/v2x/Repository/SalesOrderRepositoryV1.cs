@@ -23,12 +23,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public SalesOrderRepositoryV1( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts, string relativeUrl = "" )
+		public SalesOrderRepositoryV1( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
 		{
 			this.Url = url;
 			this.Token = token;
 			this.OperationsTimeouts = operationsTimeouts;
-			this.RelativeUrl = relativeUrl;
 		}
 
 		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, CancellationToken cancellationToken, 
@@ -62,11 +61,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ) )
 					{
 						return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -108,11 +107,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -188,9 +187,9 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			return ActionPolicies.GetAsync.Get( async () =>
 			{
-				using( var v = await webRequest.RunAsync( token, mark, RelativeUrl ).ConfigureAwait( false ) )
+				using( var v = await webRequest.RunAsync( token, mark ).ConfigureAwait( false ) )
 				{
 					return JsonConvert.DeserializeObject< ShipmentsResponse >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 				}

@@ -15,16 +15,15 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public IntegrationAdminTokenRepository( MagentoUrl url, MagentoTimeouts operationsTimeouts, string relativeUrl = "" )
+		public IntegrationAdminTokenRepository( MagentoUrl url, MagentoTimeouts operationsTimeouts )
 		{
 			this.Url = url;
 			this.OperationsTimeouts = operationsTimeouts;
-			this.RelativeUrl = relativeUrl;
 		}
 
 		public async Task< AuthorizationToken > GetTokenAsync( MagentoLogin token, MagentoPass password, CancellationToken cancellationToken )
 		{
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{				
 				return TrackNetworkActivityTime( async () =>
 				{
@@ -35,7 +34,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 							.Url( this.Url )
 							.Path( MagentoServicePath.CreateIntegrationServicePath() )
 							.Body( JsonConvert.SerializeObject( new CredentialsModel() { username = token.Login, password = password.Password } ) ) )
-						.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
+						.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 					{
 						return AuthorizationToken.Create( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}

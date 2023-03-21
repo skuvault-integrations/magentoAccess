@@ -82,17 +82,10 @@ namespace MagentoAccessTests.Misc
 
 		public class MagentoServiceLowLevelStub : IMagentoServiceLowLevelSoap
 		{
-			public string ApiUser
-			{
-				get { return null; }
-			}
-
-			public string ApiKey
-			{
-				get { return null; }
-			}
+			public string ApiUser => null;
+			public string ApiKey => null;
+			public string DefaultApiUrl => "";
 			public string StoreVersion { get; set; }
-
 			public string Store { get; private set; }
 
 			public MagentoServiceLowLevelStub( string store )
@@ -119,18 +112,9 @@ namespace MagentoAccessTests.Misc
 				get { return null; }
 			}
 
-			public Task< bool > InitAsync( bool supressExceptions = false, string relativeUrl = "" )
+			public Task< bool > InitAsync( bool suppressExceptions = false )
 			{
-				try
-				{
-					return Task.FromResult( true );
-				}
-				catch( Exception )
-				{
-					if( supressExceptions )
-						return Task.FromResult( false );
-					throw;
-				}
+				return Task.FromResult( true );
 			}
 
 			public Task< GetOrdersResponse > GetOrdersAsync( DateTime modifiedFrom, DateTime modifiedTo, CancellationToken cancellationToken, Mark mark = null )

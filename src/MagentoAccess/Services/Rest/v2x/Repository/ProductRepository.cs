@@ -23,12 +23,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }
 
-		public ProductRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts, string relativeUrl = "" )
+		public ProductRepository( AuthorizationToken token, MagentoUrl url, MagentoTimeouts operationsTimeouts )
 		{
 			this.Url = url;
 			this.Token = token;
 			this.OperationsTimeouts = operationsTimeouts;
-			this.RelativeUrl = relativeUrl;
 		}
 
 		public async Task< RootObject > GetProductsAsync( PagingModel page, CancellationToken cancellationToken )
@@ -95,11 +94,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
 						var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
@@ -172,13 +171,13 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
 					try
 					{
-						using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
+						using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 						{
 							return JsonConvert.DeserializeObject< Item >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 						}
@@ -236,11 +235,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () => 
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, mark, RelativeUrl ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, mark ).ConfigureAwait( false ) )
 					{
 						var response = JsonConvert.DeserializeObject< RootObject >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					
@@ -262,11 +261,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () => 
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< CategoryNode >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}
@@ -283,11 +282,11 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () => 
 				{
-					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew(), RelativeUrl ).ConfigureAwait( false ) )
+					using( var v = await webRequest.RunAsync( cancellationToken, Mark.CreateNew() ).ConfigureAwait( false ) )
 					{
 						return JsonConvert.DeserializeObject< ProductAttribute >( new StreamReader( v, Encoding.UTF8 ).ReadToEnd() );
 					}

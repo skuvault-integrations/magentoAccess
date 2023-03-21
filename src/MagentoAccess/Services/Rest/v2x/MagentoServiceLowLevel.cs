@@ -24,18 +24,22 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string Store { get; }
 		public bool LogRawMessages { get; }
 		public string StoreVersion { get; set; }
-		public string RelativeUrl { get; set; }
-		public MagentoTimeouts OperationsTimeouts { get; set; }
-		
-		protected IProductRepository ProductRepository { get; set; }
-		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
-		protected ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
-		protected ISalesOrderRepositoryV1 SalesOrderRepository { get; set; }
-		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
+		public string DefaultApiUrl => "/index.php/rest/V1/";
 
-		protected SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
-
-		protected int reauthorizationsCount = 0;
+		/// <summary>
+		/// RelativeUrl could be used instead of the DefaultRestApiUrl
+		/// in case a marketplace website has a redirect policy (to ignoring of index.php for example)
+		/// please see details in the GUARD-2824
+		/// </summary>
+		public string RelativeUrl { get; private set; }
+		private MagentoTimeouts OperationsTimeouts { get; }
+		private IProductRepository ProductRepository { get; set; }
+		private IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
+		private ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
+		private ISalesOrderRepositoryV1 SalesOrderRepository { get; set; }
+		private ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
+		private SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
+		private int reauthorizationsCount = 0;
 
 		public string GetServiceVersion(){
 			return MagentoVersions.MR_2_0_0_0;
@@ -52,28 +56,29 @@ namespace MagentoAccess.Services.Rest.v2x
 			}
 		}
 
-		public async Task< bool > InitAsync( bool supressExceptions = false, string relativeUrl = "" )
+		public async Task< bool > InitAsync( bool suppressExceptions = false )
 		{
 			try
 			{
-				this.RelativeUrl = relativeUrl;
+				var relativeUrl = string.IsNullOrWhiteSpace( this.RelativeUrl ) ? this.DefaultApiUrl : this.RelativeUrl;
+				var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
 
 				if( this.IntegrationAdminTokenRepository != null )
 					return true;
 
-				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( MagentoUrl.Create( this.Store ), this.OperationsTimeouts, RelativeUrl );
+				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( magentoUrl, this.OperationsTimeouts );
 				await this.ReauthorizeAsync().ConfigureAwait( false );
 				return true;
 			}
 			catch( Exception )
 			{
-				if( supressExceptions )
+				if( suppressExceptions )
 					return false;
 				throw;
 			}
 		}
 
-		public MagentoServiceLowLevel()
+		private MagentoServiceLowLevel()
 		{
 			this.RepeatOnAuthProblemAsync = ActionPolicyAsync.From( ( exception =>
 			{
@@ -120,23 +125,26 @@ namespace MagentoAccess.Services.Rest.v2x
 				} );
 		}
 
-		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, MagentoTimeouts operationsTimeouts, bool logRawMessages ) :this()
+		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, string relativeUrl, 
+			MagentoTimeouts operationsTimeouts, bool logRawMessages ) : this()
 		{
 			this.ApiUser = soapApiUser;
 			this.ApiKey = soapApiKey;
 			this.Store = baseMagentoUrl;
+			this.RelativeUrl = relativeUrl;
 			this.OperationsTimeouts = operationsTimeouts;
 			this.LogRawMessages = logRawMessages;
 		}
 
-		protected async Task ReauthorizeAsync()
+		private async Task ReauthorizeAsync()
 		{
 			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), 
 				MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
-			var magentoUrl = MagentoUrl.Create( this.Store );
-			this.ProductRepository = new ProductRepository( newToken, magentoUrl, OperationsTimeouts, RelativeUrl );
-			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl, OperationsTimeouts, RelativeUrl );
-			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl, OperationsTimeouts, RelativeUrl );
+			var relativeUrl = string.IsNullOrWhiteSpace( this.RelativeUrl ) ? this.DefaultApiUrl : this.RelativeUrl;
+			var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
+			this.ProductRepository = new ProductRepository( newToken, magentoUrl, OperationsTimeouts );
+			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl, OperationsTimeouts );
+			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl, OperationsTimeouts );
 		}
 
 		public bool GetStockItemsWithoutSkuImplementedWithPages => false;
