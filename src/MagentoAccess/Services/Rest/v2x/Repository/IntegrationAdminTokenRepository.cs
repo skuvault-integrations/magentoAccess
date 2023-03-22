@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class IntegrationAdminTokenRepository : BaseRepository, IIntegrationAdminTokenRepository
+	public sealed class IntegrationAdminTokenRepository : BaseRepository, IIntegrationAdminTokenRepository
 	{
 		private MagentoUrl Url { get; }
 		private MagentoTimeouts OperationsTimeouts { get; }

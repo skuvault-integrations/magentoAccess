@@ -15,17 +15,16 @@ namespace MagentoAccess.Services.Soap
 		protected abstract T CreateClient();
 
 		protected readonly string _baseMagentoUrl;
-		protected readonly string _relativeUrl;
-
+		protected readonly bool _useRedirect;
 		protected readonly bool _logRawMessages;
 		protected readonly MagentoConfig _config;
 
-		internal BaseMagentoServiceSoapClientFactory( string baseMagentoUrl, string relativeUrl, bool logRawMessages, MagentoConfig config )
+		internal BaseMagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config )
 		{
 			this._baseMagentoUrl = baseMagentoUrl;
-			this._relativeUrl = relativeUrl;
 			this._logRawMessages = logRawMessages;
 			this._config = config;
+			this._useRedirect = config.UseRedirect;
 		}
 
 		public T GetClient()

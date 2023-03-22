@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.Exceptions;
 using MagentoAccess.Misc;
 using Netco.Logging;
 using Newtonsoft.Json;
@@ -119,7 +118,9 @@ namespace MagentoAccess.Services
 			catch( Exception ex )
 			{
 				if ( ( int )responseMessage.StatusCode == 308 )
+				{ 
 					throw new PermanentRedirectException();
+				}
 				
 				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex, responseMessage.StatusCode );
 			}

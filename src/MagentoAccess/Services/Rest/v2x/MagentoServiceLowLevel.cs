@@ -24,14 +24,8 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string Store { get; }
 		public bool LogRawMessages { get; }
 		public string StoreVersion { get; set; }
-		public string DefaultApiUrl => "/index.php/rest/V1/";
-
-		/// <summary>
-		/// RelativeUrl could be used instead of the DefaultRestApiUrl
-		/// in case a marketplace website has a redirect policy (to ignoring of index.php for example)
-		/// please see details in the GUARD-2824
-		/// </summary>
-		public string RelativeUrl { get; private set; }
+		private bool _useRedirect { get; set; }
+		public string DefaultRestApiUrl => "/index.php/rest/V1/";
 		private MagentoTimeouts OperationsTimeouts { get; }
 		private IProductRepository ProductRepository { get; set; }
 		private IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
@@ -55,27 +49,36 @@ namespace MagentoAccess.Services.Rest.v2x
 								SalesOrderRepository?.LastNetworkActivityTime }.Max() ?? DateTime.UtcNow; 
 			}
 		}
-
+		
 		public async Task< bool > InitAsync( bool suppressExceptions = false )
 		{
 			try
 			{
-				var relativeUrl = string.IsNullOrWhiteSpace( this.RelativeUrl ) ? this.DefaultApiUrl : this.RelativeUrl;
-				var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
-
 				if( this.IntegrationAdminTokenRepository != null )
+				{
 					return true;
-
+				}
+				
+				var relativeUrl = this.GetRelativeUrl();
+				var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
 				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( magentoUrl, this.OperationsTimeouts );
 				await this.ReauthorizeAsync().ConfigureAwait( false );
 				return true;
 			}
-			catch( Exception )
+			catch
 			{
-				if( suppressExceptions )
-					return false;
-				throw;
+				if ( !suppressExceptions )
+				{
+					throw;
+				}
+
+				return false;
 			}
+		}
+		
+		private string GetRelativeUrl() 
+		{
+			return !this._useRedirect ? this.DefaultRestApiUrl : this.DefaultRestApiUrl.Replace( "index.php/", "" );
 		}
 
 		private MagentoServiceLowLevel()
@@ -125,22 +128,22 @@ namespace MagentoAccess.Services.Rest.v2x
 				} );
 		}
 
-		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, string relativeUrl, 
-			MagentoTimeouts operationsTimeouts, bool logRawMessages ) : this()
+		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, 
+			MagentoTimeouts operationsTimeouts, bool logRawMessages, bool useRedirect ) : this()
 		{
 			this.ApiUser = soapApiUser;
 			this.ApiKey = soapApiKey;
 			this.Store = baseMagentoUrl;
-			this.RelativeUrl = relativeUrl;
 			this.OperationsTimeouts = operationsTimeouts;
 			this.LogRawMessages = logRawMessages;
+			this._useRedirect = useRedirect;
 		}
 
 		private async Task ReauthorizeAsync()
 		{
+			var relativeUrl = GetRelativeUrl(  );
 			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), 
 				MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
-			var relativeUrl = string.IsNullOrWhiteSpace( this.RelativeUrl ) ? this.DefaultApiUrl : this.RelativeUrl;
 			var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
 			this.ProductRepository = new ProductRepository( newToken, magentoUrl, OperationsTimeouts );
 			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl, OperationsTimeouts );

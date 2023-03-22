@@ -25,12 +25,6 @@ namespace MagentoAccess.Services.Soap
 		string ApiUser { get; }
 		string ApiKey { get; }
 		string Store { get; }
-
-		/// <summary>
-		/// Default REST/SOAP Api Url
-		/// </summary>
-		string DefaultApiUrl { get; }
-		
 		string StoreVersion { get; set; }
 		bool GetStockItemsWithoutSkuImplementedWithPages { get; }
 		bool GetOrderByIdForFullInformation { get; }

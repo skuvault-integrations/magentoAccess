@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class CatalogStockItemRepository : BaseRepository, ICatalogStockItemRepository
+	public sealed class CatalogStockItemRepository : BaseRepository, ICatalogStockItemRepository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }

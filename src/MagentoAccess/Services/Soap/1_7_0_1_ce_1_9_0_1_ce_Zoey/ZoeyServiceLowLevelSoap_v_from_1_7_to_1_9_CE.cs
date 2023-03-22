@@ -37,29 +37,24 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 			get { return null; }
 		}
 		
-		public ZoeyServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl, string relativeUrl, 
+		public ZoeyServiceLowLevelSoap_v_from_1_7_to_1_9_CE( string apiUser, string apiKey, string baseMagentoUrl,
 			string store, int getProductsMaxThreads, bool logRawMessages, int sessionIdLifeTime, MagentoConfig config )
-			: base( apiUser, apiKey, baseMagentoUrl, relativeUrl, store, getProductsMaxThreads, logRawMessages, sessionIdLifeTime ) 
+			: base( apiUser, apiKey, baseMagentoUrl, store, getProductsMaxThreads, logRawMessages, sessionIdLifeTime ) 
 		{
-			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, relativeUrl, logRawMessages, config );
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, config );
 			this._magentoSoapService = this._clientFactory.GetClient();
-			this.Magento1xxxHelper = new Magento1xxxHelper(this);
-			this.PullSessionId = async () =>
+			Magento1xxxHelper = new Magento1xxxHelper( this );
+			PullSessionId = async () =>
 			{
 				var privateClient = this._clientFactory.GetClient();
-				var loginResponse = await privateClient.loginAsync(this.ApiUser, this.ApiKey).ConfigureAwait(false);
-				return Tuple.Create(loginResponse.result, DateTime.UtcNow);
+				var loginResponse = await privateClient.loginAsync( this.ApiUser, this.ApiKey ).ConfigureAwait( false );
+				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
 		}
-
+		
 		private void LogTraceGetResponseException( Exception exception )
 		{
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
-		}
-
-		public Task< bool > InitAsync( bool suppressExceptions = false )
-		{
-			return Task.FromResult( true );
 		}
 
 		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken cancellationToken, bool throwException = true )
@@ -78,15 +73,20 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 				return new GetSessionIdResponse( this._sessionId, false );
 				;
 			}
-			catch( Exception exc )
+			catch( Exception exception )
 			{
-				if( throwException )
-					throw new MagentoSoapException( string.Format( "An error occured during GetSessionId()" ), exc );
-				else
-				{
-					this.LogTraceGetResponseException( exc );
-					return null;
+				if ( exception.IsHttp308PermanentRedirectException() )
+				{ 
+					throw new PermanentRedirectException();
 				}
+
+				if( throwException )
+				{
+					throw new MagentoSoapException( "An error occured during GetSessionId()", exception );
+				}
+
+				this.LogTraceGetResponseException( exception );
+				return null;
 			}
 			finally
 			{
@@ -97,14 +97,14 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 		#region SoapClientsFactories
 		private sealed class MagentoServiceSoapClientFactory : BaseMagentoServiceSoapClientFactory< Mage_Api_Model_Server_Wsi_HandlerPortTypeClient, Mage_Api_Model_Server_Wsi_HandlerPortType >
 		{
-			public MagentoServiceSoapClientFactory( string baseMagentoUrl, string relativeUrl, bool logRawMessages, MagentoConfig config ) 
-				: base( baseMagentoUrl, relativeUrl, logRawMessages, config )
+			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config ) 
+				: base( baseMagentoUrl, logRawMessages, config )
 			{
 			}
 
 			protected override Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateClient()
 			{
-				var soapApiUrl = string.IsNullOrWhiteSpace( this._relativeUrl ) ? DefaultSoapApiUrl : this._relativeUrl;
+				var soapApiUrl = GetRelativeUrl( this._useRedirect );
 				var endPoint = new List< string > { this._baseMagentoUrl, soapApiUrl }.BuildUrl();
 				var customBinding = CustomBinding( this._baseMagentoUrl, MessageVersion.Soap11, this._config.BindingDecompressionEnabled );
 				var magentoSoapService = new Mage_Api_Model_Server_Wsi_HandlerPortTypeClient( customBinding, new EndpointAddress( endPoint ) );
@@ -422,11 +422,17 @@ namespace MagentoAccess.Services.Soap._1_7_0_1_ce_1_9_0_1_ce_Zoey
 
 				return new GetMagentoInfoResponse( res, this.GetServiceVersion() );
 			}
-			catch( Exception exc )
+			catch( Exception exception )
 			{
-				if( suppressException )
-					return null;
-				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+				if ( !suppressException )
+				{
+					if ( exception.IsMagentoPermanentRedirectException() )
+						throw;
+
+					throw new MagentoSoapException( "An error occured during GetMagentoInfoAsync()", exception );
+				}
+
+				return null;
 			}
 		}
 

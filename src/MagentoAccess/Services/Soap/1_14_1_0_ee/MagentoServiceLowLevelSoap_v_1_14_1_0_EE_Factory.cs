@@ -12,7 +12,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				credentials.SoapApiUser,
 				credentials.SoapApiKey,
 				credentials.BaseMagentoUrl,
-				credentials.RelativeUrl,
 				null,
 				credentials.GetProductsThreadsLimit,
 				credentials.LogRawMessages,

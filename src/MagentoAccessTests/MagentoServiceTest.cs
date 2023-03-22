@@ -32,7 +32,6 @@ namespace MagentoAccessTests
 		private const string AccessToken = "accessToken";
 		private const string AccessTokenSecret = "accessTokenSecret";
 		private const string BaseMagentoUrl = "http://baseMagentoUrl.com";
-		private const string RelativeUrl = "";
 		private const string ConsumerSckretKey = "consumerSckretKey";
 		private const string ConsumerKey = "consumerKey";
 		private const string SoapApiUser = "soapApiUser";
@@ -45,7 +44,7 @@ namespace MagentoAccessTests
 		[ TestFixtureSetUp ]
 		public void Setup()
 		{
-			this._magentoServiceLowLevelSoapThrowExceptionsStub = new MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub( SoapApiUser, SoapApiKey, BaseMagentoUrl, RelativeUrl, "0" );
+			this._magentoServiceLowLevelSoapThrowExceptionsStub = new MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub( SoapApiUser, SoapApiKey, BaseMagentoUrl, "0" );
 		}
 
 		[ Test ]

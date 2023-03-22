@@ -12,15 +12,8 @@ namespace MagentoAccess.Services.Soap
 		public string ApiKey { get; }
 		public string Store { get; }
 		protected string BaseMagentoUrl { get; }
-		protected const string DefaultSoapApiUrl = "index.php/api/v2_soap/index/"; 
-		public string DefaultApiUrl => DefaultSoapApiUrl;
-
-		/// <summary>
-		/// RelativeUrl could be used instead of the DefaultApiUrl 
-		/// in case a marketplace website has a redirect policy (to ignoring of index.php for example)
-		/// please see details in the GUARD-2824
-		/// </summary>
-		public string RelativeUrl { get; }
+		
+		public static readonly string DefaultSoapApiUrl = "index.php/api/v2_soap/index/";
 		public string StoreVersion { get; set; }
 		public bool LogRawMessages { get; }
 		[JsonIgnore]
@@ -36,18 +29,27 @@ namespace MagentoAccess.Services.Soap
 		public bool GetOrderByIdForFullInformation => true;
 		public bool GetOrdersUsesEntityInsteadOfIncrementId => false;
 
-		protected MagentoServiceLowLevelSoapBase( string apiUser, string apiKey, string baseMagentoUrl, string relativeUrl, 
+		protected MagentoServiceLowLevelSoapBase( string apiUser, string apiKey, string baseMagentoUrl, 
 			string store, int getProductsMaxThreads, bool logRawMessages, int sessionIdLifeTime )
 		{
 			this.ApiUser = apiUser;
 			this.ApiKey = apiKey;
 			this.Store = store;
 			this.BaseMagentoUrl = baseMagentoUrl;
-			this.RelativeUrl = relativeUrl;
 			this.LogRawMessages = logRawMessages;
 			this._getProductsMaxThreads = getProductsMaxThreads;
 			this._sessionIdLifeTime = sessionIdLifeTime;
 			this._getSessionIdSemaphore = new SemaphoreSlim(1, 1);
+		}
+
+		protected static string GetRelativeUrl( bool useRedirect ) 
+		{
+			return !useRedirect ? DefaultSoapApiUrl : DefaultSoapApiUrl.Replace( "index.php/", "" );
+		}
+
+		public Task< bool > InitAsync( bool suppressExceptions = false )
+		{
+			return Task.FromResult( true );
 		}
 	}
 }

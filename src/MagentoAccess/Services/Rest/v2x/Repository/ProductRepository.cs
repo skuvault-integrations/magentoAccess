@@ -17,7 +17,7 @@ using WebRequest = MagentoAccess.Services.Rest.v2x.WebRequester.WebRequest;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class ProductRepository : BaseRepository, IProductRepository
+	public sealed class ProductRepository : BaseRepository, IProductRepository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }

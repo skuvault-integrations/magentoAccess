@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.Exceptions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Services.Rest.v2x;
 using Netco.Logging;

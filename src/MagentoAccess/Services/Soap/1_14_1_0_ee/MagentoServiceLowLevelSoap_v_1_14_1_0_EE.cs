@@ -42,11 +42,6 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		public Task< bool > InitAsync( bool suppressExceptions = false )
-		{
-			return Task.FromResult( true );
-		}
-
 		public async Task< GetSessionIdResponse > GetSessionId( CancellationToken token, bool throwException = true )
 		{
 			try
@@ -63,15 +58,20 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 				return new GetSessionIdResponse( this._sessionId, false );
 			}
-			catch( Exception exc )
+			catch( Exception exception )
 			{
-				if( throwException )
-					throw new MagentoSoapException( string.Format( "An error occured during GetSessionId()" ), exc );
-				else
-				{
-					this.LogTraceGetResponseException( exc );
-					return null;
+				if ( exception.IsHttp308PermanentRedirectException() )
+				{ 
+					throw new PermanentRedirectException();
 				}
+
+				if( throwException )
+				{
+					throw new MagentoSoapException( "An error occured during GetSessionId()", exception );
+				}
+
+				this.LogTraceGetResponseException( exception );
+				return null;
 			}
 			finally
 			{
@@ -79,12 +79,12 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			}
 		}
 
-		public MagentoServiceLowLevelSoap_v_1_14_1_0_EE( string apiUser, string apiKey, string baseMagentoUrl, string relativeUrl, 
+		public MagentoServiceLowLevelSoap_v_1_14_1_0_EE( string apiUser, string apiKey, string baseMagentoUrl,
 			string store, int getProductsMaxThreads, bool logRawMessages, int sessionIdLifeTime, MagentoConfig config )
-			: base( apiUser, apiKey, baseMagentoUrl, relativeUrl, store, getProductsMaxThreads, logRawMessages, sessionIdLifeTime ) 
+			: base( apiUser, apiKey, baseMagentoUrl, store, getProductsMaxThreads, logRawMessages, sessionIdLifeTime ) 
 		{
-			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, config, relativeUrl );
-			_magentoSoapService = this._clientFactory.GetClient();
+			this._clientFactory = new MagentoServiceSoapClientFactory( baseMagentoUrl, logRawMessages, config );
+			this._magentoSoapService = this._clientFactory.GetClient();
 			Magento1xxxHelper = new Magento1xxxHelper( this );
 			PullSessionId = async () =>
 			{
@@ -93,15 +93,15 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 				return Tuple.Create( loginResponse.result, DateTime.UtcNow );
 			};
 		}
-
+		
 		private sealed class MagentoServiceSoapClientFactory
 		{
 			private readonly MagentoServiceSoapClientFactoryWithKeepAlive _clientFactoryDefault, _clientFactoryWithoutKeepAlive;
 
-			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config, string relativeUrl )
+			public MagentoServiceSoapClientFactory( string baseMagentoUrl, bool logRawMessages, MagentoConfig config )
 			{
-				this._clientFactoryDefault = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, relativeUrl, logRawMessages, config );
-				this._clientFactoryWithoutKeepAlive = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, relativeUrl, logRawMessages, config, false );
+				this._clientFactoryDefault = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages, config );
+				this._clientFactoryWithoutKeepAlive = new MagentoServiceSoapClientFactoryWithKeepAlive( baseMagentoUrl, logRawMessages, config, false );
 			}
 
 			public Mage_Api_Model_Server_Wsi_HandlerPortTypeClient GetClient( bool keepAlive = true )
@@ -118,15 +118,15 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 			{
 				private readonly bool _keepAlive;
 
-				public MagentoServiceSoapClientFactoryWithKeepAlive( string baseMagentoUrl, string relativeUrl, bool logRawMessages, MagentoConfig config, bool keepAlive = true ) 
-					: base( baseMagentoUrl, relativeUrl, logRawMessages, config )
+				public MagentoServiceSoapClientFactoryWithKeepAlive( string baseMagentoUrl, bool logRawMessages, MagentoConfig config, bool keepAlive = true, bool useRedirect = false ) 
+					: base( baseMagentoUrl, logRawMessages, config )
 				{
 					this._keepAlive = keepAlive;
 				}
 
 				protected override Mage_Api_Model_Server_Wsi_HandlerPortTypeClient CreateClient()
 				{
-					var soapApiUrl = string.IsNullOrWhiteSpace( this._relativeUrl ) ? DefaultSoapApiUrl : this._relativeUrl;
+					var soapApiUrl = GetRelativeUrl( this._useRedirect );
 					var endPoint = new List< string > { this._baseMagentoUrl, soapApiUrl }.BuildUrl();
 
 					// for specific clients, where servers can close connection
@@ -461,11 +461,14 @@ namespace MagentoAccess.Services.Soap._1_14_1_0_ee
 
 				return new GetMagentoInfoResponse( res, this.GetServiceVersion() );
 			}
-			catch( Exception exc )
+			catch( Exception exception )
 			{
-				if( suppressException )
-					return null;
-				throw new MagentoSoapException( string.Format( "An error occured during GetMagentoInfoAsync()" ), exc );
+				if ( !suppressException )
+				{
+					throw new MagentoSoapException( "An error occured during GetMagentoInfoAsync()", exception );
+				}
+
+				return null;
 			}
 		}
 

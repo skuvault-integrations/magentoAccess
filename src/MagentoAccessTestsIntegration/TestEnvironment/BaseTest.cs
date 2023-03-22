@@ -28,7 +28,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, 
 			string consumerKey, string consumerSecret, string magentoBaseUrl, string requestTokenUrl, string authorizeUrl, 
 			string accessTokenUrl, string magentoVersionByDefault, int getProductsMaxThreads, int sessionLifeTime, bool suppressException, 
-			bool useDefaultVersionOnly, ThrowExceptionIfFailed onUpdateInventory = ThrowExceptionIfFailed.OneItem, string relativeUrl = "" )
+			bool useDefaultVersionOnly, ThrowExceptionIfFailed onUpdateInventory = ThrowExceptionIfFailed.OneItem )
 		{
 			var magentoService = new MagentoService( new MagentoAuthenticatedUserCredentials(
 				accessToken,
@@ -40,8 +40,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 				apiKey,
 				getProductsMaxThreads,
 				sessionLifeTime,
-				true,
-				relativeUrl
+				true
 			), new MagentoConfig() { VersionByDefault = magentoVersionByDefault, OnUpdateInventory = onUpdateInventory, 
 				UseVersionByDefaultOnly = useDefaultVersionOnly }, new MagentoTimeouts() );
 			magentoService.InitAsync( suppressException ).Wait();

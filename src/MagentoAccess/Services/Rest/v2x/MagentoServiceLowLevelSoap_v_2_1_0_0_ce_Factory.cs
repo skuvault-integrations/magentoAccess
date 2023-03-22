@@ -12,9 +12,9 @@ namespace MagentoAccess.Services.Rest.v2x
 				credentials.SoapApiUser,
 				credentials.SoapApiKey,
 				credentials.BaseMagentoUrl,
-				credentials.RelativeUrl,
 				operationsTimeouts,
-				credentials.LogRawMessages );
+				credentials.LogRawMessages,
+				config.UseRedirect );
 		}
 	}
 }

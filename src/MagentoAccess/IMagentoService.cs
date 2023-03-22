@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
 using MagentoAccess.Models.DeleteProducts;
@@ -39,22 +38,16 @@ namespace MagentoAccess
 
 		Task< IEnumerable< Product > > FillProductsDetailsAsync( IEnumerable< Product > products, CancellationToken token, Mark mark = null );
 
-		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( CancellationToken token, Mark mark = null );
-
 		MagentoService.SaveAccessToken AfterGettingToken { get; set; }
 
 		Func< string > AdditionalLogInfo { get; set; }
 
-		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null );
+		Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark, CancellationToken token );
+		Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark, CancellationToken token );
 
-		Task< bool > InitAsync( bool suppressExc = false );
+		Task InitAsync( bool suppressException = false );
 
 		bool IsRestAPIUsed { get; set; }
-
-		/// <summary>
-		/// Default REST/SOAP Api Url
-		/// </summary>
-		string DefaultApiUrl { get; }
 
 		/// <summary>
 		///	This property can be used by the client to monitor the last access library's network activity time.

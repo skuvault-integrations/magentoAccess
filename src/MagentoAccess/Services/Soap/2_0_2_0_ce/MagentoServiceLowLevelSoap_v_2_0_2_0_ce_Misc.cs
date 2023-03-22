@@ -64,7 +64,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			MagentoLogger.Log().Trace( exception, "[magento] SOAP throw an exception." );
 		}
 
-		public Task< bool > InitAsync( bool suppressExceptions = false)
+		public Task< bool > InitAsync( bool suppressExceptions = false )
 		{
 			return Task.FromResult( true );
 		}

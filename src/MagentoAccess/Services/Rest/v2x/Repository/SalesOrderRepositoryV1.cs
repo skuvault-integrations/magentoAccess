@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class SalesOrderRepositoryV1 : BaseRepository, ISalesOrderRepositoryV1
+	public sealed class SalesOrderRepositoryV1 : BaseRepository, ISalesOrderRepositoryV1
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }

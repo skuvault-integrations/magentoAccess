@@ -228,7 +228,7 @@ namespace MagentoAccess.Services.Soap._2_1_0_0_ce
 
 			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, 
 				MessageVersion messageVersion, bool logRawMessages, string sessionId, MagentoConfig config ) 
-				: base( baseMagentoUrl, "", logRawMessages, config )
+				: base( baseMagentoUrl, logRawMessages, config )
 			{
 				this._sessionId = sessionId;
 				this._clientBuilder = clientBuilder;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MagentoAccess.Exceptions;
 using Netco.ActionPolicyServices;
 using Netco.Logging;
 
@@ -13,7 +12,7 @@ namespace MagentoAccess.Misc
 		/// </summary>
 		private static readonly ExceptionHandler _transientExceptionHandler = delegate ( Exception exception )
 		{
-			return !( exception is PermanentRedirectException );
+			return !exception.IsMagentoPermanentRedirectException();
 		};
 
 		private static readonly Func< Mark, ActionPolicyAsync > _magentoGetPolicyWithMarkAsync = mark => ActionPolicyAsync

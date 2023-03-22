@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration.Conventions;
-using MagentoAccess.Exceptions;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.CreateOrders;
 using MagentoAccess.Models.CreateProducts;
@@ -23,7 +22,6 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Models.GetShipments;
-using MagentoAccess.Services;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
@@ -47,7 +45,6 @@ namespace MagentoAccess
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap{ get; set; }
 		private MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory { get; set; }
-		public string DefaultApiUrl => this.MagentoServiceLowLevelSoap?.DefaultApiUrl;
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken{ get; set; }
@@ -240,15 +237,129 @@ namespace MagentoAccess
 		#endregion
 
 		#region ping
-		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null )
+		// public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark, CancellationToken token, bool useRedirect = false )
+		// {
+		// 	try
+		// 	{
+		// 		MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+		//
+		// 		//var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false, String.Empty );
+		// 		PingSoapInfo soapInfo = await this.DetermineLatestMagentoVersionAsync( token, mark, useRedirect ).ConfigureAwait( false );
+		// 		//var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
+		// 		//if( pingSoapInfos.Any() )
+		// 		//{
+		// 		//	var temp = pingSoapInfos.First();
+		// 		//	if( temp != null )
+		// 		//	{
+		// 		//		soapInfo = temp;
+		// 		if( !string.IsNullOrWhiteSpace( soapInfo.StoreVersion ) )
+		// 		{
+		// 			this.MagentoServiceLowLevelSoap = this.MagentoServiceLowLevelSoapFactory.GetMagentoServiceLowLevelSoap( soapInfo.StoreVersion, true, false );
+		// 		}
+		// 		//	}
+		// 		//}
+		//
+		// 		MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : soapInfo.ToJson() ) );
+		//
+		// 		return soapInfo;
+		// 	}
+		// 	catch( Exception exception )
+		// 	{
+		// 		if ( exception is PermanentRedirectException || exception?.InnerException is PermanentRedirectException )
+		// 		{
+		// 			throw;
+		// 		}
+		//
+		// 		var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+		// 		MagentoLogger.LogTraceException( mexc );
+		// 		throw mexc;
+		// 	}
+		// }
+		//
+		// private async Task< PingSoapInfo > DetermineLatestMagentoVersionAsync( CancellationToken token, Mark mark = null, bool useRedirect = false )
+		// {
+		// 	mark = mark ?? Mark.CreateNew();
+		// 	try
+		// 	{
+		// 		MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
+		//
+		// 		var magentoLowLevelServices = this.MagentoServiceLowLevelSoapFactory.GetAll();
+		// 		var storeVersionFromApi = await this.GetMagentoStoreVersionAsync( mark ).ConfigureAwait( false );
+		//
+		// 		// use Magento Rest API for version higher than 2.1+ or when version is not set (prerelease)
+		// 		if ( storeVersionFromApi != null 
+		// 			&& ( storeVersionFromApi.Version.Major == 2 && storeVersionFromApi.Version.Minor > 1
+		// 				|| storeVersionFromApi.Version == new Version( 1, 0 ) ) )
+		// 		{
+		// 			var restService = magentoLowLevelServices.FirstOrDefault( s => s.Key.Equals( MagentoVersions.MR_2_0_0_0 ) );
+		//
+		// 			if ( restService.Value != null )
+		// 			{
+		// 				if ( await restService.Value.InitAsync( true, useRedirect ).ConfigureAwait( false ) )
+		// 				{
+		// 					return new PingSoapInfo( storeVersionFromApi.Version.ToString(), storeVersionFromApi.MagentoEdition, true, MagentoVersions.MR_2_0_0_0 );
+		// 				}
+		// 			}
+		// 		}
+		//
+		// 		//var legacyStoreVersions = await magentoLowLevelServices.ProcessInBatchAsync( 14, async kvp =>
+		// 		//{
+		// 			//if( !await kvp.Value.InitAsync( true, useRedirect ).ConfigureAwait( false ) )
+		// 			//	return null;
+		// 			//var getMagentoInfoResponse = await kvp.Value.GetMagentoInfoAsync( true, token ).ConfigureAwait( false );
+		// 			//if( getMagentoInfoResponse != null )
+		// 			//	getMagentoInfoResponse.ServiceVersion = kvp.Key;
+		// 			//return getMagentoInfoResponse;
+		// 		//} ).ConfigureAwait( false );
+		//
+		// 		GetMagentoInfoResponse magentoInfoResponse = null;
+		// 		foreach ( var legacyStoreVersion in magentoLowLevelServices )
+		// 		{ 
+		// 			if( !await legacyStoreVersion.Value.InitAsync( true, useRedirect ).ConfigureAwait( false ) )
+		// 				continue;
+		//
+		// 			magentoInfoResponse = await legacyStoreVersion.Value.GetMagentoInfoAsync( true, token ).ConfigureAwait( false );
+		// 			if( magentoInfoResponse != null )
+		// 			{ 
+		// 				magentoInfoResponse.ServiceVersion = legacyStoreVersion.Key;
+		// 				break;
+		// 			}
+		// 		}
+		//
+		// 		if( magentoInfoResponse == null )
+		// 		{
+		// 			throw new PermanentRedirectException();
+		// 		}
+		//
+		// 		var pingSoapInfo = new PingSoapInfo( magentoInfoResponse.MagentoVersion, magentoInfoResponse.MagentoEdition, true, magentoInfoResponse.ServiceVersion );
+		//
+		// 		////var workingStores = legacyStoreVersions.Where( x => !string.IsNullOrWhiteSpace( x?.MagentoEdition ) && !string.IsNullOrWhiteSpace( x.MagentoVersion ) );
+		// 		////var pingSoapInfos = workingStores.Select( x => new PingSoapInfo( x.MagentoVersion, x.MagentoEdition, true, x.ServiceVersion ) );
+		//
+		// 		MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : pingSoapInfo.ToJson() ) );
+		//
+		// 		return pingSoapInfo;
+		// 	}
+		// 	catch( Exception exception )
+		// 	{
+		// 		if ( exception is PermanentRedirectException || exception?.InnerException is PermanentRedirectException )
+		// 		{
+		// 			throw;
+		// 		}
+		//
+		// 		var mexc = new MagentoCommonException( this.CreateMethodCallInfo( mark : mark ), exception );
+		// 		MagentoLogger.LogTraceException( mexc );
+		// 		throw mexc;
+		// 	}
+		// }
+		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark, CancellationToken token )
 		{
-			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false, String.Empty );
-				var soapInfos = await this.DetermineMagentoVersionAsync( token, mark ).ConfigureAwait( false );
+				var soapInfos = await this.DetermineMagentoVersionAsync( mark, token ).ConfigureAwait( false );
 				var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
 				if( pingSoapInfos.Any() )
 				{
@@ -261,7 +372,7 @@ namespace MagentoAccess
 					}
 				}
 
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : soapInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : soapInfo?.ToJson() ?? "" ) );
 
 				return soapInfo;
 			}
@@ -273,9 +384,8 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( CancellationToken token, Mark mark = null )
+		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark, CancellationToken token )
 		{
-			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
@@ -322,7 +432,7 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
-
+		
 		/// <summary>
 		///	Detects Magento store version using url http(s)://magento_store_base_url/magento_version.
 		///	This feature works only for Magento 2.0+
@@ -847,22 +957,10 @@ namespace MagentoAccess
 		}
 		#endregion
 
-		public async Task< bool > InitAsync( bool suppressException = false )
+		public async Task InitAsync( bool suppressException = false )
 		{
-			try
-			{
-				var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
-				InitMapper();
-				await initTask.ConfigureAwait( false );
-				return true;
-			}
-			catch
-			{
-				if( !suppressException )
-					throw;
-
-				return false;
-			}
+			InitMapper();
+			await this.MagentoServiceLowLevelSoap.InitAsync( suppressException ).ConfigureAwait( false );
 		}
 		
 		/// <summary>
@@ -924,6 +1022,7 @@ namespace MagentoAccess
 
 	public sealed class MagentoConfig
 	{
+		public bool UseRedirect { get; set; }
 		public string VersionByDefault{ get; set; }
 		public string EditionByDefault{ get; set; }
 		public MagentoDefaultProtocol Protocol{ get; set; }
