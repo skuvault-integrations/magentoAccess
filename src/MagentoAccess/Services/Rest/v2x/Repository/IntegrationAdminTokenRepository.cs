@@ -23,7 +23,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 		public async Task< AuthorizationToken > GetTokenAsync( MagentoLogin token, MagentoPass password, CancellationToken cancellationToken )
 		{
 			return await ActionPolicies.GetAsync.Get( () =>
-			{				
+			{
 				return TrackNetworkActivityTime( async () =>
 				{
 					using( var v = await ( ( WebRequest )

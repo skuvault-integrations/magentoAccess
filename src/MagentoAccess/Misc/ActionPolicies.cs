@@ -24,6 +24,9 @@ namespace MagentoAccess.Misc
 				await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
 			} );
 		
+		/// <summary>
+		/// Action Policy defines retry logic for Magento API calls
+		/// </summary>
 		public static ActionPolicyAsync GetAsync { get; } = ActionPolicyAsync
 			.With( _transientExceptionHandler )
 			.RetryAsync( 7, async ( ex, i ) =>

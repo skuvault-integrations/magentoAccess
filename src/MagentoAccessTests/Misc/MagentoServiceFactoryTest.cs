@@ -84,7 +84,6 @@ namespace MagentoAccessTests.Misc
 		{
 			public string ApiUser => null;
 			public string ApiKey => null;
-			public string DefaultApiUrl => "";
 			public string StoreVersion { get; set; }
 			public string Store { get; private set; }
 

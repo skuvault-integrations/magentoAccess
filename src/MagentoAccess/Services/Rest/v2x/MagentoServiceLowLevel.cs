@@ -141,7 +141,7 @@ namespace MagentoAccess.Services.Rest.v2x
 
 		private async Task ReauthorizeAsync()
 		{
-			var relativeUrl = GetRelativeUrl(  );
+			var relativeUrl = this.GetRelativeUrl();
 			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), 
 				MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
 			var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
