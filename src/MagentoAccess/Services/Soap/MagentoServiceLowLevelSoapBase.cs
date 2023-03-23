@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Soap
 {
+	/// <summary>
+	/// Base class for Magento low-level SOAP services (for versions from 1.14.1.0 to 1.9.2.1)
+	/// </summary>
 	internal class MagentoServiceLowLevelSoapBase
 	{
 		public string ApiUser { get; }

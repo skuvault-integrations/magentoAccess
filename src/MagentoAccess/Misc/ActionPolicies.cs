@@ -35,6 +35,9 @@ namespace MagentoAccess.Misc
 				await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) ).ConfigureAwait( false );
 			} );
 
+		/// <summary>
+		/// Action Policy defines retry logic for Magento API calls with a Mark
+		/// </summary>
 		public static ActionPolicyAsync GetWithMarkAsync( Mark mark )
 		{
 			return _magentoGetPolicyWithMarkAsync( mark );

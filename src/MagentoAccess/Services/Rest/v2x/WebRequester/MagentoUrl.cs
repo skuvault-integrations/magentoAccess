@@ -11,6 +11,14 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			this.Url = new Url( url );
 		}
 		
+		/// <summary>
+		/// Gets a main Magento url combining base (shopUrl) and relativeUrl
+		/// Ex. https://shop-url.com/index.php/rest/V1/ (or https://shop-url.com/rest/V1/ in a case if resource)
+		/// has a redirect (ignoring index.php)  
+		/// </summary>
+		/// <param name="shopBaseUrl"></param>
+		/// <param name="relativeUrl"></param>
+		/// <returns></returns>
 		public static MagentoUrl Create( string shopBaseUrl, string relativeUrl )
 		{
 			var url = shopBaseUrl?.TrimEnd( '/' ) + relativeUrl;

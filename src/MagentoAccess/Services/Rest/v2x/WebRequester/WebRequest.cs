@@ -26,6 +26,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 		public Task< Stream > RunAsync( CancellationToken cancellationToken, Mark mark = null )
 		{
 			var webRequestServices = new WebRequestServices();
+			// service-specific url (ex. https://shop-url.com/index.php/rest/V1/products)
 			var serviceUrl = this.Url.ToString().TrimEnd('/') + "/" + this.MagentoServicePath;
 			if ( this.Parameters != null )
 			{

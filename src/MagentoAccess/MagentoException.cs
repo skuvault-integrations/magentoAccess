@@ -92,7 +92,8 @@ namespace MagentoAccess
 	}
 
 	/// <summary>
-	/// Permanent Redirect exception indicates that the resource requested has been moved
+	/// Magento access library redirect-specific exception
+	/// This exception indicates that the resource requested has been moved or not exist
 	/// </summary>
 	public sealed class PermanentRedirectException : Exception { }
 }

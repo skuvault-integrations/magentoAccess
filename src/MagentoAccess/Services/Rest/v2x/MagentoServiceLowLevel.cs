@@ -24,6 +24,12 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string Store { get; }
 		public bool LogRawMessages { get; }
 		public string StoreVersion { get; set; }
+		/// <summary>
+		/// It specifies that a hosting web site has redirect settings ignoring index.php.
+		/// In this case we have to override the default Magento relativeUrl
+		/// ex. from https://shop-url.com/index.php/rest/V1/ to https://shop-url.com/rest/V1/
+		/// (see GUARD-2824)
+		/// </summary>
 		private bool _useRedirect { get; set; }
 		public string DefaultRestApiUrl => "/index.php/rest/V1/";
 		private MagentoTimeouts OperationsTimeouts { get; }
@@ -76,6 +82,10 @@ namespace MagentoAccess.Services.Rest.v2x
 			}
 		}
 		
+		/// <summary>
+		/// Gets Magento REST relativeUrl depends on a useRedirect flag
+		/// </summary>
+		/// <returns></returns>
 		private string GetRelativeUrl() 
 		{
 			return !this._useRedirect ? this.DefaultRestApiUrl : this.DefaultRestApiUrl.Replace( "index.php/", "" );
