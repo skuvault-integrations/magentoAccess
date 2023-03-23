@@ -22,9 +22,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		public string ApiUser { get; private set; }
 		public string ApiKey { get; private set; }
 		public string Store { get; private set; }
-		public string DefaultApiUrl => MagentoServiceSoapClientFactory.SoapApiUrl;
 		public string BaseMagentoUrl { get; set; }
-		public string RelativeUrl { get; set; }
 		public string TokenSecret { get; set; }
 		public bool LogRawMessages { get; private set; }
 
