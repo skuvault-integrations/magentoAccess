@@ -37,7 +37,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x
 				.Method( MagentoWebRequestMethod.Get )
 				.Path( MagentoServicePath.CreateProductsServicePath() )
 				.Parameters( sc )
-				.Url( MagentoUrl.Create( "http://xxx" ) )
+				.Url( MagentoUrl.Create( "http://xxx", "" ) )
 				;
 			var res = qwe.RunAsync( CancellationToken.None );
 			res.Wait();

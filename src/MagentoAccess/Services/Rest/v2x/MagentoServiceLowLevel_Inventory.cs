@@ -13,7 +13,7 @@ using Netco.Logging;
 
 namespace MagentoAccess.Services.Rest.v2x
 {
-	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
+	internal sealed partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
 	{
 		public async Task< InventoryStockItemListResponse > GetStockItemsAsync( List< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null )
 		{

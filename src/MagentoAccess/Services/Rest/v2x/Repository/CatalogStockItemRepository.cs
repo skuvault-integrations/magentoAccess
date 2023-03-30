@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class CatalogStockItemRepository : BaseRepository, ICatalogStockItemRepository
+	public sealed class CatalogStockItemRepository : BaseRepository, ICatalogStockItemRepository
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
@@ -40,7 +40,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
@@ -82,7 +82,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{

@@ -26,6 +26,7 @@ src/packages/
 src/.vs
 [Rr]elease*/
 _ReSharper*/
+.idea/
 _dotCover*/
 _dotMemory*/
 _dotTrace*/

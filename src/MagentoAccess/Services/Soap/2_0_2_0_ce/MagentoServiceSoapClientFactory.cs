@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
 using MagentoAccess.M2catalogInventoryStockRegistryV1_v_2_0_2_0_CE;
 using MagentoAccess.M2integrationAdminTokenServiceV1_v_2_0_2_0_CE;
 using MagentoAccess.Magento2backendModuleServiceV1_v_2_0_2_0_CE;
@@ -16,7 +15,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 {
 	internal class MagentoServiceSoapClientFactory
 	{
-		protected const string SoapApiUrl = "soap/default?services=";
+		public const string SoapApiUrl = "soap/default?services=";
 
 		private readonly string _baseMagentoUrl;
 		private readonly bool _logRawMessages;
@@ -226,11 +225,14 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			private readonly CustomBinding _binding;
 			private readonly EndpointAddress _endpointAddress;
 
-			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, MessageVersion messageVersion, bool logRawMessages, string sessionId, MagentoConfig config ) : base( baseMagentoUrl, logRawMessages, config )
+			public Magento2xCommonClientFactory( Func< CustomBinding, EndpointAddress, T > clientBuilder, string baseMagentoUrl, string servicesName, 
+				MessageVersion messageVersion, bool logRawMessages, string sessionId, MagentoConfig config ) 
+				: base( baseMagentoUrl, logRawMessages, config )
 			{
 				this._sessionId = sessionId;
 				this._clientBuilder = clientBuilder;
 				this._binding = CustomBinding( this._baseMagentoUrl, messageVersion, this._config.BindingDecompressionEnabled );
+				
 				var endPoint = new List< string > { this._baseMagentoUrl, SoapApiUrl + servicesName }.BuildUrl( trimTailsSlash : true );
 				this._endpointAddress = new EndpointAddress( endPoint );
 			}

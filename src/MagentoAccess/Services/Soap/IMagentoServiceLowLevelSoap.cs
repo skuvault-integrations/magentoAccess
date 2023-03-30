@@ -70,7 +70,7 @@ namespace MagentoAccess.Services.Soap
 		Task< GetCategoryTreeResponse > GetCategoriesTreeAsync( CancellationToken token, string rootCategory = "1" );
 		Task< CatalogProductAttributeInfoResponse > GetManufacturersInfoAsync( string attribute, CancellationToken token );
 		Task< InventoryStockItemListResponse > GetStockItemsWithoutSkuAsync( IEnumerable< string > skusOrIds, IEnumerable< int > scopes, CancellationToken cancellationToken, Mark mark = null );
-		Task< bool > InitAsync( bool supressExceptions = false );
+		Task< bool > InitAsync( bool suppressExceptions = false );
 	}
 
 	internal interface IMagentoServiceLowLevelSoapGetProductsBySku

@@ -1,5 +1,4 @@
 ﻿using MagentoAccess.Models.Credentials;
-using MagentoAccess.Services.Soap._1_9_2_1_ce;
 using MagentoAccess.Misc;
 
 namespace MagentoAccess.Services.Soap._1_9_2_1_ce
@@ -16,8 +15,7 @@ namespace MagentoAccess.Services.Soap._1_9_2_1_ce
 				credentials.GetProductsThreadsLimit,
 				credentials.LogRawMessages,
 				credentials.SessionLifeTimeMs,
-				config
-				);
+				config );
 		}
 	}
 }

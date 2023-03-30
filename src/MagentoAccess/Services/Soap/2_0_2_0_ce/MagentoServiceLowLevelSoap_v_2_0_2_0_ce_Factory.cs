@@ -13,8 +13,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 				credentials.BaseMagentoUrl,
 				credentials.LogRawMessages,
 				null,
-				config
-				);
+				config );
 		}
 	}
 }

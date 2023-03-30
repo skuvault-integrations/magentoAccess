@@ -22,7 +22,6 @@ using MagentoAccess.Models.Services.Soap.GetProducts;
 using MagentoAccess.Models.Services.Soap.GetStockItems;
 using MagentoAccess.Models.Services.Soap.PutStockItems;
 using MagentoAccess.Models.GetShipments;
-using MagentoAccess.Services;
 using MagentoAccess.Services.Rest.v2x;
 using MagentoAccess.Services.Soap;
 using MagentoAccess.Services.Soap._1_14_1_0_ee;
@@ -41,17 +40,16 @@ namespace MagentoAccess
 {
 	public class MagentoService: IMagentoService
 	{
-		public bool UseSoapOnly{ get; set; }
+		private bool UseSoapOnly { get; set; }
 		public bool IsRestAPIUsed { get; set; }
 
 		internal virtual IMagentoServiceLowLevelSoap MagentoServiceLowLevelSoap{ get; set; }
-		internal MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory{ get; set; }
-
+		private MagentoServiceLowLevelSoapFactory MagentoServiceLowLevelSoapFactory { get; set; }
 		public delegate void SaveAccessToken( string token, string secret );
 
 		public SaveAccessToken AfterGettingToken{ get; set; }
 		public Func< string > AdditionalLogInfo{ get; set; }
-		public MagentoConfig Config{ get; set; }
+		private MagentoConfig Config{ get; set; }
 		private MagentoAuthenticatedUserCredentials Credentials { get; set; }
 		public const string UserAgentHeader = "SkuVault MagentoAccessLibrary C#";
 
@@ -134,7 +132,7 @@ namespace MagentoAccess
 					var orderIdTask = magentoServiceLowLevelSoap.CreateOrder( _shoppingCartId, x.StoreId, token );
 					orderIdTask.Wait();
 					res.OrderId = orderIdTask.Result;
-					Task.Delay( 1000 );
+					await Task.Delay( 1000 );
 
 					MagentoLogger.LogTrace( $"OrderCreated: {this.CreateMethodCallInfo( mark : mark, methodResult : res.ToJson(), methodParameters : x.ToJson() )}" );
 					return res;
@@ -239,15 +237,14 @@ namespace MagentoAccess
 		#endregion
 
 		#region ping
-		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( CancellationToken token, Mark mark = null )
+		public async Task< PingSoapInfo > DetermineMagentoVersionAndSetupServiceAsync( Mark mark, CancellationToken token )
 		{
-			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
 
 				var soapInfo = new PingSoapInfo( string.Empty, string.Empty, false, String.Empty );
-				var soapInfos = await this.DetermineMagentoVersionAsync( token, mark ).ConfigureAwait( false );
+				var soapInfos = await this.DetermineMagentoVersionAsync( mark, token ).ConfigureAwait( false );
 				var pingSoapInfos = soapInfos as IList< PingSoapInfo > ?? soapInfos.ToList();
 				if( pingSoapInfos.Any() )
 				{
@@ -260,7 +257,7 @@ namespace MagentoAccess
 					}
 				}
 
-				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : soapInfo.ToJson() ) );
+				MagentoLogger.LogTraceEnded( this.CreateMethodCallInfo( mark : mark, methodResult : soapInfo?.ToJson() ?? "" ) );
 
 				return soapInfo;
 			}
@@ -272,9 +269,8 @@ namespace MagentoAccess
 			}
 		}
 
-		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( CancellationToken token, Mark mark = null )
+		public async Task< IEnumerable< PingSoapInfo > > DetermineMagentoVersionAsync( Mark mark, CancellationToken token )
 		{
-			mark = mark ?? Mark.CreateNew();
 			try
 			{
 				MagentoLogger.LogTraceStarted( this.CreateMethodCallInfo( mark : mark ) );
@@ -321,7 +317,7 @@ namespace MagentoAccess
 				throw mexc;
 			}
 		}
-
+		
 		/// <summary>
 		///	Detects Magento store version using url http(s)://magento_store_base_url/magento_version.
 		///	This feature works only for Magento 2.0+
@@ -846,44 +842,36 @@ namespace MagentoAccess
 		}
 		#endregion
 
-		public async Task< bool > InitAsync( bool supressExc = false )
+		public async Task InitAsync( bool suppressException = false )
 		{
-			try
+			InitMapper();
+			await this.MagentoServiceLowLevelSoap.InitAsync( suppressException ).ConfigureAwait( false );
+		}
+		
+		/// <summary>
+		///	Last service's network activity time. Can be used to monitor service's state.
+		/// </summary>
+		public DateTime LastActivityTime
+		{
+			get
 			{
-				var initTask = this.MagentoServiceLowLevelSoap.InitAsync();
-				//Mapper.Initialize( cfg => cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >() );
-
-				Mapper.Initialize( cfg =>
+				return MagentoServiceLowLevelSoap.LastActivityTime ?? DateTime.UtcNow;
+			}
+		}
+		
+		private static void InitMapper()
+		{
+			Mapper.Initialize( cfg =>
 				{
 					cfg.CreateMap< int?, string >().ConvertUsing( Extensions.ToStringEmptyOnNull );
 					cfg.CreateMap< string, string >().ConvertUsing( x => x ?? string.Empty );
-
 					cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >();
-					//cfg.AddConditionalObjectMapper().((s, d) => s.Name == d.Name + "Dto");
-					//cfg.AddConditionalObjectMapper().Where((source, destination) => s.Name.Replace("(_)([a-z])","\U1") == d.Name );
-					//cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
-					//cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
-
-					//ReplaceValue(new Match(new Regex("(_)([a-z])"),0,));
 					cfg.AddMemberConfiguration().AddName< ReplaceName >( _ => _.AddReplace( "_", "" ) );
 					cfg.AddMemberConfiguration().AddName< CaseInsensitiveName >();
-					//cfg.AddMemberConfiguration().
-
 					cfg.CreateMap< Models.Services.Rest.v2x.CatalogStockItemRepository.StockItem, InventoryStockItem >();
 					cfg.CreateMap< Item2, OrderItemEntity >();
-
 					cfg.CreateMap< Models.Services.Soap.GetOrders.Order, OrderInfoResponse >()
-						.ForMember( x => x.Payment, opt => opt.MapFrom( src => new Payment() { Method = src.PaymentMethod } ))
-						//.ForMember(x => x.BillingAddress, opt => opt.MapFrom(src => new BillingAddress()
-						//{
-						//	lastname = src.ShippingLastname,
-						//	firstname = src.ShippingFirstname,
-						//}))
-						//.ForMember( x => x.ShippingAddress, opt => opt.MapFrom( src => new ShippingAddress() {
-						//	Lastname = src.ShippingLastname,
-						//	Firstname = src.ShippingFirstname,
-						//} ) )
-						;
+						.ForMember( x => x.Payment, opt => opt.MapFrom( src => new Payment() { Method = src.PaymentMethod } ));
 
 					cfg.CreateMap< Address, ShippingAddress >()
 						.ForMember( x => x.Street, opt => opt.MapFrom( src => src.street != null ? string.Join( ", ", src.street ) : null ) ) //since soap returns null instead of "", can be changed in future.
@@ -905,7 +893,6 @@ namespace MagentoAccess
 						.ForMember( x => x.ShippingLastname, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping.address != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.address.lastname : null ) : null ) : null ) : null ) : null ) )
 						.ForMember( x => x.ShippingFirstname, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping.address != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.address.firstname : null ) : null ) : null ) : null ) : null ) )
 						.ForMember( x => x.ShippingMethod, opt => opt.MapFrom( src => src != null && src.extension_attributes != null && src.extension_attributes.shipping_assignments != null ? ( src.extension_attributes.shipping_assignments.Any() ? ( src.extension_attributes.shipping_assignments[ 0 ] != null ? ( src.extension_attributes.shipping_assignments[ 0 ].shipping != null ? src.extension_attributes.shipping_assignments[ 0 ].shipping.method : null ) : null ) : null ) : null ) );
-					;
 
 					//zoey
 					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderListEntity, Models.Services.Soap.GetOrders.Order >();
@@ -914,48 +901,13 @@ namespace MagentoAccess
 					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderStatusHistoryEntity, MagentoAccess.Models.Services.Soap.GetOrders.StatusHistoryRecord >();
 					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderAddressEntity, MagentoAccess.Models.Services.Soap.GetOrders.BillingAddress >();
 					cfg.CreateMap< TsZoey_v_1_9_0_1_CE.salesOrderPaymentEntity, MagentoAccess.Models.Services.Soap.GetOrders.Payment >();
-
-					//.ForAllMembers(x =>
-					//{
-					//	x.NullSubstitute(string.Empty);
-					//	//x.Condition((i, o, o1, o2, rc) =>
-					//	//{
-					//	//	rc.
-					//	//})
-					//})
-					;
 				} );
-
-				/////////
-
-				//var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>().ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
-
-				await initTask.ConfigureAwait( false );
-				return true;
-			}
-			catch( Exception e )
-			{
-				if( !supressExc )
-					throw e;
-
-				return false;
-			}
-		}
-		
-		/// <summary>
-		///	Last service's network activity time. Can be used to monitor service's state.
-		/// </summary>
-		public DateTime LastActivityTime
-		{
-			get
-			{
-				return MagentoServiceLowLevelSoap.LastActivityTime ?? DateTime.UtcNow;
-			}
 		}
 	}
 
-	public class MagentoConfig
+	public sealed class MagentoConfig
 	{
+		public bool UseRedirect { get; set; }
 		public string VersionByDefault{ get; set; }
 		public string EditionByDefault{ get; set; }
 		public MagentoDefaultProtocol Protocol{ get; set; }

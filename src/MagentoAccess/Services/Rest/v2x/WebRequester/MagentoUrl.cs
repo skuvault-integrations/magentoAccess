@@ -4,16 +4,25 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 {
 	public class MagentoUrl
 	{
-		public Url Url { get; private set; }
+		public Url Url { get; }
 
 		private MagentoUrl( string url )
 		{
 			this.Url = new Url( url );
 		}
-
-		public static MagentoUrl Create( string url )
+		
+		/// <summary>
+		/// Gets a main Magento url combining base (shopUrl) and relativeUrl
+		/// Ex. https://shop-url.com/index.php/rest/V1/ (or https://shop-url.com/rest/V1/ in a case if resource)
+		/// has a redirect (ignoring index.php)  
+		/// </summary>
+		/// <param name="shopBaseUrl"></param>
+		/// <param name="relativeUrl"></param>
+		/// <returns></returns>
+		public static MagentoUrl Create( string shopBaseUrl, string relativeUrl )
 		{
-			return new MagentoUrl( url );
+			var url = shopBaseUrl?.TrimEnd( '/' ) + relativeUrl;
+			return new MagentoUrl( url.Trim() );
 		}
 
 		public override string ToString()
@@ -21,6 +30,6 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 			return this.Url.Value;
 		}
 
-		public static MagentoUrl SandBox { get; } = new MagentoUrl( "http://127.0.0.1/" );
+		public static MagentoUrl SandBox { get; } = new MagentoUrl( "http://127.0.0.1/index.php/rest/V1/" );
 	}
 }

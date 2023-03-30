@@ -24,17 +24,22 @@ namespace MagentoAccess.Services.Rest.v2x
 		public string Store { get; }
 		public bool LogRawMessages { get; }
 		public string StoreVersion { get; set; }
-		public MagentoTimeouts OperationsTimeouts { get; set; }
-		
-		protected IProductRepository ProductRepository { get; set; }
-		protected IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
-		protected ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
-		protected ISalesOrderRepositoryV1 SalesOrderRepository { get; set; }
-		protected ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
-
-		protected SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
-
-		protected int reauthorizationsCount = 0;
+		/// <summary>
+		/// It specifies that a hosting web site has redirect settings ignoring index.php.
+		/// In this case we have to override the default Magento relativeUrl
+		/// ex. from https://shop-url.com/index.php/rest/V1/ to https://shop-url.com/rest/V1/
+		/// (see GUARD-2824)
+		/// </summary>
+		private bool _useRedirect { get; set; }
+		public string DefaultRestApiUrl => "/index.php/rest/V1/";
+		private MagentoTimeouts OperationsTimeouts { get; }
+		private IProductRepository ProductRepository { get; set; }
+		private IntegrationAdminTokenRepository IntegrationAdminTokenRepository { get; set; }
+		private ICatalogStockItemRepository CatalogStockItemRepository { get; set; }
+		private ISalesOrderRepositoryV1 SalesOrderRepository { get; set; }
+		private ActionPolicyAsync RepeatOnAuthProblemAsync { get; }
+		private SemaphoreSlim _reauthorizeLock = new SemaphoreSlim( 1, 1 );
+		private int reauthorizationsCount = 0;
 
 		public string GetServiceVersion(){
 			return MagentoVersions.MR_2_0_0_0;
@@ -50,27 +55,43 @@ namespace MagentoAccess.Services.Rest.v2x
 								SalesOrderRepository?.LastNetworkActivityTime }.Max() ?? DateTime.UtcNow; 
 			}
 		}
-
-		public async Task< bool > InitAsync( bool supressExceptions = false )
+		
+		public async Task< bool > InitAsync( bool suppressExceptions = false )
 		{
 			try
 			{
 				if( this.IntegrationAdminTokenRepository != null )
+				{
 					return true;
-
-				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( MagentoUrl.Create( this.Store ), this.OperationsTimeouts );
+				}
+				
+				var relativeUrl = this.GetRelativeUrl();
+				var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
+				this.IntegrationAdminTokenRepository = new IntegrationAdminTokenRepository( magentoUrl, this.OperationsTimeouts );
 				await this.ReauthorizeAsync().ConfigureAwait( false );
 				return true;
 			}
-			catch( Exception )
+			catch
 			{
-				if( supressExceptions )
-					return false;
-				throw;
+				if ( !suppressExceptions )
+				{
+					throw;
+				}
+
+				return false;
 			}
 		}
+		
+		/// <summary>
+		/// Gets Magento REST relativeUrl depends on a useRedirect flag
+		/// </summary>
+		/// <returns></returns>
+		private string GetRelativeUrl() 
+		{
+			return !this._useRedirect ? this.DefaultRestApiUrl : this.DefaultRestApiUrl.Replace( "index.php/", "" );
+		}
 
-		public MagentoServiceLowLevel()
+		private MagentoServiceLowLevel()
 		{
 			this.RepeatOnAuthProblemAsync = ActionPolicyAsync.From( ( exception =>
 			{
@@ -117,19 +138,23 @@ namespace MagentoAccess.Services.Rest.v2x
 				} );
 		}
 
-		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, MagentoTimeouts operationsTimeouts, bool logRawMessages ):this()
+		public MagentoServiceLowLevel( string soapApiUser, string soapApiKey, string baseMagentoUrl, 
+			MagentoTimeouts operationsTimeouts, bool logRawMessages, bool useRedirect ) : this()
 		{
 			this.ApiUser = soapApiUser;
 			this.ApiKey = soapApiKey;
 			this.Store = baseMagentoUrl;
 			this.OperationsTimeouts = operationsTimeouts;
 			this.LogRawMessages = logRawMessages;
+			this._useRedirect = useRedirect;
 		}
 
-		protected async Task ReauthorizeAsync()
+		private async Task ReauthorizeAsync()
 		{
-			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
-			var magentoUrl = MagentoUrl.Create( this.Store );
+			var relativeUrl = this.GetRelativeUrl();
+			var newToken = await this.IntegrationAdminTokenRepository.GetTokenAsync( MagentoLogin.Create( this.ApiUser ), 
+				MagentoPass.Create( this.ApiKey ), CancellationToken.None ).ConfigureAwait( false );
+			var magentoUrl = MagentoUrl.Create( this.Store, relativeUrl );
 			this.ProductRepository = new ProductRepository( newToken, magentoUrl, OperationsTimeouts );
 			this.CatalogStockItemRepository = new CatalogStockItemRepository( newToken, magentoUrl, OperationsTimeouts );
 			this.SalesOrderRepository = new SalesOrderRepositoryV1( newToken, magentoUrl, OperationsTimeouts );

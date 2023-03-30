@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
-	public class SalesOrderRepositoryV1 : BaseRepository, ISalesOrderRepositoryV1
+	public sealed class SalesOrderRepositoryV1 : BaseRepository, ISalesOrderRepositoryV1
 	{
 		private AuthorizationToken Token { get; }
 		private MagentoUrl Url { get; }
@@ -30,7 +30,8 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			this.OperationsTimeouts = operationsTimeouts;
 		}
 
-		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, CancellationToken cancellationToken, string searchField = "increment_id" )
+		public async Task< RootObject > GetOrdersAsync( IEnumerable< string > ids, PagingModel page, CancellationToken cancellationToken, 
+			string searchField = "increment_id" )
 		{
 			var idsList = ids as IList< string > ?? ids.ToList();
 			if( ids == null || !idsList.Any() )
@@ -60,7 +61,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
@@ -72,7 +73,8 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			} );
 		}
 
-		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken cancellationToken, Mark mark = null )
+		public async Task< RootObject > GetOrdersAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken cancellationToken, 
+			Mark mark = null )
 		{
 			var parameters = new SearchCriteria()
 			{
@@ -105,7 +107,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return await ActionPolicies.RepeatOnChannelProblemAsync.Get( () =>
+			return await ActionPolicies.GetAsync.Get( () =>
 			{
 				return TrackNetworkActivityTime( async () =>
 				{
@@ -143,14 +145,17 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 			var pagingModel = new PagingModel( 100, 1 );
 			var itemsFirstPage = await this.GetOrdersAsync( updatedFrom, updatedTo, pagingModel, cancellationToken ).ConfigureAwait( false );
 			var pagesToProcess = pagingModel.GetPages( itemsFirstPage.total_count );
-			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5, async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ), cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
+			var tailItems = await pagesToProcess.ProcessInBatchAsync( 5,
+				async x => await this.GetOrdersAsync( updatedFrom, updatedTo, new PagingModel( pagingModel.ItemsPerPage, x ), 
+					cancellationToken ).ConfigureAwait( false ) ).ConfigureAwait( false );
 
 			var resultItems = new List< RootObject >() { itemsFirstPage };
 			resultItems.AddRange( tailItems );
 			return resultItems;
 		}
 
-		public Task< ShipmentsResponse > GetOrdersShipmentsAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken token, Mark mark = null )
+		public Task< ShipmentsResponse > GetOrdersShipmentsAsync( DateTime updatedFrom, DateTime updatedTo, PagingModel page, CancellationToken token, 
+			Mark mark = null )
 		{
 			var parameters = new SearchCriteria()
 			{
@@ -182,7 +187,7 @@ namespace MagentoAccess.Services.Rest.v2x.Repository
 				.AuthToken( this.Token )
 				.Url( this.Url );
 
-			return ActionPolicies.RepeatOnChannelProblemAsync.Get( async () =>
+			return ActionPolicies.GetAsync.Get( async () =>
 			{
 				using( var v = await webRequest.RunAsync( token, mark ).ConfigureAwait( false ) )
 				{

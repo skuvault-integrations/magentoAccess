@@ -3,6 +3,7 @@ using System.Threading;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
@@ -17,8 +18,8 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 		public void NoExceptionThrow( MagentoServiceCredentialsAndConfig credentials )
 		{
 			// ------------ Arrange
-			var magentoService = this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs, false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
-			magentoService.DetermineMagentoVersionAndSetupServiceAsync( CancellationToken.None ).GetAwaiter().GetResult();
+			IMagentoService magentoService = this.InitMagentoService( credentials );
+			magentoService.DetermineMagentoVersionAndSetupServiceAsync( Mark.Blank(), CancellationToken.None ).GetAwaiter().GetResult();
 
 			// ------------ Act
 			Action act = () =>
@@ -29,6 +30,14 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 
 			// ------------ Assert
 			act.ShouldNotThrow< Exception >();
+		}
+		
+		private IMagentoService InitMagentoService( MagentoServiceCredentialsAndConfig credentials )
+		{
+			return this.CreateMagentoService( credentials.AuthenticatedUserCredentials.SoapApiUser, credentials.AuthenticatedUserCredentials.SoapApiKey, "null", "null", "null", "null", 
+				credentials.AuthenticatedUserCredentials.BaseMagentoUrl, "http://w.com", "http://w.com", "http://w.com", credentials.Config.VersionByDefault, 
+				credentials.AuthenticatedUserCredentials.GetProductsThreadsLimit, credentials.AuthenticatedUserCredentials.SessionLifeTimeMs,
+				false, credentials.Config.UseVersionByDefaultOnly, ThrowExceptionIfFailed.AllItems );
 		}
 	}
 }

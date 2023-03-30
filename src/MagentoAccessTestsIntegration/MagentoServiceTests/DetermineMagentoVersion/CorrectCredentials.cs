@@ -4,6 +4,7 @@ using System.Threading;
 using FluentAssertions;
 using MagentoAccess;
 using MagentoAccessTestsIntegration.TestEnvironment;
+using Netco.Logging;
 using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVersion
@@ -36,8 +37,8 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 				ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
-			magentoService.InitAsync( false ).Wait();
-			var getOrdersTask = magentoService.DetermineMagentoVersionAsync( CancellationToken.None );
+			magentoService.InitAsync().Wait();
+			var getOrdersTask = magentoService.DetermineMagentoVersionAsync( Mark.Blank(), CancellationToken.None );
 			getOrdersTask.Wait();
 
 			// ------------ Assert
@@ -72,7 +73,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVers
 				ThrowExceptionIfFailed.AllItems );
 
 			// ------------ Act
-			var getOrdersTask = magentoService.DetermineMagentoVersionAndSetupServiceAsync( CancellationToken.None );
+			var getOrdersTask = magentoService.DetermineMagentoVersionAndSetupServiceAsync( Mark.Blank(), CancellationToken.None );
 			getOrdersTask.Wait();
 
 			// ------------ Assert

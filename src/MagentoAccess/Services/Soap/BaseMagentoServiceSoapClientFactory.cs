@@ -15,6 +15,7 @@ namespace MagentoAccess.Services.Soap
 		protected abstract T CreateClient();
 
 		protected readonly string _baseMagentoUrl;
+		protected readonly bool _useRedirect;
 		protected readonly bool _logRawMessages;
 		protected readonly MagentoConfig _config;
 
@@ -23,6 +24,7 @@ namespace MagentoAccess.Services.Soap
 			this._baseMagentoUrl = baseMagentoUrl;
 			this._logRawMessages = logRawMessages;
 			this._config = config;
+			this._useRedirect = config.UseRedirect;
 		}
 
 		public T GetClient()

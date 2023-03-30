@@ -7,6 +7,7 @@ using MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository;
 using Netco.Logging;
 using RootObject = MagentoAccess.Models.Services.Rest.v2x.SalesOrderRepository.RootObject;
 
+
 namespace MagentoAccess.Services.Rest.v2x.Repository
 {
 	public interface ISalesOrderRepositoryV1

@@ -117,6 +117,11 @@ namespace MagentoAccess.Services
 			}
 			catch( Exception ex )
 			{
+				if ( ( int )responseMessage.StatusCode == 308 )
+				{ 
+					throw new PermanentRedirectException();
+				}
+				
 				throw new MagentoWebException( $"Exception occured on GetResponseStreamAsync( webRequest:{url})", ex, responseMessage.StatusCode );
 			}
 		}

@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace MagentoAccess.Services.Rest.v2x
 {
-	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapFillProductsDetails
+	internal sealed partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap, IMagentoServiceLowLevelSoapFillProductsDetails
 	{
 		private const string ImagePath = "/pub/media/catalog/product";
 		

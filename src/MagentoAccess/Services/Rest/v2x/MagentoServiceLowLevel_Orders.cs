@@ -12,7 +12,7 @@ using MagentoAccess.Models.GetShipments;
 
 namespace MagentoAccess.Services.Rest.v2x
 {
-	internal partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
+	internal sealed partial class MagentoServiceLowLevel : IMagentoServiceLowLevelSoap
 	{
 		private const int ShipmentsPerPage = 100;
 
