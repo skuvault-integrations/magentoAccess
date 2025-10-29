@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using CuttingEdge.Conditions;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MagentoAccess.Misc
 {
@@ -76,7 +76,11 @@ namespace MagentoAccess.Misc
 
 		public MagentoOperationTimeout( int timeoutInMs )
 		{
-			Condition.Requires( timeoutInMs, "timeoutInMs" ).IsGreaterThan( 0 );
+			if( timeoutInMs <= 0 )
+			{
+				throw new ArgumentOutOfRangeException( nameof(timeoutInMs), timeoutInMs, "timeoutInMs must be greater than 0" );
+			}
+
 			this.TimeoutInMs = timeoutInMs;
 		}
 	}
