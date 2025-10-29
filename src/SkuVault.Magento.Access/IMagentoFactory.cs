@@ -1,7 +1,4 @@
-﻿using MagentoAccess.Misc;
-using MagentoAccess.Models.Credentials;
-
-namespace MagentoAccess
+﻿namespace SkuVault.Magento.Access
 {
 	/// <summary>
 	/// A factory class responsible for creating instances of <see cref="IMagentoService"/>. It is used as the entry point to the library.
