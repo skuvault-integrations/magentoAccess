@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using MagentoAccess.Models.Services.Rest.v2x;
 using NUnit.Framework;
@@ -16,7 +16,7 @@ namespace MagentoAccessTests.Services.Rest.v2x
 			//a
 			var actual = testTestCase.SearchCriteria.ToString();
 			//a
-			Assert.AreEqual( testTestCase.Expected, actual );
+			Assert.That( actual, Is.EqualTo( testTestCase.Expected ) );
 		}
 
 		public class SearchCriteriaTestCase

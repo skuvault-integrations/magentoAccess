@@ -34,8 +34,8 @@ namespace MagentoAccessTests.Misc
 
 			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
 
-			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 2 ) ) );
-			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+			Assert.That( storeVersion.Version, Is.EqualTo( new System.Version( 2, 2 ) ) );
+			Assert.That( storeVersion.MagentoEdition, Is.EqualTo( MagentoEdition.Community ) );
 		}
 
 		[ Test ]
@@ -45,8 +45,8 @@ namespace MagentoAccessTests.Misc
 
 			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
 
-			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 2 ) ) );
-			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+			Assert.That( storeVersion.Version, Is.EqualTo( new System.Version( 2, 2 ) ) );
+			Assert.That( storeVersion.MagentoEdition, Is.EqualTo( MagentoEdition.Community ) );
 		}
 
 		[ Test ]
@@ -56,8 +56,8 @@ namespace MagentoAccessTests.Misc
 
 			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
 
-			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 2 ) ) );
-			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Enterprise ));
+			Assert.That( storeVersion.Version, Is.EqualTo( new System.Version( 2, 2 ) ) );
+			Assert.That( storeVersion.MagentoEdition, Is.EqualTo( MagentoEdition.Enterprise ) );
 		}
 
 		[ Test ]
@@ -67,8 +67,8 @@ namespace MagentoAccessTests.Misc
 
 			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
 
-			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 2, 9, 15 ) ) );
-			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+			Assert.That( storeVersion.Version, Is.EqualTo( new System.Version( 2, 9, 15 ) ) );
+			Assert.That( storeVersion.MagentoEdition, Is.EqualTo( MagentoEdition.Community ) );
 		}
 
 		[ Test ]
@@ -78,8 +78,8 @@ namespace MagentoAccessTests.Misc
 
 			var storeVersion = storeVersionRaw.ParseMagentoStoreInfoString();
 
-			Assert.IsTrue( storeVersion.Version.Equals( new System.Version( 1, 0 ) ) );
-			Assert.IsTrue( storeVersion.MagentoEdition.Equals( MagentoEdition.Community ));
+			Assert.That( storeVersion.Version, Is.EqualTo( new System.Version( 1, 0 ) ) );
+			Assert.That( storeVersion.MagentoEdition, Is.EqualTo( MagentoEdition.Community ) );
 		}
 
 		[ Test ]
