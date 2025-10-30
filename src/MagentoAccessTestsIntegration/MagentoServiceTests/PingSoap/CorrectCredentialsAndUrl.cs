@@ -29,7 +29,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 			};
 
 			// ------------ Assert
-			act.ShouldNotThrow< Exception >();
+			act.Should().NotThrow< Exception >();
 		}
 		
 		private IMagentoService InitMagentoService( MagentoServiceCredentialsAndConfig credentials )

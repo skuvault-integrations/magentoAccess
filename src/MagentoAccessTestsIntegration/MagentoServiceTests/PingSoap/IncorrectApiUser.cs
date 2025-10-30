@@ -29,7 +29,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 			};
 
 			// ------------ Assert
-			act.ShouldThrow< Exception >();
+			act.Should().Throw< Exception >();
 		}
 	}
 }

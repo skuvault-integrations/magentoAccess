@@ -33,7 +33,7 @@ namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 			getProductsTask1.Result.Should().NotBeNullOrEmpty();
 			getProductsTask1.Result.All( x => x.UpdatedAt.ToDateTimeOrDefault() >= updatedFrom ).Should().BeTrue();
 			getProductsBySkusTask2.Result.Count().Should().Be( expectedSku.Count() );
-			getProductsBySkusTask2.Result.Select( x => x.Sku ).ShouldBeEquivalentTo( expectedSku );
+			getProductsBySkusTask2.Result.Select( x => x.Sku ).Should().BeEquivalentTo( expectedSku );
 		}
 	}
 }

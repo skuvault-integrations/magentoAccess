@@ -16,13 +16,13 @@
 
   <ItemGroup>
     <!-- Test Framework -->
-    <PackageReference Include="NUnit" Version="4.2.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <PackageReference Include="NUnit" Version="4.4.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     
     <!-- Test Utilities -->
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
-    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
     
     <!-- Dependencies matching the main project -->
     <PackageReference Include="Netco" Version="3.0.0" />

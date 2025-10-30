@@ -21,12 +21,12 @@
     <PackageReference Include="System.ServiceModel.Security" Version="4.10.3" />
     
     <!-- .NET Standard compatibility packages -->
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.10" />
 
     <!-- Existing package references - updated to .NET Standard compatible versions -->
     <PackageReference Include="AutoMapper" Version="5.2.0" />
     <PackageReference Include="Netco" Version="3.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <!-- Service Reference files need to be explicitly compiled -->
