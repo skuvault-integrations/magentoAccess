@@ -1,5 +1,4 @@
 using System;
-using System.Security.Policy;
 
 namespace MagentoAccess.Services.Rest.v2x.WebRequester
 {
@@ -9,7 +8,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 
 		private MagentoUrl( string url )
 		{
-			this.Url = new Uri( url );
+			this.Url = new Uri( url, UriKind.Absolute );
 		}
 		
 		/// <summary>
