@@ -36,7 +36,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 			//------------ Assert
 			token.Token.Should().NotBeNullOrWhiteSpace();
-			products.Count.Should().BeGreaterOrEqualTo( 0 );
+			products.Count.Should().BeGreaterThanOrEqualTo( 0 );
 			products.SelectMany( x => x.items ).Count().Should().BeGreaterThan( 0 );
 		}
 
@@ -56,8 +56,8 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 			//------------ Assert
 			token.Token.Should().NotBeNullOrWhiteSpace();
-			products.Count.Should().BeGreaterOrEqualTo( 0 );
-			products.Count.Should().BeGreaterOrEqualTo( productsUpdatedAt.Count );
+			products.Count.Should().BeGreaterThanOrEqualTo( 0 );
+			products.Count.Should().BeGreaterThanOrEqualTo( productsUpdatedAt.Count );
 			products.SelectMany( x => x.items ).Count().Should().BeGreaterThan( 0 );
 		}
 
@@ -94,7 +94,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 			//------------ Assert
 			token.Token.Should().NotBeNullOrWhiteSpace();
-			productPages.Count.Should().BeGreaterOrEqualTo( 0 );
+			productPages.Count.Should().BeGreaterThanOrEqualTo( 0 );
 			productPages.Any( page => page.items.Any( i => i.sku == null ) ).Should().BeFalse();
 		}
 

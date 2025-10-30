@@ -46,4 +46,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\MeagentoServiceLowLevelSoap1_7_to_1_9_CE_Test.cs" />
+    <Compile Remove="Services\MeagentoServiceLowLevelSoap1_14_1_EE_Test.cs" />
+    <Compile Remove="Services\MeagentoServiceLowLevelSoap_1_9_2_1_ce.cs" />
+  </ItemGroup>
+
 </Project>
