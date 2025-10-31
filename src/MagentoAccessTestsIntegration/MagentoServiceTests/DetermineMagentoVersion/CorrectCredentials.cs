@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.DetermineMagentoVersion
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

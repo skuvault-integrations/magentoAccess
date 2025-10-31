@@ -25,7 +25,7 @@ namespace MagentoAccessTests
 			GetProductsThreadsLimit,
 			SessionLifeTime,
 			LogRawMessages
-			);
+		);
 
 		private IMagentoServiceLowLevelSoap _magentoServiceLowLevelSoapThrowExceptionsStub;
 
@@ -41,7 +41,7 @@ namespace MagentoAccessTests
 		private const bool LogRawMessages = true;
 		private MagentoTimeouts OperationsTimeouts = new MagentoTimeouts();
 
-		[ TestFixtureSetUp ]
+		[ SetUp ]
 		public void Setup()
 		{
 			this._magentoServiceLowLevelSoapThrowExceptionsStub = new MagentoServiceLowLevelSoapVFrom17To19CeThrowExcetpionStub( SoapApiUser, SoapApiKey, BaseMagentoUrl, "0" );
@@ -56,7 +56,7 @@ namespace MagentoAccessTests
 			//------------ Act
 			//------------ Assert
 
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetOrdersAsync( default(DateTime), default(DateTime), CancellationToken.None ).ConfigureAwait( false ) );
+			Assert.That( async () => await magentoService.GetOrdersAsync( default(DateTime), default(DateTime), CancellationToken.None ).ConfigureAwait( false ), Throws.TypeOf< MagentoCommonException >() );
 		}
 
 		[ Test ]
@@ -67,7 +67,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 } ).ConfigureAwait( false ) );
+			Assert.That( async () => await magentoService.GetProductsAsync( CancellationToken.None, new[] { 0, 1 } ).ConfigureAwait( false ), Throws.TypeOf< MagentoCommonException >() );
 		}
 
 		[ Test ]
@@ -78,7 +78,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.PingSoapAsync( CancellationToken.None ).ConfigureAwait( false ) );
+			Assert.That( async () => await magentoService.PingSoapAsync( CancellationToken.None ).ConfigureAwait( false ), Throws.TypeOf< MagentoCommonException >() );
 		}
 
 
@@ -90,7 +90,7 @@ namespace MagentoAccessTests
 
 			//------------ Act
 			//------------ Assert
-			Assert.ThrowsAsync< MagentoCommonException >( async () => await magentoService.UpdateInventoryAsync( new List< Inventory > { new Inventory() }, CancellationToken.None ).ConfigureAwait( false ) );
+			Assert.That( async () => await magentoService.UpdateInventoryAsync( new List< Inventory > { new Inventory() }, CancellationToken.None ).ConfigureAwait( false ), Throws.TypeOf< MagentoCommonException >() );
 		}
 	}
 }

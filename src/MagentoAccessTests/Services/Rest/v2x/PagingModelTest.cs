@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using FluentAssertions;
 using MagentoAccess.Misc;
@@ -19,7 +19,7 @@ namespace MagentoAccessTests.Services.Rest.v2x
 			//a
 			var pages = p.GetPages( pagetest.PagesTotal );
 			//a
-			pages.ShouldBeEquivalentTo( pagetest.PagesToLoad );
+			pages.Should().BeEquivalentTo( pagetest.PagesToLoad );
 		}
 
 		public static class GeneralTestCases

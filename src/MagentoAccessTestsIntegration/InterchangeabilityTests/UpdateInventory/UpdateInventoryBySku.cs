@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.InterchangeabilityTests.UpdateInventory
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

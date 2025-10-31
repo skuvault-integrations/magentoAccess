@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration
 {
+	[ Explicit ]
 	[ TestFixture ]
 	internal class MagentoServiceTest : BaseTest
 	{

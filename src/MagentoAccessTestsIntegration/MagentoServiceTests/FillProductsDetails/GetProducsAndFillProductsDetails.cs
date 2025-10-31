@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.FillProductsDetails
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

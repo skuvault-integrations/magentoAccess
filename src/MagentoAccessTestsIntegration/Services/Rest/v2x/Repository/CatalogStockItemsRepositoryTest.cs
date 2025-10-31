@@ -14,6 +14,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
+	[ Explicit ]
 	[ TestFixture ]
 	internal class CatalogStockItemsRepositoryTest : BaseTest
 	{

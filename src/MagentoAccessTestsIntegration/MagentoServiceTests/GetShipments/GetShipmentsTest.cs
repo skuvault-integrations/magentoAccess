@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetShipments
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

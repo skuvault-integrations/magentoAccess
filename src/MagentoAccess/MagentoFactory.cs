@@ -1,4 +1,4 @@
-﻿using CuttingEdge.Conditions;
+﻿using System;
 using MagentoAccess.Misc;
 using MagentoAccess.Models.Credentials;
 
@@ -8,8 +8,7 @@ namespace MagentoAccess
 	{
 		public IMagentoService CreateService( MagentoAuthenticatedUserCredentials userAuthCredentials, MagentoConfig magentoConfig, MagentoTimeouts operationsTimeouts )
 		{
-			Condition.Requires( userAuthCredentials, "userAuthCredentials" ).IsNotNull();
-			return new MagentoService( userAuthCredentials, magentoConfig, operationsTimeouts );
+			return userAuthCredentials == null ? throw new ArgumentNullException( nameof(userAuthCredentials), "userAuthCredentials must not be null" ) : new MagentoService( userAuthCredentials, magentoConfig, operationsTimeouts );
 		}
 	}
 }
