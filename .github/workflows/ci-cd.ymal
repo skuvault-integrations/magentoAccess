@@ -1,0 +1,82 @@
+name: Continuous Integration/Continous Deployment
+
+# Runs when a pull request (against master branch) is opened, reopened or when the master branch is updated or when a release tag is created.
+on:
+  pull_request:
+    branches:
+      - main
+  create:
+    branches:
+      - release/**
+
+jobs:
+  build-test:
+    name: Build | Test
+    runs-on: ubuntu-latest
+    
+    env:
+      BUILD_CONFIG: 'Release'
+      SOLUTION_NAME: '.\src\SkuVault.Magento.Access.sln'
+      PACKAGES_ARTIFACT: etsy-magento-packages
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+
+      - name: Add NuGet sources for restoring packages
+        run: |
+          dotnet nuget add source https://nuget.pkg.github.com/skuvault/index.json --name "SkuVault (GitHub)" --username ${{ secrets.GH_NUGET_USERNAME }} --password ${{ secrets.GH_NUGET_PASSWORD }} --store-password-in-clear-text
+          dotnet nuget add source https://nuget.pkg.github.com/skuvault-integrations/index.json --name "SkuVault Integrations (GitHub)" --username ${{ secrets.GH_INTEGRATIONS_NUGET_USERNAME }} --password ${{ secrets.GH_INTEGRATIONS_NUGET_PASSWORD }} --store-password-in-clear-text
+
+      - name: Install dependencies
+        run: dotnet restore $SOLUTION_NAME
+
+      - name: Get build version
+        run: |
+          Import-Module .\build\GetBuildVersion.psm1
+          Write-Host $Env:GITHUB_REF
+          $version = GetBuildVersion -VersionString $Env:GITHUB_REF
+          echo "BUILD_VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+        shell: pwsh
+
+      - name: Build
+        run: dotnet build $SOLUTION_NAME --configuration $BUILD_CONFIG -p:Version=$BUILD_VERSION --no-restore
+
+      - name: Unit tests
+        run: dotnet test --no-restore --verbosity normal $SOLUTION_NAME
+
+      - name: Upload packages (to be used in the next job)
+        if: startsWith(github.ref, 'refs/tags')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGES_ARTIFACT }}
+          path: |
+             **/*.nupkg
+          overwrite: true
+
+  publish-packages:
+    name: Publish packages to Github package repository
+    runs-on: ubuntu-latest
+    needs: build-test
+    if: startsWith(github.ref, 'refs/tags')
+    steps:
+
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.PACKAGES_ARTIFACT }}
+
+      - name: Add NuGet Sources for publishing packages
+        run: |
+          dotnet nuget add source --username SkuVault --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github-integrations "https://nuget.pkg.github.com/skuvault-integrations/index.json"
+
+      - name: Publish to package repository
+        run: |
+          for file in $(find . -name '*.nupkg'); do
+            dotnet nuget push "$file" --source github-integrations
+          done
