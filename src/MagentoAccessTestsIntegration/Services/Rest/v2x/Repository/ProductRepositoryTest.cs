@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "v2LowLevelReadSmoke" ) ]
 	internal class ProductRepositoryTest

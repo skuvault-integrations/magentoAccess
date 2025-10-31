@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetProducts
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

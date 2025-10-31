@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.PingSoap
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

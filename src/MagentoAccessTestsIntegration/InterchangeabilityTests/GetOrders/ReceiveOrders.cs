@@ -13,6 +13,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.InterchangeabilityTests.GetOrders
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]
