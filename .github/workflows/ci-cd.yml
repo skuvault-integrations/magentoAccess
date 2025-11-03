@@ -28,11 +28,6 @@ jobs:
           dotnet-version: |
             8.x
 
-      - name: Add NuGet sources for restoring packages
-        run: |
-          dotnet nuget add source https://nuget.pkg.github.com/skuvault/index.json --name "SkuVault (GitHub)" --username ${{ secrets.GH_NUGET_USERNAME }} --password ${{ secrets.GH_NUGET_PASSWORD }} --store-password-in-clear-text
-          dotnet nuget add source https://nuget.pkg.github.com/skuvault-integrations/index.json --name "SkuVault Integrations (GitHub)" --username ${{ secrets.GH_INTEGRATIONS_NUGET_USERNAME }} --password ${{ secrets.GH_INTEGRATIONS_NUGET_PASSWORD }} --store-password-in-clear-text
-
       - name: Install dependencies
         run: dotnet restore $SOLUTION_NAME
 
