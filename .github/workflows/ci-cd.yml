@@ -48,7 +48,8 @@ jobs:
           sudo apt-get install -y mono-complete
 
       - name: Unit tests
-        run: dotnet test --no-restore --verbosity normal $SOLUTION_NAME
+        run: dotnet test --no-restore --no-build --configuration $BUILD_CONFIG --verbosity normal $SOLUTION_NAME
+
 
       - name: Upload packages (to be used in the next job)
         if: startsWith(github.ref, 'refs/tags')
