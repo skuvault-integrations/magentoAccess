@@ -57,7 +57,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 		{
 			this._adminClientFactory = new Magento2xCommonClientFactory< integrationAdminTokenServiceV1PortTypeClient, integrationAdminTokenServiceV1PortType >(
 				( binding, endpoint ) => new integrationAdminTokenServiceV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "integrationAdminTokenServiceV1", MessageVersion.Soap12, logRawMessages, sessionId, config );
+				baseMagentoUrl, "integrationAdminTokenServiceV1", MessageVersion.Soap12WSAddressing10, logRawMessages, sessionId, config );
 
 			this._mediaGalleryFactory = new Magento2xCommonClientFactory< catalogProductAttributeMediaGalleryManagementV1PortTypeClient, catalogProductAttributeMediaGalleryManagementV1PortType >(
 				( binding, endpoint ) => new catalogProductAttributeMediaGalleryManagementV1PortTypeClient( binding, endpoint ),
@@ -73,11 +73,11 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 
 			this._catalogProductRepositoryFactory = new Magento2xCommonClientFactory< catalogProductRepositoryV1PortTypeClient, catalogProductRepositoryV1PortType >(
 				( binding, endpoint ) => new catalogProductRepositoryV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "catalogProductRepositoryV1", MessageVersion.Soap12, logRawMessages, sessionId, config );
+				baseMagentoUrl, "catalogProductRepositoryV1", MessageVersion.Soap12WSAddressing10, logRawMessages, sessionId, config );
 
 			this._backendModuleServiceFactory = new Magento2xCommonClientFactory< backendModuleServiceV1PortTypeClient, backendModuleServiceV1PortType >(
 				( binding, endpoint ) => new backendModuleServiceV1PortTypeClient( binding, endpoint ),
-				baseMagentoUrl, "backendModuleServiceV1", MessageVersion.Soap12, logRawMessages, sessionId, config );
+				baseMagentoUrl, "backendModuleServiceV1", MessageVersion.Soap12WSAddressing10, logRawMessages, sessionId, config );
 
 			this._catalogInventoryStockRegistryFactory = new Magento2xCommonClientFactory< catalogInventoryStockRegistryV1PortTypeClient, catalogInventoryStockRegistryV1PortType >(
 				( binding, endpoint ) => new catalogInventoryStockRegistryV1PortTypeClient( binding, endpoint ),
@@ -240,7 +240,7 @@ namespace MagentoAccess.Services.Soap._2_0_2_0_ce
 			protected override T CreateClient()
 			{
 				var magentoSoapService = this._clientBuilder( this._binding, this._endpointAddress );
-				magentoSoapService.Endpoint.Behaviors.Add( new ChannelBehaviour.CustomBehavior { AccessToken = this._sessionId, LogRawMessages = this._logRawMessages } );
+				magentoSoapService.Endpoint.EndpointBehaviors.Add( new ChannelBehaviour.CustomBehavior { AccessToken = this._sessionId, LogRawMessages = this._logRawMessages } );
 				return magentoSoapService;
 			}
 		}

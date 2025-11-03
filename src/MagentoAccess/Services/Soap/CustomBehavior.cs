@@ -14,11 +14,11 @@ namespace MagentoAccess.Services.Soap
 		{
 			try
 			{
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				if( serviceEndpoint != null && serviceEndpoint.EndpointBehaviors != null )
 				{
-					var vs = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
+					var vs = serviceEndpoint.EndpointBehaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
 					if( vs != null && vs.Any() )
-						serviceEndpoint.Behaviors.Remove( vs.Single() );
+						serviceEndpoint.EndpointBehaviors.Remove( vs.Single() );
 				}
 			}
 			catch( Exception )
@@ -32,18 +32,18 @@ namespace MagentoAccess.Services.Soap
 			try
 			{
 				//Add the inspector
-				behavior.MessageInspectors.Add( new ClientMessageInspector() { LogRawMessages = this.LogRawMessages} );
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				behavior.ClientMessageInspectors.Add( new ClientMessageInspector() { LogRawMessages = this.LogRawMessages} );
+				if( serviceEndpoint != null && serviceEndpoint.EndpointBehaviors != null )
 				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
+					var vsBehaviour = serviceEndpoint.EndpointBehaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
 					if( vsBehaviour != null && vsBehaviour.Any() )
-						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
+						serviceEndpoint.EndpointBehaviors.Remove( vsBehaviour.Single() );
 				}
 
 				//behavior.CallbackDispatchRuntime.MessageInspectors.Add(new MessageInspector2());
 
 				var inspector = new ClientMessageInspector() { LogRawMessages = this.LogRawMessages };
-				behavior.MessageInspectors.Add( inspector );
+				behavior.ClientMessageInspectors.Add( inspector );
 			}
 			catch( Exception )
 			{
@@ -55,11 +55,11 @@ namespace MagentoAccess.Services.Soap
 		{
 			try
 			{
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				if( serviceEndpoint != null && serviceEndpoint.EndpointBehaviors != null )
 				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
+					var vsBehaviour = serviceEndpoint.EndpointBehaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
 					if( vsBehaviour != null && vsBehaviour.Any() )
-						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
+						serviceEndpoint.EndpointBehaviors.Remove( vsBehaviour.Single() );
 				}
 			}
 			catch( Exception )
@@ -71,11 +71,11 @@ namespace MagentoAccess.Services.Soap
 		{
 			try
 			{
-				if( serviceEndpoint != null && serviceEndpoint.Behaviors != null )
+				if( serviceEndpoint != null && serviceEndpoint.EndpointBehaviors != null )
 				{
-					var vsBehaviour = serviceEndpoint.Behaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
+					var vsBehaviour = serviceEndpoint.EndpointBehaviors.Where( i => i.GetType().Namespace.Contains( "VisualStudio" ) );
 					if( vsBehaviour != null && vsBehaviour.Any() )
-						serviceEndpoint.Behaviors.Remove( vsBehaviour.Single() );
+						serviceEndpoint.EndpointBehaviors.Remove( vsBehaviour.Single() );
 				}
 			}
 			catch( Exception )

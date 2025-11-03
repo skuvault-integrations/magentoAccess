@@ -22,7 +22,7 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 {
 	internal partial class BaseTest
 	{
-		private ConcurrentDictionary< string, List< Order > > _orders;
+		protected ConcurrentDictionary< string, List< Order > > _orders;
 		protected ConcurrentDictionary< string, Dictionary< int, string > > _productsIds;
 
 		protected IMagentoService CreateMagentoService( string apiUser, string apiKey, string accessToken, string accessTokenSecret, 
@@ -53,12 +53,12 @@ namespace MagentoAccessTestsIntegration.TestEnvironment
 			NetcoLogger.LoggerFactory = new NLogLoggerFactory();
 		}
 
-		[ TestFixtureSetUp ]
+		[ SetUp ]
 		public void TestFixtureSetup()
 		{
 		}
 
-		[ TestFixtureTearDown ]
+		[ TearDown ]
 		public void TestFixtureTearDown()
 		{
 			//this.DeleteProducts();

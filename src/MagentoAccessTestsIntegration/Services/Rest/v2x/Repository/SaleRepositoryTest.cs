@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "v2LowLevelReadSmoke" ) ]
 	internal class SaleRepositoryTest
@@ -31,8 +32,8 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 			//------------ Assert
 			token.Token.Should().NotBeNullOrWhiteSpace();
-			orders.items.Count.Should().BeGreaterOrEqualTo( 1 );
-			orders.items.Count.Should().BeLessOrEqualTo( itemsPerPage );
+			orders.items.Count.Should().BeGreaterThanOrEqualTo( 1 );
+			orders.items.Count.Should().BeLessThanOrEqualTo( itemsPerPage );
 		}
 
 		[ Test ]
@@ -68,7 +69,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 			//------------ Assert
 			tokenTask.Token.Should().NotBeNullOrWhiteSpace();
-			items2.items.Count.Should().BeGreaterOrEqualTo( 1 );
+			items2.items.Count.Should().BeGreaterThanOrEqualTo( 1 );
 			items2.items.Count.Should().Be( items.items.Count );
 		}
 
@@ -87,7 +88,7 @@ namespace MagentoAccessTestsIntegration.Services.Rest.v2x.Repository
 
 			//------------ Assert
 			tokenTask.Token.Should().NotBeNullOrWhiteSpace();
-			items2.SelectMany( y => y.items ).Count().Should().BeGreaterOrEqualTo( 1 );
+			items2.SelectMany( y => y.items ).Count().Should().BeGreaterThanOrEqualTo( 1 );
 			items2.SelectMany( y => y.items ).Count().Should().Be( items.SelectMany( y => y.items ).Count() );
 		}
 

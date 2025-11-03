@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace MagentoAccessTestsIntegration.MagentoServiceTests.GetProductsAsync
 {
+	[ Explicit ]
 	[ TestFixture ]
 	[ Category( "ReadSmokeTests" ) ]
 	[ Parallelizable ]

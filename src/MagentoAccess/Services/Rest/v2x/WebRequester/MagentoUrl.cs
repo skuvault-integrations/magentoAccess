@@ -1,14 +1,14 @@
-using System.Security.Policy;
+using System;
 
 namespace MagentoAccess.Services.Rest.v2x.WebRequester
 {
 	public class MagentoUrl
 	{
-		public Url Url { get; }
+		public Uri Url { get; }
 
 		private MagentoUrl( string url )
 		{
-			this.Url = new Url( url );
+			this.Url = new Uri( url, UriKind.Absolute );
 		}
 		
 		/// <summary>
@@ -27,7 +27,7 @@ namespace MagentoAccess.Services.Rest.v2x.WebRequester
 
 		public override string ToString()
 		{
-			return this.Url.Value;
+			return this.Url.AbsoluteUri;
 		}
 
 		public static MagentoUrl SandBox { get; } = new MagentoUrl( "http://127.0.0.1/index.php/rest/V1/" );
