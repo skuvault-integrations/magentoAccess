@@ -3,19 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MagentoAccess</RootNamespace>
-    <AssemblyName>MagentoAccess</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>SkuVault.Magento.Access</Title>
     <Authors>Skuvault Inc.</Authors>
     <Company>SkuVault Inc.</Company>
-    <Summary>A library that provides tools to issue requests to the Megento API</Summary>
-    <Description>A library that provides tools to issue requests to the Megento API</Description>
-    <RootNamespace>MagentoAccess</RootNamespace>
+    <Summary>A library that provides tools to issue requests to the Magento API</Summary>
+    <Description>A library that provides tools to issue requests to the Magento API</Description>
     <AssemblyName>SkuVault.Magento.Access</AssemblyName>
     <RepositoryUrl>https://github.com/skuvault-integrations/magentoAccess</RepositoryUrl>
-    <PackageTags>requests, skuvault, megento</PackageTags>
+    <PackageTags>requests, skuvault, magento</PackageTags>
     <PackageId>SkuVault.Magento.Access</PackageId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
