@@ -7,6 +7,17 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>SkuVault.Access.DataRead</Title>
+    <Authors>Skuvault Inc.</Authors>
+    <Company>SkuVault Inc.</Company>
+    <Summary>A library that provides tools to issue requests to the Megento API</Summary>
+    <Description>A library that provides tools to issue requests to the Megento API</Description>
+    <RootNamespace>MagentoAccess</RootNamespace>
+    <AssemblyName>SkuVault.Magento.Access</AssemblyName>
+    <RepositoryUrl>https://github.com/skuvault-integrations/magentoAccess</RepositoryUrl>
+    <PackageTags>requests, skuvault, megento</PackageTags>
+    <PackageId>SkuVault.Megento.Access</PackageId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
