@@ -16,7 +16,7 @@ jobs:
     
     env:
       BUILD_CONFIG: 'Release'
-      SOLUTION_NAME: '.\src\SkuVault.Magento.Access.sln'
+      SOLUTION_NAME: './src/SkuVault.Magento.Access.sln'
       PACKAGES_ARTIFACT: etsy-magento-packages
 
     steps:
